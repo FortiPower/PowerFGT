@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-function Get-FGTAddresses {
+function Get-FGTAddress {
 
     Param(
         [Parameter(Mandatory = $false)]
