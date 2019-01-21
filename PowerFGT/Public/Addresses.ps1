@@ -1,20 +1,17 @@
-﻿function Get-FGTAddresses {
-    
+﻿
+function Get-FGTAddresses {
+
     Param(
         [Parameter(Mandatory = $false)]
-        [switch]$SimpleView 
+        [switch]$SimpleView
          )
-    
+
     if ($SimpleView -eq $False) {
         $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/address' -method 'GET'
         $reponse.results
-    } else { 
+    } else {
         $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/address' -method 'GET'
         $reponse.results | ft
     }
-
-
-
-
 
     }
