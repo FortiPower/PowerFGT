@@ -51,7 +51,7 @@ function Connect-FGT {
         Set-FGTUntrustedSSL
         Set-FGTCipherSSL
 
-        $postParams = @{username=$Credentials.username;secretkey=$Credentials.GetNetworkCredential().Password}
+        $postParams = @{username=$Credentials.username;secretkey=$Credentials.GetNetworkCredential().Password;ajax=1}
         $url = "https://${Server}/logincheck"
 
         try {
