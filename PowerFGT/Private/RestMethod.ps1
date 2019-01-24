@@ -22,7 +22,14 @@ function Invoke-FGTRestMethod{
     Process {
 
         $Server = ${DefaultFGTConnection}.Server
-        $fullurl = "https://${Server}/${uri}"
+        $httpOnly = ${DefaultFGTConnection}.httpOnly
+        $port = ${DefaultFGTConnection}.port
+
+        if($httpOnly) {
+            $fullurl = "http://${Server}:${port}/${uri}"
+        } else {
+            $fullurl = "https://${Server}:${port}/${uri}"
+        }
 
         $sessionvariable = $DefaultFGTConnection.session
 
