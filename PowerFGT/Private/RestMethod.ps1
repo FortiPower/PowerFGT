@@ -25,6 +25,7 @@ function Invoke-FGTRestMethod{
         $httpOnly = ${DefaultFGTConnection}.httpOnly
         $port = ${DefaultFGTConnection}.port
         $headers = ${DefaultFGTConnection}.headers
+        $invokeParams = ${DefaultFGTConnection}.invokeParams
 
         if($httpOnly) {
             $fullurl = "http://${Server}:${port}/${uri}"
@@ -36,9 +37,9 @@ function Invoke-FGTRestMethod{
 
         try {
             if($body){
-                $response = Invoke-RestMethod $fullurl -Method $method -body ($body | ConvertTo-Json) -Headers $headers -WebSession $sessionvariable
+                $response = Invoke-RestMethod $fullurl -Method $method -body ($body | ConvertTo-Json) -Headers $headers -WebSession $sessionvariable @invokeParams
             } else {
-                $response = Invoke-RestMethod $fullurl -Method $method -Headers $headers -WebSession $sessionvariable
+                $response = Invoke-RestMethod $fullurl -Method $method -Headers $headers -WebSession $sessionvariable @invokeParams
             }
         }
 
