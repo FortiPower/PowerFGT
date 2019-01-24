@@ -11,9 +11,11 @@ function Show-FGTException() {
     )
 
     If ($Exception.Exception.Response) {
-        $result = $Exception.Exception.Response.GetResponseStream()
-        $reader = New-Object System.IO.StreamReader($result)
-        $responseBody = $reader.ReadToEnd()
+        if ("Desktop" -eq $PSVersionTable.PSEdition) {
+            $result = $Exception.Exception.Response.GetResponseStream()
+            $reader = New-Object System.IO.StreamReader($result)
+            $responseBody = $reader.ReadToEnd()
+        }
 
         #$responseJson =  $responseBody | ConvertFrom-Json
 
