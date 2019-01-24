@@ -27,7 +27,11 @@ function Connect-FGT {
         [Parameter(Mandatory = $false)]
         [SecureString]$Password,
         [Parameter(Mandatory = $false)]
-        [PSCredential]$Credentials
+        [PSCredential]$Credentials,
+        [switch]$httpOnly=$false,
+        [Parameter(Mandatory = $false)]
+        [ValidateRange(1, 65535)]
+        [int]$port
     )
 
     Begin {
@@ -35,7 +39,7 @@ function Connect-FGT {
 
     Process {
 
-        $connection = @{server="";session=""}
+        $connection = @{server="";session="";httpOnly=$false;port="";}
 
         #If there is a password (and a user), create a credentials
         if ($Password) {
@@ -47,12 +51,24 @@ function Connect-FGT {
             $Credentials = Get-Credential -Message 'Please enter administrative credentials for your FortiGate'
         }
 
-        #Allow untrusted SSL certificat and enable TLS 1.2 (needed/recommanded by FortiGate)
-        Set-FGTUntrustedSSL
-        Set-FGTCipherSSL
+        if($httpOnly) {
+            if(!$port){
+                $port = 80
+            }
+            $connection.httpOnly = $true
+            $url = "http://${Server}:${port}/logincheck"
+        } else {
+            if(!$port){
+                $port = 443
+            }
+
+            #Allow untrusted SSL certificat and enable TLS 1.2 (needed/recommanded by FortiGate)
+            Set-FGTUntrustedSSL
+            Set-FGTCipherSSL
+            $url = "https://${Server}:${port}/logincheck"
+        }
 
         $postParams = @{username=$Credentials.username;secretkey=$Credentials.GetNetworkCredential().Password;ajax=1}
-        $url = "https://${Server}/logincheck"
 
         try {
             Invoke-WebRequest $url -Method POST -Body $postParams -SessionVariable FGT | Out-Null
