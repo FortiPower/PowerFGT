@@ -19,6 +19,11 @@ function Connect-FGT {
       Connect to a FortiGate with IP 192.0.2.1
 
       .EXAMPLE
+      Connect-FGT -Server 192.0.2.1 -SkipCertificateCheck
+
+      Connect to a FortiGate with IP 192.0.2.1 and disable Certificate (chain) check
+
+      .EXAMPLE
       Connect-FGT -Server 192.0.2.1 -httpOnly
 
       Connect to a FortiGate using HTTP (unsecure !) with IP 192.0.2.1 using (Get-)credential
@@ -52,6 +57,8 @@ function Connect-FGT {
         [PSCredential]$Credentials,
         [switch]$httpOnly=$false,
         [Parameter(Mandatory = $false)]
+        [switch]$SkipCertificateCheck=$false,
+        [Parameter(Mandatory = $false)]
         [ValidateRange(1, 65535)]
         [int]$port
     )
@@ -61,7 +68,7 @@ function Connect-FGT {
 
     Process {
 
-        $connection = @{server="";session="";httpOnly=$false;port="";headers=""}
+        $connection = @{server="";session="";httpOnly=$false;port="";headers="";invokeParams=""}
 
         #If there is a password (and a user), create a credentials
         if ($Password) {
@@ -72,6 +79,9 @@ function Connect-FGT {
         {
             $Credentials = Get-Credential -Message 'Please enter administrative credentials for your FortiGate'
         }
+
+        $postParams = @{username=$Credentials.username;secretkey=$Credentials.GetNetworkCredential().Password;ajax=1}
+        $invokeParams = @{DisableKeepAlive = $false; UseBasicParsing = $true; SkipCertificateCheck = $SkipCertificateCheck}
 
         if($httpOnly) {
             if(!$port){
@@ -84,16 +94,23 @@ function Connect-FGT {
                 $port = 443
             }
 
-            #Allow untrusted SSL certificat and enable TLS 1.2 (needed/recommanded by FortiGate)
-            Set-FGTUntrustedSSL
-            Set-FGTCipherSSL
+            #for PowerShell (<=) 5 (Desktop), Enable TLS 1.1, 1.2 and Disable SSL chain trust (needed/recommanded by FortiGate)
+            if ("Desktop" -eq $PSVersionTable.PsEdition) {
+                #Enable TLS 1.1 and 1.2
+                Set-FGTCipherSSL
+                if ($SkipCertificateCheck) {
+                    #Disable SSL chain trust...
+                    Set-FGTuntrustedSSL
+                }
+                #Remove -SkipCertificateCheck from Invoke Parameter (not supported <= PS 5)
+                $invokeParms.remove("SkipCertificateCheck")
+            }
+
             $url = "https://${Server}:${port}/logincheck"
         }
 
-        $postParams = @{username=$Credentials.username;secretkey=$Credentials.GetNetworkCredential().Password;ajax=1}
-
         try {
-            Invoke-WebRequest $url -Method POST -Body $postParams -SessionVariable FGT | Out-Null
+            Invoke-WebRequest $url -Method POST -Body $postParams -SessionVariable FGT @invokeParams | Out-Null
         }
         catch {
             Show-FGTException $_
@@ -121,6 +138,7 @@ function Connect-FGT {
         $connection.server = $server
         $connection.session = $FGT
         $connection.headers = $headers
+        $connection.invokeParams = $invokeParams
 
         set-variable -name DefaultFGTConnection -value $connection -scope Global
 
