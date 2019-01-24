@@ -61,7 +61,7 @@ function Connect-FGT {
 
     Process {
 
-        $connection = @{server="";session="";httpOnly=$false;port="";}
+        $connection = @{server="";session="";httpOnly=$false;port="";headers=""}
 
         #If there is a password (and a user), create a credentials
         if ($Password) {
@@ -100,8 +100,27 @@ function Connect-FGT {
             throw "Unable to connect to FortiGate"
         }
 
+        #Search crsf cookie and to X-CSRFTOKEN
+        $cookies = $FGT.Cookies.GetCookies($url)
+        foreach($cookie in $cookies) {
+            if($cookie.name -eq "ccsrftoken") {
+                $cookie_csrf = $cookie.value
+            }
+        }
+
+        # throw if don't found csrf cookie...
+        if($null -eq $cookie_csrf) {
+            throw "Unable to found CSRF Cookie"
+        }
+
+        #Remove extra "quote"
+        $cookie_csrf = $cookie_csrf -replace '["]',''
+        #Add csrf cookie to header (X-CSRFTOKEN)
+        $headers = @{"X-CSRFTOKEN" = $cookie_csrf}
+
         $connection.server = $server
         $connection.session = $FGT
+        $connection.headers = $headers
 
         set-variable -name DefaultFGTConnection -value $connection -scope Global
 
