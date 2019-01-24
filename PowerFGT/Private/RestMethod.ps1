@@ -24,6 +24,7 @@ function Invoke-FGTRestMethod{
         $Server = ${DefaultFGTConnection}.Server
         $httpOnly = ${DefaultFGTConnection}.httpOnly
         $port = ${DefaultFGTConnection}.port
+        $headers = ${DefaultFGTConnection}.headers
 
         if($httpOnly) {
             $fullurl = "http://${Server}:${port}/${uri}"
