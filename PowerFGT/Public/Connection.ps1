@@ -17,6 +17,16 @@ function Connect-FGT {
       Connect-FGT -Server 192.0.2.1
 
       Connect to a FortiGate with IP 192.0.2.1
+
+      .EXAMPLE
+      Connect-FGT -Server 192.0.2.1 -httpOnly
+
+      Connect to a FortiGate using HTTP (unsecure !) with IP 192.0.2.1 using (Get-)credential
+
+      .EXAMPLE
+      Connect-FGT -Server 192.0.2.1 -port 4443
+
+      Connect to a FortiGate using HTTPS (with port 4443) with IP 192.0.2.1 using (Get-)credential
   #>
 
     Param(
