@@ -51,6 +51,7 @@ function Add-FGTAddress {
 
         Invoke-FGTRestMethod -method "POST" -body $address -uri $uri | out-Null
 
+        Get-FGTAddress | Where-Object {$_.name -eq $name}
     }
 
     End {
