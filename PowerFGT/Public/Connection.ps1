@@ -83,6 +83,14 @@ function Connect-FGT {
         $postParams = @{username=$Credentials.username;secretkey=$Credentials.GetNetworkCredential().Password;ajax=1}
         $invokeParams = @{DisableKeepAlive = $false; UseBasicParsing = $true; SkipCertificateCheck = $SkipCertificateCheck}
 
+        if ("Desktop" -eq $PSVersionTable.PsEdition) {
+            #Remove -SkipCertificateCheck from Invoke Parameter (not supported <= PS 5)
+            $invokeParams.remove("SkipCertificateCheck")
+        } else { #Core Edition
+            #Remove -UseBasicParsing (Enable by default with PowerShell 6/Core)
+        $invokeParams.remove("UseBasicParsing")
+        }
+
         if($httpOnly) {
             if(!$port){
                 $port = 80
@@ -102,8 +110,6 @@ function Connect-FGT {
                     #Disable SSL chain trust...
                     Set-FGTuntrustedSSL
                 }
-                #Remove -SkipCertificateCheck from Invoke Parameter (not supported <= PS 5)
-                $invokeParams.remove("SkipCertificateCheck")
             }
 
             $url = "https://${Server}:${port}/logincheck"
