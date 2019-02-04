@@ -103,7 +103,7 @@ function Connect-FGT {
                     Set-FGTuntrustedSSL
                 }
                 #Remove -SkipCertificateCheck from Invoke Parameter (not supported <= PS 5)
-                $invokeParms.remove("SkipCertificateCheck")
+                $invokeParams.remove("SkipCertificateCheck")
             }
 
             $url = "https://${Server}:${port}/logincheck"
