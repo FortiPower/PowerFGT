@@ -90,8 +90,10 @@ You can create a new Address `Add-FGTAddress`, retrieve its information `Get-FGT
 ## Unable to connect
 if you use `Connect-FGT` and get `Unable to Connect (certificate)`
 
+The issue coming from use Self-Signed or Expired Certificate for Firewall Management
 Try to connect using `Connect-FGT -SkipCertificateCheck`
 
+You can use also `Connect-FGT -httpOnly` for connect using HTTP (NOT RECOMMANDED !)
 
 # List of available command
 ```powershell
