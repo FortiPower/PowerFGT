@@ -19,8 +19,7 @@ function Get-FGTService {
       Get list of all services object
   #>
 
-
-        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall.service/custom' -method 'GET'
-        $reponse.results
+$reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall.service/custom' -method 'GET'
+$reponse.results
 
         }
