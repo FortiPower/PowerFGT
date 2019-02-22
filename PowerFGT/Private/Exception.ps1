@@ -10,6 +10,16 @@ function Show-FGTException() {
         $Exception
     )
 
+    #Check if certificate is valid
+    if ($Exception.Exception.InnerException) {
+        $exceptiontype  = $Exception.Exception.InnerException.GetType()
+        if ("AuthenticationException" -eq $exceptiontype.name) {
+            Write-Warning "Invalid certificat (Untrusted, wrong date, invalid name...)"
+            Write-Warning "Try to use Connect-FGT -SkipCertificateCheck for connection"
+            throw "Unable to connect (certificate)"
+        }
+    }
+
     If ($Exception.Exception.Response) {
         if ("Desktop" -eq $PSVersionTable.PSEdition) {
             $result = $Exception.Exception.Response.GetResponseStream()
