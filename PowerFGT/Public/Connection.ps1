@@ -144,9 +144,70 @@ function Connect-FGT {
         $connection.server = $server
         $connection.session = $FGT
         $connection.headers = $headers
+        $connection.port = $port
         $connection.invokeParams = $invokeParams
 
         set-variable -name DefaultFGTConnection -value $connection -scope Global
+
+        $connection
+    }
+
+    End {
+    }
+}
+
+
+  function Disconnect-FGT {
+
+    <#
+        .SYNOPSIS
+        Disconnect a FortiGate
+
+        .DESCRIPTION
+        Disconnect the connection of FortiGate
+
+        .EXAMPLE
+        Disconnect-FGT
+
+        Disconnect the connection
+
+        .EXAMPLE
+        Disconnect-FGT -noconfirm
+
+        Disconnect the connection with no confirmation
+
+    #>
+
+    Param(
+        [Parameter(Mandatory = $false)]
+        [switch]$noconfirm
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $url = "/logout"
+
+        if ( -not ( $Noconfirm )) {
+            $message = "Remove FortiGate connection."
+            $question = "Proceed with removal of FortiGate connection ?"
+            $choices = New-Object Collections.ObjectModel.Collection[Management.Automation.Host.ChoiceDescription]
+            $choices.Add((New-Object Management.Automation.Host.ChoiceDescription -ArgumentList '&Yes'))
+            $choices.Add((New-Object Management.Automation.Host.ChoiceDescription -ArgumentList '&No'))
+
+            $decision = $Host.UI.PromptForChoice($message, $question, $choices, 1)
+        }
+        else { $decision = 0 }
+        if ($decision -eq 0) {
+            Write-Progress -activity "Remove FortiGate connection"
+            $null = invoke-FGTRestMethod -method "POST" -uri $url
+            write-progress -activity "Remove FortiGate connection" -completed
+            if (Get-Variable -Name DefaultFGTConnection -scope global ) {
+                Remove-Variable -name DefaultFGTConnection -scope global
+            }
+        }
 
     }
 
