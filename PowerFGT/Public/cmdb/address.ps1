@@ -22,6 +22,7 @@ function Add-FGTAddress {
 
     Param(
         [Parameter (Mandatory = $true)]
+        [ValidateSet("ipmask")]
         [string]$type,
         [Parameter (Mandatory = $true)]
         [string]$name,
