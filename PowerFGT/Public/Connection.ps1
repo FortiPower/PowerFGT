@@ -149,6 +149,7 @@ function Connect-FGT {
 
         set-variable -name DefaultFGTConnection -value $connection -scope Global
 
+        $connection
     }
 
     End {
