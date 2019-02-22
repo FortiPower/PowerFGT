@@ -144,6 +144,7 @@ function Connect-FGT {
         $connection.server = $server
         $connection.session = $FGT
         $connection.headers = $headers
+        $connection.port = $port
         $connection.invokeParams = $invokeParams
 
         set-variable -name DefaultFGTConnection -value $connection -scope Global
