@@ -21,13 +21,13 @@ function Add-FGTAddress {
     #>
 
     Param(
-        [Parameter (Mandatory=$true)]
+        [Parameter (Mandatory = $true)]
         [string]$type,
-        [Parameter (Mandatory=$true)]
+        [Parameter (Mandatory = $true)]
         [string]$name,
-        [Parameter (Mandatory=$false)]
+        [Parameter (Mandatory = $false)]
         [ipaddress]$ip,
-        [Parameter (Mandatory=$false)]
+        [Parameter (Mandatory = $false)]
         [ipaddress]$mask
     )
 
