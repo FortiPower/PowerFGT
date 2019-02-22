@@ -72,10 +72,24 @@ function Get-FGTAddress {
       Get-FGTAddress
 
       Get list of all address object
+
+      .EXAMPLE
+      Get-FGTAddress -name myFGTAddress
+
+      Get address named myFGTAddress
   #>
 
+    Param(
+        [Parameter (Mandatory = $false, Position = 1, ParameterSetName = "name")]
+        [string]$name
+    )
+
     $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/address' -method 'GET'
-    $reponse.results
+
+    switch ( $PSCmdlet.ParameterSetName ) {
+        "name" { $reponse.results | where-object { $_.name -eq $name } }
+        default { $reponse.results }
+    }
 
 }
 
