@@ -6,7 +6,7 @@
 
 function Connect-FGT {
 
-  <#
+    <#
       .SYNOPSIS
       Connect to a FortiGate
 
@@ -47,7 +47,7 @@ function Connect-FGT {
   #>
 
     Param(
-        [Parameter(Mandatory = $true, position=1)]
+        [Parameter(Mandatory = $true, position = 1)]
         [String]$Server,
         [Parameter(Mandatory = $false)]
         [String]$Username,
@@ -55,9 +55,9 @@ function Connect-FGT {
         [SecureString]$Password,
         [Parameter(Mandatory = $false)]
         [PSCredential]$Credentials,
-        [switch]$httpOnly=$false,
+        [switch]$httpOnly = $false,
         [Parameter(Mandatory = $false)]
-        [switch]$SkipCertificateCheck=$false,
+        [switch]$SkipCertificateCheck = $false,
         [Parameter(Mandatory = $false)]
         [ValidateRange(1, 65535)]
         [int]$port
@@ -68,37 +68,39 @@ function Connect-FGT {
 
     Process {
 
-        $connection = @{server="";session="";httpOnly=$false;port="";headers="";invokeParams=""}
+        $connection = @{server = ""; session = ""; httpOnly = $false; port = ""; headers = ""; invokeParams = ""}
 
         #If there is a password (and a user), create a credentials
         if ($Password) {
             $Credentials = New-Object System.Management.Automation.PSCredential($Username, $Password)
         }
         #Not Credentials (and no password)
-        if ($null -eq $Credentials)
-        {
+        if ($null -eq $Credentials) {
             $Credentials = Get-Credential -Message 'Please enter administrative credentials for your FortiGate'
         }
 
-        $postParams = @{username=$Credentials.username;secretkey=$Credentials.GetNetworkCredential().Password;ajax=1}
+        $postParams = @{username = $Credentials.username; secretkey = $Credentials.GetNetworkCredential().Password; ajax = 1}
         $invokeParams = @{DisableKeepAlive = $false; UseBasicParsing = $true; SkipCertificateCheck = $SkipCertificateCheck}
 
         if ("Desktop" -eq $PSVersionTable.PsEdition) {
             #Remove -SkipCertificateCheck from Invoke Parameter (not supported <= PS 5)
             $invokeParams.remove("SkipCertificateCheck")
-        } else { #Core Edition
+        }
+        else {
+            #Core Edition
             #Remove -UseBasicParsing (Enable by default with PowerShell 6/Core)
-        $invokeParams.remove("UseBasicParsing")
+            $invokeParams.remove("UseBasicParsing")
         }
 
-        if($httpOnly) {
-            if(!$port){
+        if ($httpOnly) {
+            if (!$port) {
                 $port = 80
             }
             $connection.httpOnly = $true
             $url = "http://${Server}:${port}/logincheck"
-        } else {
-            if(!$port){
+        }
+        else {
+            if (!$port) {
                 $port = 443
             }
 
@@ -125,19 +127,19 @@ function Connect-FGT {
 
         #Search crsf cookie and to X-CSRFTOKEN
         $cookies = $FGT.Cookies.GetCookies($url)
-        foreach($cookie in $cookies) {
-            if($cookie.name -eq "ccsrftoken") {
+        foreach ($cookie in $cookies) {
+            if ($cookie.name -eq "ccsrftoken") {
                 $cookie_csrf = $cookie.value
             }
         }
 
         # throw if don't found csrf cookie...
-        if($null -eq $cookie_csrf) {
+        if ($null -eq $cookie_csrf) {
             throw "Unable to found CSRF Cookie"
         }
 
         #Remove extra "quote"
-        $cookie_csrf = $cookie_csrf -replace '["]',''
+        $cookie_csrf = $cookie_csrf -replace '["]', ''
         #Add csrf cookie to header (X-CSRFTOKEN)
         $headers = @{"X-CSRFTOKEN" = $cookie_csrf}
 
@@ -157,7 +159,7 @@ function Connect-FGT {
 }
 
 
-  function Disconnect-FGT {
+function Disconnect-FGT {
 
     <#
         .SYNOPSIS
