@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-function Invoke-FGTRestMethod{
+function Invoke-FGTRestMethod {
 
     Param(
         [Parameter(Mandatory = $true)]
@@ -27,18 +27,20 @@ function Invoke-FGTRestMethod{
         $headers = ${DefaultFGTConnection}.headers
         $invokeParams = ${DefaultFGTConnection}.invokeParams
 
-        if($httpOnly) {
+        if ($httpOnly) {
             $fullurl = "http://${Server}:${port}/${uri}"
-        } else {
+        }
+        else {
             $fullurl = "https://${Server}:${port}/${uri}"
         }
 
         $sessionvariable = $DefaultFGTConnection.session
 
         try {
-            if($body){
+            if ($body) {
                 $response = Invoke-RestMethod $fullurl -Method $method -body ($body | ConvertTo-Json) -Headers $headers -WebSession $sessionvariable @invokeParams
-            } else {
+            }
+            else {
                 $response = Invoke-RestMethod $fullurl -Method $method -Headers $headers -WebSession $sessionvariable @invokeParams
             }
         }

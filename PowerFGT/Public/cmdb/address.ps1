@@ -6,7 +6,7 @@
 #
 function Get-FGTAddress {
 
-  <#
+    <#
       .SYNOPSIS
       Get list of all "address"
 

@@ -18,7 +18,7 @@ Function Set-FGTUntrustedSSL {
     }
 "@
 
-[System.Net.ServicePointManager]::CertificatePolicy = New-Object -TypeName TrustAllCertsPolicy
+    [System.Net.ServicePointManager]::CertificatePolicy = New-Object -TypeName TrustAllCertsPolicy
 
 }
 
