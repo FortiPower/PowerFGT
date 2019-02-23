@@ -19,6 +19,11 @@ function Add-FGTAddress {
         Add Address objet type ipmask with name FGT and value 192.2.0.0/24
 
         .EXAMPLE
+        Add-FGTAddress -type ipmask -Name FGT -ip 192.2.0.0 -mask 255.255.255.0 -interface port2
+
+        Add Address objet type ipmask with name FGT, value 192.2.0.0/24 and associated to interface port2
+
+        .EXAMPLE
         Add-FGTAddress -type ipmask -Name FGT -ip 192.2.0.0 -mask 255.255.255.0 -comment "My FGT Address"
 
         Add Address objet type ipmask with name FGT, value 192.2.0.0/24 and a comment
@@ -39,6 +44,8 @@ function Add-FGTAddress {
         [ipaddress]$ip,
         [Parameter (Mandatory = $false)]
         [ipaddress]$mask,
+        [Parameter (Mandatory = $false)]
+        [string]$interface,
         [Parameter (Mandatory = $false)]
         [ValidateLength(0,255)]
         [string]$comment,
@@ -63,6 +70,11 @@ function Add-FGTAddress {
         $subnet += "/"
         $subnet += $mask.ToString()
         $address | add-member -name "subnet" -membertype NoteProperty -Value $subnet
+
+        if ( $PsBoundParameters.ContainsKey('interface') ) {
+            #TODO check if the interface (zone ?) is valid
+            $address | add-member -name "associated-interface" -membertype NoteProperty -Value $interface
+        }
 
         if ( $PsBoundParameters.ContainsKey('comment') ) {
             $address | add-member -name "comment" -membertype NoteProperty -Value $comment
