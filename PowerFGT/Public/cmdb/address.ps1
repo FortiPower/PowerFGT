@@ -142,7 +142,7 @@ function Remove-FGTAddress {
         Remove a FortiGate Address
 
         .DESCRIPTION
-        Remove a address object on the FortiGate
+        Remove an address object on the FortiGate
 
         .EXAMPLE
         $MyFGTAddress = Get-FGTAddress -name MyFGTAddress
@@ -150,7 +150,7 @@ function Remove-FGTAddress {
 
         Remove address object $MyFGTAddress
 
-                .EXAMPLE
+        .EXAMPLE
         $MyFGTAddress = Get-FGTAddress -name MyFGTAddress
         PS C:\>$MyFGTAddress | Remove-FGTAddress -noconfirm
 
@@ -170,8 +170,8 @@ function Remove-FGTAddress {
 
     Process {
 
-        $url = "api/v2/cmdb/firewall/address/$($address.name)"
-        $url
+        $uri = "api/v2/cmdb/firewall/address/$($address.name)"
+
         if ( -not ( $Noconfirm )) {
             $message = "Remove address on Fortigate"
             $question = "Proceed with removal of Address $($address.name) ?"
@@ -184,7 +184,7 @@ function Remove-FGTAddress {
         else { $decision = 0 }
         if ($decision -eq 0) {
             Write-Progress -activity "Remove Address"
-            $null = Invoke-FGTRestMethod -method "DELETE" -uri $url
+            $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri
             Write-Progress -activity "Remove Address" -completed
         }
     }
