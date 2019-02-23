@@ -135,6 +135,110 @@ function Get-FGTAddress {
 
 }
 
+function Set-FGTAddress {
+
+    <#
+        .SYNOPSIS
+        Configure a FortiGate Address
+
+        .DESCRIPTION
+        Change a FortiGate Address (ip, mask, comment, associated interface... )
+
+        .EXAMPLE
+        $MyFGTAddress = Get-FGTAddress -name MyFGTAddress
+        PS C:\>$MyFGTAddress | Set-FGTAddress -ip 192.2.0.0 -mask 255.255.255.0
+
+        Change MyFGTAddress to value (ip and mask) 192.2.0.0/24
+
+        .EXAMPLE
+        $MyFGTAddress = Get-FGTAddress -name MyFGTAddress
+        PS C:\>$MyFGTAddress | Set-FGTAddress -ip 192.2.2.1
+
+        Change MyFGTAddress to value (ip) 192.2.2.1
+
+        .EXAMPLE
+        $MyFGTAddress = Get-FGTAddress -name MyFGTAddress
+        PS C:\>$MyFGTAddress | Set -interface port1
+
+        Change MyFGTAddress to set associated interface to port 1
+
+        .EXAMPLE
+        $MyFGTAddress = Get-FGTAddress -name MyFGTAddress
+        PS C:\>$MyFGTAddress | Set -comment "My FGT Address" -visibility:$false
+
+        Change MyFGTAddress to set a new comment and disabled visibility
+    #>
+
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        #ValidateScript({ ValidateFGTAddress $_ })]
+        [psobject]$address,
+        [Parameter (Mandatory = $false)]
+        [ipaddress]$ip,
+        [Parameter (Mandatory = $false)]
+        [ipaddress]$mask,
+        [Parameter (Mandatory = $false)]
+        [string]$interface,
+        [Parameter (Mandatory = $false)]
+        [ValidateLength(0,255)]
+        [string]$comment,
+        [Parameter (Mandatory = $false)]
+        [boolean]$visibility
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $uri = "api/v2/cmdb/firewall/address/$($address.name)"
+
+        $_address = new-Object -TypeName PSObject
+
+        if ( $PsBoundParameters.ContainsKey('ip') -or $PsBoundParameters.ContainsKey('mask') ) {
+            if ( $PsBoundParameters.ContainsKey('ip') ) {
+                $subnet = $ip.ToString()
+            } else {
+                $subnet = $address.'start-ip'
+            }
+
+            $subnet += "/"
+
+            if ( $PsBoundParameters.ContainsKey('mask') ) {
+                $subnet += $mask.ToString()
+            } else {
+                $subnet += $address.'end-ip'
+            }
+
+            $_address | add-member -name "subnet" -membertype NoteProperty -Value $subnet
+        }
+
+        if ( $PsBoundParameters.ContainsKey('interface') ) {
+            #TODO check if the interface (zone ?) is valid
+            $_address | add-member -name "associated-interface" -membertype NoteProperty -Value $interface
+        }
+
+        if ( $PsBoundParameters.ContainsKey('comment') ) {
+            $_address | add-member -name "comment" -membertype NoteProperty -Value $comment
+        }
+
+        if ( $PsBoundParameters.ContainsKey('visibility') ) {
+            if ( $visibility ) {
+                $_address | add-member -name "visibility" -membertype NoteProperty -Value "enable"
+            } else {
+                $_address | add-member -name "visibility" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        Invoke-FGTRestMethod -method "PUT" -body $_address -uri $uri | out-Null
+
+        Get-FGTAddress | Where-Object {$_.name -eq $address.name}
+    }
+
+    End {
+    }
+}
+
 function Remove-FGTAddress {
 
     <#
