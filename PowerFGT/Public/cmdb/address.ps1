@@ -58,6 +58,10 @@ function Add-FGTAddress {
 
     Process {
 
+        if ( Get-FGTAddress -name $name ) {
+            Throw "Already an address object using the same name"
+        }
+
         $uri = "api/v2/cmdb/firewall/address"
 
         $address = new-Object -TypeName PSObject
