@@ -18,6 +18,15 @@ function Add-FGTAddress {
 
         Add Address objet type ipmask with name FGT and value 192.2.0.0/24
 
+        .EXAMPLE
+        Add-FGTAddress -type ipmask -Name FGT -ip 192.2.0.0 -mask 255.255.255.0 -comment "My FGT Address"
+
+        Add Address objet type ipmask with name FGT, value 192.2.0.0/24 and a comment
+
+        .EXAMPLE
+        Add-FGTAddress -type ipmask -Name FGT -ip 192.2.0.0 -mask 255.255.255.0 -visibility:$false
+
+        Add Address objet type ipmask with name FGT, value 192.2.0.0/24 and disabled visibility
     #>
 
     Param(
@@ -29,7 +38,12 @@ function Add-FGTAddress {
         [Parameter (Mandatory = $false)]
         [ipaddress]$ip,
         [Parameter (Mandatory = $false)]
-        [ipaddress]$mask
+        [ipaddress]$mask,
+        [Parameter (Mandatory = $false)]
+        [ValidateLength(0,255)]
+        [string]$comment,
+        [Parameter (Mandatory = $false)]
+        [boolean]$visibility
     )
 
     Begin {
@@ -49,6 +63,18 @@ function Add-FGTAddress {
         $subnet += "/"
         $subnet += $mask.ToString()
         $address | add-member -name "subnet" -membertype NoteProperty -Value $subnet
+
+        if ( $PsBoundParameters.ContainsKey('comment') ) {
+            $address | add-member -name "comment" -membertype NoteProperty -Value $comment
+        }
+
+        if ( $PsBoundParameters.ContainsKey('visibility') ) {
+            if ( $visibility ) {
+                $address | add-member -name "visibility" -membertype NoteProperty -Value "enable"
+            } else {
+                $address | add-member -name "visibility" -membertype NoteProperty -Value "disable"
+            }
+        }
 
         Invoke-FGTRestMethod -method "POST" -body $address -uri $uri | out-Null
 
