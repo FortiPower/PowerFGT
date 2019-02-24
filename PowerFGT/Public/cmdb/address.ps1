@@ -135,12 +135,20 @@ function Get-FGTAddress {
         [string]$match
     )
 
-    $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/address' -method 'GET'
+    Begin {
+    }
 
-    switch ( $PSCmdlet.ParameterSetName ) {
-        "name" { $reponse.results | where-object { $_.name -eq $name } }
-        "match" { $reponse.results | where-object { $_.name -match $match } }
-        default { $reponse.results }
+    Process {
+        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/address' -method 'GET'
+
+        switch ( $PSCmdlet.ParameterSetName ) {
+            "name" { $reponse.results | where-object { $_.name -eq $name } }
+            "match" { $reponse.results | where-object { $_.name -match $match } }
+            default { $reponse.results }
+        }
+    }
+
+    End {
     }
 
 }
