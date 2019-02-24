@@ -121,6 +121,7 @@ function Get-FGTAddress {
       Get address named myFGTAddress
   #>
 
+    [CmdletBinding(DefaultParameterSetName="default")]
     Param(
         [Parameter (Mandatory = $false, Position = 1, ParameterSetName = "name")]
         [string]$name,
