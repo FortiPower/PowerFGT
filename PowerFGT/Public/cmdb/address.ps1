@@ -47,7 +47,7 @@ function Add-FGTAddress {
         [Parameter (Mandatory = $false)]
         [string]$interface,
         [Parameter (Mandatory = $false)]
-        [ValidateLength(0,255)]
+        [ValidateLength(0, 255)]
         [string]$comment,
         [Parameter (Mandatory = $false)]
         [boolean]$visibility
@@ -87,7 +87,8 @@ function Add-FGTAddress {
         if ( $PsBoundParameters.ContainsKey('visibility') ) {
             if ( $visibility ) {
                 $address | add-member -name "visibility" -membertype NoteProperty -Value "enable"
-            } else {
+            }
+            else {
                 $address | add-member -name "visibility" -membertype NoteProperty -Value "disable"
             }
         }
@@ -126,7 +127,7 @@ function Get-FGTAddress {
       Get address match with *FGT*
   #>
 
-    [CmdletBinding(DefaultParameterSetName="default")]
+    [CmdletBinding(DefaultParameterSetName = "default")]
     Param(
         [Parameter (Mandatory = $false, Position = 1, ParameterSetName = "name")]
         [string]$name,
@@ -180,7 +181,7 @@ function Set-FGTAddress {
 
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
-        [ValidateScript({ ValidateFGTAddress $_ })]
+        [ValidateScript( { ValidateFGTAddress $_ })]
         [psobject]$address,
         [Parameter (Mandatory = $false)]
         [string]$name,
@@ -191,7 +192,7 @@ function Set-FGTAddress {
         [Parameter (Mandatory = $false)]
         [string]$interface,
         [Parameter (Mandatory = $false)]
-        [ValidateLength(0,255)]
+        [ValidateLength(0, 255)]
         [string]$comment,
         [Parameter (Mandatory = $false)]
         [boolean]$visibility
@@ -215,7 +216,8 @@ function Set-FGTAddress {
         if ( $PsBoundParameters.ContainsKey('ip') -or $PsBoundParameters.ContainsKey('mask') ) {
             if ( $PsBoundParameters.ContainsKey('ip') ) {
                 $subnet = $ip.ToString()
-            } else {
+            }
+            else {
                 $subnet = $address.'start-ip'
             }
 
@@ -223,7 +225,8 @@ function Set-FGTAddress {
 
             if ( $PsBoundParameters.ContainsKey('mask') ) {
                 $subnet += $mask.ToString()
-            } else {
+            }
+            else {
                 $subnet += $address.'end-ip'
             }
 
@@ -242,7 +245,8 @@ function Set-FGTAddress {
         if ( $PsBoundParameters.ContainsKey('visibility') ) {
             if ( $visibility ) {
                 $_address | add-member -name "visibility" -membertype NoteProperty -Value "enable"
-            } else {
+            }
+            else {
                 $_address | add-member -name "visibility" -membertype NoteProperty -Value "disable"
             }
         }
@@ -280,7 +284,7 @@ function Remove-FGTAddress {
 
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
-        [ValidateScript({ ValidateFGTAddress $_ })]
+        [ValidateScript( { ValidateFGTAddress $_ })]
         [psobject]$address,
         [Parameter(Mandatory = $false)]
         [switch]$noconfirm
