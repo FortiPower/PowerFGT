@@ -6,7 +6,7 @@ This is a Powershell module for configure a FortiGate (Fortinet) Firewall.
 
 With this module (version 0.1.0) you can manage:
 
-- Address (Get/Add/Remove object type ipmask/subnet) 
+- Address (Get/Add/Remove object type ipmask/subnet)
 
 More functionality will be added later.
 
@@ -15,10 +15,12 @@ Tested with FortiGate (using 5.6.x and 6.0.x firmware)
 
 # Usage
 
-All resource management functions are available with the Powershell verbs GET, ADD, SET, REMOVE. 
+All resource management functions are available with the Powershell verbs GET, ADD, COPY, SET, REMOVE.
 For example, you can manage Address with the following commands:
 - `Get-FGTAddress`
 - `Add-FGTAddresss`
+- `Copy-FGTAddresss`
+- `Set-FGTAddresss`
 - `Remove-FGTAddresss`
 
 # Requirements
@@ -58,25 +60,140 @@ if you get a warning about `Unable to connect` Look [Issue](#Issue)
 
 ### Address Management
 
-You can create a new Address `Add-FGTAddress`, retrieve its information `Get-FGTAddress`, or delete it `Remove-FGTAddress`.
+You can create a new Address `Add-FGTAddress`, retrieve its information `Get-FGTAddress`,
+modify its properties `Set-FGTAddress`, copy/clone its properties `Copt-FGTAddress`
+or delete it `Remove-FGTAddress`.
 
 ```powershell
-# Create an address 
-    Add-FGTAddress -type ipmask -Name 'My PowerFGT Network' -ip 192.0.2.1 -subnet 255.255.255.0!
 
-    {Get-FGTAddress back}
+# Get information about ALL address (using Format Table)
+    Get-FGTAddress | Format-Table
+
+    q_origin_key                 name                         uuid                                 subnet
+    ------------                 ----                         ----                                 ------
+    FIREWALL_AUTH_PORTAL_ADDRESS FIREWALL_AUTH_PORTAL_ADDRESS a940cdea-368c-51e9-2596-5ddfd54a087a 0.0.0.0 0.0.0.0
+    SSLVPN_TUNNEL_ADDR1          SSLVPN_TUNNEL_ADDR1          a9416aca-368c-51e9-fe74-7dbb95fa64c9 10.212.134.200 10.212...
+    all                          all                          a940cc32-368c-51e9-82f5-fa5337e9f45c 0.0.0.0 0.0.0.0
+    autoupdate.opera.com         autoupdate.opera.com         a918c192-368c-51e9-ca8d-88cc94ed2d54 0.0.0.0 0.0.0.0
+    google-play                  google-play                  a918cd22-368c-51e9-2f4f-2d914955741a 0.0.0.0 0.0.0.0
+    swscan.apple.com             swscan.apple.com             a918d1dc-368c-51e9-08a7-c6004bf38fb9 0.0.0.0 0.0.0.0
+    update.microsoft.com         update.microsoft.com         a918d650-368c-51e9-0cca-5f006a059f0b 0.0.0.0 0.0.0.0
+
+# Create an address
+    Add-FGTAddress -type ipmask -Name 'My PowerFGT Network' -ip 192.0.2.1 -mask 255.255.255.0
+
+    q_origin_key         : My PowerFGT Network
+    name                 : My PowerFGT Network
+    uuid                 : 9c65f75e-383e-51e9-a33a-caeffb7cfd33
+    subnet               : 192.0.2.0 255.255.255.0
+    type                 : ipmask
+    start-ip             : 192.0.2.0
+    end-ip               : 255.255.255.0
+    fqdn                 :
+    country              :
+    wildcard-fqdn        :
+    cache-ttl            : 0
+    wildcard             : 192.0.2.0 255.255.255.0
+    sdn                  :
+    tenant               :
+    organization         :
+    epg-name             :
+    subnet-name          :
+    sdn-tag              :
+    policy-group         :
+    comment              :
+    visibility           : enable
+    associated-interface :
+    color                : 0
+    filter               :
+    obj-id               :
+    list                 : {}
+    tagging              : {}
+    allow-routing        : disable
 
 
-# Get information about adresss
-    Get-FGTAddress | ft
+# Get information an address (name) and display only some field (using Format-Table)
+    Get-FGTAddress -name "My PowerFGT Network" | Select name, subnet, type, start-ip, end-ip | Format-Table
 
-   {Get-FGTADdress back}
+    name                subnet                  type   start-ip  end-ip
+    ----                ------                  ----   --------  ------
+    My PowerFGT Network 192.0.2.0 255.255.255.0 ipmask 192.0.2.0 255.255.255.0
 
+# Get information some address (match) and display only some field (using Format-Table
+    Get-FGTAddress -match update | Select name, type, fqdn | Format-Table
 
-# Remove a address
-    Remove-FGTAddress -name 'My PowerFGT Network'
+    name                 type fqdn
+    ----                 ---- ----
+    autoupdate.opera.com fqdn autoupdate.opera.com
+    update.microsoft.com fqdn update.microsoft.com
+
+# Modify an address (name, comment, interface...)
+    Get-FGTAddress -name "My PowerFGT Network" | Set-FGTAddress -name "MyNetwork" -comment "My comment" -interface port2
+
+    q_origin_key         : MyNetwork
+    name                 : MyNetwork
+    uuid                 : 9c65f75e-383e-51e9-a33a-caeffb7cfd33
+    subnet               : 192.0.2.0 255.255.255.0
+    type                 : ipmask
+    start-ip             : 192.0.2.0
+    end-ip               : 255.255.255.0
+    fqdn                 :
+    country              :
+    wildcard-fqdn        :
+    cache-ttl            : 0
+    wildcard             : 192.0.2.0 255.255.255.0
+    sdn                  :
+    tenant               :
+    organization         :
+    epg-name             :
+    subnet-name          :
+    sdn-tag              :
+    policy-group         :
+    comment              : My comment
+    visibility           : enable
+    associated-interface : port2
+    color                : 0
+    filter               :
+    obj-id               :
+    list                 : {}
+    tagging              : {}
+    allow-routing        : disable
+
+# Copy/Clone an address
+    Get-FGTAddress -name "MyNetwork" | Copy-FGTAddress -name "My New Network"
+
+    q_origin_key         : My New Network
+    name                 : My New Network
+    uuid                 : 0c8da508-3840-51e9-f525-0601066767cc
+    subnet               : 192.0.2.0 255.255.255.0
+    type                 : ipmask
+    start-ip             : 192.0.2.0
+    end-ip               : 255.255.255.0
+    fqdn                 :
+    country              :
+    wildcard-fqdn        :
+    cache-ttl            : 0
+    wildcard             : 192.0.2.0 255.255.255.0
+    sdn                  :
+    tenant               :
+    organization         :
+    epg-name             :
+    subnet-name          :
+    sdn-tag              :
+    policy-group         :
+    comment              : My comment
+    visibility           : enable
+    associated-interface : port2
+    color                : 0
+    filter               :
+    obj-id               :
+    list                 : {}
+    tagging              : {}
+    allow-routing        : disable
+
+# Remove an address
+    Get-FGTAddress -name "My Network" | Remove-FGTAddress
 ```
-
 
 ### Disconnecting
 
