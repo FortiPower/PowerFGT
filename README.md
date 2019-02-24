@@ -214,7 +214,18 @@ You can use also `Connect-FGT -httpOnly` for connect using HTTP (NOT RECOMMANDED
 
 # List of available command
 ```powershell
-Get-FGT...
+Add-FGTAddress
+Connect-FGT
+Copy-FGTAddress
+Disconnect-FGT
+Get-FGTAddress
+Invoke-FGTRestMethod
+Remove-FGTAddress
+Set-FGTAddress
+Set-FGTCipherSSL
+Set-FGTUntrustedSSL
+Show-FGTException
+ValidateFGTAddress
 ```
 
 # Author
