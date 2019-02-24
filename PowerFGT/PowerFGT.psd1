@@ -24,7 +24,7 @@ GUID = '608e2723-7ce4-4f86-a3c8-ac1acb4f1f66'
 Author = 'Alexis La Goutte'
 
 # Company or vendor of this module
-CompanyName = 'Unknown'
+#CompanyName = 'Unknown'
 
 # Copyright statement for this module
 Copyright = '(c) Alexis La Goutte. All rights reserved.'
@@ -95,13 +95,13 @@ PrivateData = @{
     PSData = @{
 
         # Tags applied to this module. These help with module discovery in online galleries.
-        # Tags = @()
+        Tags = @('Fortinet', 'FortiGate', 'API', 'PSEdition_Core', 'PSEdition_Desktop')
 
         # A URL to the license for this module.
-        # LicenseUri = ''
+        LicenseUri = 'https://github.com/FortiPower/PowerFGT/blob/master/LICENSE'
 
         # A URL to the main website for this project.
-        # ProjectUri = ''
+        ProjectUri = 'https://github.com/FortiPower/PowerFGT'
 
         # A URL to an icon representing this module.
         # IconUri = ''
