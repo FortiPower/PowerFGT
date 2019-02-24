@@ -102,6 +102,47 @@ function Add-FGTAddress {
     }
 }
 
+function Copy-FGTAddress {
+
+    <#
+        .SYNOPSIS
+        Copy/Clone a FortiGate Address
+
+        .DESCRIPTION
+        Copy/Clone a FortiGate Address (ip, mask, comment, associated interface... )
+
+        .EXAMPLE
+        $MyFGTAddress = Get-FGTAddress -name MyFGTAddress
+        PS C:\>$MyFGTAddress | Copy-FGTAddress -name MyFGTAddress_copy
+
+        Copy / Clone MyFGTAddress and name MyFGTAddress_copy
+
+    #>
+
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [ValidateScript( { ValidateFGTAddress $_ })]
+        [psobject]$address,
+        [Parameter (Mandatory = $true)]
+        [string]$name
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $uri = "api/v2/cmdb/firewall/address/$($address.name)/?action=clone&nkey=$($name)"
+
+        Invoke-FGTRestMethod -method "POST" -uri $uri | out-Null
+
+        Get-FGTAddress | Where-Object {$_.name -eq $name}
+    }
+
+    End {
+    }
+}
+
 function Get-FGTAddress {
 
     <#
