@@ -123,13 +123,16 @@ function Get-FGTAddress {
 
     Param(
         [Parameter (Mandatory = $false, Position = 1, ParameterSetName = "name")]
-        [string]$name
+        [string]$name,
+        [Parameter (Mandatory = $false, ParameterSetName = "match")]
+        [string]$match
     )
 
     $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/address' -method 'GET'
 
     switch ( $PSCmdlet.ParameterSetName ) {
         "name" { $reponse.results | where-object { $_.name -eq $name } }
+        "match" { $reponse.results | where-object { $_.name -match $match } }
         default { $reponse.results }
     }
 
