@@ -119,6 +119,11 @@ function Get-FGTAddress {
       Get-FGTAddress -name myFGTAddress
 
       Get address named myFGTAddress
+
+      .EXAMPLE
+      Get-FGTAddress -match FGT
+
+      Get address match with *FGT*
   #>
 
     [CmdletBinding(DefaultParameterSetName="default")]
