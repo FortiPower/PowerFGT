@@ -174,6 +174,8 @@ function Set-FGTAddress {
         #ValidateScript({ ValidateFGTAddress $_ })]
         [psobject]$address,
         [Parameter (Mandatory = $false)]
+        [string]$name,
+        [Parameter (Mandatory = $false)]
         [ipaddress]$ip,
         [Parameter (Mandatory = $false)]
         [ipaddress]$mask,
@@ -194,6 +196,12 @@ function Set-FGTAddress {
         $uri = "api/v2/cmdb/firewall/address/$($address.name)"
 
         $_address = new-Object -TypeName PSObject
+
+        if ( $PsBoundParameters.ContainsKey('name') ) {
+            #TODO check if there is no already a object with this name ?
+            $_address | add-member -name "name" -membertype NoteProperty -Value $name
+            $address.name = $name
+        }
 
         if ( $PsBoundParameters.ContainsKey('ip') -or $PsBoundParameters.ContainsKey('mask') ) {
             if ( $PsBoundParameters.ContainsKey('ip') ) {
