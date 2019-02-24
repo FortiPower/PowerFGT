@@ -175,7 +175,7 @@ function Set-FGTAddress {
 
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
-        #ValidateScript({ ValidateFGTAddress $_ })]
+        [ValidateScript({ ValidateFGTAddress $_ })]
         [psobject]$address,
         [Parameter (Mandatory = $false)]
         [string]$name,
@@ -275,7 +275,7 @@ function Remove-FGTAddress {
 
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
-        #ValidateScript({ ValidateFGTAddress $_ })]
+        [ValidateScript({ ValidateFGTAddress $_ })]
         [psobject]$address,
         [Parameter(Mandatory = $false)]
         [switch]$noconfirm
