@@ -204,13 +204,16 @@ or delete it `Remove-FGTAddress`.
 
 # Issue
 
-## Unable to connect
+## Unable to connect (certificate)
+
 if you use `Connect-FGT` and get `Unable to Connect (certificate)`
 
 The issue coming from use Self-Signed or Expired Certificate for Firewall Management
 Try to connect using `Connect-FGT -SkipCertificateCheck`
 
-You can use also `Connect-FGT -httpOnly` for connect using HTTP (NOT RECOMMANDED !)
+## Unable to connect
+
+You can use also `Connect-FGT -httpOnly` for connect using HTTP (NOT RECOMMENDED !)
 
 # List of available command
 ```powershell
