@@ -57,43 +57,29 @@ function Install-VMFortiGate {
 
     Process {
 
+        Write-Warning "You need to have a vSwitch configured on your vSphere environment even if you use a DVS"
+
+        if (-not (Get-Cluster -Name $cluster -ErrorAction "silentlycontinue"))
+        {
+            Throw "Cluster not found : $cluster"
+        }
+
+        if (-not (Get-VMHost -Name $vm_host -ErrorAction "silentlycontinue"))
+        {
+            Throw "Vm_Host not found : $vm_host"
+        }
+
+        if (-not (Get-Datastore -Name $datastore -ErrorAction "silentlycontinue"))
+        {
+            Throw "Datastore not found : $datastore"
+        }
+        
+        if (-not (Get-Inventory -Name $inventory -ErrorAction "silentlycontinue"))
+        {
+            Throw "Inventory not found : $inventory"
+        }
+
         $ovfConfig = Get-OvfConfiguration -Ovf $ovf_path
-
-        try
-        {
-            Get-Datastore -Name $datastore
-        }
-        catch
-        {
-            Throw "The datastore name does not exist"
-        }
-
-        try
-        {
-            Get-Cluster -Name $cluster
-        }
-        catch
-        {
-            Throw "The cluster name does not exist"
-        }
-
-        try
-        {
-            Get-Inventory -Name $inventory
-        }
-        catch
-        {
-            Throw "The folder name does not exist"
-        }
-
-        try
-        {
-            Get-VMHost -Name $vm_host
-        }
-        catch
-        {
-            Throw "The host name does not exist"
-        }
 
         if ( $PsBoundParameters.ContainsKey('hostname') )
         {
