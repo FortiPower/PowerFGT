@@ -9,10 +9,6 @@ function Install-VMFortiGate {
         Deploy a Virtual Machine FortiGate on a vshpere environment with a lot of parameters like the choice of the cluster, the datastore, and the host. You can even preconfigure your VM with the network configuration, the hostname, and the dns.
 
         .EXAMPLE
-        Install-VMFortiGate -ovf_path "C:\<forti_vapp.ovf>" -vmHost <name_of_your_host> -name_vm <name_of_your_virtual_machine>
-        This install your .ofv on your vsphere on the host you have specified, with the name of the virtual machine that you have mentionned.
-
-        .EXAMPLE
         Install-VMFortiGate -ovf_path "C:\<forti_vapp.ovf>" -vmHost <name_of_your_host> -datastore <name_of_your_datastore> -cluster <name_of_your_cluster> -name_vm <name_of_your_virtual_machine> -InventoryLocation <yuor_folder> -hostname <hostname> -dns_primary <ip_of_DNS_1> -dns_secondary <ip_of_DNS_2> -network_mode [STATIC|DHCP] -ip <ip> -netmask <netmask> -gateway <gateway> -port_group <your_vswitch_port_group> -net_adpater [e1000|vmxnet3]
         This install your .ovf on your vsphere with the host, the datastore, the cluster, the folder to place it and the name of your vm. It also configure your vm with a hostname, an network configuration, the network adapter and the port group of your vswitch
     #>
