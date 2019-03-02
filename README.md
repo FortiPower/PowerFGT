@@ -31,7 +31,7 @@ For example, you can manage Address with the following commands:
 # Instructions
 ### Install the module
 ```powershell
-# Automated installation (Powershell 5):
+# Automated installation (Powershell 5 or later):
     Install-Module PowerFGT
 
 # Import the module
