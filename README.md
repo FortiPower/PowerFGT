@@ -10,14 +10,13 @@ With this module (version 0.1.0) you can manage:
 
 More functionality will be added later.
 
-Connection can use HTTPS (default) or HTTP
-Tested with FortiGate (using 5.6.x and 6.0.x firmware but it will be also work with 5.4.x)
-
+Connection can use HTTPS (default) or HTTP  
+Tested with FortiGate (using 5.6.x and 6.0.x firmware but it will be also work with 5.4.x)  
 Don't try too using account with multi VDOM access (work only with account access to one vdom see [#35](https://github.com/FortiPower/PowerFGT/issues/35))
 
 # Usage
 
-All resource management functions are available with the Powershell verbs GET, ADD, COPY, SET, REMOVE.
+All resource management functions are available with the Powershell verbs GET, ADD, COPY, SET, REMOVE.  
 For example, you can manage Address with the following commands:
 - `Get-FGTAddress`
 - `Add-FGTAddresss`
@@ -241,7 +240,7 @@ for example to get Fortigate System Global Info
     hostname                                : PowerFGT-FW1
 [...]
 ```
-to get API uri, you can use `api/v2/cmdb/?action=schema` uri for get `schema`
+to get API uri, you can use `api/v2/cmdb/?action=schema` uri for get `schema`  
 You can look also `FortiOS - REST API Reference` available on [Fortinet Developer Network (FNDN)](https://fndn.fortinet.net/)
 
 ### Disconnecting
@@ -257,7 +256,7 @@ You can look also `FortiOS - REST API Reference` available on [Fortinet Develope
 
 if you use `Connect-FGT` and get `Unable to Connect (certificate)`
 
-The issue coming from use Self-Signed or Expired Certificate for Firewall Management
+The issue coming from use Self-Signed or Expired Certificate for Firewall Management  
 Try to connect using `Connect-FGT -SkipCertificateCheck`
 
 ## Unable to connect
