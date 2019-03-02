@@ -197,6 +197,53 @@ or delete it `Remove-FGTAddress`.
     Get-FGTAddress -name "My Network" | Remove-FGTAddress
 ```
 
+### Invoke API
+for example to get Fortigate System Global Info
+
+```powershell
+# get FortiGate System Global using API
+    (Invoke-FGTRestMethod -method "get" -uri "api/v2/cmdb/system/global").results
+
+    language                                : english
+    gui-ipv6                                : disable
+    gui-certificates                        : enable
+    gui-custom-language                     : disable
+    gui-wireless-opensecurity               : disable
+    gui-display-hostname                    : disable
+    gui-lines-per-page                      : 50
+    admin-https-ssl-versions                : tlsv1-1 tlsv1-2
+    admintimeout                            : 120
+    admin-console-timeout                   : 0
+    admin-concurrent                        : enable
+    admin-lockout-threshold                 : 3
+    admin-lockout-duration                  : 60
+    refresh                                 : 0
+    interval                                : 5
+    failtime                                : 5
+    daily-restart                           : disable
+    restart-time                            : 00:00
+    radius-port                             : 1812
+    admin-login-max                         : 100
+    remoteauthtimeout                       : 5
+    ldapconntimeout                         : 500
+    batch-cmdb                              : enable
+    multi-factor-authentication             : optional
+    dst                                     : enable
+    timezone                                : 04
+    traffic-priority                        : tos
+    traffic-priority-level                  : medium
+    anti-replay                             : strict
+    send-pmtu-icmp                          : enable
+    honor-df                                : enable
+    revision-image-auto-backup              : disable
+    revision-backup-on-logout               : disable
+    management-vdom                         : root
+    hostname                                : PowerFGT-FW1
+[...]
+```
+to get API uri, you can use `api/v2/cmdb/?action=schema` uri for get `schema`
+You can look also `FortiOS - REST API Reference` available on [Fortinet Developer Network (FNDN)](https://fndn.fortinet.net/)
+
 ### Disconnecting
 
 ```powershell
