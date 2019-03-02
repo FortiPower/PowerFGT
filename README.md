@@ -12,7 +12,8 @@ More functionality will be added later.
 
 Connection can use HTTPS (default) or HTTP  
 Tested with FortiGate (using 5.6.x and 6.0.x firmware but it will be also work with 5.4.x)  
-Don't try too using account with multi VDOM access (work only with account access to one vdom see [#35](https://github.com/FortiPower/PowerFGT/issues/35))
+Don't try too using account with multi VDOM access (work only with account access to one vdom see [#35](https://github.com/FortiPower/PowerFGT/issues/35))  
+Don't use support to connect using API Token from 5.6.x (and later)
 
 # Usage
 
