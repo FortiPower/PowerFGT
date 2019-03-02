@@ -11,7 +11,7 @@ With this module (version 0.1.0) you can manage:
 More functionality will be added later.
 
 Connection can use HTTPS (default) or HTTP
-Tested with FortiGate (using 5.6.x and 6.0.x firmware)
+Tested with FortiGate (using 5.6.x and 6.0.x firmware but it will be also work with 5.4.x)
 
 # Usage
 
