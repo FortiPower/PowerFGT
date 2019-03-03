@@ -6,12 +6,12 @@
 #
 function Get-FGTZone {
 
-  <#
+    <#
       .SYNOPSIS
       Get list of all "zone"
 
       .DESCRIPTION
-      Get list of all "zone" 
+      Get list of all "zone"
 
       .EXAMPLE
       Get-FGTZone
@@ -19,7 +19,7 @@ function Get-FGTZone {
       Get list of all zone object
   #>
 
-$reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/zone' -method 'GET'
-$reponse.results
+    $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/zone' -method 'GET'
+    $response.results
 
-        }
+}
