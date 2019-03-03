@@ -6,12 +6,35 @@
 
 function Invoke-FGTRestMethod {
 
+    <#
+      .SYNOPSIS
+      Invoke RestMethod with FGT connection (internal) variable
+
+      .DESCRIPTION
+       Invoke RestMethod with FGT connection variable (token, csrf..)
+
+      .EXAMPLE
+      Invoke-FGTRestMethod -method "get" -uri "api/v2/cmdb/firewall/address"
+
+      Invoke-RestMethod with FGT connection for get api/v2/cmdb/firewall/address uri
+
+      .EXAMPLE
+      Invoke-FGTRestMethod "api/v2/cmdb/firewall/address"
+
+      Invoke-RestMethod with FGT connection for get api/v2/cmdb/firewall/address uri with default parameter
+
+      .EXAMPLE
+      Invoke-FGTRestMethod --method "post" -uri "api/v2/cmdb/firewall/address" -body $body
+
+      Invoke-RestMethod with FGT connection for post api/v2/cmdb/firewall/address uri with $body payload
+    #>
+
     Param(
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true, position = 1)]
         [String]$uri,
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $false)]
         [ValidateSet("GET", "PUT", "POST", "DELETE")]
-        [String]$method,
+        [String]$method = "GET",
         [Parameter(Mandatory = $false)]
         [psobject]$body
     )
