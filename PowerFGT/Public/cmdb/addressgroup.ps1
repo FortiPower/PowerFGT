@@ -5,21 +5,22 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-function Get-FGTAddressGroup {
+function Get-FGTAddressgroup {
 
-     <#
+    <#
         .SYNOPSIS
         Get addresses group configured
 
         .DESCRIPTION
-        Show addresses group configured
+        Show addresses group configured (Name, Member...)
 
         .EXAMPLE
         Get-FGTAddressgroup
+
         Display all addresses group.
     #>
 
-        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/addrgrp' -method 'GET'
-        $response.results
+    $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/addrgrp' -method 'GET'
+    $response.results
 
-    }
+}
