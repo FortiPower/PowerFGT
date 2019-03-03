@@ -6,26 +6,22 @@
 #
 
 function Get-FGTPolicy {
-    
-  <#
+
+    <#
       .SYNOPSIS
-      Get list of all policies
+      Get list of all policies/rules
 
       .DESCRIPTION
-      Get list of all policies (name, source, destination...)
+      Get list of all policies (name, interface source/destination, address (network) source/destination, service, action...)
 
       .EXAMPLE
       Get-FGTPolicy
 
       Get list of all policies
 
-      Get-FGTPolicy | select name, srcintf, dstintf, srcaddr, dstaddr, action, status, schedule, service, nat
-
-      Get list of all policies with a selection of attributes
-
   #>
 
-$reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/policy' -method 'GET'
-$reponse.results
+    $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/policy' -method 'GET'
+    $reponse.results
 
-   }
+}
