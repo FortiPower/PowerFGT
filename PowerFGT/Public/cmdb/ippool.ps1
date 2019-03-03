@@ -4,22 +4,22 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-function Get-FGTNatIpPool {
+function Get-FGTIppool {
 
-  <#
+    <#
       .SYNOPSIS
-      Get list of all "nat ip pool"
+      Get list of all (NAT) ip pool"
 
       .DESCRIPTION
-      Get list of all "nat ip pool" 
+      Get list of all (nat) ip pool"
 
       .EXAMPLE
-      Get-FGTNatIpPool
+      Get-FGTIppool
 
-      Get list of all nat ip pool object
+      Get list of all (NAT) ip pool object
   #>
 
-$reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/ippool' -method 'GET'
-$reponse.results
+    $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/ippool' -method 'GET'
+    $response.results
 
-        }
+}
