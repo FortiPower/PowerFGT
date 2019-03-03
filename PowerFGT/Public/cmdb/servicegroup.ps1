@@ -4,23 +4,23 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-function Get-FGTServiceGroup {
+function Get-FGTServicegroup {
 
-  <#
+    <#
       .SYNOPSIS
       Get list of all "services group"
 
       .DESCRIPTION
-      Get list of all "services group" 
+      Get list of all "services group"
 
       .EXAMPLE
-      Get-FGTService
+      Get-FGTServicegroup
 
       Get list of all services group object
-  #>
+    #>
 
 
-        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall.service/group' -method 'GET'
-        $reponse.results
+    $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall.service/group' -method 'GET'
+    $response.results
 
-        }
+}
