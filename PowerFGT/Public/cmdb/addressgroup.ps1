@@ -9,15 +9,17 @@ function Get-FGTAddressGroup {
 
      <#
         .SYNOPSIS
-        Get addresses group configured.
+        Get addresses group configured
+
         .DESCRIPTION
-        Show addresses group configured.
+        Show addresses group configured
+
         .EXAMPLE
-        Get-FGTAddrgrp
+        Get-FGTAddressgroup
         Display all addresses group.
     #>
-    
-        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/addrgrp' -method 'GET'
-        $reponse.results
+
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/addrgrp' -method 'GET'
+        $response.results
 
     }
