@@ -5,24 +5,22 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-function Get-FGTStaticRoute{
+function Get-FGTStaticroute {
 
-  <#
+    <#
       .SYNOPSIS
       Get list of all "static routes"
 
       .DESCRIPTION
-      Get list of all "static routes"
+      Get list of all "static routes" (destination network, gateway, port, distance, weight...)
 
       .EXAMPLE
-      Get-FGTStaticRoute
+      Get-FGTStaticroute
 
       Get list of all static route object
-  #>
+    #>
 
-        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/router/static' -method 'GET'
-        $reponse.results
-
-
+    $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/router/static' -method 'GET'
+    $response.results
 
 }
