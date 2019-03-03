@@ -6,20 +6,22 @@
 #
 
 function Get-FGTDns {
-  
-       <#
+
+    <#
         .SYNOPSIS
-        Get dns addresses configured.
+        Get DNS addresses configured
+
         .DESCRIPTION
-        Show dns addresses configured.
+        Show DNS addresses configured on the FortiGate
+
         .EXAMPLE
         Get-FGTDns
-        Display all dns addresses.
-        
-    #>  
 
+        Display DNS configured on the FortiGate
 
-        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/dns' -method 'GET'
-        $reponse.results
+    #>
 
-    }
+    $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/dns' -method 'GET'
+    $response.results
+
+}
