@@ -36,7 +36,9 @@ function Invoke-FGTRestMethod {
         [ValidateSet("GET", "PUT", "POST", "DELETE")]
         [String]$method = "GET",
         [Parameter(Mandatory = $false)]
-        [psobject]$body
+        [psobject]$body,
+        [Parameter(Mandatory = $false)]
+        [switch]$skip
     )
 
     Begin {
@@ -55,6 +57,15 @@ function Invoke-FGTRestMethod {
         }
         else {
             $fullurl = "https://${Server}:${port}/${uri}"
+        }
+
+        #Extra parameter...
+        if($fullurl -NotMatch "\?"){
+            $fullurl += "?"
+        }
+
+        if ( $PsBoundParameters.ContainsKey('skip') ) {
+            $fullurl += "&skip=1"
         }
 
         $sessionvariable = $DefaultFGTConnection.session
