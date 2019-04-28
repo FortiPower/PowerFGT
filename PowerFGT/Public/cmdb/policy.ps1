@@ -8,20 +8,27 @@
 function Get-FGTPolicy {
 
     <#
-      .SYNOPSIS
-      Get list of all policies/rules
+        .SYNOPSIS
+        Get list of all policies/rules
 
-      .DESCRIPTION
-      Get list of all policies (name, interface source/destination, address (network) source/destination, service, action...)
+        .DESCRIPTION
+        Get list of all policies (name, interface source/destination, address (network) source/destination, service, action...)
 
-      .EXAMPLE
-      Get-FGTPolicy
+        .EXAMPLE
+        Get-FGTPolicy
 
-      Get list of all policies
+        Get list of all policies
 
-  #>
+    #>
 
-    $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/policy' -method 'GET'
-    $reponse.results
+    Begin {
+    }
 
+    Process {
+        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/policy' -method 'GET'
+        $reponse.results
+    }
+
+    End {
+    }
 }

@@ -7,19 +7,27 @@
 function Get-FGTIppool {
 
     <#
-      .SYNOPSIS
-      Get list of all (NAT) ip pool"
+        .SYNOPSIS
+        Get list of all (NAT) ip pool"
 
-      .DESCRIPTION
-      Get list of all (nat) ip pool"
+        .DESCRIPTION
+        Get list of all (nat) ip pool"
 
-      .EXAMPLE
-      Get-FGTIppool
+        .EXAMPLE
+        Get-FGTIppool
 
-      Get list of all (NAT) ip pool object
-  #>
+        Get list of all (NAT) ip pool object
+    #>
 
-    $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/ippool' -method 'GET'
-    $response.results
+    Begin {
+    }
 
+    Process {
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/ippool' -method 'GET'
+        $response.results
+
+    }
+
+    End {
+    }
 }

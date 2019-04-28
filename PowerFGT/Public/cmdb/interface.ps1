@@ -7,20 +7,27 @@
 function Get-FGTInterface {
 
     <#
-      .SYNOPSIS
-      Get list of all interface
+        .SYNOPSIS
+        Get list of all interface
 
-      .DESCRIPTION
-      Get list of all interface (name, IP Address, description, mode ...)
+        .DESCRIPTION
+        Get list of all interface (name, IP Address, description, mode ...)
 
-      .EXAMPLE
-      Get-FGTInterface
+        .EXAMPLE
+        Get-FGTInterface
 
-      Get list of all interface
+        Get list of all interface
 
     #>
 
+    Begin {
+    }
 
-    $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/interface' -method 'GET'
-    $response.results
+    Process {
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/interface' -method 'GET'
+        $response.results
+    }
+
+    End {
+    }
 }

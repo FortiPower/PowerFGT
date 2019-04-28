@@ -18,9 +18,17 @@ function Get-FGTAddressgroup {
         Get-FGTAddressgroup
 
         Display all addresses group.
+
     #>
 
-    $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/addrgrp' -method 'GET'
-    $response.results
+    Begin {
+    }
 
+    Process {
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/addrgrp' -method 'GET'
+        $response.results
+    }
+
+    End {
+    }
 }

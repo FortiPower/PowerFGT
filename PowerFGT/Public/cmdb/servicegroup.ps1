@@ -7,20 +7,28 @@
 function Get-FGTServicegroup {
 
     <#
-      .SYNOPSIS
-      Get list of all "services group"
+        .SYNOPSIS
+        Get list of all "services group"
 
-      .DESCRIPTION
-      Get list of all "services group"
+        .DESCRIPTION
+        Get list of all "services group"
 
-      .EXAMPLE
-      Get-FGTServicegroup
+        .EXAMPLE
+        Get-FGTServicegroup
 
-      Get list of all services group object
+        Get list of all services group object
+
     #>
 
+    Begin {
+    }
 
-    $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall.service/group' -method 'GET'
-    $response.results
+    Process {
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall.service/group' -method 'GET'
+        $response.results
+    }
+
+    End {
+    }
 
 }

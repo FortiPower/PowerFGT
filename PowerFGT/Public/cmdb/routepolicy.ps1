@@ -8,19 +8,27 @@
 function Get-FGTRoutepolicy {
 
     <#
-      .SYNOPSIS
-      Get list of all "route policy"
+        .SYNOPSIS
+        Get list of all "route policy"
 
-      .DESCRIPTION
-      Get list of all "route policy" (Source, Destination, Protocol, Action...)
+        .DESCRIPTION
+        Get list of all "route policy" (Source, Destination, Protocol, Action...)
 
-      .EXAMPLE
-      Get-FGTRoutepolicy
+        .EXAMPLE
+        Get-FGTRoutepolicy
 
-      Get list of all route policy object
-  #>
+        Get list of all route policy object
 
-    $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/router/policy' -method 'GET'
-    $response.results
+    #>
 
+    Begin {
+    }
+
+    Process {
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/router/policy' -method 'GET'
+        $response.results
+    }
+
+    End {
+    }
 }

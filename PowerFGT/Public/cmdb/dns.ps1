@@ -21,7 +21,14 @@ function Get-FGTDns {
 
     #>
 
-    $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/dns' -method 'GET'
-    $response.results
+    Begin {
+    }
 
+    Process {
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/dns' -method 'GET'
+        $response.results
+    }
+
+    End {
+    }
 }

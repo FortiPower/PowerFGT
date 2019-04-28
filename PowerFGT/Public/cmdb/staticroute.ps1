@@ -8,19 +8,27 @@
 function Get-FGTStaticroute {
 
     <#
-      .SYNOPSIS
-      Get list of all "static routes"
+        .SYNOPSIS
+        Get list of all "static routes"
 
-      .DESCRIPTION
-      Get list of all "static routes" (destination network, gateway, port, distance, weight...)
+        .DESCRIPTION
+        Get list of all "static routes" (destination network, gateway, port, distance, weight...)
 
-      .EXAMPLE
-      Get-FGTStaticroute
+        .EXAMPLE
+        Get-FGTStaticroute
 
-      Get list of all static route object
+        Get list of all static route object
+
     #>
 
-    $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/router/static' -method 'GET'
-    $response.results
+    Begin {
+    }
 
+    Process {
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/router/static' -method 'GET'
+        $response.results
+    }
+
+    End {
+    }
 }

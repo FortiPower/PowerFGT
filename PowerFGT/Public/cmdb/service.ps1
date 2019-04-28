@@ -7,19 +7,27 @@
 function Get-FGTService {
 
     <#
-      .SYNOPSIS
-      Get list of all "services"
+        .SYNOPSIS
+        Get list of all "services"
 
-      .DESCRIPTION
-      Get list of all "services" (SMTP, HTTP, HTTPS, DNS...)
+        .DESCRIPTION
+        Get list of all "services" (SMTP, HTTP, HTTPS, DNS...)
 
-      .EXAMPLE
-      Get-FGTService
+        .EXAMPLE
+        Get-FGTService
 
-      Get list of all services object
-  #>
+        Get list of all services object
 
-    $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall.service/custom' -method 'GET'
-    $response.results
+    #>
 
+    Begin {
+    }
+
+    Process {
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall.service/custom' -method 'GET'
+        $response.results
+    }
+
+    End {
+    }
 }

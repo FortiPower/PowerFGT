@@ -17,9 +17,18 @@ function Get-FGTZone {
       Get-FGTZone
 
       Get list of all zone object
-  #>
 
-    $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/zone' -method 'GET'
-    $response.results
+    #>
 
+    Begin {
+    }
+
+    Process {
+
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/zone' -method 'GET'
+        $response.results
+    }
+
+    End {
+    }
 }
