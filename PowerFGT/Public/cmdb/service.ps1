@@ -7,17 +7,18 @@
 function Get-FGTService {
 
     <#
-      .SYNOPSIS
-      Get list of all "services"
+        .SYNOPSIS
+        Get list of all "services"
 
-      .DESCRIPTION
-      Get list of all "services" (SMTP, HTTP, HTTPS, DNS...)
+        .DESCRIPTION
+        Get list of all "services" (SMTP, HTTP, HTTPS, DNS...)
 
-      .EXAMPLE
-      Get-FGTService
+        .EXAMPLE
+        Get-FGTService
 
-      Get list of all services object
-  #>
+        Get list of all services object
+
+    #>
 
     Begin {
     }

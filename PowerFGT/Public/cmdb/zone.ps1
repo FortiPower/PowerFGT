@@ -16,7 +16,7 @@ function Get-FGTZone {
       .EXAMPLE
       Get-FGTZone
 
-      Get list of all zone objec
+      Get list of all zone object
 
     #>
 

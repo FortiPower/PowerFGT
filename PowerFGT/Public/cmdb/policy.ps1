@@ -8,18 +8,18 @@
 function Get-FGTPolicy {
 
     <#
-      .SYNOPSIS
-      Get list of all policies/rules
+        .SYNOPSIS
+        Get list of all policies/rules
 
-      .DESCRIPTION
-      Get list of all policies (name, interface source/destination, address (network) source/destination, service, action...)
+        .DESCRIPTION
+        Get list of all policies (name, interface source/destination, address (network) source/destination, service, action...)
 
-      .EXAMPLE
-      Get-FGTPolicy
+        .EXAMPLE
+        Get-FGTPolicy
 
-      Get list of all policies
+        Get list of all policies
 
-  #>
+    #>
 
     Begin {
     }

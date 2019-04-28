@@ -17,6 +17,7 @@ function Get-FGTLocaluser {
         .EXAMPLE
         Get-FGTLocaluser
         Display all local users
+
     #>
 
     Begin {

@@ -7,16 +7,16 @@
 function Get-FGTInterface {
 
     <#
-      .SYNOPSIS
-      Get list of all interface
+        .SYNOPSIS
+        Get list of all interface
 
-      .DESCRIPTION
-      Get list of all interface (name, IP Address, description, mode ...)
+        .DESCRIPTION
+        Get list of all interface (name, IP Address, description, mode ...)
 
-      .EXAMPLE
-      Get-FGTInterface
+        .EXAMPLE
+        Get-FGTInterface
 
-      Get list of all interface
+        Get list of all interface
 
     #>
 

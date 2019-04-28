@@ -8,16 +8,17 @@
 function Get-FGTStaticroute {
 
     <#
-      .SYNOPSIS
-      Get list of all "static routes"
+        .SYNOPSIS
+        Get list of all "static routes"
 
-      .DESCRIPTION
-      Get list of all "static routes" (destination network, gateway, port, distance, weight...)
+        .DESCRIPTION
+        Get list of all "static routes" (destination network, gateway, port, distance, weight...)
 
-      .EXAMPLE
-      Get-FGTStaticroute
+        .EXAMPLE
+        Get-FGTStaticroute
 
-      Get list of all static route object
+        Get list of all static route object
+
     #>
 
     Begin {

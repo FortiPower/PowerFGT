@@ -7,16 +7,17 @@
 function Get-FGTServicegroup {
 
     <#
-      .SYNOPSIS
-      Get list of all "services group"
+        .SYNOPSIS
+        Get list of all "services group"
 
-      .DESCRIPTION
-      Get list of all "services group"
+        .DESCRIPTION
+        Get list of all "services group"
 
-      .EXAMPLE
-      Get-FGTServicegroup
+        .EXAMPLE
+        Get-FGTServicegroup
 
-      Get list of all services group object
+        Get list of all services group object
+
     #>
 
     Begin {

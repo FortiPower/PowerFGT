@@ -7,17 +7,17 @@
 function Get-FGTIppool {
 
     <#
-      .SYNOPSIS
-      Get list of all (NAT) ip pool"
+        .SYNOPSIS
+        Get list of all (NAT) ip pool"
 
-      .DESCRIPTION
-      Get list of all (nat) ip pool"
+        .DESCRIPTION
+        Get list of all (nat) ip pool"
 
-      .EXAMPLE
-      Get-FGTIppool
+        .EXAMPLE
+        Get-FGTIppool
 
-      Get list of all (NAT) ip pool object
-  #>
+        Get list of all (NAT) ip pool object
+    #>
 
     Begin {
     }

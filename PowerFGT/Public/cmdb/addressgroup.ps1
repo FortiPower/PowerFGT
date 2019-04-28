@@ -18,6 +18,7 @@ function Get-FGTAddressgroup {
         Get-FGTAddressgroup
 
         Display all addresses group.
+
     #>
 
     Begin {

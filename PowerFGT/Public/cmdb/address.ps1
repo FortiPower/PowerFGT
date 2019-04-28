@@ -32,6 +32,7 @@ function Add-FGTAddress {
         Add-FGTAddress -type ipmask -Name FGT -ip 192.2.0.0 -mask 255.255.255.0 -visibility:$false
 
         Add Address objet type ipmask with name FGT, value 192.2.0.0/24 and disabled visibility
+
     #>
 
     Param(
@@ -166,6 +167,7 @@ function Get-FGTAddress {
       Get-FGTAddress -match FGT
 
       Get address match with *FGT*
+
   #>
 
     [CmdletBinding(DefaultParameterSetName = "default")]
@@ -226,6 +228,7 @@ function Set-FGTAddress {
         PS C:\>$MyFGTAddress | Set -comment "My FGT Address" -visibility:$false
 
         Change MyFGTAddress to set a new comment and disabled visibility
+
     #>
 
     Param(
@@ -329,6 +332,7 @@ function Remove-FGTAddress {
         PS C:\>$MyFGTAddress | Remove-FGTAddress -noconfirm
 
         Remove address object $MyFGTAddress with no confirmation
+
     #>
 
     Param(

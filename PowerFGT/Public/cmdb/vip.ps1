@@ -7,18 +7,18 @@
 function Get-FGTVip {
 
     <#
-      .SYNOPSIS
-      Get list of all (NAT) Virtual IP
+        .SYNOPSIS
+        Get list of all (NAT) Virtual IP
 
-      .DESCRIPTION
-      Get list of all (NAT) Virtual IP (Ext IP, mapped IP, type...)
+        .DESCRIPTION
+        Get list of all (NAT) Virtual IP (Ext IP, mapped IP, type...)
 
-      .EXAMPLE
-      Get-FGTVip
+        .EXAMPLE
+        Get-FGTVip
 
-      Get list of all nat vip object
+        Get list of all nat vip object
 
-      #>
+    #>
 
     Begin {
     }
