@@ -20,7 +20,14 @@ function Get-FGTRoutepolicy {
       Get list of all route policy object
   #>
 
-    $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/router/policy' -method 'GET'
-    $response.results
+    Begin {
+    }
 
+    Process {
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/router/policy' -method 'GET'
+        $response.results
+    }
+
+    End {
+    }
 }

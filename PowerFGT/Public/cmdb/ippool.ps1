@@ -19,7 +19,15 @@ function Get-FGTIppool {
       Get list of all (NAT) ip pool object
   #>
 
-    $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/ippool' -method 'GET'
-    $response.results
+    Begin {
+    }
 
+    Process {
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/ippool' -method 'GET'
+        $response.results
+
+    }
+
+    End {
+    }
 }

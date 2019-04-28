@@ -21,7 +21,14 @@ function Get-FGTPolicy {
 
   #>
 
-    $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/policy' -method 'GET'
-    $reponse.results
+    Begin {
+    }
 
+    Process {
+        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/policy' -method 'GET'
+        $reponse.results
+    }
+
+    End {
+    }
 }

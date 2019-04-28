@@ -19,8 +19,16 @@ function Get-FGTVpnIpsecPhase1Interface {
 
     #>
 
-    $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/vpn.ipsec/phase1-interface' -method 'GET'
-    $response.results
+    Begin {
+    }
+
+    Process {
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/vpn.ipsec/phase1-interface' -method 'GET'
+        $response.results
+    }
+
+    End {
+    }
 }
 
 
@@ -39,8 +47,15 @@ function Get-FGTVpnIpsecPhase2Interface {
 
     Get list of all settings of VPN IPsec Phase 2 interface
 
-  #>
+    #>
+    Begin {
+    }
 
-    $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/vpn.ipsec/phase2-interface' -method 'GET'
-    $response.results
+    Process {
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/vpn.ipsec/phase2-interface' -method 'GET'
+        $response.results
+    }
+
+    End {
+    }
 }

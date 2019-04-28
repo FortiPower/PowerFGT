@@ -20,7 +20,14 @@ function Get-FGTStaticroute {
       Get list of all static route object
     #>
 
-    $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/router/static' -method 'GET'
-    $response.results
+    Begin {
+    }
 
+    Process {
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/router/static' -method 'GET'
+        $response.results
+    }
+
+    End {
+    }
 }

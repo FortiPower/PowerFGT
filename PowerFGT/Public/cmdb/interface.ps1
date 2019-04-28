@@ -20,7 +20,14 @@ function Get-FGTInterface {
 
     #>
 
+    Begin {
+    }
 
-    $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/interface' -method 'GET'
-    $response.results
+    Process {
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/interface' -method 'GET'
+        $response.results
+    }
+
+    End {
+    }
 }

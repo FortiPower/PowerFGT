@@ -17,9 +17,17 @@ function Get-FGTVip {
       Get-FGTVip
 
       Get list of all nat vip object
-    #>
 
-    $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/vip' -method 'GET'
-    $response.results
+      #>
 
+    Begin {
+    }
+
+    Process {
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/vip' -method 'GET'
+        $response.results
+    }
+
+    End {
+    }
 }

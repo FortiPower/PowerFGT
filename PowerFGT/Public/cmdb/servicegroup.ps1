@@ -19,8 +19,15 @@ function Get-FGTServicegroup {
       Get list of all services group object
     #>
 
+    Begin {
+    }
 
-    $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall.service/group' -method 'GET'
-    $response.results
+    Process {
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall.service/group' -method 'GET'
+        $response.results
+    }
+
+    End {
+    }
 
 }

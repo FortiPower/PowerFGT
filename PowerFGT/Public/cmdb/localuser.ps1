@@ -19,7 +19,14 @@ function Get-FGTLocaluser {
         Display all local users
     #>
 
-    $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/user/local' -method 'GET'
-    $reponse.results
+    Begin {
+    }
 
+    Process {
+        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/user/local' -method 'GET'
+        $reponse.results
+    }
+
+    End {
+    }
 }
