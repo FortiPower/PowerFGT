@@ -175,14 +175,22 @@ function Get-FGTAddress {
         [Parameter (Mandatory = $false, Position = 1, ParameterSetName = "name")]
         [string]$name,
         [Parameter (Mandatory = $false, ParameterSetName = "match")]
-        [string]$match
+        [string]$match,
+        [Parameter(Mandatory = $false)]
+        [switch]$skip
     )
 
     Begin {
     }
 
     Process {
-        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/address' -method 'GET'
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('skip') ) {
+            $invokeParams.add( 'skip', $skip )
+        }
+
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/address' -method 'GET' @invokeParams
 
         switch ( $PSCmdlet.ParameterSetName ) {
             "name" { $response.results | where-object { $_.name -eq $name } }
