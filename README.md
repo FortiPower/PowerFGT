@@ -4,7 +4,7 @@
 
 This is a Powershell module for configure a FortiGate (Fortinet) Firewall.
 
-With this module (version 0.1.0) you can manage:
+With this module (version 0.2.0) you can manage:
 
 - Address (Get/Add/Copy/Set/Remove object type ipmask/subnet)
 - AddressGroup (Get)
