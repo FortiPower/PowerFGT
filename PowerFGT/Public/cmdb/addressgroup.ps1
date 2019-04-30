@@ -21,11 +21,22 @@ function Get-FGTAddressgroup {
 
     #>
 
+    Param(
+        [Parameter(Mandatory = $false)]
+        [switch]$skip
+    )
+
     Begin {
     }
 
     Process {
-        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/addrgrp' -method 'GET'
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('skip') ) {
+            $invokeParams.add( 'skip', $skip )
+        }
+
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/addrgrp' -method 'GET' @invokeParams
         $response.results
     }
 

@@ -25,7 +25,12 @@ function Get-FGTZone {
 
     Process {
 
-        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/zone' -method 'GET'
+      $invokeParams = @{ }
+      if ( $PsBoundParameters.ContainsKey('skip') ) {
+          $invokeParams.add( 'skip', $skip )
+      }
+
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/zone' -method 'GET' @invokeParams
         $response.results
     }
 

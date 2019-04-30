@@ -20,11 +20,22 @@ function Get-FGTLocaluser {
 
     #>
 
+    Param(
+        [Parameter(Mandatory = $false)]
+        [switch]$skip
+    )
+
     Begin {
     }
 
     Process {
-        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/user/local' -method 'GET'
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('skip') ) {
+            $invokeParams.add( 'skip', $skip )
+        }
+
+        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/user/local' -method 'GET' @invokeParams
         $reponse.results
     }
 

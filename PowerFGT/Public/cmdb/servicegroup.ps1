@@ -24,7 +24,13 @@ function Get-FGTServicegroup {
     }
 
     Process {
-        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall.service/group' -method 'GET'
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('skip') ) {
+            $invokeParams.add( 'skip', $skip )
+        }
+
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall.service/group' -method 'GET' @invokeParams
         $response.results
     }
 

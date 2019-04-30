@@ -23,7 +23,13 @@ function Get-FGTVpnIpsecPhase1Interface {
     }
 
     Process {
-        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/vpn.ipsec/phase1-interface' -method 'GET'
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('skip') ) {
+            $invokeParams.add( 'skip', $skip )
+        }
+
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/vpn.ipsec/phase1-interface' -method 'GET' @invokeParams
         $response.results
     }
 

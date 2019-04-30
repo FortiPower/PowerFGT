@@ -24,7 +24,13 @@ function Get-FGTVip {
     }
 
     Process {
-        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/vip' -method 'GET'
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('skip') ) {
+            $invokeParams.add( 'skip', $skip )
+        }
+
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/vip' -method 'GET' @invokeParams
         $response.results
     }
 
