@@ -4,24 +4,25 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-function Get-FGTIppool {
+
+function Get-FGTFirewallAddressgroup {
 
     <#
         .SYNOPSIS
-        Get list of all (NAT) ip pool"
+        Get addresses group configured
 
         .DESCRIPTION
-        Get list of all (nat) ip pool"
+        Show addresses group configured (Name, Member...)
 
         .EXAMPLE
-        Get-FGTIppool
+        Get-FGTFirewallAddressgroup
 
-        Get list of all (NAT) ip pool object
+        Display all addresses group.
 
         .EXAMPLE
-        Get-FGTIppool -skip
+        Get-FGTFirewallAddressgroup -skip
 
-        Get list of all (NAT) ip pool object (but only relevant attributes)
+        Display all addresses group (but only relevant attributes)
     #>
 
     Param(
@@ -39,9 +40,8 @@ function Get-FGTIppool {
             $invokeParams.add( 'skip', $skip )
         }
 
-        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/ippool' -method 'GET' @invokeParams
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/addrgrp' -method 'GET' @invokeParams
         $response.results
-
     }
 
     End {

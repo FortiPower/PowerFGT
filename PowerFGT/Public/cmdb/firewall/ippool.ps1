@@ -4,25 +4,24 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-
-function Get-FGTPolicy {
+function Get-FGTFirewallIPPool {
 
     <#
         .SYNOPSIS
-        Get list of all policies/rules
+        Get list of all (NAT) ip pool"
 
         .DESCRIPTION
-        Get list of all policies (name, interface source/destination, address (network) source/destination, service, action...)
+        Get list of all (nat) ip pool"
 
         .EXAMPLE
-        Get-FGTPolicy
+        Get-FGTFirewallIPPool
 
-        Get list of all policies
+        Get list of all (NAT) ip pool object
 
         .EXAMPLE
-        Get-FGTPolicy -skip
+        Get-FGTFirewallIPPool -skip
 
-        Get list of all policies (but only relevant attributes)
+        Get list of all (NAT) ip pool object (but only relevant attributes)
     #>
 
     Param(
@@ -40,8 +39,9 @@ function Get-FGTPolicy {
             $invokeParams.add( 'skip', $skip )
         }
 
-        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/policy' -method 'GET' @invokeParams
-        $reponse.results
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/ippool' -method 'GET' @invokeParams
+        $response.results
+
     }
 
     End {

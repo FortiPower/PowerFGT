@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-function Add-FGTAddress {
+function Add-FGTFirewallAddress {
 
     <#
         .SYNOPSIS
@@ -14,22 +14,22 @@ function Add-FGTAddress {
         Add a FortiGate Address (ipmask, fqdn, widlcard...)
 
         .EXAMPLE
-        Add-FGTAddress -type ipmask -Name FGT -ip 192.2.0.0 -mask 255.255.255.0
+        Add-FGTFirewallAddress -type ipmask -Name FGT -ip 192.2.0.0 -mask 255.255.255.0
 
         Add Address objet type ipmask with name FGT and value 192.2.0.0/24
 
         .EXAMPLE
-        Add-FGTAddress -type ipmask -Name FGT -ip 192.2.0.0 -mask 255.255.255.0 -interface port2
+        Add-FGTFirewallAddress -type ipmask -Name FGT -ip 192.2.0.0 -mask 255.255.255.0 -interface port2
 
         Add Address objet type ipmask with name FGT, value 192.2.0.0/24 and associated to interface port2
 
         .EXAMPLE
-        Add-FGTAddress -type ipmask -Name FGT -ip 192.2.0.0 -mask 255.255.255.0 -comment "My FGT Address"
+        Add-FGTFirewallAddress -type ipmask -Name FGT -ip 192.2.0.0 -mask 255.255.255.0 -comment "My FGT Address"
 
         Add Address objet type ipmask with name FGT, value 192.2.0.0/24 and a comment
 
         .EXAMPLE
-        Add-FGTAddress -type ipmask -Name FGT -ip 192.2.0.0 -mask 255.255.255.0 -visibility:$false
+        Add-FGTFirewallAddress -type ipmask -Name FGT -ip 192.2.0.0 -mask 255.255.255.0 -visibility:$false
 
         Add Address objet type ipmask with name FGT, value 192.2.0.0/24 and disabled visibility
 
@@ -59,7 +59,7 @@ function Add-FGTAddress {
 
     Process {
 
-        if ( Get-FGTAddress -name $name ) {
+        if ( Get-FGTFirewallAddress -name $name ) {
             Throw "Already an address object using the same name"
         }
 
@@ -96,14 +96,14 @@ function Add-FGTAddress {
 
         Invoke-FGTRestMethod -method "POST" -body $address -uri $uri | out-Null
 
-        Get-FGTAddress | Where-Object {$_.name -eq $name}
+        Get-FGTFirewallAddress | Where-Object {$_.name -eq $name}
     }
 
     End {
     }
 }
 
-function Copy-FGTAddress {
+function Copy-FGTFirewallAddress {
 
     <#
         .SYNOPSIS
@@ -113,8 +113,8 @@ function Copy-FGTAddress {
         Copy/Clone a FortiGate Address (ip, mask, comment, associated interface... )
 
         .EXAMPLE
-        $MyFGTAddress = Get-FGTAddress -name MyFGTAddress
-        PS C:\>$MyFGTAddress | Copy-FGTAddress -name MyFGTAddress_copy
+        $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
+        PS C:\>$MyFGTAddress | Copy-FGTFirewallAddress -name MyFGTAddress_copy
 
         Copy / Clone MyFGTAddress and name MyFGTAddress_copy
 
@@ -137,14 +137,14 @@ function Copy-FGTAddress {
 
         Invoke-FGTRestMethod -method "POST" -uri $uri | out-Null
 
-        Get-FGTAddress | Where-Object {$_.name -eq $name}
+        Get-FGTFirewallAddress | Where-Object {$_.name -eq $name}
     }
 
     End {
     }
 }
 
-function Get-FGTAddress {
+function Get-FGTFirewallAddress {
 
     <#
       .SYNOPSIS
@@ -154,22 +154,22 @@ function Get-FGTAddress {
       Get list of all "address" (ipmask, fqdn, wildcard...)
 
       .EXAMPLE
-      Get-FGTAddress
+      Get-FGTFirewallAddress
 
       Get list of all address object
 
       .EXAMPLE
-      Get-FGTAddress -name myFGTAddress
+      Get-FGTFirewallAddress -name myFGTAddress
 
       Get address named myFGTAddress
 
       .EXAMPLE
-      Get-FGTAddress -match FGT
+      Get-FGTFirewallAddress -match FGT
 
       Get address match with *FGT*
 
       .EXAMPLE
-      Get-FGTAddress -skip
+      Get-FGTFirewallAddress -skip
 
       Get list of all address object (but only relevant attributes)
 
@@ -209,7 +209,7 @@ function Get-FGTAddress {
 
 }
 
-function Set-FGTAddress {
+function Set-FGTFirewallAddress {
 
     <#
         .SYNOPSIS
@@ -219,25 +219,25 @@ function Set-FGTAddress {
         Change a FortiGate Address (ip, mask, comment, associated interface... )
 
         .EXAMPLE
-        $MyFGTAddress = Get-FGTAddress -name MyFGTAddress
-        PS C:\>$MyFGTAddress | Set-FGTAddress -ip 192.2.0.0 -mask 255.255.255.0
+        $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
+        PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -ip 192.2.0.0 -mask 255.255.255.0
 
         Change MyFGTAddress to value (ip and mask) 192.2.0.0/24
 
         .EXAMPLE
-        $MyFGTAddress = Get-FGTAddress -name MyFGTAddress
-        PS C:\>$MyFGTAddress | Set-FGTAddress -ip 192.2.2.1
+        $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
+        PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -ip 192.2.2.1
 
         Change MyFGTAddress to value (ip) 192.2.2.1
 
         .EXAMPLE
-        $MyFGTAddress = Get-FGTAddress -name MyFGTAddress
+        $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
         PS C:\>$MyFGTAddress | Set -interface port1
 
         Change MyFGTAddress to set associated interface to port 1
 
         .EXAMPLE
-        $MyFGTAddress = Get-FGTAddress -name MyFGTAddress
+        $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
         PS C:\>$MyFGTAddress | Set -comment "My FGT Address" -visibility:$false
 
         Change MyFGTAddress to set a new comment and disabled visibility
@@ -318,14 +318,14 @@ function Set-FGTAddress {
 
         Invoke-FGTRestMethod -method "PUT" -body $_address -uri $uri | out-Null
 
-        Get-FGTAddress | Where-Object {$_.name -eq $address.name}
+        Get-FGTFirewallAddress | Where-Object {$_.name -eq $address.name}
     }
 
     End {
     }
 }
 
-function Remove-FGTAddress {
+function Remove-FGTFirewallAddress {
 
     <#
         .SYNOPSIS
@@ -335,14 +335,14 @@ function Remove-FGTAddress {
         Remove an address object on the FortiGate
 
         .EXAMPLE
-        $MyFGTAddress = Get-FGTAddress -name MyFGTAddress
-        PS C:\>$MyFGTAddress | Remove-FGTAddress
+        $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
+        PS C:\>$MyFGTAddress | Remove-FGTFirewallAddress
 
         Remove address object $MyFGTAddress
 
         .EXAMPLE
-        $MyFGTAddress = Get-FGTAddress -name MyFGTAddress
-        PS C:\>$MyFGTAddress | Remove-FGTAddress -noconfirm
+        $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
+        PS C:\>$MyFGTAddress | Remove-FGTFirewallAddress -noconfirm
 
         Remove address object $MyFGTAddress with no confirmation
 
