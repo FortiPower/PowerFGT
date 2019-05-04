@@ -18,6 +18,10 @@ function Get-FGTHA {
 
         Get HA Settings
 
+        .EXAMPLE
+        Get-FGTHA -skip
+
+        Get HA Settings (but only relevant attributes)
     #>
 
     Param(

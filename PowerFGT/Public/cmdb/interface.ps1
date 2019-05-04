@@ -18,6 +18,10 @@ function Get-FGTInterface {
 
         Get list of all interface
 
+        .EXAMPLE
+        Get-FGTInterface -skip
+
+        Get list of all interface (but only relevant attributes)
     #>
 
     Param(

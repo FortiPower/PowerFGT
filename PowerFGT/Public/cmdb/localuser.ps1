@@ -16,8 +16,13 @@ function Get-FGTLocaluser {
 
         .EXAMPLE
         Get-FGTLocaluser
+
         Display all local users
 
+        .EXAMPLE
+        Get-FGTLocaluser -skip
+
+        Display all local users (but only relevant attributes)
     #>
 
     Param(

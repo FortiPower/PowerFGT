@@ -18,6 +18,10 @@ function Get-FGTVirtualWANLink {
 
         Get Virtual Wan Link Settings
 
+        .EXAMPLE
+        Get-FGTVirtualWANLink -skip
+
+        Get Virtual Wan Link Settings (but only relevant attributes)
     #>
 
     Param(

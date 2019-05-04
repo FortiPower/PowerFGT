@@ -17,6 +17,11 @@ function Get-FGTIppool {
         Get-FGTIppool
 
         Get list of all (NAT) ip pool object
+
+        .EXAMPLE
+        Get-FGTIppool -skip
+
+        Get list of all (NAT) ip pool object (but only relevant attributes)
     #>
 
     Param(

@@ -18,6 +18,10 @@ function Get-FGTZone {
 
       Get list of all zone object
 
+      .EXAMPLE
+      Get-FGTZone -skip
+
+      Get list of all zone object (but only relevant attributes)
     #>
 
     Begin {

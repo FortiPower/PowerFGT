@@ -18,6 +18,11 @@ function Get-FGTService {
 
         Get list of all services object
 
+        .EXAMPLE
+        Get-FGTService -skip
+
+        Get list of all services object (but only relevant attributes)
+
     #>
 
     Param(

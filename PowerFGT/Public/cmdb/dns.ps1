@@ -19,6 +19,10 @@ function Get-FGTDns {
 
         Display DNS configured on the FortiGate
 
+        .EXAMPLE
+        Get-FGTDns -skip
+
+        Display DNS configured on the FortiGate (but only relevant attributes)
     #>
 
     Param(

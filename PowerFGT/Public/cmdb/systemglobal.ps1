@@ -18,6 +18,10 @@ function Get-FGTSystemGlobal {
 
         Get list of all System Global Settings
 
+        .EXAMPLE
+        Get-FGTSystemGlobal -skip
+
+        Get list of all System Global Settings (but only relevant attributes)
     #>
 
     Param(

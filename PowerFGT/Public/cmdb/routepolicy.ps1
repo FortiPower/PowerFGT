@@ -19,6 +19,10 @@ function Get-FGTRoutepolicy {
 
         Get list of all route policy object
 
+        .EXAMPLE
+        Get-FGTRoutepolicy -skip
+
+        Get list of all route policy object (but only relevant attributes)
     #>
 
     Param(

@@ -16,8 +16,12 @@ function Get-FGTVdom {
         .EXAMPLE
         Get-FGTVdom
 
-        Get list of all policies
+        Get list of all vdom settings
 
+        .EXAMPLE
+        Get-FGTVdom -skip
+
+        Get list of all vdom (but only relevant attributes)
     #>
 
     Param(
