@@ -9,6 +9,7 @@ With this module (version 0.2.0) you can manage:
 - Address (Get/Add/Copy/Set/Remove object type ipmask/subnet)
 - AddressGroup (Get)
 - DNS (Get)
+- HA (Get)
 - Interface (Get)
 - IP Pool (Get)
 - Local User (Get)
@@ -17,6 +18,8 @@ With this module (version 0.2.0) you can manage:
 - Service (Get)
 - Service Group (Get)
 - Static Route (Get)
+- System Global (Get)
+- VDOM (Get)
 - Virtual IP (Get)
 - Virtual WAN Link/SD-WAN (Get)
 - VPN IPsec Phase 1/Phase 2 Interface (Get)
@@ -287,6 +290,7 @@ Disconnect-FGT
 Get-FGTAddress
 Get-FGTAddressgroup
 Get-FGTDns
+Get-FGTHA
 Get-FGTInterface
 Get-FGTIppool
 Get-FGTLocaluser
@@ -295,6 +299,8 @@ Get-FGTRoutepolicy
 Get-FGTService
 Get-FGTServicegroup
 Get-FGTStaticroute
+Get-FGTSystemGlobal
+Get-Vdom
 Get-FGTVip
 Get-FGTVirtualWANLink
 Get-FGTVpnIpsecPhase1Interface
