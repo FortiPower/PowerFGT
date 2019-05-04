@@ -25,6 +25,11 @@ function Get-FGTStaticroute {
         Get list of all static route object (but only relevant attributes)
     #>
 
+    Param(
+        [Parameter(Mandatory = $false)]
+        [switch]$skip
+    )
+
     Begin {
     }
 
