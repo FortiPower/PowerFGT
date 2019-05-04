@@ -18,6 +18,10 @@ function Get-FGTServicegroup {
 
         Get list of all services group object
 
+        .EXAMPLE
+        Get-FGTServicegroup -skip
+
+        Get list of all services group object (but only relevant attributes)
     #>
 
     Begin {

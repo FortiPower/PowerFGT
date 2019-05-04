@@ -168,6 +168,11 @@ function Get-FGTAddress {
 
       Get address match with *FGT*
 
+      .EXAMPLE
+      Get-FGTAddress -skip
+
+      Get list of all address object (but only relevant attributes)
+
   #>
 
     [CmdletBinding(DefaultParameterSetName = "default")]

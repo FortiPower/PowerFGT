@@ -19,6 +19,10 @@ function Get-FGTStaticroute {
 
         Get list of all static route object
 
+        .EXAMPLE
+        Get-FGTStaticroute -skip
+
+        Get list of all static route object (but only relevant attributes)
     #>
 
     Begin {

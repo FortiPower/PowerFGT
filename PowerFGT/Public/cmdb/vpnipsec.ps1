@@ -17,6 +17,10 @@ function Get-FGTVpnIpsecPhase1Interface {
 
         Get list of all settings of VPN IPsec Phase 1 interface
 
+        .EXAMPLE
+        Get-FGTVpnIPsecPhase1Interface -skip
+
+        Get list of all settings of VPN IPsec Phase 1 interface (but only relevant attributes)
     #>
 
     Begin {
@@ -53,6 +57,10 @@ function Get-FGTVpnIpsecPhase2Interface {
 
         Get list of all settings of VPN IPsec Phase 2 interface
 
+        .EXAMPLE
+        Get-FGTVpnIPsecPhase2Interface -skip
+
+        Get list of all settings of VPN IPsec Phase 2 interface (but only relevant attributes)
     #>
 
     Begin {

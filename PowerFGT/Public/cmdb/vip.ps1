@@ -18,6 +18,10 @@ function Get-FGTVip {
 
         Get list of all nat vip object
 
+        .EXAMPLE
+        Get-FGTVip -skip
+
+        Get list of all nat vip object (but only relevant attributes)
     #>
 
     Begin {

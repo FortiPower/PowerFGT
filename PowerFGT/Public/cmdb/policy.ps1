@@ -19,6 +19,10 @@ function Get-FGTPolicy {
 
         Get list of all policies
 
+        .EXAMPLE
+        Get-FGTPolicy -skip
+
+        Get list of all policies (but only relevant attributes)
     #>
 
     Param(

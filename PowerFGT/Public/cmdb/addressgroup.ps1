@@ -19,6 +19,10 @@ function Get-FGTAddressgroup {
 
         Display all addresses group.
 
+        .EXAMPLE
+        Get-FGTAddressgroup -skip
+
+        Display all addresses group (but only relevant attributes)
     #>
 
     Param(
