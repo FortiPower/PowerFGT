@@ -24,6 +24,11 @@ function Invoke-FGTRestMethod {
       Invoke-RestMethod with FGT connection for get api/v2/cmdb/firewall/address uri with default parameter
 
       .EXAMPLE
+      Invoke-FGTRestMethod "-method "get" -uri api/v2/cmdb/firewall/address" -vdom vdomX
+
+      Invoke-RestMethod with FGT connection for get api/v2/cmdb/firewall/address uri on vdomX
+
+      .EXAMPLE
       Invoke-FGTRestMethod --method "post" -uri "api/v2/cmdb/firewall/address" -body $body
 
       Invoke-RestMethod with FGT connection for post api/v2/cmdb/firewall/address uri with $body payload
@@ -38,7 +43,9 @@ function Invoke-FGTRestMethod {
         [Parameter(Mandatory = $false)]
         [psobject]$body,
         [Parameter(Mandatory = $false)]
-        [switch]$skip
+        [switch]$skip,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom
     )
 
     Begin {
@@ -66,6 +73,10 @@ function Invoke-FGTRestMethod {
 
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $fullurl += "&skip=1"
+        }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $vdom = $vdom -Join ','
+            $fullurl += "&vdom=$vdom"
         }
 
         $sessionvariable = $DefaultFGTConnection.session
