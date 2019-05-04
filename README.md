@@ -18,6 +18,7 @@ With this module (version 0.2.0) you can manage:
 - Service Group (Get)
 - Static Route (Get)
 - Virtual IP (Get)
+- Virtual WAN Link/SD-WAN (Get)
 - VPN IPsec Phase 1/Phase 2 Interface (Get)
 - Zone (Get)
 
@@ -295,6 +296,7 @@ Get-FGTService
 Get-FGTServicegroup
 Get-FGTStaticroute
 Get-FGTVip
+Get-FGTVirtualWANLink
 Get-FGTVpnIpsecPhase1Interface
 Get-FGTVpnIpsecPhase2Interface
 Get-FGTZone
