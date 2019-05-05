@@ -45,7 +45,9 @@ function Invoke-FGTRestMethod {
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
-        [String[]]$vdom
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection
     )
 
     Begin {
@@ -53,11 +55,19 @@ function Invoke-FGTRestMethod {
 
     Process {
 
-        $Server = ${DefaultFGTConnection}.Server
-        $httpOnly = ${DefaultFGTConnection}.httpOnly
-        $port = ${DefaultFGTConnection}.port
-        $headers = ${DefaultFGTConnection}.headers
-        $invokeParams = ${DefaultFGTConnection}.invokeParams
+        if ($null -eq $connection ) {
+            if ($null -eq $DefaultFGTConnection){
+                Throw "Not Connected. Connect to the Fortigate with Connect-FGT"
+            }
+            $connection = $DefaultFGTConnection
+        }
+
+        $Server = $connection.Server
+        $httpOnly = $connection.httpOnly
+        $port = $connection.port
+        $headers = $connection.headers
+        $invokeParams = $connection.invokeParams
+        $sessionvariable = $connection.session
 
         if ($httpOnly) {
             $fullurl = "http://${Server}:${port}/${uri}"
@@ -81,8 +91,6 @@ function Invoke-FGTRestMethod {
             $vdom = ${DefaultFGTConnection}.vdom -Join ','
             $fullurl += "&vdom=$vdom"
         }
-
-        $sessionvariable = $DefaultFGTConnection.session
 
         try {
             if ($body) {
