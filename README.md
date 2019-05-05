@@ -29,7 +29,7 @@ More functionality will be added later.
 
 Connection can use HTTPS (default) or HTTP  
 Tested with FortiGate (using 5.6.x and 6.0.x firmware but it will be also work with 5.4.x)  
-Don't try too using account with multi VDOM access (work only with account access to one vdom see [#35](https://github.com/FortiPower/PowerFGT/issues/35))  
+Add (Experimental) support of [VDOM](#VDOM) is available using -vdom parameter for each cmdlet
 Don't use support to connect using API Token from 5.6.x (and later)
 
 # Usage
@@ -260,6 +260,28 @@ for example to get Fortigate System Global Info
 ```
 to get API uri, you can use `api/v2/cmdb/?action=schema` uri for get `schema`  
 You can look also `FortiOS - REST API Reference` available on [Fortinet Developer Network (FNDN)](https://fndn.fortinet.net/)
+
+### VDOM
+
+it is possible use VDOM using -vdom parameter on cmdlet command (by default it is root vdom)
+
+For get FGT Firewall Address of vdomX
+```powershell
+    Get-FGTFirewallAddress -vdom vdomX
+[...]
+```
+
+For get FGT Firewall Address of vdomX and root
+```powershell
+    Get-FGTFirewallAddress -vdom vdomX,root
+[...]
+```
+
+For get FGT Firewall Address of all vdom
+```powershell
+    Get-FGTFirewallAddress -vdom *
+[...]
+```
 
 ### Disconnecting
 
