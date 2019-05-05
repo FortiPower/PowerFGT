@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-function Get-FGTVip {
+function Get-FGTFirewalVip {
 
     <#
         .SYNOPSIS
@@ -14,12 +14,12 @@ function Get-FGTVip {
         Get list of all (NAT) Virtual IP (Ext IP, mapped IP, type...)
 
         .EXAMPLE
-        Get-FGTVip
+        Get-FGTFirewalVip
 
         Get list of all nat vip object
 
         .EXAMPLE
-        Get-FGTVip -skip
+        Get-FGTFirewalVip -skip
 
         Get list of all nat vip object (but only relevant attributes)
     #>
