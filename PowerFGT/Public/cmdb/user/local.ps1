@@ -5,7 +5,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-function Get-FGTLocaluser {
+function Get-FGTUserLocal {
 
     <#
         .SYNOPSIS
@@ -15,12 +15,12 @@ function Get-FGTLocaluser {
         Get list of all "local users" (name, type, status... )
 
         .EXAMPLE
-        Get-FGTLocaluser
+        Get-FGTUserLocal
 
         Display all local users
 
         .EXAMPLE
-        Get-FGTLocaluser -skip
+        Get-FGTUserLocal -skip
 
         Display all local users (but only relevant attributes)
     #>

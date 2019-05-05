@@ -3,11 +3,12 @@ $Public = @( Get-ChildItem -Path $PSScriptRoot\Public\*.ps1 -ErrorAction Silentl
 $Public_cmdb = @( Get-ChildItem -Path $PSScriptRoot\Public\cmdb\*.ps1 -ErrorAction SilentlyContinue )
 $Public_cmdb_firewall = @( Get-ChildItem -Path $PSScriptRoot\Public\cmdb\firewall\*.ps1 -ErrorAction SilentlyContinue )
 $Public_cmdb_system = @( Get-ChildItem -Path $PSScriptRoot\Public\cmdb\system\*.ps1 -ErrorAction SilentlyContinue )
+$Public_cmdb_user = @( Get-ChildItem -Path $PSScriptRoot\Public\cmdb\system\*.ps1 -ErrorAction SilentlyContinue )
 $Public_monitor = @( Get-ChildItem -Path $PSScriptRoot\Public\cmdb\*.ps1 -ErrorAction SilentlyContinue )
 $Private = @( Get-ChildItem -Path $PSScriptRoot\Private\*.ps1 -ErrorAction SilentlyContinue )
 
 #Dot source the files
-Foreach ($import in @($Public + $Public_cmdb + $Public_cmdb_firewall + $Public_cmdb_firewall + $Public_monitor + $Private)) {
+Foreach ($import in @($Public + $Public_cmdb + $Public_cmdb_firewall + $Public_cmdb_firewall + $Public_cmdb_user + $Public_monitor + $Private)) {
     Try {
         . $import.fullname
     }
