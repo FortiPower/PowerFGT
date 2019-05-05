@@ -23,18 +23,34 @@ function Get-FGTVpnIpsecPhase2Interface {
         Get-FGTVpnIPsecPhase2Interface -skip
 
         Get list of all settings of VPN IPsec Phase 2 interface (but only relevant attributes)
+
+        .EXAMPLE
+        Get-FGTVpnIPsecPhase2Interface -vdom vdomX
+
+        Get list of all settings of VPN IPsec Phase 2 interface on vdomX
     #>
 
     Param(
         [Parameter(Mandatory = $false)]
-        [switch]$skip
+        [switch]$skip,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom
     )
 
     Begin {
     }
 
     Process {
-        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/vpn.ipsec/phase2-interface' -method 'GET'
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('skip') ) {
+            $invokeParams.add( 'skip', $skip )
+        }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/vpn.ipsec/phase2-interface' -method 'GET' @invokeParams
         $response.results
     }
 
