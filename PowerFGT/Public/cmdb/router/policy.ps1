@@ -23,11 +23,18 @@ function Get-FGTRouterPolicy {
         Get-FGTRouterPolicy -skip
 
         Get list of all route policy object (but only relevant attributes)
+
+        .EXAMPLE
+        Get-FGTRouterPolicy -vdom vdomX
+
+        Get list of all route policy object on vdomX
     #>
 
     Param(
         [Parameter(Mandatory = $false)]
-        [switch]$skip
+        [switch]$skip,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom
     )
 
     Begin {
@@ -38,6 +45,9 @@ function Get-FGTRouterPolicy {
         $invokeParams = @{ }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
+        }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
         }
 
         $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/router/policy' -method 'GET' @invokeParams

@@ -23,11 +23,18 @@ function Get-FGTRouterStatic {
         Get-FGTRouterStatic -skip
 
         Get list of all static route object (but only relevant attributes)
+
+        .EXAMPLE
+        Get-FGTRouterStatic -vdom vdomX
+
+        Get list of all static route object on vdomX
     #>
 
     Param(
         [Parameter(Mandatory = $false)]
-        [switch]$skip
+        [switch]$skip,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom
     )
 
     Begin {
@@ -38,6 +45,9 @@ function Get-FGTRouterStatic {
         $invokeParams = @{ }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
+        }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
         }
 
         $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/router/static' -method 'GET' @invokeParams
