@@ -22,11 +22,18 @@ function Get-FGTSystemInterface {
         Get-FGTSystemInterface -skip
 
         Get list of all interface (but only relevant attributes)
+
+        .EXAMPLE
+        Get-FGTSystemInterface -vdom vdomX
+
+        Get list of all interface on vdomX
     #>
 
     Param(
         [Parameter(Mandatory = $false)]
-        [switch]$skip
+        [switch]$skip,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom
     )
 
     Begin {
@@ -37,6 +44,9 @@ function Get-FGTSystemInterface {
         $invokeParams = @{ }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
+        }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
         }
 
         $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/interface' -method 'GET' @invokeParams

@@ -22,11 +22,18 @@ function Get-FGTSystemVdom {
         Get-FGTSystemVdom -skip
 
         Get list of all vdom (but only relevant attributes)
+
+        .EXAMPLE
+        Get-FGTSystemVdom -vdom vdomX
+
+        Get list of all vdom on vdomX
     #>
 
     Param(
         [Parameter(Mandatory = $false)]
-        [switch]$skip
+        [switch]$skip,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom
     )
 
     Begin {
@@ -37,6 +44,9 @@ function Get-FGTSystemVdom {
         $invokeParams = @{ }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
+        }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
         }
 
         $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/vdom' -method 'GET' @invokeParams

@@ -22,11 +22,18 @@ function Get-FGTSystemHA {
         Get-FGTSystemHA -skip
 
         Get HA Settings (but only relevant attributes)
+
+        .EXAMPLE
+        Get-FGTSystemHA -vdom vdomX
+
+        Get HA Settings on vdomX
     #>
 
     Param(
         [Parameter(Mandatory = $false)]
-        [switch]$skip
+        [switch]$skip,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom
     )
 
     Begin {
@@ -37,6 +44,9 @@ function Get-FGTSystemHA {
         $invokeParams = @{ }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
+        }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
         }
 
         $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/ha' -method 'GET' @invokeParams
