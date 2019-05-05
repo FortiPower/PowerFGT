@@ -4,31 +4,25 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-function Get-FGTService {
+function Get-FGTFirewallServiceGroup {
 
     <#
         .SYNOPSIS
-        Get list of all "services"
+        Get list of all "services group"
 
         .DESCRIPTION
-        Get list of all "services" (SMTP, HTTP, HTTPS, DNS...)
+        Get list of all "services group"
 
         .EXAMPLE
-        Get-FGTService
+        Get-FGTFirewallServiceGroup
 
-        Get list of all services object
+        Get list of all services group object
 
         .EXAMPLE
-        Get-FGTService -skip
+        Get-FGTFirewallServiceGroup -skip
 
-        Get list of all services object (but only relevant attributes)
-
+        Get list of all services group object (but only relevant attributes)
     #>
-
-    Param(
-        [Parameter(Mandatory = $false)]
-        [switch]$skip
-    )
 
     Begin {
     }
@@ -40,10 +34,11 @@ function Get-FGTService {
             $invokeParams.add( 'skip', $skip )
         }
 
-        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall.service/custom' -method 'GET' @invokeParams
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall.service/group' -method 'GET' @invokeParams
         $response.results
     }
 
     End {
     }
+
 }
