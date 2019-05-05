@@ -4,24 +4,25 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-function Get-FGTInterface {
+
+function Get-FGTSystemDns {
 
     <#
         .SYNOPSIS
-        Get list of all interface
+        Get DNS addresses configured
 
         .DESCRIPTION
-        Get list of all interface (name, IP Address, description, mode ...)
+        Show DNS addresses configured on the FortiGate
 
         .EXAMPLE
-        Get-FGTInterface
+        Get-FGTSystemDns
 
-        Get list of all interface
+        Display DNS configured on the FortiGate
 
         .EXAMPLE
-        Get-FGTInterface -skip
+        Get-FGTSystemDns -skip
 
-        Get list of all interface (but only relevant attributes)
+        Display DNS configured on the FortiGate (but only relevant attributes)
     #>
 
     Param(
@@ -39,7 +40,7 @@ function Get-FGTInterface {
             $invokeParams.add( 'skip', $skip )
         }
 
-        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/interface' -method 'GET' @invokeParams
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/dns' -method 'GET' @invokeParams
         $response.results
     }
 

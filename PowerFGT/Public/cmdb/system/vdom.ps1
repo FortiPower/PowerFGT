@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-function Get-FGTVdom {
+function Get-FGTSystemVdom {
 
     <#
         .SYNOPSIS
@@ -14,12 +14,12 @@ function Get-FGTVdom {
         Get list of all vdom (name, shortname, cluster-id )
 
         .EXAMPLE
-        Get-FGTVdom
+        Get-FGTSystemVdom
 
         Get list of all vdom settings
 
         .EXAMPLE
-        Get-FGTVdom -skip
+        Get-FGTSystemVdom -skip
 
         Get list of all vdom (but only relevant attributes)
     #>

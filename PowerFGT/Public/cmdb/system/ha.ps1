@@ -1,28 +1,27 @@
 ﻿#
 # Copyright 2019, Alexis La Goutte <alexis dot lagoutte at gmail dot com>
-# Copyright 2019, Benjamin Perrier <ben dot perrier at outlook dot com>
 #
 # SPDX-License-Identifier: Apache-2.0
 #
 
-function Get-FGTDns {
+function Get-FGTSystemHA {
 
     <#
         .SYNOPSIS
-        Get DNS addresses configured
+        Get list of HA Settings
 
         .DESCRIPTION
-        Show DNS addresses configured on the FortiGate
+        Get list of HA Settings (Mode, Group-ID, Group-Name, Password, monitor...)
 
         .EXAMPLE
-        Get-FGTDns
+        Get-FGTSystemHA
 
-        Display DNS configured on the FortiGate
+        Get HA Settings
 
         .EXAMPLE
-        Get-FGTDns -skip
+        Get-FGTSystemHA -skip
 
-        Display DNS configured on the FortiGate (but only relevant attributes)
+        Get HA Settings (but only relevant attributes)
     #>
 
     Param(
@@ -40,8 +39,8 @@ function Get-FGTDns {
             $invokeParams.add( 'skip', $skip )
         }
 
-        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/dns' -method 'GET' @invokeParams
-        $response.results
+        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/ha' -method 'GET' @invokeParams
+        $reponse.results
     }
 
     End {

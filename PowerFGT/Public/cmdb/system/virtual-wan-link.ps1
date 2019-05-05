@@ -4,24 +4,24 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-function Get-FGTHA {
+function Get-FGTSystemVirtualWANLink {
 
     <#
         .SYNOPSIS
-        Get list of HA Settings
+        Get Virtual Wan Link (SD-WAN) Settings
 
         .DESCRIPTION
-        Get list of HA Settings (Mode, Group-ID, Group-Name, Password, monitor...)
+        Get Virtual Wan Link Settings (status, load balance mode, members, health-check... )
 
         .EXAMPLE
-        Get-FGTHA
+        Get-FGTSystemVirtualWANLink
 
-        Get HA Settings
+        Get Virtual Wan Link Settings
 
         .EXAMPLE
-        Get-FGTHA -skip
+        Get-FGTSystemVirtualWANLink -skip
 
-        Get HA Settings (but only relevant attributes)
+        Get Virtual Wan Link Settings (but only relevant attributes)
     #>
 
     Param(
@@ -39,7 +39,7 @@ function Get-FGTHA {
             $invokeParams.add( 'skip', $skip )
         }
 
-        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/ha' -method 'GET' @invokeParams
+        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/virtual-wan-link' -method 'GET' @invokeParams
         $reponse.results
     }
 
