@@ -23,11 +23,18 @@ function Get-FGTFirewallAddressgroup {
         Get-FGTFirewallAddressgroup -skip
 
         Display all addresses group (but only relevant attributes)
+
+        .EXAMPLE
+        Get-FGTFirewallAddressgroup -vdom vdomX
+
+        Display all addresses group on vdomX
     #>
 
     Param(
         [Parameter(Mandatory = $false)]
-        [switch]$skip
+        [switch]$skip,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom
     )
 
     Begin {
@@ -38,6 +45,9 @@ function Get-FGTFirewallAddressgroup {
         $invokeParams = @{ }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
+        }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
         }
 
         $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/addrgrp' -method 'GET' @invokeParams
