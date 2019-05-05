@@ -5,24 +5,24 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-function Get-FGTRoutepolicy {
+function Get-FGTRouterStatic {
 
     <#
         .SYNOPSIS
-        Get list of all "route policy"
+        Get list of all "static routes"
 
         .DESCRIPTION
-        Get list of all "route policy" (Source, Destination, Protocol, Action...)
+        Get list of all "static routes" (destination network, gateway, port, distance, weight...)
 
         .EXAMPLE
-        Get-FGTRoutepolicy
+        Get-FGTRouterStatic
 
-        Get list of all route policy object
+        Get list of all static route object
 
         .EXAMPLE
-        Get-FGTRoutepolicy -skip
+        Get-FGTRouterStatic -skip
 
-        Get list of all route policy object (but only relevant attributes)
+        Get list of all static route object (but only relevant attributes)
     #>
 
     Param(
@@ -40,7 +40,7 @@ function Get-FGTRoutepolicy {
             $invokeParams.add( 'skip', $skip )
         }
 
-        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/router/policy' -method 'GET' @invokeParams
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/router/static' -method 'GET' @invokeParams
         $response.results
     }
 
