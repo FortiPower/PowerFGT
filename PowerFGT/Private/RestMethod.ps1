@@ -11,7 +11,7 @@ function Invoke-FGTRestMethod {
       Invoke RestMethod with FGT connection (internal) variable
 
       .DESCRIPTION
-       Invoke RestMethod with FGT connection variable (token, csrf..)
+      Invoke RestMethod with FGT connection variable (token, csrf..)
 
       .EXAMPLE
       Invoke-FGTRestMethod -method "get" -uri "api/v2/cmdb/firewall/address"
