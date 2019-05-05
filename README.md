@@ -36,11 +36,11 @@ Don't use support to connect using API Token from 5.6.x (and later)
 
 All resource management functions are available with the Powershell verbs GET, ADD, COPY, SET, REMOVE.  
 For example, you can manage Address with the following commands:
-- `Get-FGTAddress`
-- `Add-FGTAddresss`
-- `Copy-FGTAddresss`
-- `Set-FGTAddresss`
-- `Remove-FGTAddresss`
+- `Get-FGTFirewallAddress`
+- `Add-FGTFirewallAddresss`
+- `Copy-FGTFirewallAddresss`
+- `Set-FGTFirewallAddresss`
+- `Remove-FGTFirewallAddresss`
 
 # Requirements
 
@@ -60,7 +60,7 @@ For example, you can manage Address with the following commands:
     Get-Command -Module PowerFGT
 
 # Get help
-    Get-Help Get-FGTAddress -Full
+    Get-Help Get-FGTFirewallAddress -Full
 ```
 
 # Examples
@@ -79,14 +79,14 @@ if you get a warning about `Unable to connect` Look [Issue](#Issue)
 
 ### Address Management
 
-You can create a new Address `Add-FGTAddress`, retrieve its information `Get-FGTAddress`,
-modify its properties `Set-FGTAddress`, copy/clone its properties `Copt-FGTAddress`
-or delete it `Remove-FGTAddress`.
+You can create a new Address `Add-FGTFirewallAddress`, retrieve its information `Get-FGTFirewallAddress`,
+modify its properties `Set-FGTFirewallAddress`, copy/clone its properties `Copt-FGTFirewallAddress`
+or delete it `Remove-FGTFirewallAddress`.
 
 ```powershell
 
 # Get information about ALL address (using Format Table)
-    Get-FGTAddress | Format-Table
+    Get-FGTFirewallAddress | Format-Table
 
     q_origin_key                 name                         uuid                                 subnet
     ------------                 ----                         ----                                 ------
@@ -99,7 +99,7 @@ or delete it `Remove-FGTAddress`.
     update.microsoft.com         update.microsoft.com         a918d650-368c-51e9-0cca-5f006a059f0b 0.0.0.0 0.0.0.0
 
 # Create an address
-    Add-FGTAddress -type ipmask -Name 'My PowerFGT Network' -ip 192.0.2.1 -mask 255.255.255.0
+    Add-FGTFirewallAddress -type ipmask -Name 'My PowerFGT Network' -ip 192.0.2.1 -mask 255.255.255.0
 
     q_origin_key         : My PowerFGT Network
     name                 : My PowerFGT Network
@@ -132,14 +132,14 @@ or delete it `Remove-FGTAddress`.
 
 
 # Get information an address (name) and display only some field (using Format-Table)
-    Get-FGTAddress -name "My PowerFGT Network" | Select name, subnet, type, start-ip, end-ip | Format-Table
+    Get-FGTFirewallAddress -name "My PowerFGT Network" | Select name, subnet, type, start-ip, end-ip | Format-Table
 
     name                subnet                  type   start-ip  end-ip
     ----                ------                  ----   --------  ------
     My PowerFGT Network 192.0.2.0 255.255.255.0 ipmask 192.0.2.0 255.255.255.0
 
 # Get information some address (match) and display only some field (using Format-Table
-    Get-FGTAddress -match update | Select name, type, fqdn | Format-Table
+    Get-FGTFirewallAddress -match update | Select name, type, fqdn | Format-Table
 
     name                 type fqdn
     ----                 ---- ----
@@ -147,7 +147,7 @@ or delete it `Remove-FGTAddress`.
     update.microsoft.com fqdn update.microsoft.com
 
 # Modify an address (name, comment, interface...)
-    Get-FGTAddress -name "My PowerFGT Network" | Set-FGTAddress -name "MyNetwork" -comment "My comment" -interface port2
+    Get-FGTFirewallAddress -name "My PowerFGT Network" | Set-FGTFirewallAddress -name "MyNetwork" -comment "My comment" -interface port2
 
     q_origin_key         : MyNetwork
     name                 : MyNetwork
@@ -179,7 +179,7 @@ or delete it `Remove-FGTAddress`.
     allow-routing        : disable
 
 # Copy/Clone an address
-    Get-FGTAddress -name "MyNetwork" | Copy-FGTAddress -name "My New Network"
+    Get-FGTFirewallAddress -name "MyNetwork" | Copy-FGTFirewallAddress -name "My New Network"
 
     q_origin_key         : My New Network
     name                 : My New Network
@@ -211,7 +211,7 @@ or delete it `Remove-FGTAddress`.
     allow-routing        : disable
 
 # Remove an address
-    Get-FGTAddress -name "My Network" | Remove-FGTAddress
+    Get-FGTFirewallAddress -name "My Network" | Remove-FGTFirewallAddress
 ```
 
 ### Invoke API
