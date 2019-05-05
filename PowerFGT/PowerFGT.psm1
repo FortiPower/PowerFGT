@@ -8,7 +8,7 @@ $Public_monitor = @( Get-ChildItem -Path $PSScriptRoot\Public\cmdb\*.ps1 -ErrorA
 $Private = @( Get-ChildItem -Path $PSScriptRoot\Private\*.ps1 -ErrorAction SilentlyContinue )
 
 #Dot source the files
-Foreach ($import in @($Public + $Public_cmdb + $Public_cmdb_firewall + $Public_cmdb_firewall + $Public_cmdb_user + $Public_monitor + $Private)) {
+Foreach ($import in @($Public + $Public_cmdb + $Public_cmdb_firewall + $Public_cmdb_system + $Public_cmdb_user + $Public_monitor + $Private)) {
     Try {
         . $import.fullname
     }
