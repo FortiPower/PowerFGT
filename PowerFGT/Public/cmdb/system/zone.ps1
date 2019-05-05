@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-function Get-FGTZone {
+function Get-FGTSystemZone {
 
     <#
       .SYNOPSIS
@@ -14,12 +14,12 @@ function Get-FGTZone {
       Get list of all "zone"
 
       .EXAMPLE
-      Get-FGTZone
+      Get-FGTSystemZone
 
       Get list of all zone object
 
       .EXAMPLE
-      Get-FGTZone -skip
+      Get-FGTSystemZone -skip
 
       Get list of all zone object (but only relevant attributes)
     #>

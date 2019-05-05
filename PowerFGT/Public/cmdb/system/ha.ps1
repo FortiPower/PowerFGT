@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-function Get-FGTHA {
+function Get-FGTSystemHA {
 
     <#
         .SYNOPSIS
@@ -14,12 +14,12 @@ function Get-FGTHA {
         Get list of HA Settings (Mode, Group-ID, Group-Name, Password, monitor...)
 
         .EXAMPLE
-        Get-FGTHA
+        Get-FGTSystemHA
 
         Get HA Settings
 
         .EXAMPLE
-        Get-FGTHA -skip
+        Get-FGTSystemHA -skip
 
         Get HA Settings (but only relevant attributes)
     #>

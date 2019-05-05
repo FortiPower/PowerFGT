@@ -4,25 +4,30 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-function Get-FGTVip {
+function Get-FGTFirewallIPPool {
 
     <#
         .SYNOPSIS
-        Get list of all (NAT) Virtual IP
+        Get list of all (NAT) ip pool"
 
         .DESCRIPTION
-        Get list of all (NAT) Virtual IP (Ext IP, mapped IP, type...)
+        Get list of all (nat) ip pool"
 
         .EXAMPLE
-        Get-FGTVip
+        Get-FGTFirewallIPPool
 
-        Get list of all nat vip object
+        Get list of all (NAT) ip pool object
 
         .EXAMPLE
-        Get-FGTVip -skip
+        Get-FGTFirewallIPPool -skip
 
-        Get list of all nat vip object (but only relevant attributes)
+        Get list of all (NAT) ip pool object (but only relevant attributes)
     #>
+
+    Param(
+        [Parameter(Mandatory = $false)]
+        [switch]$skip
+    )
 
     Begin {
     }
@@ -34,8 +39,9 @@ function Get-FGTVip {
             $invokeParams.add( 'skip', $skip )
         }
 
-        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/vip' -method 'GET' @invokeParams
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/ippool' -method 'GET' @invokeParams
         $response.results
+
     }
 
     End {

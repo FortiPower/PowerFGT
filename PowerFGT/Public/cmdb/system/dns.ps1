@@ -4,24 +4,25 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-function Get-FGTIppool {
+
+function Get-FGTSystemDns {
 
     <#
         .SYNOPSIS
-        Get list of all (NAT) ip pool"
+        Get DNS addresses configured
 
         .DESCRIPTION
-        Get list of all (nat) ip pool"
+        Show DNS addresses configured on the FortiGate
 
         .EXAMPLE
-        Get-FGTIppool
+        Get-FGTSystemDns
 
-        Get list of all (NAT) ip pool object
+        Display DNS configured on the FortiGate
 
         .EXAMPLE
-        Get-FGTIppool -skip
+        Get-FGTSystemDns -skip
 
-        Get list of all (NAT) ip pool object (but only relevant attributes)
+        Display DNS configured on the FortiGate (but only relevant attributes)
     #>
 
     Param(
@@ -39,9 +40,8 @@ function Get-FGTIppool {
             $invokeParams.add( 'skip', $skip )
         }
 
-        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/ippool' -method 'GET' @invokeParams
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/dns' -method 'GET' @invokeParams
         $response.results
-
     }
 
     End {

@@ -4,24 +4,24 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-function Get-FGTVirtualWANLink {
+function Get-FGTSystemVdom {
 
     <#
         .SYNOPSIS
-        Get Virtual Wan Link (SD-WAN) Settings
+        Get list of all vdom
 
         .DESCRIPTION
-        Get Virtual Wan Link Settings (status, load balance mode, members, health-check... )
+        Get list of all vdom (name, shortname, cluster-id )
 
         .EXAMPLE
-        Get-FGTVirtualWANLink
+        Get-FGTSystemVdom
 
-        Get Virtual Wan Link Settings
+        Get list of all vdom settings
 
         .EXAMPLE
-        Get-FGTVirtualWANLink -skip
+        Get-FGTSystemVdom -skip
 
-        Get Virtual Wan Link Settings (but only relevant attributes)
+        Get list of all vdom (but only relevant attributes)
     #>
 
     Param(
@@ -39,7 +39,7 @@ function Get-FGTVirtualWANLink {
             $invokeParams.add( 'skip', $skip )
         }
 
-        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/virtual-wan-link' -method 'GET' @invokeParams
+        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/vdom' -method 'GET' @invokeParams
         $reponse.results
     }
 

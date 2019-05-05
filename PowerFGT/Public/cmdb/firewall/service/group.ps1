@@ -4,31 +4,25 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-
-function Get-FGTAddressgroup {
+function Get-FGTFirewallServiceGroup {
 
     <#
         .SYNOPSIS
-        Get addresses group configured
+        Get list of all "services group"
 
         .DESCRIPTION
-        Show addresses group configured (Name, Member...)
+        Get list of all "services group"
 
         .EXAMPLE
-        Get-FGTAddressgroup
+        Get-FGTFirewallServiceGroup
 
-        Display all addresses group.
+        Get list of all services group object
 
         .EXAMPLE
-        Get-FGTAddressgroup -skip
+        Get-FGTFirewallServiceGroup -skip
 
-        Display all addresses group (but only relevant attributes)
+        Get list of all services group object (but only relevant attributes)
     #>
-
-    Param(
-        [Parameter(Mandatory = $false)]
-        [switch]$skip
-    )
 
     Begin {
     }
@@ -40,10 +34,11 @@ function Get-FGTAddressgroup {
             $invokeParams.add( 'skip', $skip )
         }
 
-        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/addrgrp' -method 'GET' @invokeParams
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall.service/group' -method 'GET' @invokeParams
         $response.results
     }
 
     End {
     }
+
 }

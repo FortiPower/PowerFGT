@@ -5,7 +5,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-function Get-FGTStaticroute {
+function Get-FGTRouterStatic {
 
     <#
         .SYNOPSIS
@@ -15,12 +15,12 @@ function Get-FGTStaticroute {
         Get list of all "static routes" (destination network, gateway, port, distance, weight...)
 
         .EXAMPLE
-        Get-FGTStaticroute
+        Get-FGTRouterStatic
 
         Get list of all static route object
 
         .EXAMPLE
-        Get-FGTStaticroute -skip
+        Get-FGTRouterStatic -skip
 
         Get list of all static route object (but only relevant attributes)
     #>

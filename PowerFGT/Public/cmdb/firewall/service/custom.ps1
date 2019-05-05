@@ -4,25 +4,25 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-
-function Get-FGTRoutepolicy {
+function Get-FGTFirewallServiceCustom {
 
     <#
         .SYNOPSIS
-        Get list of all "route policy"
+        Get list of all "services"
 
         .DESCRIPTION
-        Get list of all "route policy" (Source, Destination, Protocol, Action...)
+        Get list of all "services" (SMTP, HTTP, HTTPS, DNS...)
 
         .EXAMPLE
-        Get-FGTRoutepolicy
+        Get-FGTFirewallServiceCustom
 
-        Get list of all route policy object
+        Get list of all services object
 
         .EXAMPLE
-        Get-FGTRoutepolicy -skip
+        Get-FGTFirewallServiceCustom -skip
 
-        Get list of all route policy object (but only relevant attributes)
+        Get list of all services object (but only relevant attributes)
+
     #>
 
     Param(
@@ -40,7 +40,7 @@ function Get-FGTRoutepolicy {
             $invokeParams.add( 'skip', $skip )
         }
 
-        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/router/policy' -method 'GET' @invokeParams
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall.service/custom' -method 'GET' @invokeParams
         $response.results
     }
 

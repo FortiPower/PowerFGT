@@ -5,24 +5,24 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-function Get-FGTDns {
+function Get-FGTFirewallPolicy {
 
     <#
         .SYNOPSIS
-        Get DNS addresses configured
+        Get list of all policies/rules
 
         .DESCRIPTION
-        Show DNS addresses configured on the FortiGate
+        Get list of all policies (name, interface source/destination, address (network) source/destination, service, action...)
 
         .EXAMPLE
-        Get-FGTDns
+        Get-FGTFirewallPolicy
 
-        Display DNS configured on the FortiGate
+        Get list of all policies
 
         .EXAMPLE
-        Get-FGTDns -skip
+        Get-FGTFirewallPolicy -skip
 
-        Display DNS configured on the FortiGate (but only relevant attributes)
+        Get list of all policies (but only relevant attributes)
     #>
 
     Param(
@@ -40,8 +40,8 @@ function Get-FGTDns {
             $invokeParams.add( 'skip', $skip )
         }
 
-        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/dns' -method 'GET' @invokeParams
-        $response.results
+        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/policy' -method 'GET' @invokeParams
+        $reponse.results
     }
 
     End {

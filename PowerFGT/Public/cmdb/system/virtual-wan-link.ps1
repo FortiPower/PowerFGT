@@ -1,28 +1,27 @@
 ﻿#
 # Copyright 2019, Alexis La Goutte <alexis dot lagoutte at gmail dot com>
-# Copyright 2019, Benjamin Perrier <ben dot perrier at outlook dot com>
 #
 # SPDX-License-Identifier: Apache-2.0
 #
 
-function Get-FGTPolicy {
+function Get-FGTSystemVirtualWANLink {
 
     <#
         .SYNOPSIS
-        Get list of all policies/rules
+        Get Virtual Wan Link (SD-WAN) Settings
 
         .DESCRIPTION
-        Get list of all policies (name, interface source/destination, address (network) source/destination, service, action...)
+        Get Virtual Wan Link Settings (status, load balance mode, members, health-check... )
 
         .EXAMPLE
-        Get-FGTPolicy
+        Get-FGTSystemVirtualWANLink
 
-        Get list of all policies
+        Get Virtual Wan Link Settings
 
         .EXAMPLE
-        Get-FGTPolicy -skip
+        Get-FGTSystemVirtualWANLink -skip
 
-        Get list of all policies (but only relevant attributes)
+        Get Virtual Wan Link Settings (but only relevant attributes)
     #>
 
     Param(
@@ -40,7 +39,7 @@ function Get-FGTPolicy {
             $invokeParams.add( 'skip', $skip )
         }
 
-        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/policy' -method 'GET' @invokeParams
+        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/virtual-wan-link' -method 'GET' @invokeParams
         $reponse.results
     }
 

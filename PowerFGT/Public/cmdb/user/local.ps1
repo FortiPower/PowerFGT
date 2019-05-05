@@ -1,27 +1,28 @@
 ﻿#
 # Copyright 2019, Alexis La Goutte <alexis dot lagoutte at gmail dot com>
+# Copyright 2019, Benjamin Perrier <ben dot perrier at outlook dot com>
 #
 # SPDX-License-Identifier: Apache-2.0
 #
 
-function Get-FGTVdom {
+function Get-FGTUserLocal {
 
     <#
         .SYNOPSIS
-        Get list of all vdom
+        Get list of all "local users"
 
         .DESCRIPTION
-        Get list of all vdom (name, shortname, cluster-id )
+        Get list of all "local users" (name, type, status... )
 
         .EXAMPLE
-        Get-FGTVdom
+        Get-FGTUserLocal
 
-        Get list of all vdom settings
+        Display all local users
 
         .EXAMPLE
-        Get-FGTVdom -skip
+        Get-FGTUserLocal -skip
 
-        Get list of all vdom (but only relevant attributes)
+        Display all local users (but only relevant attributes)
     #>
 
     Param(
@@ -39,7 +40,7 @@ function Get-FGTVdom {
             $invokeParams.add( 'skip', $skip )
         }
 
-        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/vdom' -method 'GET' @invokeParams
+        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/user/local' -method 'GET' @invokeParams
         $reponse.results
     }
 

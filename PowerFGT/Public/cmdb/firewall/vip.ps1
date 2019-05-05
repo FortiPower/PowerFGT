@@ -4,31 +4,25 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-
-function Get-FGTLocaluser {
+function Get-FGTFirewalVip {
 
     <#
         .SYNOPSIS
-        Get list of all "local users"
+        Get list of all (NAT) Virtual IP
 
         .DESCRIPTION
-        Get list of all "local users" (name, type, status... )
+        Get list of all (NAT) Virtual IP (Ext IP, mapped IP, type...)
 
         .EXAMPLE
-        Get-FGTLocaluser
+        Get-FGTFirewalVip
 
-        Display all local users
+        Get list of all nat vip object
 
         .EXAMPLE
-        Get-FGTLocaluser -skip
+        Get-FGTFirewalVip -skip
 
-        Display all local users (but only relevant attributes)
+        Get list of all nat vip object (but only relevant attributes)
     #>
-
-    Param(
-        [Parameter(Mandatory = $false)]
-        [switch]$skip
-    )
 
     Begin {
     }
@@ -40,8 +34,8 @@ function Get-FGTLocaluser {
             $invokeParams.add( 'skip', $skip )
         }
 
-        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/user/local' -method 'GET' @invokeParams
-        $reponse.results
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/vip' -method 'GET' @invokeParams
+        $response.results
     }
 
     End {
