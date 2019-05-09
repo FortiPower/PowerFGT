@@ -24,6 +24,7 @@ With this module (version 0.2.0) you can manage:
 - Virtual WAN Link/SD-WAN (Get)
 - VPN IPsec Phase 1/Phase 2 Interface (Get)
 - Zone (Get)
+- [Multi Connection](#MultiConnection)
 
 More functionality will be added later.
 
@@ -293,6 +294,45 @@ You can also change default vdom using
 ```powershell
     Set-FGTConnection -vdom vdomY
 [...]
+```
+
+# MultiConnection
+
+From release 0.3.0, it is possible to connect on same times to multi FortiGate
+You need to use -connection parameter to cmdlet
+
+For example to get interface of 2 FortiGate
+
+```powershell
+# Connect to first FortiGate
+    $fw1 = Connect-FGT 192.0.2.1 -SkipCertificateCheck -DefaultConnection:$false
+
+#DefaultConnection set to false is not mandatory but only don't set the connection info on global variable
+
+# Connect to second FortiGate
+    $sw2 = Connect-FGT 192.0.2.1 -SkipCertificateCheck -DefaultConnection:$false
+
+# Get Interface for first FortiGate
+    Get-FGTSystemInterface -connection $sw1 | Format-Table
+
+    q_origin_key  name          vdom vrf cli-conn-status fortilink mode   distance priority dhcp-relay-service
+    ------------  ----          ---- --- --------------- --------- ----   -------- -------- ------------------
+    DCFW          DCFW          root   0               0 disable   static        5        0 enable
+    FITNUC        FITNUC        root   0               0 disable   static        5        0 disable
+....
+
+# Get Interface for second FortiGate
+    Get-FGTSystemInterface -connection $sw1 | Format-Table
+
+    q_origin_key  name          vdom vrf cli-conn-status fortilink mode   distance priority dhcp-relay-service
+    ------------  ----          ---- --- --------------- --------- ----   -------- -------- ------------------
+    FSA-DMZ       FSA-DMZ       root   0               0 disable   static        5        0 disable
+    FSA-DMZ2      FSA-DMZ2      root   0               0 disable   static        5        0 disable
+    FWLC          FWLC          root   0               0 disable   static        5        0 enable
+...
+
+#Each cmdlet can use -connection parameter
+
 ```
 
 ### Disconnecting
