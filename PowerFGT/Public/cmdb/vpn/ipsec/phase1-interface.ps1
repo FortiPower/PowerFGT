@@ -32,7 +32,9 @@ function Get-FGTVpnIpsecPhase1Interface {
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
-        [String[]]$vdom
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection=$DefaultFGTConnection
     )
 
     Begin {
@@ -48,7 +50,7 @@ function Get-FGTVpnIpsecPhase1Interface {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/vpn.ipsec/phase1-interface' -method 'GET' @invokeParams
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/vpn.ipsec/phase1-interface' -method 'GET' -connection $connection @invokeParams
         $response.results
     }
 
