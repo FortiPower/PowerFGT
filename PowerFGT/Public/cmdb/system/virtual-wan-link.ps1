@@ -33,7 +33,9 @@ function Get-FGTSystemVirtualWANLink {
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
-        [String[]]$vdom
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection=$DefaultFGTConnection
     )
 
     Begin {
@@ -49,7 +51,7 @@ function Get-FGTSystemVirtualWANLink {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/virtual-wan-link' -method 'GET' @invokeParams
+        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/virtual-wan-link' -method 'GET' -connection $connection @invokeParams
         $reponse.results
     }
 

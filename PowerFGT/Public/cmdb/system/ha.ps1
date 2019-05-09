@@ -33,7 +33,9 @@ function Get-FGTSystemHA {
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
-        [String[]]$vdom
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection=$DefaultFGTConnection
     )
 
     Begin {
@@ -49,7 +51,7 @@ function Get-FGTSystemHA {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/ha' -method 'GET' @invokeParams
+        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/ha' -method 'GET' -connection $connection @invokeParams
         $reponse.results
     }
 
