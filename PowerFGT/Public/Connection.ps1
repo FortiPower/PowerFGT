@@ -44,6 +44,16 @@ function Connect-FGT {
       Connect-FGT -Server 192.0.2.1 -Username manager -Password $mysecpassword
 
       Connect to a FortiGate with IP 192.0.2.1 using Username and Password
+
+      .EXAMPLE
+      $fw1 = Connect-ArubaFGT -Server 192.0.2.1
+      Connect to an FortiGate with IP 192.0.2.1 and store connection info to $fw1 variable
+
+      .EXAMPLE
+      $fw2 = Connect-ArubaFGT -Server 192.0.2.1 -DefaultConnection:$false
+
+      Connect to an FortiGate with IP 192.0.2.1 and store connection info to $fw2 variable
+      and don't store connection on global ($DefaultFGTConnection) variable
   #>
 
     Param(

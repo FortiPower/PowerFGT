@@ -32,6 +32,11 @@ function Invoke-FGTRestMethod {
       Invoke-FGTRestMethod --method "post" -uri "api/v2/cmdb/firewall/address" -body $body
 
       Invoke-RestMethod with FGT connection for post api/v2/cmdb/firewall/address uri with $body payload
+
+      .EXAMPLE
+      Invoke-FGTRestMethod -method "get" -uri "api/v2/cmdb/firewall/address" -connection $fw2
+
+      Invoke-RestMethod with $fw2 connection for get api/v2/cmdb/firewall/address uri
     #>
 
     Param(
