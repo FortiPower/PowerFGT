@@ -237,7 +237,9 @@ function Disconnect-FGT {
 
     Param(
         [Parameter(Mandatory = $false)]
-        [switch]$noconfirm
+        [switch]$noconfirm,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection
     )
 
     Begin {
@@ -259,9 +261,9 @@ function Disconnect-FGT {
         else { $decision = 0 }
         if ($decision -eq 0) {
             Write-Progress -activity "Remove FortiGate connection"
-            $null = invoke-FGTRestMethod -method "POST" -uri $url
+            $null = invoke-FGTRestMethod -method "POST" -uri $url -connection $connection
             write-progress -activity "Remove FortiGate connection" -completed
-            if (Get-Variable -Name DefaultFGTConnection -scope global ) {
+            if (Test-Path variable:global:DefaultFGTConnection) {
                 Remove-Variable -name DefaultFGTConnection -scope global
             }
         }
