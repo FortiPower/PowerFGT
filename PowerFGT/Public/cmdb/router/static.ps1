@@ -34,7 +34,9 @@ function Get-FGTRouterStatic {
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
-        [String[]]$vdom
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection=$DefaultFGTConnection
     )
 
     Begin {
@@ -50,7 +52,7 @@ function Get-FGTRouterStatic {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/router/static' -method 'GET' @invokeParams
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/router/static' -method 'GET' -connection $connection @invokeParams
         $response.results
     }
 
