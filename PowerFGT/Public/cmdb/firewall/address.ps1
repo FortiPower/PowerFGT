@@ -53,7 +53,9 @@ function Add-FGTFirewallAddress {
         [Parameter (Mandatory = $false)]
         [boolean]$visibility,
         [Parameter(Mandatory = $false)]
-        [String[]]$vdom
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection=$DefaultFGTConnection
     )
 
     Begin {
@@ -66,7 +68,7 @@ function Add-FGTFirewallAddress {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        if ( Get-FGTFirewallAddress @invokeParams -name $name ) {
+        if ( Get-FGTFirewallAddress @invokeParams -name $name -connection $connection) {
             Throw "Already an address object using the same name"
         }
 
@@ -101,9 +103,9 @@ function Add-FGTFirewallAddress {
             }
         }
 
-        Invoke-FGTRestMethod -method "POST" -body $address -uri $uri @invokeParams | out-Null
+        Invoke-FGTRestMethod -method "POST" -body $address -uri $uri -connection $connection @invokeParams | out-Null
 
-        Get-FGTFirewallAddress @invokeParams | Where-Object {$_.name -eq $name}
+        Get-FGTFirewallAddress -connection $connection @invokeParams | Where-Object {$_.name -eq $name}
     }
 
     End {
@@ -134,7 +136,9 @@ function Copy-FGTFirewallAddress {
         [Parameter (Mandatory = $true)]
         [string]$name,
         [Parameter(Mandatory = $false)]
-        [String[]]$vdom
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection=$DefaultFGTConnection
     )
 
     Begin {
@@ -149,9 +153,9 @@ function Copy-FGTFirewallAddress {
 
         $uri = "api/v2/cmdb/firewall/address/$($address.name)/?action=clone&nkey=$($name)"
 
-        Invoke-FGTRestMethod -method "POST" -uri $uri @invokeParams | out-Null
+        Invoke-FGTRestMethod -method "POST" -uri $uri -connection $connection @invokeParams | out-Null
 
-        Get-FGTFirewallAddress @invokeParams | Where-Object {$_.name -eq $name}
+        Get-FGTFirewallAddress -connection $connection @invokeParams | Where-Object {$_.name -eq $name}
     }
 
     End {
@@ -203,7 +207,9 @@ function Get-FGTFirewallAddress {
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
-        [String[]]$vdom
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection=$DefaultFGTConnection
     )
 
     Begin {
@@ -219,7 +225,7 @@ function Get-FGTFirewallAddress {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/address' -method 'GET' @invokeParams
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/address' -method 'GET' -connection $connection @invokeParams
 
         switch ( $PSCmdlet.ParameterSetName ) {
             "name" { $response.results | where-object { $_.name -eq $name } }
@@ -286,7 +292,9 @@ function Set-FGTFirewallAddress {
         [Parameter (Mandatory = $false)]
         [boolean]$visibility,
         [Parameter(Mandatory = $false)]
-        [String[]]$vdom
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection=$DefaultFGTConnection
     )
 
     Begin {
@@ -347,9 +355,9 @@ function Set-FGTFirewallAddress {
             }
         }
 
-        Invoke-FGTRestMethod -method "PUT" -body $_address -uri $uri @invokeParams | out-Null
+        Invoke-FGTRestMethod -method "PUT" -body $_address -uri $uri -connection $connection @invokeParams | out-Null
 
-        Get-FGTFirewallAddress @invokeParams | Where-Object {$_.name -eq $address.name}
+        Get-FGTFirewallAddress -connection $connection @invokeParams | Where-Object {$_.name -eq $address.name}
     }
 
     End {
@@ -386,7 +394,9 @@ function Remove-FGTFirewallAddress {
         [Parameter(Mandatory = $false)]
         [switch]$noconfirm,
         [Parameter(Mandatory = $false)]
-        [String[]]$vdom
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection=$DefaultFGTConnection
     )
 
     Begin {
@@ -413,7 +423,7 @@ function Remove-FGTFirewallAddress {
         else { $decision = 0 }
         if ($decision -eq 0) {
             Write-Progress -activity "Remove Address"
-            $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri @invokeParams
+            $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -connection $connection @invokeParams
             Write-Progress -activity "Remove Address" -completed
         }
     }
