@@ -68,7 +68,7 @@ function Connect-FGT {
 
     Process {
 
-        $connection = @{server = ""; session = ""; httpOnly = $false; port = ""; headers = ""; invokeParams = ""}
+        $connection = @{server = ""; session = ""; httpOnly = $false; port = ""; headers = ""; invokeParams = "" }
 
         #If there is a password (and a user), create a credentials
         if ($Password) {
@@ -79,8 +79,8 @@ function Connect-FGT {
             $Credentials = Get-Credential -Message 'Please enter administrative credentials for your FortiGate'
         }
 
-        $postParams = @{username = $Credentials.username; secretkey = $Credentials.GetNetworkCredential().Password; ajax = 1}
-        $invokeParams = @{DisableKeepAlive = $false; UseBasicParsing = $true; SkipCertificateCheck = $SkipCertificateCheck}
+        $postParams = @{username = $Credentials.username; secretkey = $Credentials.GetNetworkCredential().Password; ajax = 1 }
+        $invokeParams = @{DisableKeepAlive = $false; UseBasicParsing = $true; SkipCertificateCheck = $SkipCertificateCheck }
 
         if ("Desktop" -eq $PSVersionTable.PsEdition) {
             #Remove -SkipCertificateCheck from Invoke Parameter (not supported <= PS 5)
@@ -141,7 +141,7 @@ function Connect-FGT {
         #Remove extra "quote"
         $cookie_csrf = $cookie_csrf -replace '["]', ''
         #Add csrf cookie to header (X-CSRFTOKEN)
-        $headers = @{"X-CSRFTOKEN" = $cookie_csrf}
+        $headers = @{"X-CSRFTOKEN" = $cookie_csrf }
 
         $connection.server = $server
         $connection.session = $FGT
