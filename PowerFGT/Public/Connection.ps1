@@ -62,7 +62,9 @@ function Connect-FGT {
         [ValidateRange(1, 65535)]
         [int]$port,
         [Parameter(Mandatory = $false)]
-        [string[]]$vdom
+        [string[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [boolean]$DefaultConnection=$true
     )
 
     Begin {
@@ -152,7 +154,9 @@ function Connect-FGT {
         $connection.invokeParams = $invokeParams
         $connection.vdom = $vdom
 
-        set-variable -name DefaultFGTConnection -value $connection -scope Global
+        if ( $DefaultConnection ) {
+            set-variable -name DefaultFGTConnection -value $connection -scope Global
+        }
 
         $connection
     }
