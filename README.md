@@ -283,6 +283,18 @@ For get FGT Firewall Address of all vdom
 [...]
 ```
 
+You can configure the "default" vdom when connect using
+```powershell
+    Connect-FGT 192.0.2.1 -vdom vdomX
+[...]
+```
+
+You can also change default vdom using
+```powershell
+    Set-FGTConnection -vdom vdomY
+[...]
+```
+
 ### Disconnecting
 
 ```powershell
