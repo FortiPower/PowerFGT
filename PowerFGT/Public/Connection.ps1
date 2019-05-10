@@ -176,6 +176,10 @@ function Set-FGTConnection {
 
         Configure default connection vdom to vdomY
 
+        .EXAMPLE
+        Set-FGTConnection -vdom $null
+
+        Restore vdom configuration to default (by default root)
     #>
 
     Param(
