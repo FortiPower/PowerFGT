@@ -77,6 +77,9 @@ function Invoke-FGTRestMethod {
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $vdom = $vdom -Join ','
             $fullurl += "&vdom=$vdom"
+        } elseif (${DefaultFGTConnection}.vdom) {
+            $vdom = ${DefaultFGTConnection}.vdom -Join ','
+            $fullurl += "&vdom=$vdom"
         }
 
         $sessionvariable = $DefaultFGTConnection.session
