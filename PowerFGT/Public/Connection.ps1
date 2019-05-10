@@ -162,6 +162,40 @@ function Connect-FGT {
 }
 
 
+function Set-FGTConnection {
+
+    <#
+        .SYNOPSIS
+        Configure FGT connection Setting
+
+        .DESCRIPTION
+        Configure FGT connection Setting (Vdom...)
+
+        .EXAMPLE
+        Set-FGTConnection -vdom vdomY
+
+        Configure default connection vdom to vdomY
+
+    #>
+
+    Param(
+        [Parameter(Mandatory = $false)]
+        [string[]]$vdom
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $DefaultFGTConnection.vdom = $vdom
+
+    }
+
+    End {
+    }
+}
+
 function Disconnect-FGT {
 
     <#
