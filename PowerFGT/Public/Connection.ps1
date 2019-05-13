@@ -241,7 +241,7 @@ function Disconnect-FGT {
         [Parameter(Mandatory = $false)]
         [switch]$noconfirm,
         [Parameter(Mandatory = $false)]
-        [psobject]$connection
+        [psobject]$connection=$DefaultFGTConnection
     )
 
     Begin {
