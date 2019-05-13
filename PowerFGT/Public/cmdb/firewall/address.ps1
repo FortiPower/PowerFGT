@@ -51,7 +51,9 @@ function Add-FGTFirewallAddress {
         [ValidateLength(0, 255)]
         [string]$comment,
         [Parameter (Mandatory = $false)]
-        [boolean]$visibility
+        [boolean]$visibility,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom
     )
 
     Begin {
@@ -59,7 +61,12 @@ function Add-FGTFirewallAddress {
 
     Process {
 
-        if ( Get-FGTFirewallAddress -name $name ) {
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( Get-FGTFirewallAddress @invokeParams -name $name ) {
             Throw "Already an address object using the same name"
         }
 
@@ -94,9 +101,9 @@ function Add-FGTFirewallAddress {
             }
         }
 
-        Invoke-FGTRestMethod -method "POST" -body $address -uri $uri | out-Null
+        Invoke-FGTRestMethod -method "POST" -body $address -uri $uri @invokeParams | out-Null
 
-        Get-FGTFirewallAddress | Where-Object {$_.name -eq $name}
+        Get-FGTFirewallAddress @invokeParams | Where-Object {$_.name -eq $name}
     }
 
     End {
@@ -125,7 +132,9 @@ function Copy-FGTFirewallAddress {
         [ValidateScript( { ValidateFGTAddress $_ })]
         [psobject]$address,
         [Parameter (Mandatory = $true)]
-        [string]$name
+        [string]$name,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom
     )
 
     Begin {
@@ -133,11 +142,16 @@ function Copy-FGTFirewallAddress {
 
     Process {
 
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
         $uri = "api/v2/cmdb/firewall/address/$($address.name)/?action=clone&nkey=$($name)"
 
-        Invoke-FGTRestMethod -method "POST" -uri $uri | out-Null
+        Invoke-FGTRestMethod -method "POST" -uri $uri @invokeParams | out-Null
 
-        Get-FGTFirewallAddress | Where-Object {$_.name -eq $name}
+        Get-FGTFirewallAddress @invokeParams | Where-Object {$_.name -eq $name}
     }
 
     End {
@@ -173,6 +187,11 @@ function Get-FGTFirewallAddress {
 
       Get list of all address object (but only relevant attributes)
 
+      .EXAMPLE
+      Get-FGTAddress -vdom vdomX
+
+      Get list of all address on VdomX
+
   #>
 
     [CmdletBinding(DefaultParameterSetName = "default")]
@@ -182,7 +201,9 @@ function Get-FGTFirewallAddress {
         [Parameter (Mandatory = $false, ParameterSetName = "match")]
         [string]$match,
         [Parameter(Mandatory = $false)]
-        [switch]$skip
+        [switch]$skip,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom
     )
 
     Begin {
@@ -193,6 +214,9 @@ function Get-FGTFirewallAddress {
         $invokeParams = @{ }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
+        }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
         }
 
         $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/address' -method 'GET' @invokeParams
@@ -260,13 +284,20 @@ function Set-FGTFirewallAddress {
         [ValidateLength(0, 255)]
         [string]$comment,
         [Parameter (Mandatory = $false)]
-        [boolean]$visibility
+        [boolean]$visibility,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom
     )
 
     Begin {
     }
 
     Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
 
         $uri = "api/v2/cmdb/firewall/address/$($address.name)"
 
@@ -316,9 +347,9 @@ function Set-FGTFirewallAddress {
             }
         }
 
-        Invoke-FGTRestMethod -method "PUT" -body $_address -uri $uri | out-Null
+        Invoke-FGTRestMethod -method "PUT" -body $_address -uri $uri @invokeParams | out-Null
 
-        Get-FGTFirewallAddress | Where-Object {$_.name -eq $address.name}
+        Get-FGTFirewallAddress @invokeParams | Where-Object {$_.name -eq $address.name}
     }
 
     End {
@@ -353,13 +384,20 @@ function Remove-FGTFirewallAddress {
         [ValidateScript( { ValidateFGTAddress $_ })]
         [psobject]$address,
         [Parameter(Mandatory = $false)]
-        [switch]$noconfirm
+        [switch]$noconfirm,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom
     )
 
     Begin {
     }
 
     Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
 
         $uri = "api/v2/cmdb/firewall/address/$($address.name)"
 
@@ -375,7 +413,7 @@ function Remove-FGTFirewallAddress {
         else { $decision = 0 }
         if ($decision -eq 0) {
             Write-Progress -activity "Remove Address"
-            $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri
+            $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri @invokeParams
             Write-Progress -activity "Remove Address" -completed
         }
     }

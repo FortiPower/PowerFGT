@@ -22,7 +22,19 @@ function Get-FGTFirewallVip {
         Get-FGTFirewallVip -skip
 
         Get list of all nat vip object (but only relevant attributes)
+
+        .EXAMPLE
+        Get-FGTFirewallVip -vdom vdomX
+
+        Get list of all nat vip object on vdomX
     #>
+
+    Param(
+        [Parameter(Mandatory = $false)]
+        [switch]$skip,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom
+    )
 
     Begin {
     }
@@ -32,6 +44,9 @@ function Get-FGTFirewallVip {
         $invokeParams = @{ }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
+        }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
         }
 
         $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/vip' -method 'GET' @invokeParams

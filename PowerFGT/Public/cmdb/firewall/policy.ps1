@@ -23,11 +23,18 @@ function Get-FGTFirewallPolicy {
         Get-FGTFirewallPolicy -skip
 
         Get list of all policies (but only relevant attributes)
+
+        .EXAMPLE
+        Get-FGTFirewallPolicy -vdom vdomX
+
+        Get list of all policies on vdomX
     #>
 
     Param(
         [Parameter(Mandatory = $false)]
-        [switch]$skip
+        [switch]$skip,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom
     )
 
     Begin {
@@ -38,6 +45,9 @@ function Get-FGTFirewallPolicy {
         $invokeParams = @{ }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
+        }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
         }
 
         $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/policy' -method 'GET' @invokeParams

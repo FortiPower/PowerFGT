@@ -21,7 +21,19 @@ function Get-FGTVpnIpsecPhase1Interface {
         Get-FGTVpnIPsecPhase1Interface -skip
 
         Get list of all settings of VPN IPsec Phase 1 interface (but only relevant attributes)
+
+        .EXAMPLE
+        Get-FGTVpnIPsecPhase1Interface -vdom vdomX
+
+        Get list of all settings of VPN IPsec Phase 1 interface on vdomX
     #>
+
+    Param(
+        [Parameter(Mandatory = $false)]
+        [switch]$skip,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom
+    )
 
     Begin {
     }
@@ -31,6 +43,9 @@ function Get-FGTVpnIpsecPhase1Interface {
         $invokeParams = @{ }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
+        }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
         }
 
         $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/vpn.ipsec/phase1-interface' -method 'GET' @invokeParams

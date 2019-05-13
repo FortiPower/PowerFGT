@@ -23,11 +23,18 @@ function Get-FGTSystemDns {
         Get-FGTSystemDns -skip
 
         Display DNS configured on the FortiGate (but only relevant attributes)
+
+        EXAMPLE
+        Get-FGTSystemDns -vdom vdomX
+
+        Display DNS configured on the FortiGate on vdomX
     #>
 
     Param(
         [Parameter(Mandatory = $false)]
-        [switch]$skip
+        [switch]$skip,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom
     )
 
     Begin {
@@ -38,6 +45,9 @@ function Get-FGTSystemDns {
         $invokeParams = @{ }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
+        }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
         }
 
         $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/dns' -method 'GET' @invokeParams

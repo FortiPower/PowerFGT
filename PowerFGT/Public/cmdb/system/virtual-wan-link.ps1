@@ -22,11 +22,18 @@ function Get-FGTSystemVirtualWANLink {
         Get-FGTSystemVirtualWANLink -skip
 
         Get Virtual Wan Link Settings (but only relevant attributes)
+
+        .EXAMPLE
+        Get-FGTSystemVirtualWANLink -vdom vdomX
+
+        Get Virtual Wan Link Settings on vdomX
     #>
 
     Param(
         [Parameter(Mandatory = $false)]
-        [switch]$skip
+        [switch]$skip,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom
     )
 
     Begin {
@@ -37,6 +44,9 @@ function Get-FGTSystemVirtualWANLink {
         $invokeParams = @{ }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
+        }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
         }
 
         $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/virtual-wan-link' -method 'GET' @invokeParams

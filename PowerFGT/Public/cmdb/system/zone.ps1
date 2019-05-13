@@ -22,17 +22,32 @@ function Get-FGTSystemZone {
       Get-FGTSystemZone -skip
 
       Get list of all zone object (but only relevant attributes)
+
+      .EXAMPLE
+      Get-FGTSystemZone -vdom vdomX
+
+      Get list of all zone object on vdomX
     #>
+
+    Param(
+        [Parameter(Mandatory = $false)]
+        [switch]$skip,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom
+    )
 
     Begin {
     }
 
     Process {
 
-      $invokeParams = @{ }
-      if ( $PsBoundParameters.ContainsKey('skip') ) {
-          $invokeParams.add( 'skip', $skip )
-      }
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('skip') ) {
+            $invokeParams.add( 'skip', $skip )
+        }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
 
         $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/zone' -method 'GET' @invokeParams
         $response.results

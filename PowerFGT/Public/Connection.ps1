@@ -60,7 +60,9 @@ function Connect-FGT {
         [switch]$SkipCertificateCheck = $false,
         [Parameter(Mandatory = $false)]
         [ValidateRange(1, 65535)]
-        [int]$port
+        [int]$port,
+        [Parameter(Mandatory = $false)]
+        [string[]]$vdom
     )
 
     Begin {
@@ -68,7 +70,7 @@ function Connect-FGT {
 
     Process {
 
-        $connection = @{server = ""; session = ""; httpOnly = $false; port = ""; headers = ""; invokeParams = "" }
+        $connection = @{server = ""; session = ""; httpOnly = $false; port = ""; headers = ""; invokeParams = ""; vdom = "" }
 
         #If there is a password (and a user), create a credentials
         if ($Password) {
@@ -148,6 +150,7 @@ function Connect-FGT {
         $connection.headers = $headers
         $connection.port = $port
         $connection.invokeParams = $invokeParams
+        $connection.vdom = $vdom
 
         set-variable -name DefaultFGTConnection -value $connection -scope Global
 
@@ -158,6 +161,44 @@ function Connect-FGT {
     }
 }
 
+
+function Set-FGTConnection {
+
+    <#
+        .SYNOPSIS
+        Configure FGT connection Setting
+
+        .DESCRIPTION
+        Configure FGT connection Setting (Vdom...)
+
+        .EXAMPLE
+        Set-FGTConnection -vdom vdomY
+
+        Configure default connection vdom to vdomY
+
+        .EXAMPLE
+        Set-FGTConnection -vdom $null
+
+        Restore vdom configuration to default (by default root)
+    #>
+
+    Param(
+        [Parameter(Mandatory = $false)]
+        [string[]]$vdom
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $DefaultFGTConnection.vdom = $vdom
+
+    }
+
+    End {
+    }
+}
 
 function Disconnect-FGT {
 
