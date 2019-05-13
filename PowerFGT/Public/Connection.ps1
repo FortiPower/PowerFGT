@@ -198,7 +198,9 @@ function Set-FGTConnection {
 
     Param(
         [Parameter(Mandatory = $false)]
-        [string[]]$vdom
+        [string[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection=$DefaultFGTConnection
     )
 
     Begin {
@@ -206,7 +208,7 @@ function Set-FGTConnection {
 
     Process {
 
-        $DefaultFGTConnection.vdom = $vdom
+        $connection.vdom = $vdom
 
     }
 
