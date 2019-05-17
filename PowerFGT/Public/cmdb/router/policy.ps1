@@ -34,7 +34,9 @@ function Get-FGTRouterPolicy {
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
-        [String[]]$vdom
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection=$DefaultFGTConnection
     )
 
     Begin {
@@ -50,7 +52,7 @@ function Get-FGTRouterPolicy {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/router/policy' -method 'GET' @invokeParams
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/router/policy' -method 'GET' -connection $connection @invokeParams
         $response.results
     }
 

@@ -11,7 +11,7 @@ function Invoke-FGTRestMethod {
       Invoke RestMethod with FGT connection (internal) variable
 
       .DESCRIPTION
-       Invoke RestMethod with FGT connection variable (token, csrf..)
+      Invoke RestMethod with FGT connection variable (token, csrf..)
 
       .EXAMPLE
       Invoke-FGTRestMethod -method "get" -uri "api/v2/cmdb/firewall/address"
@@ -32,6 +32,11 @@ function Invoke-FGTRestMethod {
       Invoke-FGTRestMethod --method "post" -uri "api/v2/cmdb/firewall/address" -body $body
 
       Invoke-RestMethod with FGT connection for post api/v2/cmdb/firewall/address uri with $body payload
+
+      .EXAMPLE
+      Invoke-FGTRestMethod -method "get" -uri "api/v2/cmdb/firewall/address" -connection $fw2
+
+      Invoke-RestMethod with $fw2 connection for get api/v2/cmdb/firewall/address uri
     #>
 
     Param(
@@ -45,7 +50,9 @@ function Invoke-FGTRestMethod {
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
-        [String[]]$vdom
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection
     )
 
     Begin {
@@ -53,11 +60,19 @@ function Invoke-FGTRestMethod {
 
     Process {
 
-        $Server = ${DefaultFGTConnection}.Server
-        $httpOnly = ${DefaultFGTConnection}.httpOnly
-        $port = ${DefaultFGTConnection}.port
-        $headers = ${DefaultFGTConnection}.headers
-        $invokeParams = ${DefaultFGTConnection}.invokeParams
+        if ($null -eq $connection ) {
+            if ($null -eq $DefaultFGTConnection){
+                Throw "Not Connected. Connect to the Fortigate with Connect-FGT"
+            }
+            $connection = $DefaultFGTConnection
+        }
+
+        $Server = $connection.Server
+        $httpOnly = $connection.httpOnly
+        $port = $connection.port
+        $headers = $connection.headers
+        $invokeParams = $connection.invokeParams
+        $sessionvariable = $connection.session
 
         if ($httpOnly) {
             $fullurl = "http://${Server}:${port}/${uri}"
@@ -77,12 +92,10 @@ function Invoke-FGTRestMethod {
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $vdom = $vdom -Join ','
             $fullurl += "&vdom=$vdom"
-        } elseif (${DefaultFGTConnection}.vdom) {
-            $vdom = ${DefaultFGTConnection}.vdom -Join ','
+        } elseif ($connection.vdom) {
+            $vdom = $connection.vdom -Join ','
             $fullurl += "&vdom=$vdom"
         }
-
-        $sessionvariable = $DefaultFGTConnection.session
 
         try {
             if ($body) {

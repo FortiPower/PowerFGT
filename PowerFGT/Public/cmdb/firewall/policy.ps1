@@ -34,7 +34,9 @@ function Get-FGTFirewallPolicy {
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
-        [String[]]$vdom
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection=$DefaultFGTConnection
     )
 
     Begin {
@@ -50,7 +52,7 @@ function Get-FGTFirewallPolicy {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/policy' -method 'GET' @invokeParams
+        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/policy' -method 'GET' -connection $connection @invokeParams
         $reponse.results
     }
 

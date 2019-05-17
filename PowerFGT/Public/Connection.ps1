@@ -44,6 +44,16 @@ function Connect-FGT {
       Connect-FGT -Server 192.0.2.1 -Username manager -Password $mysecpassword
 
       Connect to a FortiGate with IP 192.0.2.1 using Username and Password
+
+      .EXAMPLE
+      $fw1 = Connect-ArubaFGT -Server 192.0.2.1
+      Connect to an FortiGate with IP 192.0.2.1 and store connection info to $fw1 variable
+
+      .EXAMPLE
+      $fw2 = Connect-ArubaFGT -Server 192.0.2.1 -DefaultConnection:$false
+
+      Connect to an FortiGate with IP 192.0.2.1 and store connection info to $fw2 variable
+      and don't store connection on global ($DefaultFGTConnection) variable
   #>
 
     Param(
@@ -62,7 +72,9 @@ function Connect-FGT {
         [ValidateRange(1, 65535)]
         [int]$port,
         [Parameter(Mandatory = $false)]
-        [string[]]$vdom
+        [string[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [boolean]$DefaultConnection=$true
     )
 
     Begin {
@@ -152,7 +164,9 @@ function Connect-FGT {
         $connection.invokeParams = $invokeParams
         $connection.vdom = $vdom
 
-        set-variable -name DefaultFGTConnection -value $connection -scope Global
+        if ( $DefaultConnection ) {
+            set-variable -name DefaultFGTConnection -value $connection -scope Global
+        }
 
         $connection
     }
@@ -184,7 +198,9 @@ function Set-FGTConnection {
 
     Param(
         [Parameter(Mandatory = $false)]
-        [string[]]$vdom
+        [string[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection=$DefaultFGTConnection
     )
 
     Begin {
@@ -192,7 +208,7 @@ function Set-FGTConnection {
 
     Process {
 
-        $DefaultFGTConnection.vdom = $vdom
+        $connection.vdom = $vdom
 
     }
 
@@ -223,7 +239,9 @@ function Disconnect-FGT {
 
     Param(
         [Parameter(Mandatory = $false)]
-        [switch]$noconfirm
+        [switch]$noconfirm,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection=$DefaultFGTConnection
     )
 
     Begin {
@@ -245,9 +263,9 @@ function Disconnect-FGT {
         else { $decision = 0 }
         if ($decision -eq 0) {
             Write-Progress -activity "Remove FortiGate connection"
-            $null = invoke-FGTRestMethod -method "POST" -uri $url
+            $null = invoke-FGTRestMethod -method "POST" -uri $url -connection $connection
             write-progress -activity "Remove FortiGate connection" -completed
-            if (Get-Variable -Name DefaultFGTConnection -scope global ) {
+            if (Test-Path variable:global:DefaultFGTConnection) {
                 Remove-Variable -name DefaultFGTConnection -scope global
             }
         }
