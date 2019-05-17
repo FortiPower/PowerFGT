@@ -92,8 +92,8 @@ function Invoke-FGTRestMethod {
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $vdom = $vdom -Join ','
             $fullurl += "&vdom=$vdom"
-        } elseif (${DefaultFGTConnection}.vdom) {
-            $vdom = ${DefaultFGTConnection}.vdom -Join ','
+        } elseif ($connection.vdom) {
+            $vdom = $connection.vdom -Join ','
             $fullurl += "&vdom=$vdom"
         }
 
