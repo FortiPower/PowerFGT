@@ -4,6 +4,97 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
+function Add-FGTFirewallVip {
+
+    <#
+        .SYNOPSIS
+        Add a FortiGate Virtual IP
+
+        .DESCRIPTION
+        Add a FortiGate Virtual IP (VIP) (One to One)
+
+        .EXAMPLE
+        Add-FGTFirewallVip -name myVIP1 -type static-nat -extip 192.2.0.1 -mappedip 198.51.100.1
+
+        Add VIP objet type static-nat (One to One ) with name myVIP1 with external IP 192.2.0.1 and mapped IP 198.51.100.1
+
+        .EXAMPLE
+        Add-FGTFirewallVip -name myVIP2 -type static-nat -extip 192.2.0.2 -mappedip 198.51.100.2 -interface port1 -comment "My FGT VIP"
+
+        Add VIP objet type static-nat (One to One ) with name myVIP1 with external IP 192.2.0.1, mapped IP 198.51.100.1, associated to interface port2 and a comment
+
+    #>
+
+    Param(
+        [Parameter (Mandatory = $true)]
+        [ValidateSet("static-nat")]
+        [string]$type,
+        [Parameter (Mandatory = $true)]
+        [string]$name,
+        [Parameter (Mandatory = $true)]
+        [ipaddress]$extip,
+        [Parameter (Mandatory = $true)]
+        [ipaddress]$mappedip,
+        [Parameter (Mandatory = $false)]
+        [string]$interface = "any",
+        [Parameter (Mandatory = $false)]
+        [ValidateLength(0, 255)]
+        [string]$comment,
+        [Parameter (Mandatory = $false)]
+        [switch]$skip,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('skip') ) {
+            $invokeParams.add( 'skip', $skip )
+        }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( Get-FGTFirewallVip -connection $connection @invokeParams | Where-Object {$_.name -eq $name} ) {
+            Throw "Already a VIP object using the same name"
+        }
+
+        $uri = "api/v2/cmdb/firewall/vip"
+
+        $vip = new-Object -TypeName PSObject
+
+        $vip | add-member -name "name" -membertype NoteProperty -Value $name
+
+        $vip | add-member -name "type" -membertype NoteProperty -Value $type
+
+        $vip | add-member -name "extip" -membertype NoteProperty -Value $extip.ToString()
+
+        $range = New-Object -TypeName PSObject
+
+        $range | Add-member -name "range" -membertype NoteProperty -value $mappedip.ToString()
+        $vip | add-member -name "mappedip" -membertype NoteProperty -Value @($range)
+
+        #TODO check if the interface (zone ?) is valid
+        $vip | add-member -name "extintf" -membertype NoteProperty -Value $interface
+
+        if ( $PsBoundParameters.ContainsKey('comment') ) {
+            $vip | add-member -name "comment" -membertype NoteProperty -Value $comment
+        }
+
+        Invoke-FGTRestMethod -method "POST" -body $vip -uri $uri -connection $connection @invokeParams | out-Null
+
+        Get-FGTFirewallVip -connection $connection @invokeParams | Where-Object { $_.name -eq $name }
+    }
+
+    End {
+    }
+}
 function Get-FGTFirewallVip {
 
     <#
