@@ -36,3 +36,36 @@ Function ValidateFGTAddress {
     $true
 
 }
+
+
+Function ValidateFGTVip {
+
+    Param (
+        [Parameter (Mandatory = $true)]
+        [object]$argument
+    )
+
+    #Check if it looks like an VIP element
+
+    if ( -not ( $argument | get-member -name name -Membertype Properties)) {
+        throw "Element specified does not contain an name property."
+    }
+    if ( -not ( $argument | get-member -name uuid -Membertype Properties)) {
+        throw "Element specified does not contain a uuid property."
+    }
+    if ( -not ( $argument | get-member -name type -Membertype Properties)) {
+        throw "Element specified does not contain an type property."
+    }
+    if ( -not ( $argument | get-member -name extintf -Membertype Properties)) {
+        throw "Element specified does not contain an extintf property."
+    }
+    if ( -not ( $argument | get-member -name extip -Membertype Properties)) {
+        throw "Element specified does not contain an extip property."
+    }
+    if ( -not ( $argument | get-member -name mappedip -Membertype Properties)) {
+        throw "Element specified does not contain an mappedip property."
+    }
+
+    $true
+
+}
