@@ -99,6 +99,9 @@ function Invoke-FGTRestMethod {
 
         try {
             if ($body) {
+
+                Write-Verbose -message ($body | ConvertTo-Json)
+
                 $response = Invoke-RestMethod $fullurl -Method $method -body ($body | ConvertTo-Json) -Headers $headers -WebSession $sessionvariable @invokeParams
             }
             else {
