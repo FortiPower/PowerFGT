@@ -61,7 +61,7 @@ function Add-FGTFirewallVip {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        if ( Get-FGTFirewallVip -connection $connection @invokeParams | Where-Object {$_.name -eq $name} ) {
+        if ( Get-FGTFirewallVip -connection $connection @invokeParams -name $name ) {
             Throw "Already a VIP object using the same name"
         }
 
@@ -89,7 +89,7 @@ function Add-FGTFirewallVip {
 
         Invoke-FGTRestMethod -method "POST" -body $vip -uri $uri -connection $connection @invokeParams | out-Null
 
-        Get-FGTFirewallVip -connection $connection @invokeParams | Where-Object { $_.name -eq $name }
+        Get-FGTFirewallVip -connection $connection @invokeParams -name $name
     }
 
     End {
@@ -110,6 +110,16 @@ function Get-FGTFirewallVip {
         Get list of all nat vip object
 
         .EXAMPLE
+        Get-FGTFirewallVip -name myFGTVip
+
+        Get VIP named myFGTVip
+
+        .EXAMPLE
+        Get-FGTFirewallVip -match FGT
+
+        Get VIP match with *FGT*
+
+        .EXAMPLE
         Get-FGTFirewallVip -skip
 
         Get list of all nat vip object (but only relevant attributes)
@@ -120,7 +130,12 @@ function Get-FGTFirewallVip {
         Get list of all nat vip object on vdomX
     #>
 
+    [CmdletBinding(DefaultParameterSetName = "default")]
     Param(
+        [Parameter (Mandatory = $false, Position = 1, ParameterSetName = "name")]
+        [string]$name,
+        [Parameter (Mandatory = $false, ParameterSetName = "match")]
+        [string]$match,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
@@ -143,7 +158,13 @@ function Get-FGTFirewallVip {
         }
 
         $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/vip' -method 'GET' -connection $connection @invokeParams
-        $response.results
+
+        switch ( $PSCmdlet.ParameterSetName ) {
+            "name" { $response.results | where-object { $_.name -eq $name } }
+            "match" { $response.results | where-object { $_.name -match $match } }
+            default { $response.results }
+        }
+
     }
 
     End {
