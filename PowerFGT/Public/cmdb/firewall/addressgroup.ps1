@@ -95,6 +95,60 @@ function Add-FGTFirewallAddressGroup {
     End {
     }
 }
+
+function Copy-FGTFirewallAddressGroup {
+
+    <#
+        .SYNOPSIS
+        Copy/Clone a FortiGate Address Group
+
+        .DESCRIPTION
+        Copy/Clone a FortiGate Address Group (name, member...)
+
+        .EXAMPLE
+        $MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
+        PS C:\>$MyFGTAddressGroup | Copy-FGTFirewallAddressGroup -name MyFGTAddressGroup_copy
+
+        Copy / Clone MyFGTAddressGroup and name MyFGTAddress_copy
+
+    #>
+
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [ValidateScript( { ValidateFGTAddressGroup $_ })]
+        [psobject]$addrgrp,
+        [Parameter (Mandatory = $true)]
+        [string]$name,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection=$DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( Get-FGTFirewallAddressGroup @invokeParams -name $name -connection $connection) {
+            Throw "Already an addressgroup object using the same name"
+        }
+
+        $uri = "api/v2/cmdb/firewall/addrgrp/$($addrgrp.name)/?action=clone&nkey=$($name)"
+
+        Invoke-FGTRestMethod -method "POST" -uri $uri -connection $connection @invokeParams | Out-Null
+
+        Get-FGTFirewallAddressGroup -connection $connection @invokeParams -name $name
+    }
+
+    End {
+    }
+}
 function Get-FGTFirewallAddressgroup {
 
     <#
