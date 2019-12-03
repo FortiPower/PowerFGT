@@ -96,6 +96,75 @@ function Add-FGTFirewallAddressGroup {
     }
 }
 
+function Add-FGTFirewallAddressGroupMember {
+
+    <#
+        .SYNOPSIS
+        Add a FortiGate Address Group Member
+
+        .DESCRIPTION
+        Add a FortiGate Address Group Member
+
+        .EXAMPLE
+        $MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
+        PS C:\>$MyFGTAddressGroup | Add-FGTFirewallAddressGroupMember -member MyAddress1
+
+        Add MyAddress1 member to MyFGTAddressGroup
+
+        .EXAMPLE
+        $MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
+        PS C:\>$MyFGTAddressGroup | Add-FGTFirewallAddressGroupMember -member MyAddress1, MyAddress2
+
+        Add MyAddress1 and MyAddress2 member to MyFGTAddressGroup
+
+    #>
+
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [ValidateScript( { ValidateFGTAddressGroup $_ })]
+        [psobject]$addrgrp,
+        [string[]]$member,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection=$DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/firewall/addrgrp/$($addrgrp.name)"
+
+        $_addrgrp = new-Object -TypeName PSObject
+
+        if ( $PsBoundParameters.ContainsKey('member') ) {
+            #Add member to existing addrgrp member
+            $members = $addrgrp.member
+            foreach ( $m in $member ) {
+                $member_name = @{ }
+                $member_name.add( 'name', $m)
+                $members += $member_name
+            }
+            $_addrgrp | add-member -name "member" -membertype NoteProperty -Value $members
+        }
+
+
+        Invoke-FGTRestMethod -method "PUT" -body $_addrgrp -uri $uri -connection $connection @invokeParams | out-Null
+
+        Get-FGTFirewallAddressGroup -connection $connection @invokeParams -name $addrgrp.name
+    }
+
+    End {
+    }
+}
+
 function Copy-FGTFirewallAddressGroup {
 
     <#
