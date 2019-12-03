@@ -55,6 +55,10 @@ function Add-FGTFirewallAddressGroup {
             $invokeParams.add( 'vdom', $vdom )
         }
 
+        if ( Get-FGTFirewallAddressGroup @invokeParams -name $name -connection $connection) {
+            Throw "Already an addressgroup object using the same name"
+        }
+
         $uri = "api/v2/cmdb/firewall/addrgrp"
 
         $addrgrp = new-Object -TypeName PSObject
