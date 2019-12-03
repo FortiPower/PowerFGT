@@ -204,6 +204,18 @@ function Get-FGTFirewallAddress {
         [string]$name,
         [Parameter (Mandatory = $false, ParameterSetName = "match")]
         [string]$match,
+        [Parameter (Mandatory = $false)]
+        [Parameter (ParameterSetName = "filter")]
+        [string]$filter_attribute,
+        [Parameter (Mandatory = $false)]
+        [Parameter (ParameterSetName = "name")]
+        [Parameter (ParameterSetName = "match")]
+        [Parameter (ParameterSetName = "filter")]
+        [ValidateSet('equal', 'contains')]
+        [string]$filter_type,
+        [Parameter (Mandatory = $false)]
+        [Parameter (ParameterSetName = "filter")]
+        [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
@@ -225,13 +237,42 @@ function Get-FGTFirewallAddress {
             $invokeParams.add( 'vdom', $vdom )
         }
 
+        switch ( $PSCmdlet.ParameterSetName ) {
+            "match" {
+                $filter_value = $match
+                $filter_attribute = "name"
+                $filter_type = "contains"
+            }
+            "name" {
+                $filter_value = $name
+                $filter_attribute = "name"
+                $filter_type = "equal"
+            }
+            default { }
+        }
+
+        switch ( $filter_type ) {
+            "equal" {
+                $filter_value =  "==" + $filter_value
+            }
+            "contains" {
+                $filter_value =  "=@" + $filter_value
+            }
+            #by default set to equal..
+            default {
+                $filter_value =  "==" + $filter_value
+            }
+        }
+
+        if ($filter_attribute) {
+            $filter = $filter_attribute + $filter_value
+            $invokeParams.add( 'filter', $filter )
+        }
+
         $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/address' -method 'GET' -connection $connection @invokeParams
 
-        switch ( $PSCmdlet.ParameterSetName ) {
-            "name" { $response.results | where-object { $_.name -eq $name } }
-            "match" { $response.results | where-object { $_.name -match $match } }
-            default { $response.results }
-        }
+        $response.results
+
     }
 
     End {
