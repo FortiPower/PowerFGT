@@ -158,3 +158,71 @@ function Get-FGTFirewallAddressgroup {
     End {
     }
 }
+
+function Remove-FGTFirewallAddressGroup {
+
+    <#
+        .SYNOPSIS
+        Remove a FortiGate Address
+
+        .DESCRIPTION
+        Remove an address group object on the FortiGate
+
+        .EXAMPLE
+        $MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
+        PS C:\>$MyFGTAddressGroup | Remove-FGTFirewallAddressGroup
+
+        Remove address group object $MyFGTAddressGroup
+
+        .EXAMPLE
+        $MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
+        PS C:\>$MyFGTAddressGroup | Remove-FGTFirewallAddressGroup -noconfirm
+
+        Remove address object $MyFGTAddressGroup with no confirmation
+
+    #>
+
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [ValidateScript( { ValidateFGTAddressGroup $_ })]
+        [psobject]$addrgrp,
+        [Parameter(Mandatory = $false)]
+        [switch]$noconfirm,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection=$DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/firewall/addrgrp/$($addrgrp.name)"
+
+        if ( -not ( $Noconfirm )) {
+            $message = "Remove address group on Fortigate"
+            $question = "Proceed with removal of Address Group $($addrgrp.name) ?"
+            $choices = New-Object Collections.ObjectModel.Collection[Management.Automation.Host.ChoiceDescription]
+            $choices.Add((New-Object Management.Automation.Host.ChoiceDescription -ArgumentList '&Yes'))
+            $choices.Add((New-Object Management.Automation.Host.ChoiceDescription -ArgumentList '&No'))
+
+            $decision = $Host.UI.PromptForChoice($message, $question, $choices, 1)
+        }
+        else { $decision = 0 }
+        if ($decision -eq 0) {
+            Write-Progress -activity "Remove Address Group"
+            $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -connection $connection @invokeParams
+            Write-Progress -activity "Remove Address Group" -completed
+        }
+    }
+
+    End {
+    }
+}
