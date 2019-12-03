@@ -85,7 +85,7 @@ function Add-FGTFirewallAddressGroup {
 
         Invoke-FGTRestMethod -method "POST" -body $addrgrp -uri $uri -connection $connection @invokeParams #| out-Null
 
-        Get-FGTFirewallAddressGroup -connection $connection @invokeParams | Where-Object { $_.name -eq $name }
+        Get-FGTFirewallAddressGroup -connection $connection @invokeParams -name $name
     }
 
     End {
@@ -116,7 +116,12 @@ function Get-FGTFirewallAddressgroup {
         Display all addresses group on vdomX
     #>
 
+    [CmdletBinding(DefaultParameterSetName = "default")]
     Param(
+        [Parameter (Mandatory = $false, Position = 1, ParameterSetName = "name")]
+        [string]$name,
+        [Parameter (Mandatory = $false, ParameterSetName = "match")]
+        [string]$match,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
@@ -139,7 +144,11 @@ function Get-FGTFirewallAddressgroup {
         }
 
         $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/addrgrp' -method 'GET' -connection $connection @invokeParams
-        $response.results
+        switch ( $PSCmdlet.ParameterSetName ) {
+            "name" { $response.results | Where-Object { $_.name -eq $name } }
+            "match" { $response.results | Where-Object { $_.name -match $match } }
+            default { $response.results }
+        }
     }
 
     End {
