@@ -159,6 +159,112 @@ function Get-FGTFirewallAddressgroup {
     }
 }
 
+function Set-FGTFirewallAddressGroup {
+
+    <#
+        .SYNOPSIS
+        Configure a FortiGate Address Group
+
+        .DESCRIPTION
+        Change a FortiGate Address Group (name, member, comment...)
+
+        .EXAMPLE
+        $MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
+        PS C:\>$MyFGTAddressGroup | Set-FGTFirewallAddressGroup -member MyAddress1
+
+        Change MyFGTAddressGroup member to MyAddress1
+
+        .EXAMPLE
+        $MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
+        PS C:\>$MyFGTAddressGroup | Set-FGTFirewallAddressGroup -member MyAddress1, MyAddress2
+
+        Change MyFGTAddressGroup member to MyAddress1
+
+        .EXAMPLE
+        $MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
+        PS C:\>$MyFGTAddressGroup | Set-FGTFirewallAddressGroup -name MyFGTAddressGroup2
+
+        Rename MyFGTAddressGroup member to MyFGTAddressGroup2
+
+        .EXAMPLE
+        $MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
+        PS C:\>$MyFGTAddressGroup | Set-FGTFirewallAddressGroup -visibility:$false
+
+        Change MyFGTAddressGroup to set a new comment and disabled visibility
+
+    #>
+
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [ValidateScript( { ValidateFGTAddressGroup $_ })]
+        [psobject]$addrgrp,
+        [Parameter (Mandatory = $false)]
+        [string]$name,
+        [Parameter (Mandatory = $false)]
+        [string[]]$member,
+        [Parameter (Mandatory = $false)]
+        [ValidateLength(0, 255)]
+        [string]$comment,
+        [Parameter (Mandatory = $false)]
+        [boolean]$visibility,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection=$DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/firewall/addrgrp/$($addrgrp.name)"
+
+        $_addrgrp = new-Object -TypeName PSObject
+
+        if ( $PsBoundParameters.ContainsKey('name') ) {
+            #TODO check if there is no already a object with this name ?
+            $_addrgrp | add-member -name "name" -membertype NoteProperty -Value $name
+            $addrgrp.name = $name
+        }
+
+        if ( $PsBoundParameters.ContainsKey('member') ) {
+            #Add member to Member Array
+            $members = @( )
+            foreach ( $m in $member ) {
+                $member_name = @{ }
+                $member_name.add( 'name', $m)
+                $members += $member_name
+            }
+            $_addrgrp | add-member -name "member" -membertype NoteProperty -Value $members
+        }
+
+        if ( $PsBoundParameters.ContainsKey('comment') ) {
+            $_addrgrp | add-member -name "comment" -membertype NoteProperty -Value $comment
+        }
+
+        if ( $PsBoundParameters.ContainsKey('visibility') ) {
+            if ( $visibility ) {
+                $_addrgrp | add-member -name "visibility" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_addrgrp | add-member -name "visibility" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        Invoke-FGTRestMethod -method "PUT" -body $_addrgrp -uri $uri -connection $connection @invokeParams | out-Null
+
+        Get-FGTFirewallAddressGroup -connection $connection @invokeParams -name $addrgrp.name
+    }
+
+    End {
+    }
+}
 function Remove-FGTFirewallAddressGroup {
 
     <#
