@@ -74,7 +74,9 @@ function Connect-FGT {
         [Parameter(Mandatory = $false)]
         [string[]]$vdom,
         [Parameter(Mandatory = $false)]
-        [boolean]$DefaultConnection=$true
+        [boolean]$DefaultConnection = $true,
+        [Parameter(Mandatory = $false)]
+        [int]$Timeout = 5
     )
 
     Begin {
@@ -132,7 +134,7 @@ function Connect-FGT {
         }
 
         try {
-            Invoke-WebRequest $url -Method POST -Body $postParams -SessionVariable FGT @invokeParams | Out-Null
+            Invoke-WebRequest $url -Method POST -Body $postParams -SessionVariable FGT @invokeParams -TimeoutSec $Timeout | Out-Null
         }
         catch {
             Show-FGTException $_
@@ -200,7 +202,7 @@ function Set-FGTConnection {
         [Parameter(Mandatory = $false)]
         [string[]]$vdom,
         [Parameter(Mandatory = $false)]
-        [psobject]$connection=$DefaultFGTConnection
+        [psobject]$connection = $DefaultFGTConnection
     )
 
     Begin {
@@ -241,7 +243,7 @@ function Disconnect-FGT {
         [Parameter(Mandatory = $false)]
         [switch]$noconfirm,
         [Parameter(Mandatory = $false)]
-        [psobject]$connection=$DefaultFGTConnection
+        [psobject]$connection = $DefaultFGTConnection
     )
 
     Begin {
