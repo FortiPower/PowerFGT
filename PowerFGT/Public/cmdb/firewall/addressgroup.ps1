@@ -455,3 +455,84 @@ function Remove-FGTFirewallAddressGroup {
     End {
     }
 }
+
+function Remove-FGTFirewallAddressGroupMember {
+
+    <#
+        .SYNOPSIS
+        Remove a FortiGate Address Group Member
+
+        .DESCRIPTION
+        Remove a FortiGate Address Group Member
+
+        .EXAMPLE
+        $MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
+        PS C:\>$MyFGTAddressGroup | Remove-FGTFirewallAddressGroupMember -member MyAddress1
+
+        Remove MyAddress1 member to MyFGTAddressGroup
+
+        .EXAMPLE
+        $MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
+        PS C:\>$MyFGTAddressGroup | Remove-FGTFirewallAddressGroupMember -member MyAddress1, MyAddress2
+
+        Remove MyAddress1 and MyAddress2 member to MyFGTAddressGroup
+
+    #>
+
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [ValidateScript( { ValidateFGTAddressGroup $_ })]
+        [psobject]$addrgrp,
+        [string]$member,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection=$DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/firewall/addrgrp/$($addrgrp.name)"
+
+        $_addrgrp = new-Object -TypeName PSObject
+
+
+        if ( $PsBoundParameters.ContainsKey('member') ) {
+            #Create a array and remove member...
+            $members = @()
+            foreach ($m in $addrgrp.member) {
+                #If it is on remove member list skip
+                if ( $m.name -eq $member ){
+                    continue
+                }
+
+                $member_name = @{ }
+                $member_name.add( 'name', $m.name)
+                $members += $member_name
+
+            }
+            #check if there is always a member... (it is not possible don't have member on Addres Group)
+            if( $members.count -eq 0 ) {
+                Throw "You can't remove all members. Use Remove-FGTAddressGroup to remove Address Group"
+            }
+
+            $_addrgrp | add-member -name "member" -membertype NoteProperty -Value $members
+        }
+
+        Invoke-FGTRestMethod -method "PUT" -body $_addrgrp -uri $uri -connection $connection @invokeParams | out-Null
+
+        Get-FGTFirewallAddressGroup -connection $connection @invokeParams -name $addrgrp.name
+    }
+
+    End {
+    }
+}
+
