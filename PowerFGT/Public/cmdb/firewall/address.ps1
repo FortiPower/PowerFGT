@@ -187,6 +187,11 @@ function Get-FGTFirewallAddress {
       Get address match with *FGT*
 
       .EXAMPLE
+      Get-FGTFirewallAddress -uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
+
+      Get address with uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
+
+      .EXAMPLE
       Get-FGTFirewallAddress -skip
 
       Get list of all address object (but only relevant attributes)
@@ -204,6 +209,8 @@ function Get-FGTFirewallAddress {
         [string]$name,
         [Parameter (Mandatory = $false, ParameterSetName = "match")]
         [string]$match,
+        [Parameter (Mandatory = $false, ParameterSetName = "uuid")]
+        [string]$uuid,
         [Parameter (Mandatory = $false)]
         [Parameter (ParameterSetName = "filter")]
         [string]$filter_attribute,
@@ -246,6 +253,11 @@ function Get-FGTFirewallAddress {
             "name" {
                 $filter_value = $name
                 $filter_attribute = "name"
+                $filter_type = "equal"
+            }
+            "uuid" {
+                $filter_value = $uuid
+                $filter_attribute = "uuid"
                 $filter_type = "equal"
             }
             default { }
