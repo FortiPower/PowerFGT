@@ -74,7 +74,7 @@ function Connect-FGT {
         [Parameter(Mandatory = $false)]
         [string[]]$vdom,
         [Parameter(Mandatory = $false)]
-        [boolean]$DefaultConnection=$true
+        [boolean]$DefaultConnection = $true
     )
 
     Begin {
@@ -200,7 +200,7 @@ function Set-FGTConnection {
         [Parameter(Mandatory = $false)]
         [string[]]$vdom,
         [Parameter(Mandatory = $false)]
-        [psobject]$connection=$DefaultFGTConnection
+        [psobject]$connection = $DefaultFGTConnection
     )
 
     Begin {
@@ -241,7 +241,7 @@ function Disconnect-FGT {
         [Parameter(Mandatory = $false)]
         [switch]$noconfirm,
         [Parameter(Mandatory = $false)]
-        [psobject]$connection=$DefaultFGTConnection
+        [psobject]$connection = $DefaultFGTConnection
     )
 
     Begin {

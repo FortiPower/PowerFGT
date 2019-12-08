@@ -61,7 +61,7 @@ function Invoke-FGTRestMethod {
     Process {
 
         if ($null -eq $connection ) {
-            if ($null -eq $DefaultFGTConnection){
+            if ($null -eq $DefaultFGTConnection) {
                 Throw "Not Connected. Connect to the Fortigate with Connect-FGT"
             }
             $connection = $DefaultFGTConnection
@@ -82,7 +82,7 @@ function Invoke-FGTRestMethod {
         }
 
         #Extra parameter...
-        if($fullurl -NotMatch "\?"){
+        if ($fullurl -NotMatch "\?") {
             $fullurl += "?"
         }
 
@@ -92,7 +92,8 @@ function Invoke-FGTRestMethod {
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $vdom = $vdom -Join ','
             $fullurl += "&vdom=$vdom"
-        } elseif ($connection.vdom) {
+        }
+        elseif ($connection.vdom) {
             $vdom = $connection.vdom -Join ','
             $fullurl += "&vdom=$vdom"
         }

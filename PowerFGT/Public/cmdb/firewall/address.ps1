@@ -55,7 +55,7 @@ function Add-FGTFirewallAddress {
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
-        [psobject]$connection=$DefaultFGTConnection
+        [psobject]$connection = $DefaultFGTConnection
     )
 
     Begin {
@@ -105,7 +105,7 @@ function Add-FGTFirewallAddress {
 
         Invoke-FGTRestMethod -method "POST" -body $address -uri $uri -connection $connection @invokeParams | out-Null
 
-        Get-FGTFirewallAddress -connection $connection @invokeParams | Where-Object {$_.name -eq $name}
+        Get-FGTFirewallAddress -connection $connection @invokeParams | Where-Object { $_.name -eq $name }
     }
 
     End {
@@ -138,7 +138,7 @@ function Copy-FGTFirewallAddress {
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
-        [psobject]$connection=$DefaultFGTConnection
+        [psobject]$connection = $DefaultFGTConnection
     )
 
     Begin {
@@ -155,7 +155,7 @@ function Copy-FGTFirewallAddress {
 
         Invoke-FGTRestMethod -method "POST" -uri $uri -connection $connection @invokeParams | out-Null
 
-        Get-FGTFirewallAddress -connection $connection @invokeParams | Where-Object {$_.name -eq $name}
+        Get-FGTFirewallAddress -connection $connection @invokeParams | Where-Object { $_.name -eq $name }
     }
 
     End {
@@ -209,7 +209,7 @@ function Get-FGTFirewallAddress {
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
-        [psobject]$connection=$DefaultFGTConnection
+        [psobject]$connection = $DefaultFGTConnection
     )
 
     Begin {
@@ -294,7 +294,7 @@ function Set-FGTFirewallAddress {
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
-        [psobject]$connection=$DefaultFGTConnection
+        [psobject]$connection = $DefaultFGTConnection
     )
 
     Begin {
@@ -357,7 +357,7 @@ function Set-FGTFirewallAddress {
 
         Invoke-FGTRestMethod -method "PUT" -body $_address -uri $uri -connection $connection @invokeParams | out-Null
 
-        Get-FGTFirewallAddress -connection $connection @invokeParams | Where-Object {$_.name -eq $address.name}
+        Get-FGTFirewallAddress -connection $connection @invokeParams | Where-Object { $_.name -eq $address.name }
     }
 
     End {
@@ -396,7 +396,7 @@ function Remove-FGTFirewallAddress {
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
-        [psobject]$connection=$DefaultFGTConnection
+        [psobject]$connection = $DefaultFGTConnection
     )
 
     Begin {
