@@ -42,6 +42,16 @@ function Invoke-FGTRestMethod {
       Invoke-FGTRestMethod -method "get" -uri "api/v2/cmdb/firewall/address" -filter=name==FGT
 
       Invoke-RestMethod with FGT connection for get api/v2/cmdb/firewall/address uri with only name equal FGT
+
+      .EXAMPLE
+      Invoke-FGTRestMethod -method "get" -uri "api/v2/cmdb/firewall/address" -filter_attribute name -filter_value FGT
+
+      Invoke-RestMethod with FGT connection for get api/v2/cmdb/firewall/address uri with filter attribute equal name and filter value equal FGT
+
+      .EXAMPLE
+      Invoke-FGTRestMethod -method "get" -uri "api/v2/cmdb/firewall/address" -filter_attribute name -filter_type contains -filter_value FGT
+
+      Invoke-RestMethod with FGT connection for get api/v2/cmdb/firewall/address uri with filter attribute equal name and filter value contains FGT
     #>
 
     [CmdletBinding(DefaultParameterSetName = "default")]
