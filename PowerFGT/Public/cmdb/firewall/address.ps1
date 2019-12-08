@@ -251,22 +251,10 @@ function Get-FGTFirewallAddress {
             default { }
         }
 
-        switch ( $filter_type ) {
-            "equal" {
-                $filter_value =  "==" + $filter_value
-            }
-            "contains" {
-                $filter_value =  "=@" + $filter_value
-            }
-            #by default set to equal..
-            default {
-                $filter_value =  "==" + $filter_value
-            }
-        }
-
-        if ($filter_attribute) {
-            $filter = $filter_attribute + $filter_value
-            $invokeParams.add( 'filter', $filter )
+        if ( $filter_value -and $filter_attribute -and $filter_type ) {
+            $invokeParams.add( 'filter_value', $filter_value )
+            $invokeParams.add( 'filter_attribute', $filter_attribute )
+            $invokeParams.add( 'filter_type', $filter_type )
         }
 
         $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/address' -method 'GET' -connection $connection @invokeParams
