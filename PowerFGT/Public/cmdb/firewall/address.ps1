@@ -219,7 +219,7 @@ function Get-FGTFirewallAddress {
         [Parameter (ParameterSetName = "match")]
         [Parameter (ParameterSetName = "filter")]
         [ValidateSet('equal', 'contains')]
-        [string]$filter_type,
+        [string]$filter_type = "equal",
         [Parameter (Mandatory = $false)]
         [Parameter (ParameterSetName = "filter")]
         [psobject]$filter_value,
@@ -263,7 +263,8 @@ function Get-FGTFirewallAddress {
             default { }
         }
 
-        if ( $filter_value -and $filter_attribute -and $filter_type ) {
+        #if filter value and filter_attribut, add filter (by default filter_type is equal)
+        if ( $filter_value -and $filter_attribute ) {
             $invokeParams.add( 'filter_value', $filter_value )
             $invokeParams.add( 'filter_attribute', $filter_attribute )
             $invokeParams.add( 'filter_type', $filter_type )
