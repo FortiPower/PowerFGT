@@ -182,9 +182,9 @@ function Get-FGTFirewallAddress {
       Get address named myFGTAddress
 
       .EXAMPLE
-      Get-FGTFirewallAddress -match FGT
+      Get-FGTFirewallAddress -name FGT -filter_type contains
 
-      Get address match with *FGT*
+      Get address contains with *FGT*
 
       .EXAMPLE
       Get-FGTFirewallAddress -uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
@@ -207,8 +207,6 @@ function Get-FGTFirewallAddress {
     Param(
         [Parameter (Mandatory = $false, Position = 1, ParameterSetName = "name")]
         [string]$name,
-        [Parameter (Mandatory = $false, ParameterSetName = "match")]
-        [string]$match,
         [Parameter (Mandatory = $false, ParameterSetName = "uuid")]
         [string]$uuid,
         [Parameter (Mandatory = $false)]
@@ -216,7 +214,7 @@ function Get-FGTFirewallAddress {
         [string]$filter_attribute,
         [Parameter (Mandatory = $false)]
         [Parameter (ParameterSetName = "name")]
-        [Parameter (ParameterSetName = "match")]
+        [Parameter (ParameterSetName = "uuid")]
         [Parameter (ParameterSetName = "filter")]
         [ValidateSet('equal', 'contains')]
         [string]$filter_type = "equal",
