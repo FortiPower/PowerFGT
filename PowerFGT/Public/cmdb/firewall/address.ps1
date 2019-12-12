@@ -131,7 +131,7 @@ function Copy-FGTFirewallAddress {
 
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
-        [ValidateScript( { ValidateFGTAddress $_ })]
+        [ValidateScript( { Confirm-FGTAddress $_ })]
         [psobject]$address,
         [Parameter (Mandatory = $true)]
         [string]$name,
@@ -316,7 +316,7 @@ function Set-FGTFirewallAddress {
 
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
-        [ValidateScript( { ValidateFGTAddress $_ })]
+        [ValidateScript( { Confirm-FGTAddress $_ })]
         [psobject]$address,
         [Parameter (Mandatory = $false)]
         [string]$name,
@@ -429,7 +429,7 @@ function Remove-FGTFirewallAddress {
 
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
-        [ValidateScript( { ValidateFGTAddress $_ })]
+        [ValidateScript( { Confirm-FGTAddress $_ })]
         [psobject]$address,
         [Parameter(Mandatory = $false)]
         [switch]$noconfirm,

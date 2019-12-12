@@ -431,8 +431,8 @@ Set-FGTCipherSSL
 Set-FGTFirewallAddress
 Set-FGTUntrustedSSL
 Show-FGTException
-ValidateFGTAddress
-ValidateFGTVip
+Confirm-FGTAddress
+Confirm-FGTVip
 ```
 
 # Author

@@ -121,7 +121,7 @@ function Add-FGTFirewallAddressGroupMember {
 
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
-        [ValidateScript( { ValidateFGTAddressGroup $_ })]
+        [ValidateScript( { Confirm-FGTAddressGroup $_ })]
         [psobject]$addrgrp,
         [string[]]$member,
         [Parameter(Mandatory = $false)]
@@ -184,7 +184,7 @@ function Copy-FGTFirewallAddressGroup {
 
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
-        [ValidateScript( { ValidateFGTAddressGroup $_ })]
+        [ValidateScript( { Confirm-FGTAddressGroup $_ })]
         [psobject]$addrgrp,
         [Parameter (Mandatory = $true)]
         [string]$name,
@@ -319,7 +319,7 @@ function Set-FGTFirewallAddressGroup {
 
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
-        [ValidateScript( { ValidateFGTAddressGroup $_ })]
+        [ValidateScript( { Confirm-FGTAddressGroup $_ })]
         [psobject]$addrgrp,
         [Parameter (Mandatory = $false)]
         [string]$name,
@@ -413,7 +413,7 @@ function Remove-FGTFirewallAddressGroup {
 
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
-        [ValidateScript( { ValidateFGTAddressGroup $_ })]
+        [ValidateScript( { Confirm-FGTAddressGroup $_ })]
         [psobject]$addrgrp,
         [Parameter(Mandatory = $false)]
         [switch]$noconfirm,
@@ -481,7 +481,7 @@ function Remove-FGTFirewallAddressGroupMember {
 
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
-        [ValidateScript( { ValidateFGTAddressGroup $_ })]
+        [ValidateScript( { Confirm-FGTAddressGroup $_ })]
         [psobject]$addrgrp,
         [string[]]$member,
         [Parameter(Mandatory = $false)]

@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-Function ValidateFGTAddress {
+Function Confirm-FGTAddress {
 
     Param (
         [Parameter (Mandatory = $true)]
@@ -37,7 +37,7 @@ Function ValidateFGTAddress {
 
 }
 
-Function ValidateFGTAddressGroup {
+Function Confirm-FGTAddressGroup {
 
     Param (
         [Parameter (Mandatory = $true)]
@@ -69,7 +69,7 @@ Function ValidateFGTAddressGroup {
 
 }
 
-Function ValidateFGTVip {
+Function Confirm-FGTVip {
 
     Param (
         [Parameter (Mandatory = $true)]
