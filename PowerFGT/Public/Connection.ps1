@@ -54,6 +54,13 @@ function Connect-FGT {
 
       Connect to an FortiGate with IP 192.0.2.1 and store connection info to $fw2 variable
       and don't store connection on global ($DefaultFGTConnection) variable
+
+      .EXAMPLE
+      Connect-FGT -Server 192.0.2.1 -Timeout 15
+
+      Connect to a Fortigate with IP 192.0.2.1 and timeout the operation if it takes longer
+      than 15 seconds to form a connection. The Default value "0" will cause the connection to never timeout.
+
   #>
 
     Param(
@@ -76,7 +83,7 @@ function Connect-FGT {
         [Parameter(Mandatory = $false)]
         [boolean]$DefaultConnection = $true,
         [Parameter(Mandatory = $false)]
-        [int]$Timeout = 5
+        [int]$Timeout = 0
     )
 
     Begin {
@@ -96,7 +103,7 @@ function Connect-FGT {
         }
 
         $postParams = @{username = $Credentials.username; secretkey = $Credentials.GetNetworkCredential().Password; ajax = 1 }
-        $invokeParams = @{DisableKeepAlive = $false; UseBasicParsing = $true; SkipCertificateCheck = $SkipCertificateCheck }
+        $invokeParams = @{DisableKeepAlive = $false; UseBasicParsing = $true; SkipCertificateCheck = $SkipCertificateCheck; TimeoutSec = $Timeout }
 
         if ("Desktop" -eq $PSVersionTable.PsEdition) {
             #Remove -SkipCertificateCheck from Invoke Parameter (not supported <= PS 5)
@@ -134,7 +141,7 @@ function Connect-FGT {
         }
 
         try {
-            Invoke-WebRequest $url -Method POST -Body $postParams -SessionVariable FGT @invokeParams -TimeoutSec $Timeout | Out-Null
+            Invoke-WebRequest $url -Method POST -Body $postParams -SessionVariable FGT @invokeParams | Out-Null
         }
         catch {
             Show-FGTException $_
