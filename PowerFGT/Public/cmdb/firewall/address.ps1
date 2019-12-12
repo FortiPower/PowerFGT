@@ -243,11 +243,6 @@ function Get-FGTFirewallAddress {
         }
 
         switch ( $PSCmdlet.ParameterSetName ) {
-            "match" {
-                $filter_value = $match
-                $filter_attribute = "name"
-                $filter_type = "contains"
-            }
             "name" {
                 $filter_value = $name
                 $filter_attribute = "name"
