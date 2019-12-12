@@ -251,12 +251,10 @@ function Get-FGTFirewallAddress {
             "name" {
                 $filter_value = $name
                 $filter_attribute = "name"
-                $filter_type = "equal"
             }
             "uuid" {
                 $filter_value = $uuid
                 $filter_attribute = "uuid"
-                $filter_type = "equal"
             }
             default { }
         }
