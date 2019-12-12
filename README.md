@@ -20,7 +20,7 @@ With this module (version 0.3.0) you can manage:
 - Static Route (Get)
 - System Global (Get)
 - VDOM (Get)
-- Virtual IP (Get)
+- Virtual IP (Get/Add/Remove object type static-nat)
 - Virtual WAN Link/SD-WAN (Get)
 - VPN IPsec Phase 1/Phase 2 Interface (Get)
 - Zone (Get)
@@ -401,6 +401,7 @@ You can use also `Connect-FGT -httpOnly` for connect using HTTP (NOT RECOMMENDED
 # List of available command
 ```powershell
 Add-FGTFirewallAddress
+Add-FGTFirewallVip
 Connect-FGT
 Copy-FGTFirewallAddress
 Disconnect-FGT
@@ -425,11 +426,13 @@ Get-FGTVpnIpsecPhase1Interface
 Get-FGTVpnIpsecPhase2Interface
 Invoke-FGTRestMethod
 Remove-FGTFirewallAddress
+Remove-FGTFirewallVip
 Set-FGTCipherSSL
 Set-FGTFirewallAddress
 Set-FGTUntrustedSSL
 Show-FGTException
 ValidateFGTAddress
+ValidateFGTVip
 ```
 
 # Author
