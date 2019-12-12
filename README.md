@@ -215,6 +215,49 @@ or delete it `Remove-FGTFirewallAddress`.
     Get-FGTFirewallAddress -name "My Network" | Remove-FGTFirewallAddress
 ```
 
+### Filtering
+
+For `Invoke-FGTRestMethod`, it is possible to use -filter parameter
+You need to use FortiGate API syntax :
+
+| Key | Operator | Pattern | Full Request | Description
+| ---------- | ------------------- | ------------------- | ------------------- | -------------------
+| schedule | == | always | GET /api/v2/cmdb/firewall/policy/?filter=schedule==always | Only return firewall policy with schedule 'always'
+| schedule | != | always | GET /api/v2/cmdb/firewall/policy/?filter=schedule!=always | Return all firewall policy with schedule other than 'always'
+
+
+and Filter Operators :
+
+|  Operator |  Description
+| ---------- | -------------------
+| == | Case insensitive match with pattern.
+| != | Does not match with pattern (case insensitive).
+| =@ | Pattern found in object value (case insensitive).
+| !@ | Pattern not found in object value (case insensitive).
+| <= | Value must be less than or equal to pattern.
+| < | Value must be less than pattern.
+| >= | Value must be greater than or equal to pattern.
+| > | Value must be greater than pattern.
+
+For  `Invoke-FGTRestMethod` and `Get-XXX` cmdlet like `Get-FGTFirewallAddress`, it is possible to using some helper filter (`-filter_attribute`, `-filter_type`, `-filter_value`)
+
+```powershell
+# Get NetworkDevice named myFGT
+    Get-FGTFirewallAddress -name  myFGT
+...
+
+# Get NetworkDevice contains myFGT
+    Get-FGTFirewallAddress -name myFGT -filter_type contains
+...
+
+# Get NetworkDevice where subnet equal 192.0.2.0 255.255.255.0
+    Get-FGTFirewallAddress -filter_attribute subnet -filter_type equal -filter_value 192.0.2.0 255.255.255.0
+...
+
+```
+Actually, support only `equal` and `contains` filter type
+
+
 ### Invoke API
 for example to get Fortigate System Global Info
 

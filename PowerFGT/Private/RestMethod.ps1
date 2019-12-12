@@ -37,8 +37,24 @@ function Invoke-FGTRestMethod {
       Invoke-FGTRestMethod -method "get" -uri "api/v2/cmdb/firewall/address" -connection $fw2
 
       Invoke-RestMethod with $fw2 connection for get api/v2/cmdb/firewall/address uri
+
+      .EXAMPLE
+      Invoke-FGTRestMethod -method "get" -uri "api/v2/cmdb/firewall/address" -filter=name==FGT
+
+      Invoke-RestMethod with FGT connection for get api/v2/cmdb/firewall/address uri with only name equal FGT
+
+      .EXAMPLE
+      Invoke-FGTRestMethod -method "get" -uri "api/v2/cmdb/firewall/address" -filter_attribute name -filter_value FGT
+
+      Invoke-RestMethod with FGT connection for get api/v2/cmdb/firewall/address uri with filter attribute equal name and filter value equal FGT
+
+      .EXAMPLE
+      Invoke-FGTRestMethod -method "get" -uri "api/v2/cmdb/firewall/address" -filter_attribute name -filter_type contains -filter_value FGT
+
+      Invoke-RestMethod with FGT connection for get api/v2/cmdb/firewall/address uri with filter attribute equal name and filter value contains FGT
     #>
 
+    [CmdletBinding(DefaultParameterSetName = "default")]
     Param(
         [Parameter(Mandatory = $true, position = 1)]
         [String]$uri,
@@ -51,6 +67,19 @@ function Invoke-FGTRestMethod {
         [switch]$skip,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [Parameter (ParameterSetName = "filter")]
+        [String]$filter,
+        [Parameter(Mandatory = $false)]
+        [Parameter (ParameterSetName = "filter_build")]
+        [string]$filter_attribute,
+        [Parameter(Mandatory = $false)]
+        [ValidateSet('equal', 'contains')]
+        [Parameter (ParameterSetName = "filter_build")]
+        [string]$filter_type,
+        [Parameter (Mandatory = $false)]
+        [Parameter (ParameterSetName = "filter_build")]
+        [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
         [psobject]$connection
     )
@@ -96,6 +125,28 @@ function Invoke-FGTRestMethod {
         elseif ($connection.vdom) {
             $vdom = $connection.vdom -Join ','
             $fullurl += "&vdom=$vdom"
+        }
+
+        #filter
+        switch ( $filter_type ) {
+            "equal" {
+                $filter_value = "==" + $filter_value
+            }
+            "contains" {
+                $filter_value = "=@" + $filter_value
+            }
+            #by default set to equal..
+            default {
+                $filter_value = "==" + $filter_value
+            }
+        }
+
+        if ($filter_attribute) {
+            $filter = $filter_attribute + $filter_value
+        }
+
+        if ( $filter ) {
+            $fullurl += "&filter=$filter"
         }
 
         try {

@@ -105,7 +105,7 @@ function Add-FGTFirewallAddress {
 
         Invoke-FGTRestMethod -method "POST" -body $address -uri $uri -connection $connection @invokeParams | out-Null
 
-        Get-FGTFirewallAddress -connection $connection @invokeParams | Where-Object { $_.name -eq $name }
+        Get-FGTFirewallAddress -connection $connection @invokeParams -name $name
     }
 
     End {
@@ -155,7 +155,7 @@ function Copy-FGTFirewallAddress {
 
         Invoke-FGTRestMethod -method "POST" -uri $uri -connection $connection @invokeParams | out-Null
 
-        Get-FGTFirewallAddress -connection $connection @invokeParams | Where-Object { $_.name -eq $name }
+        Get-FGTFirewallAddress -connection $connection @invokeParams -name $_.name -eq $name
     }
 
     End {
@@ -182,9 +182,14 @@ function Get-FGTFirewallAddress {
       Get address named myFGTAddress
 
       .EXAMPLE
-      Get-FGTFirewallAddress -match FGT
+      Get-FGTFirewallAddress -name FGT -filter_type contains
 
-      Get address match with *FGT*
+      Get address contains with *FGT*
+
+      .EXAMPLE
+      Get-FGTFirewallAddress -uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
+
+      Get address with uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
 
       .EXAMPLE
       Get-FGTFirewallAddress -skip
@@ -202,8 +207,20 @@ function Get-FGTFirewallAddress {
     Param(
         [Parameter (Mandatory = $false, Position = 1, ParameterSetName = "name")]
         [string]$name,
-        [Parameter (Mandatory = $false, ParameterSetName = "match")]
-        [string]$match,
+        [Parameter (Mandatory = $false, ParameterSetName = "uuid")]
+        [string]$uuid,
+        [Parameter (Mandatory = $false)]
+        [Parameter (ParameterSetName = "filter")]
+        [string]$filter_attribute,
+        [Parameter (Mandatory = $false)]
+        [Parameter (ParameterSetName = "name")]
+        [Parameter (ParameterSetName = "uuid")]
+        [Parameter (ParameterSetName = "filter")]
+        [ValidateSet('equal', 'contains')]
+        [string]$filter_type = "equal",
+        [Parameter (Mandatory = $false)]
+        [Parameter (ParameterSetName = "filter")]
+        [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
@@ -225,13 +242,36 @@ function Get-FGTFirewallAddress {
             $invokeParams.add( 'vdom', $vdom )
         }
 
+        switch ( $PSCmdlet.ParameterSetName ) {
+            "match" {
+                $filter_value = $match
+                $filter_attribute = "name"
+                $filter_type = "contains"
+            }
+            "name" {
+                $filter_value = $name
+                $filter_attribute = "name"
+                $filter_type = "equal"
+            }
+            "uuid" {
+                $filter_value = $uuid
+                $filter_attribute = "uuid"
+                $filter_type = "equal"
+            }
+            default { }
+        }
+
+        #if filter value and filter_attribut, add filter (by default filter_type is equal)
+        if ( $filter_value -and $filter_attribute ) {
+            $invokeParams.add( 'filter_value', $filter_value )
+            $invokeParams.add( 'filter_attribute', $filter_attribute )
+            $invokeParams.add( 'filter_type', $filter_type )
+        }
+
         $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/address' -method 'GET' -connection $connection @invokeParams
 
-        switch ( $PSCmdlet.ParameterSetName ) {
-            "name" { $response.results | where-object { $_.name -eq $name } }
-            "match" { $response.results | where-object { $_.name -match $match } }
-            default { $response.results }
-        }
+        $response.results
+
     }
 
     End {
@@ -357,7 +397,7 @@ function Set-FGTFirewallAddress {
 
         Invoke-FGTRestMethod -method "PUT" -body $_address -uri $uri -connection $connection @invokeParams | out-Null
 
-        Get-FGTFirewallAddress -connection $connection @invokeParams | Where-Object { $_.name -eq $address.name }
+        Get-FGTFirewallAddress -connection $connection @invokeParams -name $address.name
     }
 
     End {
