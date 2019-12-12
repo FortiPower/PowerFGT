@@ -483,7 +483,7 @@ function Remove-FGTFirewallAddressGroupMember {
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript( { ValidateFGTAddressGroup $_ })]
         [psobject]$addrgrp,
-        [string]$member,
+        [string[]]$member,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -504,21 +504,22 @@ function Remove-FGTFirewallAddressGroupMember {
 
         $_addrgrp = new-Object -TypeName PSObject
 
-
         if ( $PsBoundParameters.ContainsKey('member') ) {
-            #Create a array and remove member...
+            #Create a new array
             $members = @()
             foreach ($m in $addrgrp.member) {
-                #If it is on remove member list skip
-                if ( $m.name -eq $member ){
-                    continue
-                }
-
                 $member_name = @{ }
                 $member_name.add( 'name', $m.name)
                 $members += $member_name
-
             }
+
+            #Remove member
+            foreach($remove_member in $member) {
+                $remove_member
+                #May be a better (and faster) solution...
+                $members = $members | Where-Object { $_.name -ne $remove_member }
+            }
+
             #check if there is always a member... (it is not possible don't have member on Addres Group)
             if( $members.count -eq 0 ) {
                 Throw "You can't remove all members. Use Remove-FGTAddressGroup to remove Address Group"
