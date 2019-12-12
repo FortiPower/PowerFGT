@@ -196,7 +196,7 @@ function Remove-FGTFirewallVip {
 
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
-        [ValidateScript( { ValidateFGTVip $_ })]
+        [ValidateScript( { Confirm-FGTVip $_ })]
         [psobject]$vip,
         [Parameter(Mandatory = $false)]
         [switch]$noconfirm,
