@@ -1,4 +1,3 @@
-
 #
 # Copyright 2018, Alexis La Goutte <alexis dot lagoutte at gmail dot com>
 #
