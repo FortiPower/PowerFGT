@@ -79,9 +79,9 @@ function Connect-FGT {
         [ValidateRange(1, 65535)]
         [int]$port,
         [Parameter(Mandatory = $false)]
-        [string[]]$vdom
-        [Parameter(Mandatory = $false)]
         [int]$Timeout = 0,
+        [Parameter(Mandatory = $false)]
+        [string[]]$vdom,
         [Parameter(Mandatory = $false)]
         [boolean]$DefaultConnection = $true
     )
