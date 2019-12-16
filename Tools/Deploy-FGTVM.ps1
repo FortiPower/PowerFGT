@@ -85,6 +85,9 @@ function Deploy-FGTVm {
         [string]$inventory,
         [Parameter (Mandatory = $true)]
         [string]$name_vm,
+        [Parameter (Mandatory = $true)]
+        [ValidateRange(31, 512)]
+        [int]$capacityGB,
         [Parameter (Mandatory = $false)]
         [ValidateRange(2, 32)]
         [int]$memoryGB,
@@ -429,6 +432,10 @@ function Deploy-FGTVm {
 
         if ( $PsBoundParameters.ContainsKey('NumCPU') ) {
             Get-VM $name_vm | Set-VM -NumCPU $cpu -confirm:$false
+        }
+
+        if ( $PsBoundParameters.ContainsKey('CapabityGB') ) {
+            (Get-VM $name_vm | Get-HardDisk)[1] | Set-VM -CapacityGB $CapabityGB -confirm:$false
         }
 
         if ( $StartVM ) {
