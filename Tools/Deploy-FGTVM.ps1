@@ -81,7 +81,7 @@ function Deploy-FGTVm {
         [string]$datastore,
         [Parameter (Mandatory = $true)]
         [string]$cluster,
-        [Parameter (Mandatory = $true)]
+        [Parameter (Mandatory = $false)]
         [string]$inventory,
         [Parameter (Mandatory = $true)]
         [string]$name_vm,
@@ -194,22 +194,42 @@ function Deploy-FGTVm {
     Process {
 
         Write-Warning "You need to have a vSwitch configured on your vSphere environment even if you use a DVS"
+        #default vapp_config
+        $vapp_config = @{
+            "source" = $ovf_path
+            "name" = $name_vm
+        }
 
         if (-not (Get-Cluster -Name $cluster -ErrorAction "silentlycontinue")) {
             Throw "Cluster not found : $cluster"
+        }
+        else {
+            $vapp_config += @{ "Location" = $cluster }
         }
 
         if (-not (Get-VMHost -Name $vm_host -ErrorAction "silentlycontinue")) {
             Throw "Vm_Host not found : $vm_host"
         }
+        else {
+            $vapp_config += @{ "vmhost" = $vm_host }
+        }
 
         if (-not (Get-Datastore -Name $datastore -ErrorAction "silentlycontinue")) {
             Throw "Datastore not found : $datastore"
         }
-
-        if (-not (Get-Inventory -Name $inventory -ErrorAction "silentlycontinue")) {
-            Throw "Inventory not found : $inventory"
+        else {
+            $vapp_config += @{ "datastore" = $datastore }
         }
+
+        if ( $PsBoundParameters.ContainsKey('inventory') ) {
+            if (-not (Get-Inventory -Name $inventory -ErrorAction "silentlycontinue")) {
+                Throw "Inventory not found : $inventory"
+            }
+            else {
+                $vapp_config += @{ "inventory" = $inventory }
+            }
+        }
+
 
         $ovfConfig = Get-OvfConfiguration -Ovf $ovf_path
 
@@ -393,7 +413,7 @@ function Deploy-FGTVm {
             $ovfConfig.Common.intf9_netmask.Value = $int9_netmask
         }
 
-        Import-VApp -Source $ovf_path -VMHost $vm_host -OvfConfiguration $ovfConfig -Datastore $datastore -Location $cluster -Name $name_vm -InventoryLocation $inventory
+        Import-VApp @vapp_config -OvfConfiguration $ovfConfig
 
     }
 
