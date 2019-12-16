@@ -24,6 +24,11 @@ function Get-FGTFirewallServiceGroup {
         Get list of all services group object (but only relevant attributes)
     #>
 
+    Param(
+        [Parameter(Mandatory = $false)]
+        [switch]$skip
+    )
+
     Begin {
     }
 
