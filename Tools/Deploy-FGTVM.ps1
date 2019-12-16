@@ -91,6 +91,8 @@ function Deploy-FGTVm {
         [Parameter (Mandatory = $false)]
         [ValidateRange(2, 32)]
         [int]$cpu,
+        [Parameter(Mandatory = $false)]
+        [switch]$StartVM = $false,
         [Parameter (Mandatory = $false)]
         [string]$hostname,
         [Parameter (Mandatory = $false)]
@@ -427,6 +429,12 @@ function Deploy-FGTVm {
 
         if ( $PsBoundParameters.ContainsKey('NumCPU') ) {
             Get-VM $name_vm | Set-VM -NumCPU $cpu -confirm:$false
+        }
+
+        if ( $StartVM ) {
+            Write-Progress -Activity "Starting CPPM $name_vm"
+            Get-VM $name_vm | Start-VM
+            Write-Progress -Activity "Starting CPPM $name_vm" -Completed
         }
 
     }
