@@ -10,61 +10,61 @@ function Install-VMFortiGate {
         .EXAMPLE
         Install-VMFortiGate -ovf_path "C:\<forti_vapp.ovf>" -vmHost <name_of_your_host> -datastore <name_of_your_datastore> -cluster <name_of_your_cluster> -name_vm <name_of_your_virtual_machine> -InventoryLocation <your_folder> -hostname <hostname> -dns_primary <ip_of_DNS_1> -dns_secondary <ip_of_DNS_2> -int0_network_mode [STATIC|DHCP] -int0_ip <ip> -int0_netmask <netmask> -int0_gateway <gateway> -int0_port_group <your_vswitch_port_group> -snet_adpater [e1000|vmxnet3]
         This install your .ovf on your vsphere with the host, the datastore, the cluster, the folder to place it and the name of your vm. It also configure your vm with a hostname, an network configuration, the network adapter and the port group of your vswitch
-    
+
         .EXAMPLE
         Install-VMFortiGate -ovf_path "C:\FortiGate-VM64.vapp.ovf" -vmHost "fortipowerfgt-01" -datastore "data_fortipowerfgt-01" -cluster "cluster_fortipowerfgt-01" -name_vm "Forti-VM" -InventoryLocation "Firewall" -hostname "powerfgt" -dns_primary 192.0.2.1 -dns_secondary 192.0.2.2 -int0_network_mode Static -int0_ip 192.0.2.10 -int0_netmask 255.255.255.0 -int0_gateway 192.0.2.254 -int0_port_group "powerfgt_vlan_mgmt" -net_adpater "vmxnet3"
-    
+
         .EXAMPLE
         $fortiBuildParams = @{
-            ovf_path           			= "C:\FortiGate-VM64.vapp.ovf"
-            vm_host           			= "fortipowerfgt-01"
+            ovf_path                    = "C:\FortiGate-VM64.vapp.ovf"
+            vm_host                     = "fortipowerfgt-01"
             datastore                   = "data_fortipowerfgt-01"
-            Cluster            			= "cluster_fortipowerfgt-01"
-            inventory 					= "Firewall"
-            name_vm           			= "Forti-VM"
-            hostname              		= "powerfgt"
-            dns_primary             	= "192.0.2.1"
-            dns_secondary       		= "192.0.2.2"
+            Cluster                     = "cluster_fortipowerfgt-01"
+            inventory                   = "Firewall"
+            name_vm                     = "Forti-VM"
+            hostname                    = "powerfgt"
+            dns_primary                 = "192.0.2.1"
+            dns_secondary               = "192.0.2.2"
             int0_network_mode           = "Static"
             int0_gateway               	= "192.0.2.254"
-            int0_ip                 	= "192.0.2.10"
+            int0_ip                     = "192.0.2.10"
             int0_netmask                = "255.255.255.0"
             int0_port_group             = "powerfgt_vlan_01"
-            net_adapter            		= "vmxnet3"
+            net_adapter                 = "vmxnet3"
             int1_network_mode           = "Static"
-            int1_ip                 	= "192.0.2.11"
+            int1_ip                     = "192.0.2.11"
             int1_netmask                = "255.255.255.0"
             int1_port_group             = "powerfgt_vlan_02"
             int2_network_mode           = "Static"
-            int2_ip                 	= "192.0.2.12"
+            int2_ip                     = "192.0.2.12"
             int2_netmask                = "255.255.255.0"
             int2_port_group             = "powerfgt_vlan_03"
             int3_network_mode           = "Static"
-            int3_ip                 	= "192.0.2.13"
+            int3_ip                     = "192.0.2.13"
             int3_netmask                = "255.255.255.0"
             int3_port_group             = "powerfgt_vlan_04"
             int4_network_mode           = "Static"
-            int4_ip                 	= "192.0.2.14"
+            int4_ip                     = "192.0.2.14"
             int4_netmask                = "255.255.255.0"
             int4_port_group             = "powerfgt_vlan_05"
             int5_network_mode           = "Static"
-            int5_ip                 	= "192.0.2.15"
+            int5_ip                     = "192.0.2.15"
             int5_netmask                = "255.255.255.0"
             int5_port_group             = "powerfgt_vlan_06"
             int6_network_mode           = "Static"
-            int6_ip                 	= "192.0.2.16"
+            int6_ip                     = "192.0.2.16"
             int6_netmask                = "255.255.255.0"
             int6_port_group             = "powerfgt_vlan_07"
             int7_network_mode           = "Static"
-            int7_ip                 	= "192.0.2.17"
+            int7_ip                     = "192.0.2.17"
             int7_netmask                = "255.255.255.0"
             int7_port_group             = "powerfgt_vlan_08"
             int8_network_mode           = "Static"
-            int8_ip                 	= "192.0.2.18"
+            int8_ip                     = "192.0.2.18"
             int8_netmask                = "255.255.255.0"
             int8_port_group             = "powerfgt_vlan_09"
             int9_network_mode           = "Static"
-            int9_ip                 	= "192.0.2.19"
+            int9_ip                     = "192.0.2.19"
             int9_netmask                = "255.255.255.0"
             int9_port_group             = "powerfgt_vlan_10"
         } # end $fortiBuildParams
@@ -206,7 +206,7 @@ function Install-VMFortiGate {
         if (-not (Get-Datastore -Name $datastore -ErrorAction "silentlycontinue")) {
             Throw "Datastore not found : $datastore"
         }
-        
+
         if (-not (Get-Inventory -Name $inventory -ErrorAction "silentlycontinue")) {
             Throw "Inventory not found : $inventory"
         }
@@ -264,7 +264,7 @@ function Install-VMFortiGate {
         if ( $PsBoundParameters.ContainsKey('int1_netmask') ) {
             $ovfConfig.Common.intf1_netmask.Value = $int1_netmask
         }
-        
+
         if ( $PsBoundParameters.ContainsKey('int2_port_group') ) {
             $ovfConfig.NetworkMapping.Network_3.Value = $int2_port_group
         }
