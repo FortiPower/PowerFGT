@@ -86,6 +86,12 @@ function Deploy-FGTVm {
         [Parameter (Mandatory = $true)]
         [string]$name_vm,
         [Parameter (Mandatory = $false)]
+        [ValidateRange(2, 32)]
+        [int]$memoryGB,
+        [Parameter (Mandatory = $false)]
+        [ValidateRange(2, 32)]
+        [int]$cpu,
+        [Parameter (Mandatory = $false)]
         [string]$hostname,
         [Parameter (Mandatory = $false)]
         [string]$dns_primary,
@@ -197,7 +203,7 @@ function Deploy-FGTVm {
         #default vapp_config
         $vapp_config = @{
             "source" = $ovf_path
-            "name" = $name_vm
+            "name"   = $name_vm
         }
 
         if (-not (Get-Cluster -Name $cluster -ErrorAction "silentlycontinue")) {
@@ -414,6 +420,14 @@ function Deploy-FGTVm {
         }
 
         Import-VApp @vapp_config -OvfConfiguration $ovfConfig
+
+        if ( $PsBoundParameters.ContainsKey('MemoryGB') ) {
+            Get-VM $name_vm | Set-VM -MemoryGB $MemoryGB -confirm:$false
+        }
+
+        if ( $PsBoundParameters.ContainsKey('NumCPU') ) {
+            Get-VM $name_vm | Set-VM -NumCPU $cpu -confirm:$false
+        }
 
     }
 
