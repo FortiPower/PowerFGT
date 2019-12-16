@@ -1,4 +1,4 @@
-function Install-VMFortiGate {
+function Deploy-FGTVm {
 
     <#
         .SYNOPSIS
@@ -8,11 +8,11 @@ function Install-VMFortiGate {
         Deploy a Virtual Machine FortiGate on a vshpere environment with a lot of parameters like the choice of the cluster, the datastore, and the host. You can even preconfigure your VM with the network configuration, the hostname, and the dns.
 
         .EXAMPLE
-        Install-VMFortiGate -ovf_path "C:\<forti_vapp.ovf>" -vmHost <name_of_your_host> -datastore <name_of_your_datastore> -cluster <name_of_your_cluster> -name_vm <name_of_your_virtual_machine> -InventoryLocation <your_folder> -hostname <hostname> -dns_primary <ip_of_DNS_1> -dns_secondary <ip_of_DNS_2> -int0_network_mode [STATIC|DHCP] -int0_ip <ip> -int0_netmask <netmask> -int0_gateway <gateway> -int0_port_group <your_vswitch_port_group> -snet_adpater [e1000|vmxnet3]
+        Deploy-FGTvm -ovf_path "C:\<forti_vapp.ovf>" -vmHost <name_of_your_host> -datastore <name_of_your_datastore> -cluster <name_of_your_cluster> -name_vm <name_of_your_virtual_machine> -InventoryLocation <your_folder> -hostname <hostname> -dns_primary <ip_of_DNS_1> -dns_secondary <ip_of_DNS_2> -int0_network_mode [STATIC|DHCP] -int0_ip <ip> -int0_netmask <netmask> -int0_gateway <gateway> -int0_port_group <your_vswitch_port_group> -snet_adpater [e1000|vmxnet3]
         This install your .ovf on your vsphere with the host, the datastore, the cluster, the folder to place it and the name of your vm. It also configure your vm with a hostname, an network configuration, the network adapter and the port group of your vswitch
 
         .EXAMPLE
-        Install-VMFortiGate -ovf_path "C:\FortiGate-VM64.vapp.ovf" -vmHost "fortipowerfgt-01" -datastore "data_fortipowerfgt-01" -cluster "cluster_fortipowerfgt-01" -name_vm "Forti-VM" -InventoryLocation "Firewall" -hostname "powerfgt" -dns_primary 192.0.2.1 -dns_secondary 192.0.2.2 -int0_network_mode Static -int0_ip 192.0.2.10 -int0_netmask 255.255.255.0 -int0_gateway 192.0.2.254 -int0_port_group "powerfgt_vlan_mgmt" -net_adpater "vmxnet3"
+        Deploy-FGTVm -ovf_path "C:\FortiGate-VM64.vapp.ovf" -vmHost "fortipowerfgt-01" -datastore "data_fortipowerfgt-01" -cluster "cluster_fortipowerfgt-01" -name_vm "Forti-VM" -InventoryLocation "Firewall" -hostname "powerfgt" -dns_primary 192.0.2.1 -dns_secondary 192.0.2.2 -int0_network_mode Static -int0_ip 192.0.2.10 -int0_netmask 255.255.255.0 -int0_gateway 192.0.2.254 -int0_port_group "powerfgt_vlan_mgmt" -net_adpater "vmxnet3"
 
         .EXAMPLE
         $fortiBuildParams = @{
@@ -69,7 +69,7 @@ function Install-VMFortiGate {
             int9_port_group             = "powerfgt_vlan_10"
         } # end $fortiBuildParams
 
-        PS>Install-VMFortiGate @fortiBuildParams
+        PS>Deploy-FGTVm @fortiBuildParams
     #>
 
     Param(
