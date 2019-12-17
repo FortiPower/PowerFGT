@@ -435,7 +435,7 @@ function Deploy-FGTVm {
         }
 
         if ( $PsBoundParameters.ContainsKey('CapacityGB') ) {
-            (Get-VM $name_vm | Get-HardDisk)[1] | Set-VM -CapacityGB $CapabityGB -confirm:$false | Out-Null
+            (Get-VM $name_vm | Get-HardDisk)[1] | Set-Harddisk -CapacityGB $CapacityGB -confirm:$false | Out-Null
         }
 
         if ( $StartVM ) {
