@@ -22,7 +22,21 @@ function Get-FGTFirewallServiceGroup {
         Get-FGTFirewallServiceGroup -skip
 
         Get list of all services group object (but only relevant attributes)
+
+        .EXAMPLE
+        Get-FGTFirewallServiceGroup -vdom vdomX
+
+        Get list of all services group object on vdomX
     #>
+
+    Param(
+        [Parameter(Mandatory = $false)]
+        [switch]$skip,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
 
     Begin {
     }
@@ -33,8 +47,11 @@ function Get-FGTFirewallServiceGroup {
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
         }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
 
-        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall.service/group' -method 'GET' @invokeParams
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall.service/group' -method 'GET' -connection $connection @invokeParams
         $response.results
     }
 

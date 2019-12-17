@@ -23,11 +23,20 @@ function Get-FGTFirewallServiceCustom {
 
         Get list of all services object (but only relevant attributes)
 
+        .EXAMPLE
+        Get-FGTFirewallServiceCustom -vdom vdomX
+
+        Get list of all services object on vdomX
+
     #>
 
     Param(
         [Parameter(Mandatory = $false)]
-        [switch]$skip
+        [switch]$skip,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
     )
 
     Begin {
@@ -39,8 +48,11 @@ function Get-FGTFirewallServiceCustom {
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
         }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
 
-        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall.service/custom' -method 'GET' @invokeParams
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall.service/custom' -method 'GET' -connection $connection @invokeParams
         $response.results
     }
 
