@@ -215,21 +215,21 @@ function Deploy-FGTVm {
             Throw "Cluster not found : $cluster"
         }
         else {
-            $vapp_config += @{ "Location" = $cluster }
+            $vapp_config.add("Location", $cluster)
         }
 
         if (-not (Get-VMHost -Name $vm_host -ErrorAction "silentlycontinue")) {
             Throw "Vm_Host not found : $vm_host"
         }
         else {
-            $vapp_config += @{ "vmhost" = $vm_host }
+            $vapp_config.add("vmhost", $vm_host)
         }
 
         if (-not (Get-Datastore -Name $datastore -ErrorAction "silentlycontinue")) {
             Throw "Datastore not found : $datastore"
         }
         else {
-            $vapp_config += @{ "datastore" = $datastore }
+            $vapp_config.add("datastore", $datastore)
         }
 
         if ( $PsBoundParameters.ContainsKey('inventory') ) {
@@ -237,7 +237,7 @@ function Deploy-FGTVm {
                 Throw "Inventory not found : $inventory"
             }
             else {
-                $vapp_config += @{ "inventory" = $inventory }
+                $vapp_config.add("inventory", $inventory)
             }
         }
 
