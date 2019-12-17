@@ -427,20 +427,20 @@ function Deploy-FGTVm {
         Import-VApp @vapp_config -OvfConfiguration $ovfConfig
 
         if ( $PsBoundParameters.ContainsKey('MemoryGB') ) {
-            Get-VM $name_vm | Set-VM -MemoryGB $MemoryGB -confirm:$false
+            Get-VM $name_vm | Set-VM -MemoryGB $MemoryGB -confirm:$false | Out-Null
         }
 
         if ( $PsBoundParameters.ContainsKey('CPU') ) {
-            Get-VM $name_vm | Set-VM -NumCPU $cpu -confirm:$false
+            Get-VM $name_vm | Set-VM -NumCPU $cpu -confirm:$false | Out-Null
         }
 
         if ( $PsBoundParameters.ContainsKey('CapacityGB') ) {
-            (Get-VM $name_vm | Get-HardDisk)[1] | Set-VM -CapacityGB $CapabityGB -confirm:$false
+            (Get-VM $name_vm | Get-HardDisk)[1] | Set-VM -CapacityGB $CapabityGB -confirm:$false | Out-Null
         }
 
         if ( $StartVM ) {
             Write-Progress -Activity "Starting CPPM $name_vm"
-            Get-VM $name_vm | Start-VM
+            Get-VM $name_vm | Start-VM  | Out-Null
             Write-Progress -Activity "Starting CPPM $name_vm" -Completed
         }
 
