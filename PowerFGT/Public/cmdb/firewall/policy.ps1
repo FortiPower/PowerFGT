@@ -64,6 +64,7 @@ function Get-FGTFirewallPolicy {
         [Parameter (Mandatory = $false)]
         [Parameter (ParameterSetName = "name")]
         [Parameter (ParameterSetName = "uuid")]
+        [Parameter (ParameterSetName = "policyid")]
         [Parameter (ParameterSetName = "filter")]
         [ValidateSet('equal', 'contains')]
         [string]$filter_type = "equal",
