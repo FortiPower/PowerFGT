@@ -19,6 +19,16 @@ function Get-FGTSystemHA {
         Get HA Settings
 
         .EXAMPLE
+        Get-FGTSystemHA -filter_attribute mode -filter_value standalone
+
+        Get HA with mode equal standalone
+
+        .EXAMPLE
+        Get-FGTSystemHA -filter_attribute group_name -filter_value Fortinet -filter_type contains
+
+        Get HA with group_name contains Fortinet
+
+        .EXAMPLE
         Get-FGTSystemHA -skip
 
         Get HA Settings (but only relevant attributes)
@@ -29,7 +39,18 @@ function Get-FGTSystemHA {
         Get HA Settings on vdomX
     #>
 
+    [CmdletBinding(DefaultParameterSetName = "default")]
     Param(
+        [Parameter (Mandatory = $false)]
+        [Parameter (ParameterSetName = "filter")]
+        [string]$filter_attribute,
+        [Parameter (Mandatory = $false)]
+        [Parameter (ParameterSetName = "filter")]
+        [ValidateSet('equal', 'contains')]
+        [string]$filter_type = "equal",
+        [Parameter (Mandatory = $false)]
+        [Parameter (ParameterSetName = "filter")]
+        [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
@@ -49,6 +70,14 @@ function Get-FGTSystemHA {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        #Filtering
+        #if filter value and filter_attribute, add filter (by default filter_type is equal)
+        if ( $filter_value -and $filter_attribute ) {
+            $invokeParams.add( 'filter_value', $filter_value )
+            $invokeParams.add( 'filter_attribute', $filter_attribute )
+            $invokeParams.add( 'filter_type', $filter_type )
         }
 
         $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/ha' -method 'GET' -connection $connection @invokeParams
