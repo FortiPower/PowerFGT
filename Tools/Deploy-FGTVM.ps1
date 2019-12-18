@@ -211,6 +211,10 @@ function Deploy-FGTVm {
             "name"   = $name_vm
         }
 
+        if (Get-VM $name_vm -ErrorAction "silentlyContinue") {
+            Throw "VM $name_vm already exist, change name or remove VM"
+        }
+
         if (-not (Get-Cluster -Name $cluster -ErrorAction "silentlycontinue")) {
             Throw "Cluster not found : $cluster"
         }
@@ -440,7 +444,7 @@ function Deploy-FGTVm {
 
         if ( $StartVM ) {
             Write-Progress -Activity "Starting CPPM $name_vm"
-            Get-VM $name_vm | Start-VM  | Out-Null
+            Get-VM $name_vm | Start-VM | Out-Null
             Write-Progress -Activity "Starting CPPM $name_vm" -Completed
         }
 
