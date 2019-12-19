@@ -127,7 +127,7 @@ function Add-FGTFirewallAddressGroupMember {
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
-        [psobject]$connection=$DefaultFGTConnection
+        [psobject]$connection = $DefaultFGTConnection
     )
 
     Begin {
@@ -191,7 +191,7 @@ function Copy-FGTFirewallAddressGroup {
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
-        [psobject]$connection=$DefaultFGTConnection
+        [psobject]$connection = $DefaultFGTConnection
     )
 
     Begin {
@@ -333,7 +333,7 @@ function Set-FGTFirewallAddressGroup {
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
-        [psobject]$connection=$DefaultFGTConnection
+        [psobject]$connection = $DefaultFGTConnection
     )
 
     Begin {
@@ -420,7 +420,7 @@ function Remove-FGTFirewallAddressGroup {
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
-        [psobject]$connection=$DefaultFGTConnection
+        [psobject]$connection = $DefaultFGTConnection
     )
 
     Begin {
@@ -487,7 +487,7 @@ function Remove-FGTFirewallAddressGroupMember {
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
-        [psobject]$connection=$DefaultFGTConnection
+        [psobject]$connection = $DefaultFGTConnection
     )
 
     Begin {
@@ -514,14 +514,14 @@ function Remove-FGTFirewallAddressGroupMember {
             }
 
             #Remove member
-            foreach($remove_member in $member) {
+            foreach ($remove_member in $member) {
                 $remove_member
                 #May be a better (and faster) solution...
                 $members = $members | Where-Object { $_.name -ne $remove_member }
             }
 
             #check if there is always a member... (it is not possible don't have member on Addres Group)
-            if( $members.count -eq 0 ) {
+            if ( $members.count -eq 0 ) {
                 Throw "You can't remove all members. Use Remove-FGTAddressGroup to remove Address Group"
             }
 

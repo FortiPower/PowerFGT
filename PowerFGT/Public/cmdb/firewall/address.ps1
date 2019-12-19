@@ -165,41 +165,41 @@ function Copy-FGTFirewallAddress {
 function Get-FGTFirewallAddress {
 
     <#
-      .SYNOPSIS
-      Get list of all "address"
+        .SYNOPSIS
+        Get list of all "address"
 
-      .DESCRIPTION
-      Get list of all "address" (ipmask, fqdn, wildcard...)
+        .DESCRIPTION
+        Get list of all "address" (ipmask, fqdn, wildcard...)
 
-      .EXAMPLE
-      Get-FGTFirewallAddress
+        .EXAMPLE
+        Get-FGTFirewallAddress
 
-      Get list of all address object
+        Get list of all address object
 
-      .EXAMPLE
-      Get-FGTFirewallAddress -name myFGTAddress
+        .EXAMPLE
+        Get-FGTFirewallAddress -name myFGTAddress
 
-      Get address named myFGTAddress
+        Get address named myFGTAddress
 
-      .EXAMPLE
-      Get-FGTFirewallAddress -name FGT -filter_type contains
+        .EXAMPLE
+        Get-FGTFirewallAddress -name FGT -filter_type contains
 
-      Get address contains with *FGT*
+        Get address contains with *FGT*
 
-      .EXAMPLE
-      Get-FGTFirewallAddress -uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
+        .EXAMPLE
+        Get-FGTFirewallAddress -uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
 
-      Get address with uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
+        Get address with uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
 
-      .EXAMPLE
-      Get-FGTFirewallAddress -skip
+        .EXAMPLE
+        Get-FGTFirewallAddress -skip
 
-      Get list of all address object (but only relevant attributes)
+        Get list of all address object (but only relevant attributes)
 
-      .EXAMPLE
-      Get-FGTAddress -vdom vdomX
+        .EXAMPLE
+        Get-FGTAddress -vdom vdomX
 
-      Get list of all address on VdomX
+        Get list of all address on VdomX
 
   #>
 

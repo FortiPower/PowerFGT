@@ -7,26 +7,26 @@
 function Get-FGTSystemZone {
 
     <#
-      .SYNOPSIS
-      Get list of all "zone"
+        .SYNOPSIS
+        Get list of all "zone"
 
-      .DESCRIPTION
-      Get list of all "zone"
+        .DESCRIPTION
+        Get list of all "zone"
 
-      .EXAMPLE
-      Get-FGTSystemZone
+        .EXAMPLE
+        Get-FGTSystemZone
 
-      Get list of all zone object
+        Get list of all zone object
 
-      .EXAMPLE
-      Get-FGTSystemZone -skip
+        .EXAMPLE
+        Get-FGTSystemZone -skip
 
-      Get list of all zone object (but only relevant attributes)
+        Get list of all zone object (but only relevant attributes)
 
-      .EXAMPLE
-      Get-FGTSystemZone -vdom vdomX
+        .EXAMPLE
+        Get-FGTSystemZone -vdom vdomX
 
-      Get list of all zone object on vdomX
+        Get list of all zone object on vdomX
     #>
 
     Param(
