@@ -310,7 +310,7 @@ function Get-FGTFirewallAddressgroup {
             default { }
         }
 
-        #if filter value and filter_attribut, add filter (by default filter_type is equal)
+        #if filter value and filter_attribute, add filter (by default filter_type is equal)
         if ( $filter_value -and $filter_attribute ) {
             $invokeParams.add( 'filter_value', $filter_value )
             $invokeParams.add( 'filter_attribute', $filter_attribute )
