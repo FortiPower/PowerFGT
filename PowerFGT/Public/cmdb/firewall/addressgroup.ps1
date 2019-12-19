@@ -233,6 +233,21 @@ function Get-FGTFirewallAddressgroup {
         Display all addresses group.
 
         .EXAMPLE
+        Get-FGTFirewallAddressGroup -name myFGTAddressGroup
+
+        Get  Address Group named myFGTAddressGroup
+
+        .EXAMPLE
+        Get-FGTFirewallAddressGroup -name FGT -filter_type contains
+
+        Get  Address Group contains *FGT*
+
+        .EXAMPLE
+        Get-FGTFirewallAddressGroup -uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
+
+        Get Address Group with uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
+
+        .EXAMPLE
         Get-FGTFirewallAddressgroup -skip
 
         Display all addresses group (but only relevant attributes)

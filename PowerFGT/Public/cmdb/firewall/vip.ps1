@@ -115,9 +115,14 @@ function Get-FGTFirewallVip {
         Get VIP named myFGTVip
 
         .EXAMPLE
-        Get-FGTFirewallVip -match FGT
+        Get-FGTFirewallVip -name FGT -filter_type contains
 
-        Get VIP match with *FGT*
+        Get VIP contains *FGT*
+
+        .EXAMPLE
+        Get-FGTFirewallVip -uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
+
+        Get VIP with uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
 
         .EXAMPLE
         Get-FGTFirewallVip -skip
