@@ -15,34 +15,34 @@ function Add-FGTFirewallPolicy {
         Add a FortiGate Policy/Rules (source port/ip, destination port, ip, action, status...)
 
         .EXAMPLE
-        Add-FGTFirewallPolicy -name test_policy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all
+        Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all
 
-        Add a Test_policy with source port port1 and destination port1 and source and destination all
-
-        .EXAMPLE
-        Add-FGTFirewallPolicy -name test_policy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -nat
-
-        Add a Test_policy with NAT is enable
+        Add a MyFGTPolicy with source port port1 and destination port1 and source and destination all
 
         .EXAMPLE
-        Add-FGTFirewallPolicy -name test_policy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -action "deny"
+        Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -nat
 
-        Add a Test_policy with action is Deny
-
-        .EXAMPLE
-        Add-FGTFirewallPolicy -name test_policy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -status:$false
-
-        Add a Test_policy with status is disable
+        Add a MyFGTPolicy with NAT is enable
 
         .EXAMPLE
-        Add-FGTFirewallPolicy -name test_policy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -service "HTTP, HTTPS, SSH"
+        Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -action "deny"
 
-        Add a Test_policy with multiple service port
+        Add a MyFGTPolicy with action is Deny
 
         .EXAMPLE
-        Add-FGTFirewallPolicy -name test_policy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -schedule workhour
+        Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -status:$false
 
-        Add a Test_policy with schedule is workhour
+        Add a MyFGTPolicy with status is disable
+
+        .EXAMPLE
+        Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -service "HTTP, HTTPS, SSH"
+
+        Add a MyFGTPolicy with multiple service port
+
+        .EXAMPLE
+        Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -schedule workhour
+
+        Add a MyFGTPolicy with schedule is workhour
 
     #>
 
