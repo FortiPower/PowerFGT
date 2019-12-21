@@ -78,6 +78,9 @@ Function Confirm-FGTFirewallPolicy {
 
     #Check if it looks like an Firewall Policy element
 
+    if ( -not ( $argument | get-member -name policyid -Membertype Properties)) {
+        throw "Element specified does not contain an policyid property."
+    }
     if ( -not ( $argument | get-member -name name -Membertype Properties)) {
         throw "Element specified does not contain an name property."
     }
