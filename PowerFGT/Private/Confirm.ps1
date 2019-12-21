@@ -69,6 +69,44 @@ Function Confirm-FGTAddressGroup {
 
 }
 
+Function Confirm-FGTFirewallPolicy {
+
+    Param (
+        [Parameter (Mandatory = $true)]
+        [object]$argument
+    )
+
+    #Check if it looks like an Firewall Policy element
+
+    if ( -not ( $argument | get-member -name name -Membertype Properties)) {
+        throw "Element specified does not contain an name property."
+    }
+    if ( -not ( $argument | get-member -name uuid -Membertype Properties)) {
+        throw "Element specified does not contain a uuid property."
+    }
+    if ( -not ( $argument | get-member -name srcintf -Membertype Properties)) {
+        throw "Element specified does not contain an srcintf property."
+    }
+    if ( -not ( $argument | get-member -name dstaddr -Membertype Properties)) {
+        throw "Element specified does not contain an dstaddr property."
+    }
+    if ( -not ( $argument | get-member -name srcaddr -Membertype Properties)) {
+        throw "Element specified does not contain an srcaddr property."
+    }
+    if ( -not ( $argument | get-member -name dstaddr -Membertype Properties)) {
+        throw "Element specified does not contain an dstaddr property."
+    }
+    if ( -not ( $argument | get-member -name action -Membertype Properties)) {
+        throw "Element specified does not contain an action property."
+    }
+    if ( -not ( $argument | get-member -name status -Membertype Properties)) {
+        throw "Element specified does not contain an status property."
+    }
+
+    $true
+
+}
+
 Function Confirm-FGTVip {
 
     Param (
