@@ -233,6 +233,21 @@ function Get-FGTFirewallAddressgroup {
         Display all addresses group.
 
         .EXAMPLE
+        Get-FGTFirewallAddressGroup -name myFGTAddressGroup
+
+        Get  Address Group named myFGTAddressGroup
+
+        .EXAMPLE
+        Get-FGTFirewallAddressGroup -name FGT -filter_type contains
+
+        Get  Address Group contains *FGT*
+
+        .EXAMPLE
+        Get-FGTFirewallAddressGroup -uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
+
+        Get Address Group with uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
+
+        .EXAMPLE
         Get-FGTFirewallAddressgroup -skip
 
         Display all addresses group (but only relevant attributes)
@@ -247,8 +262,20 @@ function Get-FGTFirewallAddressgroup {
     Param(
         [Parameter (Mandatory = $false, Position = 1, ParameterSetName = "name")]
         [string]$name,
-        [Parameter (Mandatory = $false, ParameterSetName = "match")]
-        [string]$match,
+        [Parameter (Mandatory = $false, ParameterSetName = "uuid")]
+        [string]$uuid,
+        [Parameter (Mandatory = $false)]
+        [Parameter (ParameterSetName = "filter")]
+        [string]$filter_attribute,
+        [Parameter (Mandatory = $false)]
+        [Parameter (ParameterSetName = "name")]
+        [Parameter (ParameterSetName = "uuid")]
+        [Parameter (ParameterSetName = "filter")]
+        [ValidateSet('equal', 'contains')]
+        [string]$filter_type = "equal",
+        [Parameter (Mandatory = $false)]
+        [Parameter (ParameterSetName = "filter")]
+        [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
@@ -270,12 +297,29 @@ function Get-FGTFirewallAddressgroup {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/addrgrp' -method 'GET' -connection $connection @invokeParams
+        #Filtering
         switch ( $PSCmdlet.ParameterSetName ) {
-            "name" { $response.results | Where-Object { $_.name -eq $name } }
-            "match" { $response.results | Where-Object { $_.name -match $match } }
-            default { $response.results }
+            "name" {
+                $filter_value = $name
+                $filter_attribute = "name"
+            }
+            "uuid" {
+                $filter_value = $uuid
+                $filter_attribute = "uuid"
+            }
+            default { }
         }
+
+        #if filter value and filter_attribute, add filter (by default filter_type is equal)
+        if ( $filter_value -and $filter_attribute ) {
+            $invokeParams.add( 'filter_value', $filter_value )
+            $invokeParams.add( 'filter_attribute', $filter_attribute )
+            $invokeParams.add( 'filter_type', $filter_type )
+        }
+
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/addrgrp' -method 'GET' -connection $connection @invokeParams
+
+        $response.results
     }
 
     End {

@@ -115,9 +115,14 @@ function Get-FGTFirewallVip {
         Get VIP named myFGTVip
 
         .EXAMPLE
-        Get-FGTFirewallVip -match FGT
+        Get-FGTFirewallVip -name FGT -filter_type contains
 
-        Get VIP match with *FGT*
+        Get VIP contains *FGT*
+
+        .EXAMPLE
+        Get-FGTFirewallVip -uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
+
+        Get VIP with uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
 
         .EXAMPLE
         Get-FGTFirewallVip -skip
@@ -134,8 +139,20 @@ function Get-FGTFirewallVip {
     Param(
         [Parameter (Mandatory = $false, Position = 1, ParameterSetName = "name")]
         [string]$name,
-        [Parameter (Mandatory = $false, ParameterSetName = "match")]
-        [string]$match,
+        [Parameter (Mandatory = $false, ParameterSetName = "uuid")]
+        [string]$uuid,
+        [Parameter (Mandatory = $false)]
+        [Parameter (ParameterSetName = "filter")]
+        [string]$filter_attribute,
+        [Parameter (Mandatory = $false)]
+        [Parameter (ParameterSetName = "name")]
+        [Parameter (ParameterSetName = "uuid")]
+        [Parameter (ParameterSetName = "filter")]
+        [ValidateSet('equal', 'contains')]
+        [string]$filter_type = "equal",
+        [Parameter (Mandatory = $false)]
+        [Parameter (ParameterSetName = "filter")]
+        [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
@@ -157,14 +174,29 @@ function Get-FGTFirewallVip {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/vip' -method 'GET' -connection $connection @invokeParams
-
+        #Filtering
         switch ( $PSCmdlet.ParameterSetName ) {
-            "name" { $response.results | where-object { $_.name -eq $name } }
-            "match" { $response.results | where-object { $_.name -match $match } }
-            default { $response.results }
+            "name" {
+                $filter_value = $name
+                $filter_attribute = "name"
+            }
+            "uuid" {
+                $filter_value = $uuid
+                $filter_attribute = "uuid"
+            }
+            default { }
         }
 
+        #if filter value and filter_attribute, add filter (by default filter_type is equal)
+        if ( $filter_value -and $filter_attribute ) {
+            $invokeParams.add( 'filter_value', $filter_value )
+            $invokeParams.add( 'filter_attribute', $filter_attribute )
+            $invokeParams.add( 'filter_type', $filter_type )
+        }
+
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/vip' -method 'GET' -connection $connection @invokeParams
+
+        $response.results
     }
 
     End {

@@ -19,6 +19,16 @@ function Get-FGTFirewallIPPool {
         Get list of all (NAT) ip pool object
 
         .EXAMPLE
+        Get-FGTFirewallIPPool -name myIPPool
+
+        Get ip pool named myIPPool
+
+        .EXAMPLE
+        Get-FGTFirewallIPPool -name FGT -filter_type contains
+
+        Get ip pool contains with *FGT*
+
+        .EXAMPLE
         Get-FGTFirewallIPPool -skip
 
         Get list of all (NAT) ip pool object (but only relevant attributes)
@@ -29,7 +39,21 @@ function Get-FGTFirewallIPPool {
         Get list of all (NAT) ip pool object on vdomX
     #>
 
+    [CmdletBinding(DefaultParameterSetName = "default")]
     Param(
+        [Parameter (Mandatory = $false, Position = 1, ParameterSetName = "name")]
+        [string]$name,
+        [Parameter (Mandatory = $false)]
+        [Parameter (ParameterSetName = "filter")]
+        [string]$filter_attribute,
+        [Parameter (Mandatory = $false)]
+        [Parameter (ParameterSetName = "name")]
+        [Parameter (ParameterSetName = "filter")]
+        [ValidateSet('equal', 'contains')]
+        [string]$filter_type = "equal",
+        [Parameter (Mandatory = $false)]
+        [Parameter (ParameterSetName = "filter")]
+        [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
@@ -49,6 +73,21 @@ function Get-FGTFirewallIPPool {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+        #Filtering
+        switch ( $PSCmdlet.ParameterSetName ) {
+            "name" {
+                $filter_value = $name
+                $filter_attribute = "name"
+            }
+            default { }
+        }
+
+        #if filter value and filter_attribute, add filter (by default filter_type is equal)
+        if ( $filter_value -and $filter_attribute ) {
+            $invokeParams.add( 'filter_value', $filter_value )
+            $invokeParams.add( 'filter_attribute', $filter_attribute )
+            $invokeParams.add( 'filter_type', $filter_type )
         }
 
         $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/ippool' -method 'GET' -connection $connection @invokeParams

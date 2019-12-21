@@ -20,6 +20,16 @@ function Get-FGTSystemDns {
         Display DNS configured on the FortiGate
 
         .EXAMPLE
+        Get-FGTSystemDNS -filter_attribute primary -filter_value 192.2.0.1
+
+        Get System DNS with primary (DNS) equal 192.2.0.1
+
+        .EXAMPLE
+        Get-FGTSystemDNS -filter_attribute ssl-certificate -filter_value Fortinet -filter_type contains
+
+        Get System DNS with ssl-certificate contains Fortinet
+
+        .EXAMPLE
         Get-FGTSystemDns -skip
 
         Display DNS configured on the FortiGate (but only relevant attributes)
@@ -30,7 +40,18 @@ function Get-FGTSystemDns {
         Display DNS configured on the FortiGate on vdomX
     #>
 
+    [CmdletBinding(DefaultParameterSetName = "default")]
     Param(
+        [Parameter (Mandatory = $false)]
+        [Parameter (ParameterSetName = "filter")]
+        [string]$filter_attribute,
+        [Parameter (Mandatory = $false)]
+        [Parameter (ParameterSetName = "filter")]
+        [ValidateSet('equal', 'contains')]
+        [string]$filter_type = "equal",
+        [Parameter (Mandatory = $false)]
+        [Parameter (ParameterSetName = "filter")]
+        [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
@@ -50,6 +71,14 @@ function Get-FGTSystemDns {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        #Filtering
+        #if filter value and filter_attribute, add filter (by default filter_type is equal)
+        if ( $filter_value -and $filter_attribute ) {
+            $invokeParams.add( 'filter_value', $filter_value )
+            $invokeParams.add( 'filter_attribute', $filter_attribute )
+            $invokeParams.add( 'filter_type', $filter_type )
         }
 
         $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/dns' -method 'GET' -connection $connection @invokeParams

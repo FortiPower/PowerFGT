@@ -243,25 +243,18 @@ function Get-FGTFirewallAddress {
         }
 
         switch ( $PSCmdlet.ParameterSetName ) {
-            "match" {
-                $filter_value = $match
-                $filter_attribute = "name"
-                $filter_type = "contains"
-            }
             "name" {
                 $filter_value = $name
                 $filter_attribute = "name"
-                $filter_type = "equal"
             }
             "uuid" {
                 $filter_value = $uuid
                 $filter_attribute = "uuid"
-                $filter_type = "equal"
             }
             default { }
         }
 
-        #if filter value and filter_attribut, add filter (by default filter_type is equal)
+        #if filter value and filter_attribute, add filter (by default filter_type is equal)
         if ( $filter_value -and $filter_attribute ) {
             $invokeParams.add( 'filter_value', $filter_value )
             $invokeParams.add( 'filter_attribute', $filter_attribute )
