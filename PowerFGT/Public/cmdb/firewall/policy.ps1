@@ -333,3 +333,71 @@ function Get-FGTFirewallPolicy {
     End {
     }
 }
+
+function Remove-FGTFirewallPolicy {
+
+    <#
+        .SYNOPSIS
+        Remove a FortiGate Policy
+
+        .DESCRIPTION
+        Remove a Policy/Rule object on the FortiGate
+
+        .EXAMPLE
+        $MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
+        PS C:\>$MyFGTPolicy | Remove-FGTFirewallPolicy
+
+        Remove Policy object $MyFGTPolicy
+
+        .EXAMPLE
+        $MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
+        PS C:\>$MyFGTPolicy | Remove-FGTFirewallPolicy -noconfirm
+
+        Remove Policy object MyFGTPolicy with no confirmation
+
+    #>
+
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [ValidateScript( { Confirm-FGTFirewallPolicy $_ })]
+        [psobject]$policy,
+        [Parameter(Mandatory = $false)]
+        [switch]$noconfirm,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/firewall/policy/$($policy.policyid)"
+
+        if ( -not ( $Noconfirm )) {
+            $message = "Remove Policy on Fortigate"
+            $question = "Proceed with removal of Policy $($policy.name) ?"
+            $choices = New-Object Collections.ObjectModel.Collection[Management.Automation.Host.ChoiceDescription]
+            $choices.Add((New-Object Management.Automation.Host.ChoiceDescription -ArgumentList '&Yes'))
+            $choices.Add((New-Object Management.Automation.Host.ChoiceDescription -ArgumentList '&No'))
+
+            $decision = $Host.UI.PromptForChoice($message, $question, $choices, 1)
+        }
+        else { $decision = 0 }
+        if ($decision -eq 0) {
+            Write-Progress -activity "Remove Policy"
+            $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -connection $connection @invokeParams
+            Write-Progress -activity "Remove Policy" -completed
+        }
+    }
+
+    End {
+    }
+}
