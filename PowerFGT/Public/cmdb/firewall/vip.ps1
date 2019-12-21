@@ -23,6 +23,16 @@ function Add-FGTFirewallVip {
 
         Add VIP objet type static-nat (One to One ) with name myVIP1 with external IP 192.2.0.1, mapped IP 198.51.100.1, associated to interface port2 and a comment
 
+        .EXAMPLE
+        Add-FGTFirewallVip -name myVIP3-8080 -type static-nat -extip 192.2.0.1 -mappedip 198.51.100.1 -portforward -extport 8080
+
+        Add VIP objet type static-nat (One to One ) with name myVIP3 with external IP 192.2.0.1 and mapped IP 198.51.100.1 with Port Forward and TCP Port 8080
+
+        .EXAMPLE
+        Add-FGTFirewallVip -name myVIP4-5000-6000 -type static-nat -extip 192.2.0.1 -mappedip 198.51.100.1 -portforward -extport 5000 -mappedport 6000 -protocol udp
+
+        Add VIP objet type static-nat (One to One ) with name myVIP3 with external IP 192.2.0.1 and mapped IP 198.51.100.1 with Port Forward and UDP Port 5000 mapped to port 6000
+
     #>
 
     Param(
@@ -40,6 +50,15 @@ function Add-FGTFirewallVip {
         [Parameter (Mandatory = $false)]
         [ValidateLength(0, 255)]
         [string]$comment,
+        [Parameter (Mandatory = $false)]
+        [switch]$portforward,
+        [Parameter (Mandatory = $false)]
+        [ValidateSet("TCP", "UDP", "SCTP", "ICMP")]
+        [string]$protocol = "TCP",
+        [Parameter (Mandatory = $false)]
+        [string]$extport,
+        [Parameter (Mandatory = $false)]
+        [string]$mappedport,
         [Parameter (Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
@@ -85,6 +104,23 @@ function Add-FGTFirewallVip {
 
         if ( $PsBoundParameters.ContainsKey('comment') ) {
             $vip | add-member -name "comment" -membertype NoteProperty -Value $comment
+        }
+
+        if ( $PsBoundParameters.ContainsKey('portforward') -and $portforward -eq $true) {
+            #check if export is set before...
+            if ( $extport -eq "") {
+                throw "you need to set -extport when enable portforward parameter"
+            }
+            $vip | add-member -name "portforward" -membertype NoteProperty -Value "enable"
+            $vip | add-member -name "protocol" -membertype NoteProperty -Value $protocol
+            $vip | add-member -name "extport" -membertype NoteProperty -Value $extport
+            #if no mappedport use the extport
+            if ( $PsBoundParameters.ContainsKey('mappedport') ) {
+                $vip | add-member -name "mappedport" -membertype NoteProperty -Value $mappedport
+            }
+            else {
+                $vip | add-member -name "mappedport" -membertype NoteProperty -Value $extport
+            }
         }
 
         Invoke-FGTRestMethod -method "POST" -body $vip -uri $uri -connection $connection @invokeParams | out-Null
