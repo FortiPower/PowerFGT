@@ -49,6 +49,11 @@ function Add-FGTFirewallPolicy {
 
         Add a MyFGTPolicy with comment "My FGT Policy"
 
+        .EXAMPLE
+        Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -logtraffic "all"
+
+        Add a MyFGTPolicy with log traffic all
+
     #>
 
 
@@ -77,6 +82,9 @@ function Add-FGTFirewallPolicy {
         [Parameter (Mandatory = $false)]
         [ValidateLength(0, 255)]
         [string]$comments,
+        [Parameter (Mandatory = $false)]
+        [ValidateSet("disable", "utm", "all")]
+        [string]$logtraffic,
         [Parameter (Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
@@ -177,6 +185,10 @@ function Add-FGTFirewallPolicy {
 
         if ( $PsBoundParameters.ContainsKey('comments') ) {
             $policy | add-member -name "comments" -membertype NoteProperty -Value $comments
+        }
+
+        if ( $PsBoundParameters.ContainsKey('logtraffic') ) {
+            $policy | add-member -name "logtraffic" -membertype NoteProperty -Value $logtraffic
         }
 
         Invoke-FGTRestMethod -method "POST" -body $policy -uri $uri -connection $connection @invokeParams | out-Null
