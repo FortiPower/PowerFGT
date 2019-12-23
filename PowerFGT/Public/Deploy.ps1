@@ -220,6 +220,9 @@ function Deploy-FGTVm {
             "name"   = $name_vm
         }
 
+        if ($global:DefaultVIServers.Count -eq 0) {
+            throw "Need to be connect to vCenter (use Connect-VIServer)"
+        }
         if (Get-VM $name_vm -ErrorAction "silentlyContinue") {
             Throw "VM $name_vm already exist, change name or remove VM"
         }
