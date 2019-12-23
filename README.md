@@ -38,10 +38,10 @@ Don't use support to connect using API Token from 5.6.x (and later)
 All resource management functions are available with the Powershell verbs GET, ADD, COPY, SET, REMOVE.  
 For example, you can manage Address with the following commands:
 - `Get-FGTFirewallAddress`
-- `Add-FGTFirewallAddresss`
-- `Copy-FGTFirewallAddresss`
-- `Set-FGTFirewallAddresss`
-- `Remove-FGTFirewallAddresss`
+- `Add-FGTFirewallAddress`
+- `Copy-FGTFirewallAddress`
+- `Set-FGTFirewallAddress`
+- `Remove-FGTFirewallAddress`
 
 # Requirements
 
