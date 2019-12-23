@@ -55,9 +55,9 @@ function Add-FGTFirewallPolicy {
         Add a MyFGTPolicy with log traffic all
 
         .EXAMPLE
-        Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -ippool "MyIPPool"
+        Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -nat -ippool "MyIPPool"
 
-        Add a MyFGTPolicy with IP Pool MyIPPool
+        Add a MyFGTPolicy with IP Pool MyIPPool (with nat)
     #>
 
 
@@ -198,6 +198,9 @@ function Add-FGTFirewallPolicy {
         }
 
         if ( $PsBoundParameters.ContainsKey('ippool') ) {
+            if (-not $nat) {
+                throw "You need to enable NAT (-nat)"
+            }
             $ippool_array = @()
             #TODO check if the IP Pool is valid
             foreach ($i in $ippool) {
