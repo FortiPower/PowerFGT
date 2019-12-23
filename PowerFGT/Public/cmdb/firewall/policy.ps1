@@ -51,13 +51,13 @@ function Add-FGTFirewallPolicy {
         [Parameter (Mandatory = $true)]
         [string]$name,
         [Parameter (Mandatory = $true)]
-        [string]$srcintf,
+        [string[]]$srcintf,
         [Parameter (Mandatory = $true)]
-        [string]$dstintf,
+        [string[]]$dstintf,
         [Parameter (Mandatory = $true)]
-        [string]$srcaddr,
+        [string[]]$srcaddr,
         [Parameter (Mandatory = $true)]
-        [string]$dstaddr,
+        [string[]]$dstaddr,
         [Parameter (Mandatory = $false)]
         [ValidateSet("accept", "deny", "learn")]
         [string]$action = "accept",
@@ -66,7 +66,7 @@ function Add-FGTFirewallPolicy {
         [Parameter (Mandatory = $false)]
         [string]$schedule = "always",
         [Parameter (Mandatory = $false)]
-        [string]$service = "ALL",
+        [string[]]$service = "ALL",
         [Parameter (Mandatory = $false)]
         [switch]$nat = $false,
         [Parameter (Mandatory = $false)]
@@ -98,92 +98,53 @@ function Add-FGTFirewallPolicy {
 
         $uri = "api/v2/cmdb/firewall/policy"
 
-        # SOURCE INTERFACE
-        $arr = $srcintf -split ', '
-        $countarr = $arr.count
-        $line = 0
-        while ($line -ne $countarr) {
-
-            New-Variable -Name "srcintf_array$line" -Value $arr[$line]
-            $temp = Get-Variable -Name "srcintf_array$line" -ValueOnly
-            $temp = new-Object -TypeName PSObject
-            $temp | add-member -name "name" -membertype NoteProperty -Value $arr[$line]
-            [array]$srcintf_array_array += $temp
-            $line = $line + 1
-
+        # Source interface
+        $srcintf_array = @()
+        #TODO check if the interface (zone ?) is valid
+        foreach ($intf in $srcintf) {
+            $srcintf_array += @{ 'name' = $intf }
         }
 
-        # DESTINATION INTERFACE
-        $arr = $dstintf -split ', '
-        $countarr = $arr.count
-        $line = 0
-        while ($line -ne $countarr) {
+        # Destination interface
 
-            New-Variable -Name "dstintf_array$line" -Value $arr[$line]
-            $temp = Get-Variable -Name "dstintf_array$line" -ValueOnly
-            $temp = new-Object -TypeName PSObject
-            $temp | add-member -name "name" -membertype NoteProperty -Value $arr[$line]
-            [array]$dstintf_array_array += $temp
-            $line = $line + 1
-
+        $dstintf_array = @()
+        #TODO check if the interface (zone ?) is valid
+        foreach ($intf in $dstintf) {
+            $dstintf_array += @{ 'name' = $intf }
         }
 
-        # SOURCE ADDRESSE
-        $arr = $srcaddr -split ', '
-        $countarr = $arr.count
-        $line = 0
-        while ($line -ne $countarr) {
-
-            New-Variable -Name "srcaddr_array$line" -Value $arr[$line]
-            $temp = Get-Variable -Name "srcaddr_array$line" -ValueOnly
-            $temp = new-Object -TypeName PSObject
-            $temp | add-member -name "name" -membertype NoteProperty -Value $arr[$line]
-            [array]$srcaddr_array_array += $temp
-            $line = $line + 1
-
+        # Source address
+        $srcaddr_array = @()
+        #TODO check if the address (group, vip...) is valid
+        foreach ($addr in $srcaddr) {
+            $srcaddr_array += @{ 'name' = $addr }
         }
 
-        # DESTINATION ADDRESSE
-        $arr = $dstaddr -split ', '
-        $countarr = $arr.count
-        $line = 0
-        while ($line -ne $countarr) {
-
-            New-Variable -Name "dstaddr_array$line" -Value $arr[$line]
-            $temp = Get-Variable -Name "dstaddr_array$line" -ValueOnly
-            $temp = new-Object -TypeName PSObject
-            $temp | add-member -name "name" -membertype NoteProperty -Value $arr[$line]
-            [array]$dstaddr_array_array += $temp
-            $line = $line + 1
-
+        # Destination address
+        $dstaddr_array = @()
+        #TODO check if the address (group, vip...) is valid
+        foreach ($addr in $dstaddr) {
+            $dstaddr_array += @{ 'name' = $addr }
         }
 
-        # SERVICE
-        $arr = $service -split ', '
-        $countarr = $arr.count
-        $line = 0
-        while ($line -ne $countarr) {
-
-            New-Variable -Name "service_array$line" -Value $arr[$line]
-            $temp = Get-Variable -Name "service_array$line" -ValueOnly
-            $temp = new-Object -TypeName PSObject
-            $temp | add-member -name "name" -membertype NoteProperty -Value $arr[$line]
-            [array]$service_array_array += $temp
-            $line = $line + 1
-
+        # Service
+        $service_array = @()
+        #TODO check if the service (group...) is valid
+        foreach ($s in $service) {
+            $service_array += @{ 'name' = $s }
         }
 
         $policy = new-Object -TypeName PSObject
 
         $policy | add-member -name "name" -membertype NoteProperty -Value $name
 
-        $policy | add-member -name "srcintf" -membertype NoteProperty -Value $srcintf_array_array
+        $policy | add-member -name "srcintf" -membertype NoteProperty -Value $srcintf_array
 
-        $policy | add-member -name "dstintf" -membertype NoteProperty -Value $dstintf_array_array
+        $policy | add-member -name "dstintf" -membertype NoteProperty -Value $dstintf_array
 
-        $policy | add-member -name "srcaddr" -membertype NoteProperty -Value $srcaddr_array_array
+        $policy | add-member -name "srcaddr" -membertype NoteProperty -Value $srcaddr_array
 
-        $policy | add-member -name "dstaddr" -membertype NoteProperty -Value $dstaddr_array_array
+        $policy | add-member -name "dstaddr" -membertype NoteProperty -Value $dstaddr_array
 
         $policy | add-member -name "action" -membertype NoteProperty -Value $action
 
@@ -196,7 +157,7 @@ function Add-FGTFirewallPolicy {
 
         $policy | add-member -name "schedule" -membertype NoteProperty -Value $schedule
 
-        $policy | add-member -name "service" -membertype NoteProperty -Value $service_array_array
+        $policy | add-member -name "service" -membertype NoteProperty -Value $service_array
 
         if ($nat) {
             $policy | add-member -name "nat" -membertype NoteProperty -Value "enable"
