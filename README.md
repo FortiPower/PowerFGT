@@ -401,9 +401,18 @@ You can use also `Connect-FGT -httpOnly` for connect using HTTP (NOT RECOMMENDED
 # List of available command
 ```powershell
 Add-FGTFirewallAddress
+Add-FGTFirewallAddressGroup
+Add-FGTFirewallAddressGroupMember
+Add-FGTFirewallPolicy
 Add-FGTFirewallVip
+Confirm-FGTAddress
+Confirm-FGTAddressGroup
+Confirm-FGTFirewallPolicy
+Confirm-FGTVip
 Connect-FGT
 Copy-FGTFirewallAddress
+Copy-FGTFirewallAddressGroup
+Deploy-FGTVm
 Disconnect-FGT
 Get-FGTFirewallAddress
 Get-FGTFirewallAddressgroup
@@ -411,7 +420,7 @@ Get-FGTFirewallIPPool
 Get-FGTFirewallPolicy
 Get-FGTFirewallServiceCustom
 Get-FGTFirewallServiceGroup
-Get-FGTFirewalVip
+Get-FGTFirewallVip
 Get-FGTRouterPolicy
 Get-FGTRouterStatic
 Get-FGTSystemDns
@@ -426,13 +435,16 @@ Get-FGTVpnIpsecPhase1Interface
 Get-FGTVpnIpsecPhase2Interface
 Invoke-FGTRestMethod
 Remove-FGTFirewallAddress
+Remove-FGTFirewallAddressGroup
+Remove-FGTFirewallAddressGroupMember
+Remove-FGTFirewallPolicy
 Remove-FGTFirewallVip
 Set-FGTCipherSSL
+Set-FGTConnection
 Set-FGTFirewallAddress
+Set-FGTFirewallAddressGroup
 Set-FGTUntrustedSSL
 Show-FGTException
-Confirm-FGTAddress
-Confirm-FGTVip
 ```
 
 # Author
