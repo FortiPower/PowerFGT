@@ -204,7 +204,7 @@ function Deploy-FGTVm {
 
     Process {
 
-        Write-Warning "You need to have a vSwitch configured on your vSphere environment even if you use a DVS"
+        #Write-Warning "You need to have a vSwitch configured on your vSphere environment even if you use a DVS"
         #default vapp_config
         $vapp_config = @{
             "source" = $ovf_path
