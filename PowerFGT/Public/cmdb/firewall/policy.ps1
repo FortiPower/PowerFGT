@@ -44,6 +44,11 @@ function Add-FGTFirewallPolicy {
 
         Add a MyFGTPolicy with schedule is workhour
 
+        .EXAMPLE
+        Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -comments "My FGT Policy"
+
+        Add a MyFGTPolicy with comment "My FGT Policy"
+
     #>
 
 
@@ -69,6 +74,9 @@ function Add-FGTFirewallPolicy {
         [string[]]$service = "ALL",
         [Parameter (Mandatory = $false)]
         [switch]$nat = $false,
+        [Parameter (Mandatory = $false)]
+        [ValidateLength(0, 255)]
+        [string]$comments,
         [Parameter (Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
@@ -165,6 +173,10 @@ function Add-FGTFirewallPolicy {
         else {
 
             $policy | add-member -name "nat" -membertype NoteProperty -Value "disable"
+        }
+
+        if ( $PsBoundParameters.ContainsKey('comments') ) {
+            $policy | add-member -name "comments" -membertype NoteProperty -Value $comments
         }
 
         Invoke-FGTRestMethod -method "POST" -body $policy -uri $uri -connection $connection @invokeParams | out-Null
