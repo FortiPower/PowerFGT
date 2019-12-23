@@ -428,7 +428,7 @@ function Deploy-FGTVm {
             $ovfConfig.Common.intf9_netmask.Value = $int9_netmask
         }
 
-        Import-VApp @vapp_config -OvfConfiguration $ovfConfig
+        Import-VApp @vapp_config -OvfConfiguration $ovfConfig | Out-Null
 
         if ( $PsBoundParameters.ContainsKey('MemoryGB') ) {
             Get-VM $name_vm | Set-VM -MemoryGB $MemoryGB -confirm:$false | Out-Null
@@ -443,9 +443,13 @@ function Deploy-FGTVm {
         }
 
         if ( $StartVM ) {
-            Write-Progress -Activity "Starting CPPM $name_vm"
+            Write-Progress -Activity "Starting FortiGate $name_vm"
             Get-VM $name_vm | Start-VM | Out-Null
-            Write-Progress -Activity "Starting CPPM $name_vm" -Completed
+            Write-Progress -Activity "Starting FortiGate $name_vm" -Completed
+            Write-Output "$name_vm is started and ready to use (http://$int0_ip)"
+        }
+        else {
+            Write-Output "$name_vm is ready to use (http://$int0_ip) (need to Start VM !)"
         }
 
     }
