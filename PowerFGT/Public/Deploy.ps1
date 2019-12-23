@@ -94,7 +94,7 @@ function Deploy-FGTVm {
         [string]$inventory,
         [Parameter (Mandatory = $true)]
         [string]$name_vm,
-        [Parameter (Mandatory = $true)]
+        [Parameter (Mandatory = $false)]
         [ValidateRange(31, 512)]
         [int]$capacityGB,
         [Parameter (Mandatory = $false)]
