@@ -112,11 +112,9 @@ function Add-FGTFirewallPolicy {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-
         if ( Get-FGTFirewallPolicy -connection $connection @invokeParams -name $name ) {
             Throw "Already a Policy using the same name"
         }
-
 
         $uri = "api/v2/cmdb/firewall/policy"
 
@@ -128,7 +126,6 @@ function Add-FGTFirewallPolicy {
         }
 
         # Destination interface
-
         $dstintf_array = @()
         #TODO check if the interface (zone ?) is valid
         foreach ($intf in $dstintf) {
