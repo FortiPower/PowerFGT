@@ -5,6 +5,8 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+#Requires -Modules VMware.VimAutomation.Common
+
 function Deploy-FGTVm {
 
     <#
