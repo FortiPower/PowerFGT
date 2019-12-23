@@ -54,6 +54,10 @@ function Add-FGTFirewallPolicy {
 
         Add a MyFGTPolicy with log traffic all
 
+        .EXAMPLE
+        Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -ippool "MyIPPool"
+
+        Add a MyFGTPolicy with IP Pool MyIPPool
     #>
 
 
@@ -85,6 +89,8 @@ function Add-FGTFirewallPolicy {
         [Parameter (Mandatory = $false)]
         [ValidateSet("disable", "utm", "all")]
         [string]$logtraffic,
+        [Parameter (Mandatory = $false)]
+        [string[]]$ippool,
         [Parameter (Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
@@ -189,6 +195,16 @@ function Add-FGTFirewallPolicy {
 
         if ( $PsBoundParameters.ContainsKey('logtraffic') ) {
             $policy | add-member -name "logtraffic" -membertype NoteProperty -Value $logtraffic
+        }
+
+        if ( $PsBoundParameters.ContainsKey('ippool') ) {
+            $ippool_array = @()
+            #TODO check if the IP Pool is valid
+            foreach ($i in $ippool) {
+                $ippool_array += @{ 'name' = $i }
+            }
+            $policy | add-member -name "ippool" -membertype NoteProperty -Value "enable"
+            $policy | add-member -name "poolname" -membertype NoteProperty -Value $ippool_array
         }
 
         Invoke-FGTRestMethod -method "POST" -body $policy -uri $uri -connection $connection @invokeParams | out-Null
