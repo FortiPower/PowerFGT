@@ -143,8 +143,8 @@ or delete it `Remove-FGTFirewallAddress`.
     ----                ------                  ----   --------  ------
     My PowerFGT Network 192.0.2.0 255.255.255.0 ipmask 192.0.2.0 255.255.255.0
 
-# Get information some address (match) and display only some field (using Format-Table
-    Get-FGTFirewallAddress -match update | Select name, type, fqdn | Format-Table
+# Get information some address (filter_type contains) and display only some field (using Format-Table)
+    Get-FGTFirewallAddress -name update -filter_type contains | Select name, type, fqdn | Format-Table
 
     name                 type fqdn
     ----                 ---- ----
