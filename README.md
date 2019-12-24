@@ -20,7 +20,7 @@ With this module (version 0.3.0) you can manage:
 - Static Route (Get)
 - System Global (Get)
 - [VDOM](#VDOM) (Get)
-- Virtual IP (Get/Add/Remove object type static-nat)
+- [Virtual IP](#Virtual-IP) (Get/Add/Remove object type static-nat)
 - Virtual WAN Link/SD-WAN (Get)
 - VPN IPsec Phase 1/Phase 2 Interface (Get)
 - Zone (Get)
@@ -348,6 +348,75 @@ or delete it `Remove-FGTFirewallAddressGroup`.
     Remove address group on Fortigate
     Proceed with removal of Address Group My Address Group ?
     [Y] Yes  [N] No  [?] Help (default is "N"): y
+```
+
+### Virtual IP
+
+You can create a new Address Group `Add-FGTFirewallVip`, retrieve its information `Get-FGTFirewallVip`,
+modify its properties `Set-FGTFirewallVip` or delete it `Remove-FGTFirewallVip`.
+
+```powershell
+
+# Get information about ALL Virtual IP (using Format Table)
+    Get-FGTFirewallVip | Format-Table
+
+    q_origin_key name        id uuid                                 comment type       dns-mapping-ttl ldb-method src-filter service
+    ------------ ----        -- ----                                 ------- ----       --------------- ---------- ---------- -------
+    myVIP1       myVIP1       0 3ccb44c6-2662-51ea-a469-3148c8eff287         static-nat               0 static     {}         {}
+    myVIP3-8080  myVIP3-8080  0 73989828-2662-51ea-c969-4ad22d450075         static-nat               0 static     {}         {}
+
+# Add a Virtual IP with Static NAT (192.2.0.1 => 198.51.100.1)
+    Add-FGTFirewallVip -name myVIP1 -type static-nat -extip 192.2.0.1 -mappedip 198.51.100.1
+
+    q_origin_key                     : myVIP1
+    name                             : myVIP1
+    id                               : 0
+    uuid                             : 3ccb44c6-2662-51ea-a469-3148c8eff287
+    comment                          :
+    type                             : static-nat
+    dns-mapping-ttl                  : 0
+    ldb-method                       : static
+    src-filter                       : {}
+    service                          : {}
+    extip                            : 192.2.0.1
+    extaddr                          : {}
+    mappedip                         : {@{q_origin_key=198.51.100.1; range=198.51.100.1}}
+    [...]
+
+# Add a Virtual IP with Static NAT and Port Forward (192.2.0.2:8080 => 198.51.100.2:80)
+    Add-FGTFirewallVip -name myVIP2-8080to80 -type static-nat -extip 192.2.0.2 -mappedip 198.51.100.2 -portforward -extport 8080 -mappedport 80
+
+    q_origin_key                     : myVIP2-8080to80
+    name                             : myVIP2-8080to80
+    id                               : 0
+    uuid                             : 73989828-2662-51ea-c969-4ad22d450075
+    comment                          :
+    type                             : static-nat
+    dns-mapping-ttl                  : 0
+    ldb-method                       : static
+    src-filter                       : {}
+    service                          : {}
+    extip                            : 192.2.0.2
+    extaddr                          : {}
+    mappedip                         : {@{q_origin_key=198.51.100.2; range=198.51.100.2}}
+    mapped-addr                      :
+    extintf                          : any
+    arp-reply                        : enable
+    server-type                      :
+    persistence                      : none
+    nat-source-vip                   : disable
+    portforward                      : enable
+    protocol                         : tcp
+    extport                          : 8080
+    mappedport                       : 80
+    [...]
+
+# Remove an address Group
+    Get-FGTFirewallVip -name myVIP1 | Remove-FGTFirewallVip
+
+    Remove VIP on Fortigate
+    Proceed with removal of VIP myVIP1 ?
+    [Y] Yes  [N] No  [?] Help (default is "N"): Y
 ```
 
 ### Invoke API
