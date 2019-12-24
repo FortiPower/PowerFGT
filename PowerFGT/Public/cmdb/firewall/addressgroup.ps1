@@ -87,7 +87,7 @@ function Add-FGTFirewallAddressGroup {
             }
         }
 
-        Invoke-FGTRestMethod -method "POST" -body $addrgrp -uri $uri -connection $connection @invokeParams #| out-Null
+        Invoke-FGTRestMethod -method "POST" -body $addrgrp -uri $uri -connection $connection @invokeParams | Out-Null
 
         Get-FGTFirewallAddressGroup -connection $connection @invokeParams -name $name
     }
