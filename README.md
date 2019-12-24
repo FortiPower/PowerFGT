@@ -19,7 +19,7 @@ With this module (version 0.3.0) you can manage:
 - Service Group (Get)
 - Static Route (Get)
 - System Global (Get)
-- VDOM (Get)
+- [VDOM](#VDOM) (Get)
 - Virtual IP (Get/Add/Remove object type static-nat)
 - Virtual WAN Link/SD-WAN (Get)
 - VPN IPsec Phase 1/Phase 2 Interface (Get)
