@@ -6,7 +6,7 @@ This is a Powershell module for configure a FortiGate (Fortinet) Firewall.
 
 With this module (version 0.3.0) you can manage:
 
-- Address (Add/Get/Copy/Set/Remove object type ipmask/subnet)
+- [Address](#Address) (Add/Get/Copy/Set/Remove object type ipmask/subnet)
 - AddressGroup (Add/Get/Copy/Set/Remove and Add/Remove Member)
 - DNS (Get)
 - HA (Get)
@@ -24,6 +24,10 @@ With this module (version 0.3.0) you can manage:
 - Virtual WAN Link/SD-WAN (Get)
 - VPN IPsec Phase 1/Phase 2 Interface (Get)
 - Zone (Get)
+
+There is some extra feature
+- [Invoke API](#Invoke API)
+- [Filtering](#Filtering)
 - [Multi Connection](#MultiConnection)
 
 More functionality will be added later.
@@ -78,7 +82,7 @@ The first thing to do is to connect to a FortiGate Firewall with the command `Co
 if you get a warning about `Unable to connect` Look [Issue](#Issue)
 
 
-### Address Management
+### Address
 
 You can create a new Address `Add-FGTFirewallAddress`, retrieve its information `Get-FGTFirewallAddress`,
 modify its properties `Set-FGTFirewallAddress`, copy/clone its properties `Copt-FGTFirewallAddress`
