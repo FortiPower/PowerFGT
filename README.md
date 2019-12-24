@@ -263,9 +263,9 @@ Actually, support only `equal` and `contains` filter type
 
 ### Address Group
 
-You can create a new Address Group `Add-FGTFirewallAddressGroup`, retrieve its information `Get-FGTFirewallAddressGroup`,  
-modify its properties `Set-FGTFirewallAddressGroup`, copy/clone its properties `Copt-FGTFirewallAddressGroup`,  
-Add member to Address Group `Add-FGTFirewallAddressGroup` and remove member `Add-FGTFirewallAddressGroup`,  
+You can create a new Address Group `Add-FGTFirewallAddressGroup`, retrieve its information `Get-FGTFirewallAddressGroup`,
+modify its properties `Set-FGTFirewallAddressGroup`, copy/clone its properties `Copt-FGTFirewallAddressGroup`,
+Add member to Address Group `Add-FGTFirewallAddressGroup` and remove member `Add-FGTFirewallAddressGroup`,
 or delete it `Remove-FGTFirewallAddressGroup`.  
 
 ```powershell
@@ -289,7 +289,6 @@ or delete it `Remove-FGTFirewallAddressGroup`.
     color         : 0
     tagging       : {}
     allow-routing : disable
-
 
 # Add FGT3 member to existing address Group
     Get-FGTFirewallAddressGroup -name "My Address Group" | Add-FGTFirewallAddressGroupMember -member FGT3
