@@ -7,7 +7,7 @@ This is a Powershell module for configure a FortiGate (Fortinet) Firewall.
 With this module (version 0.3.0) you can manage:
 
 - [Address](#Address) (Add/Get/Copy/Set/Remove object type ipmask/subnet)
-- AddressGroup (Add/Get/Copy/Set/Remove and Add/Remove Member)
+- [AddressGroup](#Address-Group) (Add/Get/Copy/Set/Remove and Add/Remove Member)
 - DNS (Get)
 - HA (Get)
 - Interface (Get)
@@ -261,6 +261,95 @@ For  `Invoke-FGTRestMethod` and `Get-XXX` cmdlet like `Get-FGTFirewallAddress`, 
 ```
 Actually, support only `equal` and `contains` filter type
 
+### Address Group
+
+You can create a new Address Group `Add-FGTFirewallAddressGroup`, retrieve its information `Get-FGTFirewallAddressGroup`,  
+modify its properties `Set-FGTFirewallAddressGroup`, copy/clone its properties `Copt-FGTFirewallAddressGroup`,  
+Add member to Address Group `Add-FGTFirewallAddressGroup` and remove member `Add-FGTFirewallAddressGroup`,  
+or delete it `Remove-FGTFirewallAddressGroup`.  
+
+```powershell
+
+# Get information about ALL address Group (using Format Table)
+    Get-FGTFirewallAddressgroup | Format-Table
+
+    q_origin_key     name             uuid                                 member
+    ------------     ----             ----                                 ------
+    My Address Group My Address Group 292f6eaa-2613-51ea-866d-06cedca8805 {@{q_origin_key=FGT1; name=FGT1}, @{q_origin_ke…
+
+# Add an address Group with FGT1 and FGT2 
+    Add-FGTFirewallAddressGroup -name "My Address Group" -member FGT1, FGT2
+
+    q_origin_key  : My Address Group
+    name          : My Address Group
+    uuid          : 292f6eaa-2613-51ea-866d-06cedca8805
+    member        : {@{q_origin_key=FGT1; name=FGT1}, @{q_origin_key=FGT2; name=FGT2}}
+    comment       :
+    visibility    : enable
+    color         : 0
+    tagging       : {}
+    allow-routing : disable
+
+
+# Add FGT3 member to existing address Group
+    Get-FGTFirewallAddressGroup -name "My Address Group" | Add-FGTFirewallAddressGroupMember -member FGT3
+
+    q_origin_key  : MyAddressGroup
+    name          : MyAddressGroup
+    uuid          : 292f6eaa-2613-51ea-866d-06cedca8805a
+    member        : {@{q_origin_key=FGT1; name=FGT1}, @{q_origin_key=FGT2; name=FGT2}, @{q_origin_key=FGT3; name=FGT3}}
+    comment       :
+    visibility    : enable
+    color         : 0
+    tagging       : {}
+    allow-routing : disable
+
+# Remove FGT2 member to existing address Group
+    Get-FGTFirewallAddressGroup -name "My Address Group" | Remove-FGTFirewallAddressGroupMember -member FGT2
+
+    q_origin_key  : My Address Group
+    name          : My Address Group
+    uuid          : 292f6eaa-2613-51ea-866d-06cedca8805a
+    member        : {@{q_origin_key=FGT1; name=FGT1}, @{q_origin_key=FGT3; name=FGT3}}
+    comment       :
+    visibility    : enable
+    color         : 0
+    tagging       : {}
+    allow-routing : disable
+
+# Modify an address (comment, member...)
+    Get-FGTFirewallAddressGroup -name "My Address Group" | Set-FGTFirewallAddressGroup -comment "My Address Group with only FGT2" -member FGT2
+
+    q_origin_key  : My Address Group
+    name          : My Address Group
+    uuid          : 292f6eaa-2613-51ea-866d-06cedca8805a
+    member        : {@{q_origin_key=FGT2; name=FGT2}}
+    comment       : My Address Group with only FGT2
+    visibility    : enable
+    color         : 0
+    tagging       : {}
+    allow-routing : disable
+
+# Copy/Clone an address Group
+    Get-FGTFirewallAddressGroup -name "My Address Group" | Copy-FGTFirewallAddressGroup -name "My New Address Group"
+
+    q_origin_key  : My New Address Group
+    name          : My New Address Group
+    uuid          : 9c2673a8-2614-51ea-9ab0-dfbd6f2c0475
+    member        : {@{q_origin_key=FGT2; name=FGT2}}
+    comment       : My Address Group with only FGT2
+    visibility    : enable
+    color         : 0
+    tagging       : {}
+    allow-routing : disable
+
+# Remove an address Group
+    Get-FGTFirewallAddressGroup -name "My Address Group" | Remove-FGTFirewallAddressGroup
+
+    Remove address group on Fortigate
+    Proceed with removal of Address Group My Address Group ?
+    [Y] Yes  [N] No  [?] Help (default is "N"): y
+```
 
 ### Invoke API
 for example to get Fortigate System Global Info
