@@ -58,12 +58,6 @@ Function Confirm-FGTAddressGroup {
     if ( -not ( $argument | get-member -name comment -Membertype Properties)) {
         throw "Element specified does not contain an comment property."
     }
-    if ( -not ( $argument | get-member -name exclude -Membertype Properties)) {
-        throw "Element specified does not contain an exclude property."
-    }
-    if ( -not ( $argument | get-member -name exclude-member -Membertype Properties)) {
-        throw "Element specified does not contain an exclude-member property."
-    }
 
     $true
 
