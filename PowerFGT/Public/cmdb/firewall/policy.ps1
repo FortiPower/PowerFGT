@@ -216,6 +216,89 @@ function Add-FGTFirewallPolicy {
     End {
     }
 }
+
+function Add-FGTFirewallPolicyMember {
+
+    <#
+        .SYNOPSIS
+        Add a FortiGate Policy Member
+
+        .DESCRIPTION
+        Add a FortiGate Policy Member (source or destination address)
+
+        .EXAMPLE
+        $MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
+        PS C:\>$MyFGTPolicy | Add-FGTFirewallPolicyMember -srcaddr MyAddress1
+
+        Add MyAddress1 member to source of MyFGTPolicy
+
+        .EXAMPLE
+        $MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
+        PS C:\>$MyFGTPolicy | Add-FGTFirewallPolicyMember -dstaddr MyAddress1, MyAddress2
+
+        Add MyAddress1 and MyAddress2 member to destination of MyFGTPolicy
+
+    #>
+
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [ValidateScript( { Confirm-FGTFirewallPolicy $_ })]
+        [psobject]$policy,
+        [Parameter(Mandatory = $false)]
+        [string[]]$srcaddr,
+        [Parameter(Mandatory = $false)]
+        [string[]]$dstaddr,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/firewall/policy/$($policy.policyid)"
+
+        $_policy = new-Object -TypeName PSObject
+
+        if ( $PsBoundParameters.ContainsKey('srcaddr') ) {
+            #Add member to existing source address
+            $members = $policy.srcaddr
+            foreach ( $member in $srcaddr ) {
+                $member_name = @{ }
+                $member_name.add( 'name', $member)
+                $members += $member_name
+            }
+            $_policy | add-member -name "srcaddr" -membertype NoteProperty -Value $members
+        }
+
+        if ( $PsBoundParameters.ContainsKey('dstaddr') ) {
+            #Add member to existing destination address
+            $members = $policy.dstaddr
+            foreach ( $member in $dstaddr ) {
+                $member_name = @{ }
+                $member_name.add( 'name', $member)
+                $members += $member_name
+            }
+            $_policy | add-member -name "dstaddr" -membertype NoteProperty -Value $members
+        }
+
+        Invoke-FGTRestMethod -method "PUT" -body $_policy -uri $uri -connection $connection @invokeParams | Out-Null
+
+        Get-FGTFirewallPolicy -connection $connection @invokeParams -name $policy.name
+    }
+
+    End {
+    }
+}
+
 function Get-FGTFirewallPolicy {
 
     <#
