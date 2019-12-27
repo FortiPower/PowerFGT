@@ -265,7 +265,7 @@ Actually, support only `equal` and `contains` filter type
 
 You can create a new Address Group `Add-FGTFirewallAddressGroup`, retrieve its information `Get-FGTFirewallAddressGroup`,
 modify its properties `Set-FGTFirewallAddressGroup`, copy/clone its properties `Copt-FGTFirewallAddressGroup`,
-Add member to Address Group `Add-FGTFirewallAddressGroup` and remove member `Add-FGTFirewallAddressGroup`,
+Add member to Address Group `Add-FGTFirewallAddressGroupMember` and remove member `Remove-FGTFirewallAddressGroupMember`,
 or delete it `Remove-FGTFirewallAddressGroup`.  
 
 ```powershell
