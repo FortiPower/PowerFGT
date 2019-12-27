@@ -422,6 +422,7 @@ or delete it `Remove-FGTFirewallVip`.
 ### Policy
 
 You can create a new Address Group `Add-FGTFirewallPolicy`, retrieve its information `Get-FGTFirewallPolicy`
+Add member to source or destinationn address `Add-FGTFirewallPolicyMember` and remove member `Add-FGTFirewallPolicyMember`,
 or delete it `Remove-FGTFirewallPolicy`.
 
 ```powershell
@@ -479,6 +480,49 @@ or delete it `Remove-FGTFirewallPolicy`.
     schedule                  : always
     schedule-timeout          : disable
     [...]
+
+# Add FGT2 and FGT3 to source address (only FGT1 before)
+    Get-FGTFirewallPolicy -name MyFGTPolicy3 | Add-FGTFirewallPolicyMember -srcaddr FGT1, FGT2
+
+    q_origin_key              : 2
+    policyid                  : 2
+    name                      : MyFGTPolicy3
+    uuid                      : dc941a9e-266e-51ea-2f5c-41da0d900d92
+    srcintf                   : {@{q_origin_key=port1; name=port1}}
+    dstintf                   : {@{q_origin_key=port2; name=port2}}
+    srcaddr                   : {@{q_origin_key=FGT1; name=FGT1}, @{q_origin_key=FGT2; name=FGT2}, @{q_origin_key=FGT3;name=FGT3}}
+    dstaddr                   : {@{q_origin_key=all; name=all}}
+    internet-service          : disable
+    internet-service-src      : disable
+    rtp-nat                   : disable
+    learning-mode             : disable
+    action                    : accept
+    status                    : disable
+    schedule                  : always
+    schedule-timeout          : disable
+    [...]
+
+# Remove FGT3 from destination address (FGT1, FGT2, FGT3 before)
+    Get-FGTFirewallPolicy -name MyFGTPolicy3 | Remove-FGTFirewallPolicyMember -srcaddr FGT3
+
+    q_origin_key              : 2
+    policyid                  : 2
+    name                      : MyFGTPolicy4
+    uuid                      : dc941a9e-266e-51ea-2f5c-41da0d900d92
+    srcintf                   : {@{q_origin_key=port1; name=port1}}
+    dstintf                   : {@{q_origin_key=port2; name=port2}}
+    srcaddr                   : {@{q_origin_key=all; name=all}}
+    dstaddr                   : {@{q_origin_key=FGT1; name=FGT1}, @{q_origin_key=FGT2; name=FGT2}}
+    internet-service          : disable
+    internet-service-src      : disable
+    rtp-nat                   : disable
+    learning-mode             : disable
+    action                    : accept
+    status                    : disable
+    schedule                  : always
+    schedule-timeout          : disable
+    [...]
+
 
 # Remove a Policy
     Get-FGTFirewallPolicy -name MyFGTPolicy2 | Remove-FGTFirewallPolicy
