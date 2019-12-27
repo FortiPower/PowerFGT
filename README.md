@@ -565,6 +565,7 @@ Add-FGTFirewallAddress
 Add-FGTFirewallAddressGroup
 Add-FGTFirewallAddressGroupMember
 Add-FGTFirewallPolicy
+Add-FGTFirewallPolicyMember
 Add-FGTFirewallVip
 Confirm-FGTAddress
 Confirm-FGTAddressGroup
@@ -576,7 +577,7 @@ Copy-FGTFirewallAddressGroup
 Deploy-FGTVm
 Disconnect-FGT
 Get-FGTFirewallAddress
-Get-FGTFirewallAddressgroup
+Get-FGTFirewallAddressGroup
 Get-FGTFirewallIPPool
 Get-FGTFirewallPolicy
 Get-FGTFirewallServiceCustom
@@ -599,6 +600,7 @@ Remove-FGTFirewallAddress
 Remove-FGTFirewallAddressGroup
 Remove-FGTFirewallAddressGroupMember
 Remove-FGTFirewallPolicy
+Remove-FGTFirewallPolicyMember
 Remove-FGTFirewallVip
 Set-FGTCipherSSL
 Set-FGTConnection
