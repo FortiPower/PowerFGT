@@ -614,6 +614,33 @@ For example to get interface of 2 FortiGate
     Disconnect-FGT
 ```
 
+### Deploy-VM
+
+You can deploy FortiGate OVA (vapp), you need VMware.PowerCLI module and FortiGate OVF (available on support web site)
+
+```powershell
+    $fortiBuildParams = @{
+        ovf_path                    = "C:\FortiGate-VM64.vapp.ovf"
+        vm_host                     = "MyHost"
+        datastore                   = "MyDataStore"
+        Cluster                     = "MyCluster"
+        name_vm                     = "PowerFGT"
+        hostname                    = "PowerFGT"
+        dns_primary                 = "192.0.2.3"
+        dns_secondary               = "192.0.2.4"
+        int0_network_mode           = "Static"
+        int0_gateway                = "192.0.2.254"
+        int0_ip                     = "192.0.2.1"
+        int0_netmask                = "255.255.255.0"
+        int0_port_group             = "PG-PowerFGT"
+        net_adapter                 = "vmxnet3"
+    }
+    Deploy-FGTVm @fortiBuildParams
+
+    PowerFGT is ready to use (http://192.0.2.1) (need to Start VM !)
+
+```
+
 # Issue
 
 ## Unable to connect (certificate)
