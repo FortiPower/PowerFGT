@@ -572,7 +572,7 @@ function Remove-FGTFirewallAddressGroupMember {
             $_addrgrp | add-member -name "member" -membertype NoteProperty -Value $members
         }
 
-        Invoke-FGTRestMethod -method "PUT" -body $_addrgrp -uri $uri -connection $connection @invokeParams | out-Null
+        Invoke-FGTRestMethod -method "PUT" -body $_addrgrp -uri $uri -connection $connection @invokeParams | Out-Null
 
         Get-FGTFirewallAddressGroup -connection $connection @invokeParams -name $addrgrp.name
     }
