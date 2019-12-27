@@ -101,7 +101,7 @@
             LicenseUri = 'https://github.com/FortiPower/PowerFGT/blob/master/LICENSE'
 
             # A URL to the main website for this project.
-            ProjectUri = 'https://github.com/FortiPower/PowerFGT'
+            ProjectUri = 'https://fortipower.github.io/PowerFGT'
 
             # A URL to an icon representing this module.
             # IconUri = ''
