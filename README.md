@@ -13,7 +13,7 @@ With this module (version 0.3.0) you can manage:
 - Interface (Get)
 - IP Pool (Get)
 - Local User (Get)
-- Policy (Add/Get/Remove)
+- [Policy](#Policy) (Add/Get/Remove)
 - RoutePolicy (Get)
 - Service (Get)
 - Service Group (Get)
@@ -417,6 +417,74 @@ or delete it `Remove-FGTFirewallVip`.
     Remove VIP on Fortigate
     Proceed with removal of VIP myVIP1 ?
     [Y] Yes  [N] No  [?] Help (default is "N"): Y
+```
+
+### Policy
+
+You can create a new Address Group `Add-FGTFirewallPolicy`, retrieve its information `Get-FGTFirewallPolicy`
+or delete it `Remove-FGTFirewallPolicy`.
+
+```powershell
+# Get information about ALL Policies (using Format Table)
+    Get-FGTFirewallPolicy | Format-Table
+    q_origin_key policyid name         uuid                                 srcintf                             dstintf                             srcaddr
+    ------------ -------- ----         ----                                 -------                             -------                             -------
+            1        1 MyFGTPolicy  31a7ad9e-266e-51ea-1691-4906abad2e8b {@{q_origin_key=port1; name=port1}} {@{q_origin_key=port2; name=port2}} {@{q_origin_key=all; name=all}
+            2        2 MyFGTPolicy2 3c8e5212-266e-51ea-2300-dc5fcb1a8e2a {@{q_origin_key=port1; name=port1}} {@{q_origin_key=port3; name=port3}} {@{q_origin_key=all; name=all}}
+
+# Add Policy (MyFGTPolicy) allow ALL traffic between port1 to port2
+    Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all
+    q_origin_key                : 1
+    policyid                    : 1
+    name                        : MyFGTPolicy
+    uuid                        : 31a7ad9e-266e-51ea-1691-4906abad2e8b
+    srcintf                     : {@{q_origin_key=port1; name=port1}}
+    dstintf                     : {@{q_origin_key=port2; name=port2}}
+    srcaddr                     : {@{q_origin_key=all; name=all}}
+    dstaddr                     : {@{q_origin_key=all; name=all}}
+    internet-service            : disable
+    internet-service-id         : {}
+    internet-service-custom     : {}
+    internet-service-src        : disable
+    internet-service-src-id     : {}
+    internet-service-src-custom : {}
+    rtp-nat                     : disable
+    rtp-addr                    : {}
+    learning-mode               : disable
+    action                      : accept
+    send-deny-packet            : disable
+    firewall-session-dirty      : check-all
+    status                      : enable
+    schedule                    : always
+    schedule-timeout            : disable
+    service                     : {@{q_origin_key=ALL; name=ALL}}
+    [...]
+
+# Add Policy (MyFGTPolicy2) allow ALL traffic between port1 to port3 and enable NAT (but disable rule)
+    Add-FGTFirewallPolicy -name MyFGTPolicy2 -srcintf port1 -dstintf port3 -srcaddr all -dstaddr all -nat -status:$false -skip
+    q_origin_key              : 2
+    policyid                  : 2
+    name                      : MyFGTPolicy2
+    uuid                      : dc941a9e-266e-51ea-2f5c-41da0d900d92
+    srcintf                   : {@{q_origin_key=port1; name=port1}}
+    dstintf                   : {@{q_origin_key=port3; name=port3}}
+    srcaddr                   : {@{q_origin_key=all; name=all}}
+    dstaddr                   : {@{q_origin_key=all; name=all}}
+    internet-service          : disable
+    internet-service-src      : disable
+    rtp-nat                   : disable
+    learning-mode             : disable
+    action                    : accept
+    status                    : disable
+    schedule                  : always
+    schedule-timeout          : disable
+    [...]
+
+# Remove a Policy
+    Get-FGTFirewallPolicy -name MyFGTPolicy2 | Remove-FGTFirewallPolicy
+    Remove Policy on Fortigate
+    Proceed with removal of Policy MyFGTPolicy2 ?
+    [Y] Yes  [N] No  [?] Help (default is "N"): y
 ```
 
 ### Invoke API
