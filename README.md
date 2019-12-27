@@ -247,7 +247,7 @@ For  `Invoke-FGTRestMethod` and `Get-XXX` cmdlet like `Get-FGTFirewallAddress`, 
 
 ```powershell
 # Get NetworkDevice named myFGT
-    Get-FGTFirewallAddress -name  myFGT
+    Get-FGTFirewallAddress -name myFGT
 ...
 
 # Get NetworkDevice contains myFGT
