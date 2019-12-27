@@ -156,7 +156,6 @@ function Add-FGTFirewallAddressGroupMember {
             $_addrgrp | add-member -name "member" -membertype NoteProperty -Value $members
         }
 
-
         Invoke-FGTRestMethod -method "PUT" -body $_addrgrp -uri $uri -connection $connection @invokeParams | out-Null
 
         Get-FGTFirewallAddressGroup -connection $connection @invokeParams -name $addrgrp.name
@@ -561,14 +560,13 @@ function Remove-FGTFirewallAddressGroupMember {
 
             #Remove member
             foreach ($remove_member in $member) {
-                $remove_member
                 #May be a better (and faster) solution...
                 $members = $members | Where-Object { $_.name -ne $remove_member }
             }
 
-            #check if there is always a member... (it is not possible don't have member on Addres Group)
+            #check if there is always a member... (it is not possible don't have member on Address Group)
             if ( $members.count -eq 0 ) {
-                Throw "You can't remove all members. Use Remove-FGTAddressGroup to remove Address Group"
+                Throw "You can't remove all members. Use Remove-FGTFirewallAddressGroup to remove Address Group"
             }
 
             $_addrgrp | add-member -name "member" -membertype NoteProperty -Value $members
