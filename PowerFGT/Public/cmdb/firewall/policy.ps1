@@ -207,7 +207,7 @@ function Add-FGTFirewallPolicy {
             $policy | add-member -name "poolname" -membertype NoteProperty -Value $ippool_array
         }
 
-        Invoke-FGTRestMethod -method "POST" -body $policy -uri $uri -connection $connection @invokeParams | out-Null
+        Invoke-FGTRestMethod -method "POST" -body $policy -uri $uri -connection $connection @invokeParams | Out-Null
 
         Get-FGTFirewallPolicy -name $name -connection $connection @invokeParams
 

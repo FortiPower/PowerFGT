@@ -123,7 +123,7 @@ function Add-FGTFirewallVip {
             }
         }
 
-        Invoke-FGTRestMethod -method "POST" -body $vip -uri $uri -connection $connection @invokeParams | out-Null
+        Invoke-FGTRestMethod -method "POST" -body $vip -uri $uri -connection $connection @invokeParams | Out-Null
 
         Get-FGTFirewallVip -connection $connection @invokeParams -name $name
     }
