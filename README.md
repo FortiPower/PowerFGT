@@ -353,7 +353,7 @@ or delete it `Remove-FGTFirewallAddressGroup`.
 ### Virtual IP
 
 You can create a new Address Group `Add-FGTFirewallVip`, retrieve its information `Get-FGTFirewallVip`,
-modify its properties `Set-FGTFirewallVip` or delete it `Remove-FGTFirewallVip`.
+or delete it `Remove-FGTFirewallVip`.
 
 ```powershell
 
