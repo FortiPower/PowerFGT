@@ -123,6 +123,7 @@ function Add-FGTFirewallAddressGroupMember {
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript( { Confirm-FGTAddressGroup $_ })]
         [psobject]$addrgrp,
+        [Parameter(Mandatory = $false)]
         [string[]]$member,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
@@ -527,6 +528,7 @@ function Remove-FGTFirewallAddressGroupMember {
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript( { Confirm-FGTAddressGroup $_ })]
         [psobject]$addrgrp,
+        [Parameter(Mandatory = $false)]
         [string[]]$member,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
