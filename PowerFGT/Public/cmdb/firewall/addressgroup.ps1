@@ -205,7 +205,7 @@ function Copy-FGTFirewallAddressGroup {
         }
 
         if ( Get-FGTFirewallAddressGroup @invokeParams -name $name -connection $connection) {
-            Throw "Already an addressgroup object using the same name"
+            Throw "Already an Address Group object using the same name"
         }
 
         $uri = "api/v2/cmdb/firewall/addrgrp/$($addrgrp.name)/?action=clone&nkey=$($name)"
@@ -218,7 +218,7 @@ function Copy-FGTFirewallAddressGroup {
     End {
     }
 }
-function Get-FGTFirewallAddressgroup {
+function Get-FGTFirewallAddressGroup {
 
     <#
         .SYNOPSIS
@@ -228,7 +228,7 @@ function Get-FGTFirewallAddressgroup {
         Show addresses group configured (Name, Member...)
 
         .EXAMPLE
-        Get-FGTFirewallAddressgroup
+        Get-FGTFirewallAddressGroup
 
         Display all addresses group.
 
@@ -248,12 +248,12 @@ function Get-FGTFirewallAddressgroup {
         Get Address Group with uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
 
         .EXAMPLE
-        Get-FGTFirewallAddressgroup -skip
+        Get-FGTFirewallAddressGroup -skip
 
         Display all addresses group (but only relevant attributes)
 
         .EXAMPLE
-        Get-FGTFirewallAddressgroup -vdom vdomX
+        Get-FGTFirewallAddressGroup -vdom vdomX
 
         Display all addresses group on vdomX
     #>
@@ -439,13 +439,13 @@ function Remove-FGTFirewallAddressGroup {
         Remove a FortiGate Address
 
         .DESCRIPTION
-        Remove an address group object on the FortiGate
+        Remove an Address Group object on the FortiGate
 
         .EXAMPLE
         $MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
         PS C:\>$MyFGTAddressGroup | Remove-FGTFirewallAddressGroup
 
-        Remove address group object $MyFGTAddressGroup
+        Remove Address Group object $MyFGTAddressGroup
 
         .EXAMPLE
         $MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
@@ -480,7 +480,7 @@ function Remove-FGTFirewallAddressGroup {
         $uri = "api/v2/cmdb/firewall/addrgrp/$($addrgrp.name)"
 
         if ( -not ( $Noconfirm )) {
-            $message = "Remove address group on Fortigate"
+            $message = "Remove Address Group on Fortigate"
             $question = "Proceed with removal of Address Group $($addrgrp.name) ?"
             $choices = New-Object Collections.ObjectModel.Collection[Management.Automation.Host.ChoiceDescription]
             $choices.Add((New-Object Management.Automation.Host.ChoiceDescription -ArgumentList '&Yes'))
