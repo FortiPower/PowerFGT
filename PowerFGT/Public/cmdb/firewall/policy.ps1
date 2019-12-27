@@ -485,3 +485,99 @@ function Remove-FGTFirewallPolicy {
     End {
     }
 }
+
+function Remove-FGTFirewallPolicyMember {
+
+    <#
+        .SYNOPSIS
+        Remove a FortiGate Policy Member
+
+        .DESCRIPTION
+        Remove a FortiGate Policy Member (source or destination address)
+
+        .EXAMPLE
+        $MyFGTPolicy = Get-FGTFirewallAddressGroup -name MyFGTPolicy
+        PS C:\>$MyFGTPolicy | Remove-FGTFirewallAddressGroupMember -member MyAddress1
+
+        Remove MyAddress1 member to MyFGTPolicy
+
+        .EXAMPLE
+        $MyFGTPolicy = Get-FGTFirewallAddressGroup -name MyFGTPolicy
+        PS C:\>$MyFGTPolicy | Remove-FGTFirewallAddressGroupMember -member MyAddress1, MyAddress2
+
+        Remove MyAddress1 and MyAddress2 member to MyFGTPolicy
+
+    #>
+
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [ValidateScript( { Confirm-FGTFirewallPolicy $_ })]
+        [psobject]$policy,
+        [Parameter(Mandatory = $false)]
+        [string[]]$srcaddr,
+        [Parameter(Mandatory = $false)]
+        [string[]]$dstaddr,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/firewall/policy/$($policy.policyid)"
+
+        $_policy = new-Object -TypeName PSObject
+
+        if ( $PsBoundParameters.ContainsKey('srcaddr') ) {
+            #Create a new source addrarray
+            $members = @()
+            foreach ($m in $policy.srcaddr) {
+                $member_name = @{ }
+                $member_name.add( 'name', $m.name)
+                $members += $member_name
+            }
+
+            #Remove member
+            foreach ($remove_member in $srcaddr) {
+                #May be a better (and faster) solution...
+                $members = $members | Where-Object { $_.name -ne $remove_member }
+            }
+
+            $_policy | add-member -name "srcaddr" -membertype NoteProperty -Value $members
+        }
+
+        if ( $PsBoundParameters.ContainsKey('dstaddr') ) {
+            #Create a new source addrarray
+            $members = @()
+            foreach ($m in $policy.dstaddr) {
+                $member_name = @{ }
+                $member_name.add( 'name', $m.name)
+                $members += $member_name
+            }
+
+            #Remove member
+            foreach ($remove_member in $dstaddr) {
+                #May be a better (and faster) solution...
+                $members = $members | Where-Object { $_.name -ne $remove_member }
+            }
+
+            $_policy | add-member -name "dstaddr" -membertype NoteProperty -Value $members
+        }
+
+        Invoke-FGTRestMethod -method "PUT" -body $_policy -uri $uri -connection $connection @invokeParams | Out-Null
+
+        Get-FGTFirewallPolicy -connection $connection @invokeParams -name $addrgrp.name
+    }
+
+    End {
+    }
+}
