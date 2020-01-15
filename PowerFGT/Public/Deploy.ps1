@@ -5,8 +5,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-#Requires -Modules VMware.VimAutomation.Common
-
 function Deploy-FGTVm {
 
     <#
@@ -213,6 +211,11 @@ function Deploy-FGTVm {
 
     Process {
 
+
+        #Check if VMWare PowerCLI is available (not use #Require because not mandatory module)
+        if ((Get-InstalledModule -name VMware.VimAutomation.Common -ErrorAction SilentlyContinue) -eq $null) {
+            Throw "You need to install VMware.PowerCLI (Install-Module VMware.PowerCLI)"
+        }
         #Write-Warning "You need to have a vSwitch configured on your vSphere environment even if you use a DVS"
         #default vapp_config
         $vapp_config = @{
