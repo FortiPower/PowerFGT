@@ -15,7 +15,7 @@ function Deploy-FGTVm {
         Deploy a Virtual Machine FortiGate on a vshpere environment with a lot of parameters like the choice of the cluster, the datastore, and the host. You can even preconfigure your VM with the network configuration, the hostname, and the dns.
 
         .EXAMPLE
-        Deploy-FGTVm -ovf_path "C:\FortiGate-VM64.vapp.ovf" -vmHost "fortipowerfgt-01" -datastore "data_fortipowerfgt-01" -cluster "cluster_fortipowerfgt-01" -name_vm "Forti-VM" -InventoryLocation "Firewall" -hostname "powerfgt" -dns_primary 192.0.2.1 -dns_secondary 192.0.2.2 -int0_network_mode Static -int0_ip 192.0.2.10 -int0_netmask 255.255.255.0 -int0_gateway 192.0.2.254 -int0_port_group "powerfgt_vlan_mgmt" -net_adpater "vmxnet3"
+        Deploy-FGTVm -ovf_path "C:\FortiGate-VM64.vapp.ovf" -vm_Host "fortipowerfgt-01" -datastore "data_fortipowerfgt-01" -cluster "cluster_fortipowerfgt-01" -name_vm "Forti-VM" -inventory "Firewall" -hostname "powerfgt" -dns_primary 192.0.2.1 -dns_secondary 192.0.2.2 -int0_network_mode Static -int0_ip 192.0.2.10 -int0_netmask 255.255.255.0 -int0_gateway 192.0.2.254 -int0_port_group "powerfgt_vlan_mgmt" -net_adapter "vmxnet3"
 
         This install your .ovf on your vsphere with the host, the datastore, the cluster, the folder to place it and the name of your vm. It also configure your vm with a hostname, an network configuration, the network adapter and the port group of your vswitch
 
