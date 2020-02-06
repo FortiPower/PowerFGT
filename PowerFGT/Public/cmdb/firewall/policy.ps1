@@ -62,7 +62,7 @@ function Add-FGTFirewallPolicy {
 
 
     Param(
-        [Parameter (Mandatory = $true)]
+        [Parameter (Mandatory = $false)]
         [string]$name,
         [Parameter (Mandatory = $true)]
         [string[]]$srcintf,
@@ -112,8 +112,10 @@ function Add-FGTFirewallPolicy {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        if ( Get-FGTFirewallPolicy -connection $connection @invokeParams -name $name ) {
-            Throw "Already a Policy using the same name"
+        if ( $PsBoundParameters.ContainsKey('name') ) {
+            if ( Get-FGTFirewallPolicy -connection $connection @invokeParams -name $name ) {
+                Throw "Already a Policy using the same name"
+            }
         }
 
         $uri = "api/v2/cmdb/firewall/policy"
@@ -155,7 +157,9 @@ function Add-FGTFirewallPolicy {
 
         $policy = new-Object -TypeName PSObject
 
-        $policy | add-member -name "name" -membertype NoteProperty -Value $name
+        if ( $PsBoundParameters.ContainsKey('name') ) {
+            $policy | add-member -name "name" -membertype NoteProperty -Value $name
+        }
 
         $policy | add-member -name "srcintf" -membertype NoteProperty -Value $srcintf_array
 
