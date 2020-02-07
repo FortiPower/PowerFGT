@@ -117,6 +117,13 @@ function Add-FGTFirewallPolicy {
                 Throw "Already a Policy using the same name"
             }
         }
+        else {
+            #check if Allow Unnamed Policy is enable
+            $settings = Get-FGTSystemSettings
+            if ($settings.'gui-allow-unnamed-policy' -eq "disable") {
+                throw "You need to specifiy a name"
+            }
+        }
 
         $uri = "api/v2/cmdb/firewall/policy"
 
