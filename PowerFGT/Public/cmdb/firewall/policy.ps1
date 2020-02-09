@@ -119,7 +119,7 @@ function Add-FGTFirewallPolicy {
         }
         else {
             #check if Allow Unnamed Policy is enable
-            $settings = Get-FGTSystemSettings
+            $settings = Get-FGTSystemSettings -connection $connection @invokeParams
             if ($settings.'gui-allow-unnamed-policy' -eq "disable") {
                 throw "You need to specifiy a name"
             }
