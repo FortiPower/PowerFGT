@@ -57,6 +57,65 @@ Function Confirm-FGTAddressGroup {
 
 }
 
+Function Confirm-FGTProxyAddress {
+
+    Param (
+        [Parameter (Mandatory = $true)]
+        [object]$argument
+    )
+
+    #Check if it looks like an Address element
+
+    if ( -not ( $argument | get-member -name name -Membertype Properties)) {
+        throw "Element specified does not contain an name property."
+    }
+    if ( -not ( $argument | get-member -name uuid -Membertype Properties)) {
+        throw "Element specified does not contain a uuid property."
+    }
+    if ( -not ( $argument | get-member -name host -Membertype Properties)) {
+        throw "Element specified does not contain an host property."
+    }
+    if ( -not ( $argument | get-member -name category -Membertype Properties)) {
+        throw "Element specified does not contain an category property."
+    }
+    if ( -not ( $argument | get-member -name method -Membertype Properties)) {
+        throw "Element specified does not contain an methode property."
+    }
+    if ( -not ( $argument | get-member -name ua -Membertype Properties)) {
+        throw "Element specified does not contain an ua property."
+    }
+
+
+    $true
+
+}
+
+Function Confirm-FGTProxyAddressGroup {
+
+    Param (
+        [Parameter (Mandatory = $true)]
+        [object]$argument
+    )
+
+    #Check if it looks like an Address element
+
+    if ( -not ( $argument | get-member -name name -Membertype Properties)) {
+        throw "Element specified does not contain an name property."
+    }
+    if ( -not ( $argument | get-member -name uuid -Membertype Properties)) {
+        throw "Element specified does not contain a uuid property."
+    }
+    if ( -not ( $argument | get-member -name member -Membertype Properties)) {
+        throw "Element specified does not contain an member property."
+    }
+    if ( -not ( $argument | get-member -name comment -Membertype Properties)) {
+        throw "Element specified does not contain an comment property."
+    }
+
+    $true
+
+}
+
 Function Confirm-FGTFirewallPolicy {
 
     Param (
@@ -71,6 +130,47 @@ Function Confirm-FGTFirewallPolicy {
     }
     if ( -not ( $argument | get-member -name name -Membertype Properties)) {
         throw "Element specified does not contain an name property."
+    }
+    if ( -not ( $argument | get-member -name uuid -Membertype Properties)) {
+        throw "Element specified does not contain a uuid property."
+    }
+    if ( -not ( $argument | get-member -name srcintf -Membertype Properties)) {
+        throw "Element specified does not contain an srcintf property."
+    }
+    if ( -not ( $argument | get-member -name dstaddr -Membertype Properties)) {
+        throw "Element specified does not contain an dstaddr property."
+    }
+    if ( -not ( $argument | get-member -name srcaddr -Membertype Properties)) {
+        throw "Element specified does not contain an srcaddr property."
+    }
+    if ( -not ( $argument | get-member -name dstaddr -Membertype Properties)) {
+        throw "Element specified does not contain an dstaddr property."
+    }
+    if ( -not ( $argument | get-member -name action -Membertype Properties)) {
+        throw "Element specified does not contain an action property."
+    }
+    if ( -not ( $argument | get-member -name status -Membertype Properties)) {
+        throw "Element specified does not contain an status property."
+    }
+
+    $true
+
+}
+
+Function Confirm-FGTFirewallProxyPolicy {
+
+    Param (
+        [Parameter (Mandatory = $true)]
+        [object]$argument
+    )
+
+    #Check if it looks like an Firewall Policy element
+
+    if ( -not ( $argument | get-member -name policyid -Membertype Properties)) {
+        throw "Element specified does not contain an policyid property."
+    }
+    if ( -not ( $argument | get-member -name proxy -Membertype Properties)) {
+        throw "Element specified does not contain an proxy property."
     }
     if ( -not ( $argument | get-member -name uuid -Membertype Properties)) {
         throw "Element specified does not contain a uuid property."
