@@ -1,4 +1,4 @@
-﻿#
+#
 # Copyright 2019, Alexis La Goutte <alexis dot lagoutte at gmail dot com>
 # Copyright 2019, Benjamin Perrier <ben dot perrier at outlook dot com>
 #
@@ -11,39 +11,45 @@ function Add-FGTFirewallAddress {
         Add a FortiGate Address
 
         .DESCRIPTION
-        Add a FortiGate Address (ipmask, fqdn, widlcard...)
+        Add a FortiGate Address (ipmask, fqdn)
 
         .EXAMPLE
-        Add-FGTFirewallAddress -type ipmask -Name FGT -ip 192.0.2.0 -mask 255.255.255.0
+        Add-FGTFirewallAddress -Name FGT -ip 192.0.2.0 -mask 255.255.255.0
 
-        Add Address object type ipmask with name FGT and value 192.0.2.0/24
+        Add Address objet type ipmask with name FGT and value 192.0.2.0/24
 
         .EXAMPLE
-        Add-FGTFirewallAddress -type ipmask -Name FGT -ip 192.0.2.0 -mask 255.255.255.0 -interface port2
+        Add-FGTFirewallAddres -Name FGT -ip 192.0.2.0 -mask 255.255.255.0 -interface port2
 
         Add Address object type ipmask with name FGT, value 192.0.2.0/24 and associated to interface port2
 
         .EXAMPLE
-        Add-FGTFirewallAddress -type ipmask -Name FGT -ip 192.0.2.0 -mask 255.255.255.0 -comment "My FGT Address"
+        Add-FGTFirewallAddress -Name FGT -ip 192.0.2.0 -mask 255.255.255.0 -comment "My FGT Address"
 
         Add Address object type ipmask with name FGT, value 192.0.2.0/24 and a comment
 
         .EXAMPLE
-        Add-FGTFirewallAddress -type ipmask -Name FGT -ip 192.0.2.0 -mask 255.255.255.0 -visibility:$false
+        Add-FGTFirewallAddress -Name FGT -ip 192.0.2.0 -mask 255.255.255.0 -visibility:$false
 
         Add Address object type ipmask with name FGT, value 192.0.2.0/24 and disabled visibility
+
+        .EXAMPLE
+        Add-FGTFirewallAddress -Name FGT -fqdn www.fortinet.com
+
+        Add Address object type fqdn with name FGT and value www.fortinet.com
 
     #>
 
     Param(
-        [Parameter (Mandatory = $true)]
-        [ValidateSet("ipmask")]
+        [Parameter (Mandatory = $false, DontShow)]
         [string]$type,
         [Parameter (Mandatory = $true)]
         [string]$name,
-        [Parameter (Mandatory = $false)]
+        [Parameter (Mandatory = $false, ParameterSetName = "fqdn")]
+        [string]$fqdn,
+        [Parameter (Mandatory = $false, ParameterSetName = "ipmask")]
         [ipaddress]$ip,
-        [Parameter (Mandatory = $false)]
+        [Parameter (Mandatory = $false, ParameterSetName = "ipmask")]
         [ipaddress]$mask,
         [Parameter (Mandatory = $false)]
         [string]$interface,
@@ -59,6 +65,9 @@ function Add-FGTFirewallAddress {
     )
 
     Begin {
+        If ($type) {
+            Write-Warning "The -type option is deprecated and will be removed in future releases. Use -ip or -fqdn instead"
+        }
     }
 
     Process {
@@ -76,14 +85,20 @@ function Add-FGTFirewallAddress {
 
         $address = new-Object -TypeName PSObject
 
-        $address | add-member -name "type" -membertype NoteProperty -Value $type
+        $address | add-member -name "type" -membertype NoteProperty -Value $PSCmdlet.ParameterSetName
 
         $address | add-member -name "name" -membertype NoteProperty -Value $name
 
-        $subnet = $ip.ToString()
-        $subnet += "/"
-        $subnet += $mask.ToString()
-        $address | add-member -name "subnet" -membertype NoteProperty -Value $subnet
+        if ( $PSCmdlet.ParameterSetName -eq 'ipmask' ) {
+            $subnet = $ip.ToString()
+            $subnet += "/"
+            $subnet += $mask.ToString()
+            $address | add-member -name "subnet" -membertype NoteProperty -Value $subnet
+        }
+
+        if ( $PSCmdlet.ParameterSetName -eq 'fqdn' ) {
+            $address | add-member -name "fqdn" -membertype NoteProperty -Value $fqdn
+        }
 
         if ( $PsBoundParameters.ContainsKey('interface') ) {
             #TODO check if the interface (zone ?) is valid
@@ -289,19 +304,19 @@ function Set-FGTFirewallAddress {
 
         .EXAMPLE
         $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
-        PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -ip 192.2.2.1
+        PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -ip 192.0.2.1
 
-        Change MyFGTAddress to value (ip) 192.2.2.1
+        Change MyFGTAddress to value (ip) 192.0.2.1
 
         .EXAMPLE
         $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
-        PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -interface port1
+        PS C:\>$MyFGTAddress | SetFGTFirewallAddress -interface port1
 
         Change MyFGTAddress to set associated interface to port 1
 
         .EXAMPLE
         $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
-        PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -comment "My FGT Address" -visibility:$false
+        PS C:\>$MyFGTAddress | SetFGTFirewallAddress -comment "My FGT Address" -visibility:$false
 
         Change MyFGTAddress to set a new comment and disabled visibility
 
@@ -356,7 +371,7 @@ function Set-FGTFirewallAddress {
                 $subnet = $ip.ToString()
             }
             else {
-                $subnet += ($address.subnet -split ' ')[0]
+                $subnet = ($address.subnet -split ' ')[0]
             }
 
             $subnet += "/"
