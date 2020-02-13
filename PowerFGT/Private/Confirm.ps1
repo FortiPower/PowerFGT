@@ -64,7 +64,7 @@ Function Confirm-FGTProxyAddress {
         [object]$argument
     )
 
-    #Check if it looks like an Address element
+    #Check if it looks like an ProxyAddress element
 
     if ( -not ( $argument | get-member -name name -Membertype Properties)) {
         throw "Element specified does not contain an name property."
@@ -97,7 +97,7 @@ Function Confirm-FGTProxyAddressGroup {
         [object]$argument
     )
 
-    #Check if it looks like an Address element
+    #Check if it looks like an ProxyAddress Group element
 
     if ( -not ( $argument | get-member -name name -Membertype Properties)) {
         throw "Element specified does not contain an name property."
@@ -164,7 +164,7 @@ Function Confirm-FGTFirewallProxyPolicy {
         [object]$argument
     )
 
-    #Check if it looks like an Firewall Policy element
+    #Check if it looks like an Firewall ProxyPolicy element
 
     if ( -not ( $argument | get-member -name policyid -Membertype Properties)) {
         throw "Element specified does not contain an policyid property."
