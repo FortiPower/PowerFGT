@@ -1,4 +1,4 @@
-﻿#
+#
 # Copyright 2019, Alexis La Goutte <alexis dot lagoutte at gmail dot com>
 # Copyright 2019, Benjamin Perrier <ben dot perrier at outlook dot com>
 #
@@ -11,37 +11,32 @@ function Add-FGTFirewallProxyAddress {
         Add a FortiGate ProxyAddress
 
         .DESCRIPTION
-        Add a FortiGate ProxyAddress (host-regex, url, category...)
+        Add a FortiGate ProxyAddress (host-regex, url ...)
 
         .EXAMPLE
-        Add-FGTFirewallAddress -type ipmask -Name FGT -ip 192.2.0.0 -mask 255.255.255.0
+        Add-FGTFirewallProxyAddress -type host-regex -name Github -hostregex '.*\.github.com'
 
-        Add Address objet type ipmask with name FGT and value 192.2.0.0/24
-
-        .EXAMPLE
-        Add-FGTFirewallAddress -type ipmask -Name FGT -ip 192.2.0.0 -mask 255.255.255.0 -interface port2
-
-        Add Address objet type ipmask with name FGT, value 192.2.0.0/24 and associated to interface port2
+        Add ProxyAddress object type host-regex with name Github and value '.*\.github.com'
 
         .EXAMPLE
-        Add-FGTFirewallAddress -type ipmask -Name FGT -ip 192.2.0.0 -mask 255.255.255.0 -comment "My FGT Address"
+        Add-FGTFirewallProxyAddress -type method -Name FGT -method get -hostObjectName MyFGTAddress -comment "Get-only allowed to MyFGTAddress"
 
-        Add Address objet type ipmask with name FGT, value 192.2.0.0/24 and a comment
+        Add ProxyAddress object type methode with name FGT, only allow method GET to MyHost and a comment
 
         .EXAMPLE
-        Add-FGTFirewallAddress -type ipmask -Name FGT -ip 192.2.0.0 -mask 255.255.255.0 -visibility:$false
+        Add-FGTFirewallProxyAddress -type url -name FGT -hostObjectName Github -path '/FortiPower/PowerFGT' -visibility:$false
 
-        Add Address objet type ipmask with name FGT, value 192.2.0.0/24 and disabled visibility
+        Add ProxyAddress object type url with name FGT, only allow path '/FortiPower/PowerFGT' to Github  and disabled visibility
 
+        Todo: add the Category, UA and Header types
     #>
     [CmdletBinding(PositionalBinding=$false)]
     Param(
         [Parameter (Mandatory = $true)]
-        [ValidateSet("host-regex", "url", "method","category",IgnoreCase = $false)]
+        [ValidateSet("host-regex", "url", "method",IgnoreCase = $false)]
         [string]$type,
         [Parameter (Mandatory = $true)]
         [string]$name,
-        
         [Parameter (Mandatory = $false)]
         [ValidateLength(0, 255)]
         [string]$comment,
@@ -78,7 +73,7 @@ DynamicParam
 
         if ($type -eq 'url')
         {
-            # Get-FGTFirewallAddress & Get-FGTFirewallProxyAddress as validationSet 
+            # Get-FGTFirewallProxyAddress as validationSet 
             $AttributeCollection = New-Object Collections.ObjectModel.Collection[System.Attribute]
             $AttributeCollection.Add($ParameterAttribute)
             
@@ -87,8 +82,7 @@ DynamicParam
                 $invokeParams.add( 'vdom', $vdom )
             }
 
-            $ValidateSet = (Get-FGTFirewallAddress @invokeParams -filter_type equal -filter_attribute visibility -filter_value enable -connection $connection).name
-            $ValidateSet += (Get-FGTFirewallproxyAddress @invokeParams -filter_type equal -filter_attribute visibility -filter_value enable -connection $connection).name
+            $ValidateSet = (Get-FGTFirewallproxyAddress @invokeParams -filter_type equal -filter_attribute visibility -filter_value enable -connection $connection).name
             if ( $ValidateSet ) {
                 $ParameterValidateSet = New-Object System.Management.Automation.ValidateSetAttribute -ArgumentList $ValidateSet
                 $ParameterValidateSet.IgnoreCase = $true
@@ -111,7 +105,7 @@ DynamicParam
         
         if ($type -eq 'method')
         {
-            # Get-FGTFirewallAddress & Get-FGTFirewallProxyAddress as validationSet 
+            # Get-FGTFirewallAddress as validationSet 
             $AttributeCollection = New-Object Collections.ObjectModel.Collection[System.Attribute]
             $AttributeCollection.Add($ParameterAttribute)
             
@@ -121,7 +115,6 @@ DynamicParam
             }
 
             $ValidateSet = (Get-FGTFirewallAddress @invokeParams -filter_type equal -filter_attribute visibility -filter_value enable -connection $connection).name
-            $ValidateSet += (Get-FGTFirewallproxyAddress @invokeParams -filter_type equal -filter_attribute visibility -filter_value enable -connection $connection).name
             if ( $ValidateSet ) {
                 $ParameterValidateSet = New-Object System.Management.Automation.ValidateSetAttribute -ArgumentList $ValidateSet
                 $ParameterValidateSet.IgnoreCase = $true
@@ -141,9 +134,9 @@ DynamicParam
             $AttributeCollection = New-Object Collections.ObjectModel.Collection[System.Attribute]
             $AttributeCollection.Add($ParameterAttribute)
 
-            $ValidateSet = @('CONNECT', 'DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT', 'TRACE')
+            $ValidateSet = @('connect', 'delete', 'get', 'head', 'options', 'post', 'put', 'trace')
             $ParameterValidateSet = New-Object System.Management.Automation.ValidateSetAttribute -ArgumentList $ValidateSet
-            $ParameterValidateSet.IgnoreCase = $true
+            $ParameterValidateSet.IgnoreCase = $false
             $AttributeCollection.Add($ParameterValidateSet)
             
             # Create Dynamic parameter
@@ -199,6 +192,7 @@ DynamicParam
 
         
         if ( $type -eq 'method' ) {
+            $proxyaddress | add-member -name "host" -membertype NoteProperty -Value $hostObjectName
             $proxyaddress | add-member -name "method" -membertype NoteProperty -Value $method
         }
 
@@ -235,7 +229,7 @@ function Copy-FGTFirewallProxyAddress {
         Copy/Clone a FortiGate ProxyAddress (host-regex, url, category...)
 
         .EXAMPLE
-        $MyFGTAddress = Get-FGTFirewallProxyAddress -name MyFGTProxyAddress
+        $MyFGTProxyAddress = Get-FGTFirewallProxyAddress -name MyFGTProxyAddress
         PS C:\>$MyFGTProxyAddress | Copy-FGTFirewallProxyAddress -name MyFGTProxyAddress_copy
 
         Copy / Clone MyFGTProxyAddress and name MyFGTProxyAddress_copy
@@ -282,7 +276,7 @@ function Get-FGTFirewallProxyAddress {
         Get list of all "proxy-address"
 
         .DESCRIPTION
-        Get list of all "proxy-address" (host-regex, url, category...)
+        Get list of all "proxy-address" (host-regex, url ...)
 
         .EXAMPLE
         Get-FGTFirewallProxyAddress
@@ -383,131 +377,6 @@ function Get-FGTFirewallProxyAddress {
     End {
     }
 
-}
-
-function Set-FGTFirewallProxyAddress {
-
-    <#
-        .SYNOPSIS
-        Configure a FortiGate proxyAddress
-
-        .DESCRIPTION
-        Change a FortiGate "proxy-address" (host-regex, url, category...)
-
-        .EXAMPLE
-        $MyFGTProxyAddress = Get-FGTFirewallProxyAddress -name MyFGTProxyAddress
-        PS C:\>$MyFGTProxyAddress | Set-FGTFirewallProxyAddress -ip 192.2.0.0 -mask 255.255.255.0
-
-        Change MyFGTProxyAddress to value (ip and mask) 192.2.0.0/24
-
-        .EXAMPLE
-        $MyFGTproxyAddress = Get-FGTFirewallProxyAddress -name MyFGTProxyAddress
-        PS C:\>$MyFGTproxyAddress | Set-FGTFirewallproxyAddress -ip 192.2.2.1
-
-        Change MyFGTProxyAddress to value (ip) 192.2.2.1
-
-        .EXAMPLE
-        $MyFGTproxyAddress = Get-FGTFirewallproxyAddress -name MyFGTProxyAddress
-        PS C:\>$MyFGTProxyAddress | Set -interface port1
-
-        Change MyFGTProxyAddress to set associated interface to port 1
-
-        .EXAMPLE
-        $MyFGTproxyAddress = Get-FGTFirewallProxyAddress -name MyFGTProxyAddress
-        PS C:\>$MyFGTproxyAddress | Set -comment "My FGT proxyAddress" -visibility:$false
-
-        Change MyFGTproxyAddress to set a new comment and disabled visibility
-
-    #>
-
-    Param(
-        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
-        [ValidateScript( { Confirm-FGTproxyAddress $_ })]
-        [psobject]$address,
-        [Parameter (Mandatory = $false)]
-        [string]$name,
-        [Parameter (Mandatory = $false)]
-        [ipaddress]$ip,
-        [Parameter (Mandatory = $false)]
-        [ipaddress]$mask,
-        [Parameter (Mandatory = $false)]
-        [string]$interface,
-        [Parameter (Mandatory = $false)]
-        [ValidateLength(0, 255)]
-        [string]$comment,
-        [Parameter (Mandatory = $false)]
-        [boolean]$visibility,
-        [Parameter(Mandatory = $false)]
-        [String[]]$vdom,
-        [Parameter(Mandatory = $false)]
-        [psobject]$connection = $DefaultFGTConnection
-    )
-
-    Begin {
-    }
-
-    Process {
-
-        $invokeParams = @{ }
-        if ( $PsBoundParameters.ContainsKey('vdom') ) {
-            $invokeParams.add( 'vdom', $vdom )
-        }
-
-        $uri = "api/v2/cmdb/firewall/address/$($address.name)"
-
-        $_address = new-Object -TypeName PSObject
-
-        if ( $PsBoundParameters.ContainsKey('name') ) {
-            #TODO check if there is no already a object with this name ?
-            $_address | add-member -name "name" -membertype NoteProperty -Value $name
-            $address.name = $name
-        }
-
-        if ( $PsBoundParameters.ContainsKey('ip') -or $PsBoundParameters.ContainsKey('mask') ) {
-            if ( $PsBoundParameters.ContainsKey('ip') ) {
-                $subnet = $ip.ToString()
-            }
-            else {
-                $subnet = $address.'start-ip'
-            }
-
-            $subnet += "/"
-
-            if ( $PsBoundParameters.ContainsKey('mask') ) {
-                $subnet += $mask.ToString()
-            }
-            else {
-                $subnet += $address.'end-ip'
-            }
-
-            $_address | add-member -name "subnet" -membertype NoteProperty -Value $subnet
-        }
-
-        if ( $PsBoundParameters.ContainsKey('interface') ) {
-            #TODO check if the interface (zone ?) is valid
-            $_address | add-member -name "associated-interface" -membertype NoteProperty -Value $interface
-        }
-
-        if ( $PsBoundParameters.ContainsKey('comment') ) {
-            $_address | add-member -name "comment" -membertype NoteProperty -Value $comment
-        }
-
-        if ( $PsBoundParameters.ContainsKey('visibility') ) {
-            if ( $visibility ) {
-                $_address | add-member -name "visibility" -membertype NoteProperty -Value "enable"
-            }
-            else {
-                $_address | add-member -name "visibility" -membertype NoteProperty -Value "disable"
-            }
-        }
-
-        Invoke-FGTRestMethod -method "PUT" -body $_address -uri $uri -connection $connection @invokeParams | out-Null
-
-        Get-FGTFirewallAddress -connection $connection @invokeParams -name $address.name
-    }
-
-    End {
-    }
 }
 
 function Remove-FGTFirewallProxyAddress {
