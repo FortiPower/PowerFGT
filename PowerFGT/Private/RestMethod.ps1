@@ -37,8 +37,24 @@ function Invoke-FGTRestMethod {
       Invoke-FGTRestMethod -method "get" -uri "api/v2/cmdb/firewall/address" -connection $fw2
 
       Invoke-RestMethod with $fw2 connection for get api/v2/cmdb/firewall/address uri
+
+      .EXAMPLE
+      Invoke-FGTRestMethod -method "get" -uri "api/v2/cmdb/firewall/address" -filter=name==FGT
+
+      Invoke-RestMethod with FGT connection for get api/v2/cmdb/firewall/address uri with only name equal FGT
+
+      .EXAMPLE
+      Invoke-FGTRestMethod -method "get" -uri "api/v2/cmdb/firewall/address" -filter_attribute name -filter_value FGT
+
+      Invoke-RestMethod with FGT connection for get api/v2/cmdb/firewall/address uri with filter attribute equal name and filter value equal FGT
+
+      .EXAMPLE
+      Invoke-FGTRestMethod -method "get" -uri "api/v2/cmdb/firewall/address" -filter_attribute name -filter_type contains -filter_value FGT
+
+      Invoke-RestMethod with FGT connection for get api/v2/cmdb/firewall/address uri with filter attribute equal name and filter value contains FGT
     #>
 
+    [CmdletBinding(DefaultParameterSetName = "default")]
     Param(
         [Parameter(Mandatory = $true, position = 1)]
         [String]$uri,
@@ -52,6 +68,19 @@ function Invoke-FGTRestMethod {
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
+        [Parameter (ParameterSetName = "filter")]
+        [String]$filter,
+        [Parameter(Mandatory = $false)]
+        [Parameter (ParameterSetName = "filter_build")]
+        [string]$filter_attribute,
+        [Parameter(Mandatory = $false)]
+        [ValidateSet('equal', 'contains')]
+        [Parameter (ParameterSetName = "filter_build")]
+        [string]$filter_type,
+        [Parameter (Mandatory = $false)]
+        [Parameter (ParameterSetName = "filter_build")]
+        [psobject]$filter_value,
+        [Parameter(Mandatory = $false)]
         [psobject]$connection
     )
 
@@ -61,7 +90,7 @@ function Invoke-FGTRestMethod {
     Process {
 
         if ($null -eq $connection ) {
-            if ($null -eq $DefaultFGTConnection){
+            if ($null -eq $DefaultFGTConnection) {
                 Throw "Not Connected. Connect to the Fortigate with Connect-FGT"
             }
             $connection = $DefaultFGTConnection
@@ -82,7 +111,7 @@ function Invoke-FGTRestMethod {
         }
 
         #Extra parameter...
-        if($fullurl -NotMatch "\?"){
+        if ($fullurl -NotMatch "\?") {
             $fullurl += "?"
         }
 
@@ -92,13 +121,39 @@ function Invoke-FGTRestMethod {
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $vdom = $vdom -Join ','
             $fullurl += "&vdom=$vdom"
-        } elseif ($connection.vdom) {
+        }
+        elseif ($connection.vdom) {
             $vdom = $connection.vdom -Join ','
             $fullurl += "&vdom=$vdom"
         }
 
+        #filter
+        switch ( $filter_type ) {
+            "equal" {
+                $filter_value = "==" + $filter_value
+            }
+            "contains" {
+                $filter_value = "=@" + $filter_value
+            }
+            #by default set to equal..
+            default {
+                $filter_value = "==" + $filter_value
+            }
+        }
+
+        if ($filter_attribute) {
+            $filter = $filter_attribute + $filter_value
+        }
+
+        if ( $filter ) {
+            $fullurl += "&filter=$filter"
+        }
+
         try {
             if ($body) {
+
+                Write-Verbose -message ($body | ConvertTo-Json)
+
                 $response = Invoke-RestMethod $fullurl -Method $method -body ($body | ConvertTo-Json) -Headers $headers -WebSession $sessionvariable @invokeParams
             }
             else {

@@ -55,7 +55,7 @@ function Add-FGTFirewallAddress {
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
-        [psobject]$connection=$DefaultFGTConnection
+        [psobject]$connection = $DefaultFGTConnection
     )
 
     Begin {
@@ -105,7 +105,7 @@ function Add-FGTFirewallAddress {
 
         Invoke-FGTRestMethod -method "POST" -body $address -uri $uri -connection $connection @invokeParams | out-Null
 
-        Get-FGTFirewallAddress -connection $connection @invokeParams | Where-Object {$_.name -eq $name}
+        Get-FGTFirewallAddress -connection $connection @invokeParams -name $name
     }
 
     End {
@@ -131,14 +131,14 @@ function Copy-FGTFirewallAddress {
 
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
-        [ValidateScript( { ValidateFGTAddress $_ })]
+        [ValidateScript( { Confirm-FGTAddress $_ })]
         [psobject]$address,
         [Parameter (Mandatory = $true)]
         [string]$name,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
-        [psobject]$connection=$DefaultFGTConnection
+        [psobject]$connection = $DefaultFGTConnection
     )
 
     Begin {
@@ -155,7 +155,7 @@ function Copy-FGTFirewallAddress {
 
         Invoke-FGTRestMethod -method "POST" -uri $uri -connection $connection @invokeParams | out-Null
 
-        Get-FGTFirewallAddress -connection $connection @invokeParams | Where-Object {$_.name -eq $name}
+        Get-FGTFirewallAddress -connection $connection @invokeParams -name $_.name -eq $name
     }
 
     End {
@@ -165,36 +165,41 @@ function Copy-FGTFirewallAddress {
 function Get-FGTFirewallAddress {
 
     <#
-      .SYNOPSIS
-      Get list of all "address"
+        .SYNOPSIS
+        Get list of all "address"
 
-      .DESCRIPTION
-      Get list of all "address" (ipmask, fqdn, wildcard...)
+        .DESCRIPTION
+        Get list of all "address" (ipmask, fqdn, wildcard...)
 
-      .EXAMPLE
-      Get-FGTFirewallAddress
+        .EXAMPLE
+        Get-FGTFirewallAddress
 
-      Get list of all address object
+        Get list of all address object
 
-      .EXAMPLE
-      Get-FGTFirewallAddress -name myFGTAddress
+        .EXAMPLE
+        Get-FGTFirewallAddress -name myFGTAddress
 
-      Get address named myFGTAddress
+        Get address named myFGTAddress
 
-      .EXAMPLE
-      Get-FGTFirewallAddress -match FGT
+        .EXAMPLE
+        Get-FGTFirewallAddress -name FGT -filter_type contains
 
-      Get address match with *FGT*
+        Get address contains with *FGT*
 
-      .EXAMPLE
-      Get-FGTFirewallAddress -skip
+        .EXAMPLE
+        Get-FGTFirewallAddress -uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
 
-      Get list of all address object (but only relevant attributes)
+        Get address with uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
 
-      .EXAMPLE
-      Get-FGTAddress -vdom vdomX
+        .EXAMPLE
+        Get-FGTFirewallAddress -skip
 
-      Get list of all address on VdomX
+        Get list of all address object (but only relevant attributes)
+
+        .EXAMPLE
+        Get-FGTAddress -vdom vdomX
+
+        Get list of all address on VdomX
 
   #>
 
@@ -202,14 +207,26 @@ function Get-FGTFirewallAddress {
     Param(
         [Parameter (Mandatory = $false, Position = 1, ParameterSetName = "name")]
         [string]$name,
-        [Parameter (Mandatory = $false, ParameterSetName = "match")]
-        [string]$match,
+        [Parameter (Mandatory = $false, ParameterSetName = "uuid")]
+        [string]$uuid,
+        [Parameter (Mandatory = $false)]
+        [Parameter (ParameterSetName = "filter")]
+        [string]$filter_attribute,
+        [Parameter (Mandatory = $false)]
+        [Parameter (ParameterSetName = "name")]
+        [Parameter (ParameterSetName = "uuid")]
+        [Parameter (ParameterSetName = "filter")]
+        [ValidateSet('equal', 'contains')]
+        [string]$filter_type = "equal",
+        [Parameter (Mandatory = $false)]
+        [Parameter (ParameterSetName = "filter")]
+        [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
-        [psobject]$connection=$DefaultFGTConnection
+        [psobject]$connection = $DefaultFGTConnection
     )
 
     Begin {
@@ -225,13 +242,29 @@ function Get-FGTFirewallAddress {
             $invokeParams.add( 'vdom', $vdom )
         }
 
+        switch ( $PSCmdlet.ParameterSetName ) {
+            "name" {
+                $filter_value = $name
+                $filter_attribute = "name"
+            }
+            "uuid" {
+                $filter_value = $uuid
+                $filter_attribute = "uuid"
+            }
+            default { }
+        }
+
+        #if filter value and filter_attribute, add filter (by default filter_type is equal)
+        if ( $filter_value -and $filter_attribute ) {
+            $invokeParams.add( 'filter_value', $filter_value )
+            $invokeParams.add( 'filter_attribute', $filter_attribute )
+            $invokeParams.add( 'filter_type', $filter_type )
+        }
+
         $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/address' -method 'GET' -connection $connection @invokeParams
 
-        switch ( $PSCmdlet.ParameterSetName ) {
-            "name" { $response.results | where-object { $_.name -eq $name } }
-            "match" { $response.results | where-object { $_.name -match $match } }
-            default { $response.results }
-        }
+        $response.results
+
     }
 
     End {
@@ -276,7 +309,7 @@ function Set-FGTFirewallAddress {
 
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
-        [ValidateScript( { ValidateFGTAddress $_ })]
+        [ValidateScript( { Confirm-FGTAddress $_ })]
         [psobject]$address,
         [Parameter (Mandatory = $false)]
         [string]$name,
@@ -294,7 +327,7 @@ function Set-FGTFirewallAddress {
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
-        [psobject]$connection=$DefaultFGTConnection
+        [psobject]$connection = $DefaultFGTConnection
     )
 
     Begin {
@@ -357,7 +390,7 @@ function Set-FGTFirewallAddress {
 
         Invoke-FGTRestMethod -method "PUT" -body $_address -uri $uri -connection $connection @invokeParams | out-Null
 
-        Get-FGTFirewallAddress -connection $connection @invokeParams | Where-Object {$_.name -eq $address.name}
+        Get-FGTFirewallAddress -connection $connection @invokeParams -name $address.name
     }
 
     End {
@@ -389,14 +422,14 @@ function Remove-FGTFirewallAddress {
 
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
-        [ValidateScript( { ValidateFGTAddress $_ })]
+        [ValidateScript( { Confirm-FGTAddress $_ })]
         [psobject]$address,
         [Parameter(Mandatory = $false)]
         [switch]$noconfirm,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
-        [psobject]$connection=$DefaultFGTConnection
+        [psobject]$connection = $DefaultFGTConnection
     )
 
     Begin {
