@@ -612,7 +612,7 @@ You can also change default vdom using
 [...]
 ```
 
-# MultiConnection
+### MultiConnection
 
 From release 0.3.0, it is possible to connect on same times to multi FortiGate
 You need to use -connection parameter to cmdlet
@@ -626,10 +626,10 @@ For example to get interface of 2 FortiGate
 #DefaultConnection set to false is not mandatory but only don't set the connection info on global variable
 
 # Connect to second FortiGate
-    $sw2 = Connect-FGT 192.0.2.1 -SkipCertificateCheck -DefaultConnection:$false
+    $fw2 = Connect-FGT 192.0.2.2 -SkipCertificateCheck -DefaultConnection:$false
 
 # Get Interface for first FortiGate
-    Get-FGTSystemInterface -connection $sw1 | Format-Table
+    Get-FGTSystemInterface -connection $fw1 | Format-Table
 
     q_origin_key  name          vdom vrf cli-conn-status fortilink mode   distance priority dhcp-relay-service
     ------------  ----          ---- --- --------------- --------- ----   -------- -------- ------------------
@@ -638,7 +638,7 @@ For example to get interface of 2 FortiGate
 ....
 
 # Get Interface for second FortiGate
-    Get-FGTSystemInterface -connection $sw1 | Format-Table
+    Get-FGTSystemInterface -connection $fw1 | Format-Table
 
     q_origin_key  name          vdom vrf cli-conn-status fortilink mode   distance priority dhcp-relay-service
     ------------  ----          ---- --- --------------- --------- ----   -------- -------- ------------------
