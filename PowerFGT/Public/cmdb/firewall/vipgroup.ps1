@@ -2,7 +2,7 @@
 # Copyright 2019, Alexis La Goutte <alexis dot lagoutte at gmail dot com>
 # Copyright 2019, Benjamin Perrier <ben dot perrier at outlook dot com>
 #
-# PR from Brett Pound, AKA Poundy
+# Contribution  by Brett Pound <brett underscore pound at hotmail dot com>, March 2020
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -16,19 +16,19 @@ function Add-FGTFirewallVipGroup {
         Add a FortiGate VIP Group
 
         .EXAMPLE
-        Add-FGTFirewallVipGroup -name MyAddressGroup -member MyAddress1 -interface wan1
+        Add-FGTFirewallVipGroup -name MyVipGroup -member MyVip1 -interface wan1
 
-        Add VIP Group with member MyAddress1 associated to interface wan1
-
-        .EXAMPLE
-        Add-FGTFirewallVipGroup -name MyAddressGroup -member MyAddress1, MyAddress2 -interface wan1
-
-        Add VIP Group with members MyAddress1 and MyAddress2 associated to interface wan1
+        Add VIP Group with member MyVip1 associated to interface wan1
 
         .EXAMPLE
-        Add-FGTFirewallVipGroup -name MyAddressGroup -member MyAddress1 -comment "My Address Group" -interface wan1
+        Add-FGTFirewallVipGroup -name MyVipGroup -member MyVip1, MyVip2 -interface wan1
 
-        Add VIP Group with member MyAddress1 and a comment associated to interface wan1
+        Add VIP Group with members MyVip1 and MyVip2 associated to interface wan1
+
+        .EXAMPLE
+        Add-FGTFirewallVipGroup -name MyVipGroup -member MyVip1 -comment "My Address Group" -interface wan1
+
+        Add VIP Group with member MyVip1 and a comment associated to interface wan1
     #>
 
     Param(
@@ -115,15 +115,15 @@ function Add-FGTFirewallVipGroupMember {
 
         .EXAMPLE
         $MyFGTVipGroup = Get-FGTFirewallVipGroup -name MyFGTVipGroup
-        PS C:\>$MyFGTVipGroup | Add-FGTFirewallVipGroupMember -member MyAddress1
+        PS C:\>$MyFGTVipGroup | Add-FGTFirewallVipGroupMember -member MyVip1
 
-        Add MyAddress1 member to MyFGTVipGroup
+        Add MyVip1 member to MyFGTVipGroup
 
         .EXAMPLE
         $MyFGTVipGroup = Get-FGTFirewallVipGroup -name MyFGTVipGroup
-        PS C:\>$MyFGTVipGroup | Add-FGTFirewallVipGroupMember -member MyAddress1, MyAddress2
+        PS C:\>$MyFGTVipGroup | Add-FGTFirewallVipGroupMember -member MyVip1, MyVip2
 
-        Add MyAddress1 and MyAddress2 member to MyFGTVipGroup
+        Add MyVip1 and MyVip2 member to MyFGTVipGroup
 
     #>
 
@@ -347,15 +347,15 @@ function Set-FGTFirewallVipGroup {
 
         .EXAMPLE
         $MyFGTVipGroup = Get-FGTFirewallVipGroup -name MyFGTVipGroup
-        PS C:\>$MyFGTVipGroup | Set-FGTFirewallVipGroup -member MyAddress1
+        PS C:\>$MyFGTVipGroup | Set-FGTFirewallVipGroup -member MyVip1
 
-        Change MyFGTVipGroup member to MyAddress1
+        Change MyFGTVipGroup member to MyVip1
 
         .EXAMPLE
         $MyFGTVipGroup = Get-FGTFirewallVipGroup -name MyFGTVipGroup
-        PS C:\>$MyFGTVipGroup | Set-FGTFirewallVipGroup -member MyAddress1, MyAddress2
+        PS C:\>$MyFGTVipGroup | Set-FGTFirewallVipGroup -member MyVip1, MyVip2
 
-        Change MyFGTVipGroup member to MyAddress1
+        Change MyFGTVipGroup member to MyVip1 and MyVip2
 
         .EXAMPLE
         $MyFGTVipGroup = Get-FGTFirewallVipGroup -name MyFGTVipGroup
@@ -367,7 +367,7 @@ function Set-FGTFirewallVipGroup {
         $MyFGTVipGroup = Get-FGTFirewallVipGroup -name MyFGTVipGroup
         PS C:\>$MyFGTVipGroup | Set-FGTFirewallVipGroup -comment "invisible VIPGrp" -visibility:$false
 
-        Change MyFGTVipGroup to set a new comment and disabled visibility
+        Change MyFGTVipGroup to set a new comment and disable visibility
 
     #>
 
@@ -521,15 +521,15 @@ function Remove-FGTFirewallVipGroupMember {
 
         .EXAMPLE
         $MyFGTVipGroup = Get-FGTFirewallVipGroup -name MyFGTVipGroup
-        PS C:\>$MyFGTVipGroup | Remove-FGTFirewallVipGroupMember -member MyAddress1
+        PS C:\>$MyFGTVipGroup | Remove-FGTFirewallVipGroupMember -member MyVip1
 
-        Remove MyAddress1 member from MyFGTVipGroup
+        Remove MyVip1 member from MyFGTVipGroup
 
         .EXAMPLE
         $MyFGTVipGroup = Get-FGTFirewallVipGroup -name MyFGTVipGroup
-        PS C:\>$MyFGTVipGroup | Remove-FGTFirewallVipGroupMember -member MyAddress1, MyAddress2
+        PS C:\>$MyFGTVipGroup | Remove-FGTFirewallVipGroupMember -member MyVip1, MyVip2
 
-        Remove MyAddress1 and MyAddress2 member from MyFGTVipGroup
+        Remove MyVip1 and MyVip2 member from MyFGTVipGroup
 
     #>
 
