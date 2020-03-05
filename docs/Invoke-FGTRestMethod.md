@@ -94,13 +94,6 @@ Invoke-FGTRestMethod -method "get" -uri "api/v2/cmdb/firewall/address" -filter_a
 
 Invoke-RestMethod with FGT connection for get api/v2/cmdb/firewall/address uri with filter attribute equal name and filter value contains FGT
 
-### EXAMPLE 9
-```
-Invoke-FGTRestMethod -method "get" -uri "api/v2/monitor/system/config/backup?scope=global"
-```
-
-Invoke-RestMethod with FGT connection for get api/v2/monitor/system/config/backup with backup scope of global.
-
 ## PARAMETERS
 
 ### -uri
