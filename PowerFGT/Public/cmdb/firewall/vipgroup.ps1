@@ -16,19 +16,19 @@ function Add-FGTFirewallVipGroup {
         Add a FortiGate VIP Group
 
         .EXAMPLE
-        Add-FGTFirewallVipGroup -name MyAddressGroup -member MyAddress1
+        Add-FGTFirewallVipGroup -name MyAddressGroup -member MyAddress1 -interface wan1
 
-        Add VIP Group with member MyAddress1
-
-        .EXAMPLE
-        Add-FGTFirewallVipGroup -name MyAddressGroup -member MyAddress1, MyAddress2
-
-        Add VIP Group with members MyAddress1 and MyAddress2
+        Add VIP Group with member MyAddress1 associated to interface wan1
 
         .EXAMPLE
-        Add-FGTFirewallVipGroup -name MyAddressGroup -member MyAddress1 -comment "My Address Group"
+        Add-FGTFirewallVipGroup -name MyAddressGroup -member MyAddress1, MyAddress2 -interface wan1
 
-        Add VIP Group with member MyAddress1 and a comment
+        Add VIP Group with members MyAddress1 and MyAddress2 associated to interface wan1
+
+        .EXAMPLE
+        Add-FGTFirewallVipGroup -name MyAddressGroup -member MyAddress1 -comment "My Address Group" -interface wan1
+
+        Add VIP Group with member MyAddress1 and a comment associated to interface wan1
     #>
 
     Param(
@@ -36,6 +36,8 @@ function Add-FGTFirewallVipGroup {
         [string]$name,
         [Parameter (Mandatory = $true)]
         [string[]]$member,
+        [Parameter (Mandatory = $true)]
+        [string[]]$interface,
         [Parameter (Mandatory = $false)]
         [ValidateLength(0, 255)]
         [string]$comment,
@@ -75,6 +77,10 @@ function Add-FGTFirewallVipGroup {
             $members += $member_name
         }
         $vipgrp | add-member -name "member" -membertype NoteProperty -Value $members
+
+        if ( $PsBoundParameters.ContainsKey('interface') ) {
+            $vipgrp | add-member -name "interface" -membertype NoteProperty -Value $interface
+        }
 
         if ( $PsBoundParameters.ContainsKey('comment') ) {
             $vipgrp | add-member -name "comment" -membertype NoteProperty -Value $comment
