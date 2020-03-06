@@ -8,8 +8,8 @@ With this module (version 0.4.1) you can manage:
 
 - [Address](#Address) (Add/Get/Copy/Set/Remove object type ipmask/subnet, FQDN)
 - [AddressGroup](#Address-Group) (Add/Get/Copy/Set/Remove and Add/Remove Member)
-- [Vip] (Add/Get/Copy/Set/Remove VIP)
-- [VipGroup] (Add/Get/Copy/Set/Remove and Add/Remove Member)
+- Vip (Add/Get/Copy/Set/Remove VIP)
+- VipGroup (Add/Get/Copy/Set/Remove and Add/Remove Member)
 - DNS (Get)
 - HA (Get)
 - Interface (Get)
