@@ -2,7 +2,7 @@
 # Copyright 2019, Alexis La Goutte <alexis dot lagoutte at gmail dot com>
 # Copyright 2019, Benjamin Perrier <ben dot perrier at outlook dot com>
 #
-# Contribution  by Brett Pound <brett underscore pound at hotmail dot com>, March 2020
+# Contribution by Brett Pound <brett underscore pound at hotmail dot com>, March 2020
 #
 # SPDX-License-Identifier: Apache-2.0
 #
