@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-# PR from Poundy - Add Confirm-FGTVipGroup
+# Contribution by Brett Pound <brett underscore pound at hotmail dot com>, March 2020
 #
 Function Confirm-FGTAddress {
 
