@@ -18,17 +18,17 @@ function Add-FGTFirewallVipGroup {
         .EXAMPLE
         Add-FGTFirewallVipGroup -name MyVipGroup -member MyVip1 -interface wan1
 
-        Add VIP Group with member MyVip1 associated to interface wan1
+        Add VIP Group with member MyVip1, associated to interface wan1
 
         .EXAMPLE
         Add-FGTFirewallVipGroup -name MyVipGroup -member MyVip1, MyVip2 -interface wan1
 
-        Add VIP Group with members MyVip1 and MyVip2 associated to interface wan1
+        Add VIP Group with members MyVip1 and MyVip2, associated to interface wan1
 
         .EXAMPLE
-        Add-FGTFirewallVipGroup -name MyVipGroup -member MyVip1 -comment "My Address Group" -interface wan1
+        Add-FGTFirewallVipGroup -name MyVipGroup -member MyVip1 -comment "My VIP Group" -interface wan1
 
-        Add VIP Group with member MyVip1 and a comment associated to interface wan1
+        Add VIP Group with member MyVip1 and a comment, associated to interface wan1
     #>
 
     Param(
@@ -154,7 +154,7 @@ function Add-FGTFirewallVipGroupMember {
         $_vipgrp = new-Object -TypeName PSObject
 
         if ( $PsBoundParameters.ContainsKey('member') ) {
-            #Add member to existing addrgrp member
+            #Add member to existing vipgrp member
             $members = $vipgrp.member
             foreach ( $m in $member ) {
                 $member_name = @{ }
@@ -461,7 +461,7 @@ function Remove-FGTFirewallVipGroup {
         $MyFGTVipGroup = Get-FGTFirewallVipGroup -name MyFGTVipGroup
         PS C:\>$MyFGTVipGroup | Remove-FGTFirewallVipGroup -noconfirm
 
-        Remove address object MyFGTAddressGroup with no confirmation
+        Remove VIP Group object MyFGTVipGroup with no confirmation
 
     #>
 
@@ -574,7 +574,7 @@ function Remove-FGTFirewallVipGroupMember {
                 $members = $members | Where-Object { $_.name -ne $remove_member }
             }
 
-            #check if there is always a member... (it is not possible don't have member on Address Group)
+            #check if there is always a member... (it is not possible to have an empty member list on VIP Group)
             if ( $members.count -eq 0 ) {
                 Throw "You can't remove all members. Use Remove-FGTFirewallVipGroup to remove VIP Group"
             }
