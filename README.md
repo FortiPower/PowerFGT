@@ -8,8 +8,6 @@ With this module (version 0.4.1) you can manage:
 
 - [Address](#Address) (Add/Get/Copy/Set/Remove object type ipmask/subnet, FQDN)
 - [AddressGroup](#Address-Group) (Add/Get/Copy/Set/Remove and Add/Remove Member)
-- Vip (Add/Get/Copy/Set/Remove VIP)
-- VipGroup (Add/Get/Copy/Set/Remove and Add/Remove Member)
 - DNS (Get)
 - HA (Get)
 - Interface (Get)
@@ -23,6 +21,7 @@ With this module (version 0.4.1) you can manage:
 - System Global (Get)
 - [VDOM](#VDOM) (Get)
 - [Virtual IP](#Virtual-IP) (Get/Add/Remove object type static-nat)
+- VirtualIPGroup (Add/Get/Copy/Set/Remove and Add/Remove Member)
 - Virtual WAN Link/SD-WAN (Get)
 - VPN IPsec Phase 1/Phase 2 Interface (Get)
 - Zone (Get)
