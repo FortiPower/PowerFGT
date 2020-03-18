@@ -6,7 +6,7 @@ This is a Powershell module for configure a FortiGate (Fortinet) Firewall.
 
 With this module (version 0.4.1) you can manage:
 
-- [Address](#Address) (Add/Get/Copy/Set/Remove object type ipmask/subnet)
+- [Address](#Address) (Add/Get/Copy/Set/Remove object type ipmask/subnet, FQDN)
 - [AddressGroup](#Address-Group) (Add/Get/Copy/Set/Remove and Add/Remove Member)
 - DNS (Get)
 - HA (Get)
@@ -104,7 +104,7 @@ or delete it `Remove-FGTFirewallAddress`.
     update.microsoft.com         update.microsoft.com         a918d650-368c-51e9-0cca-5f006a059f0b 0.0.0.0 0.0.0.0
 
 # Create an address
-    Add-FGTFirewallAddress -type ipmask -Name 'My PowerFGT Network' -ip 192.0.2.1 -mask 255.255.255.0
+    Add-FGTFirewallAddress -Name 'My PowerFGT Network' -ip 192.0.2.1 -mask 255.255.255.0
 
     q_origin_key         : My PowerFGT Network
     name                 : My PowerFGT Network
