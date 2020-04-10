@@ -259,7 +259,6 @@ For  `Invoke-FGTRestMethod` and `Get-XXX` cmdlet like `Get-FGTFirewallAddress`, 
 ...
 
 ```
-Actually, support only `equal` and `contains` filter type
 
 ### Address Group
 
