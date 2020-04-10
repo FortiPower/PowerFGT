@@ -187,6 +187,16 @@ function Get-FGTFirewallAddress {
         Get address contains with *FGT*
 
         .EXAMPLE
+        Get-FGTFirewallAddress -filter "name=@FGT,fqdn=@FGT"
+
+        Get address contains with *FGT* OR fqdn contains *FGT*
+
+        .EXAMPLE
+        Get-FGTFirewallAddress -filter "name=@FGT&fqdn!@FGT"
+
+        Get address contains with *FGT* AND NOT fqdn contains *FGT*
+
+        .EXAMPLE
         Get-FGTFirewallAddress -uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
 
         Get address with uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
@@ -209,17 +219,16 @@ function Get-FGTFirewallAddress {
         [string]$name,
         [Parameter (Mandatory = $false, ParameterSetName = "uuid")]
         [string]$uuid,
-        [Parameter (Mandatory = $false)]
-        [Parameter (ParameterSetName = "filter")]
+        [Parameter(Mandatory = $false, ParameterSetName = "filter")]
+        [String]$filter,
+        [Parameter (Mandatory = $false, ParameterSetName = "filter_build")]
         [string]$filter_attribute,
-        [Parameter (Mandatory = $false)]
-        [Parameter (ParameterSetName = "name")]
+        [Parameter (Mandatory = $false, ParameterSetName = "name")]
         [Parameter (ParameterSetName = "uuid")]
-        [Parameter (ParameterSetName = "filter")]
-        [ValidateSet('equal', 'contains')]
+        [Parameter (ParameterSetName = "filter_build")]
+        [ValidateSet('equal', 'notequal', 'contains', 'notcontains', 'less', 'lessorequal', 'greater', 'greaterorequal')]
         [string]$filter_type = "equal",
-        [Parameter (Mandatory = $false)]
-        [Parameter (ParameterSetName = "filter")]
+        [Parameter (Mandatory = $false, ParameterSetName = "filter_build")]
         [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
@@ -259,6 +268,10 @@ function Get-FGTFirewallAddress {
             $invokeParams.add( 'filter_value', $filter_value )
             $invokeParams.add( 'filter_attribute', $filter_attribute )
             $invokeParams.add( 'filter_type', $filter_type )
+        }
+
+        if ( $filter) {
+            $invokeParams.add( 'filter', $filter )
         }
 
         $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/address' -method 'GET' -connection $connection @invokeParams
