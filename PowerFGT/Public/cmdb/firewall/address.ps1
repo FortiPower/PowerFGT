@@ -187,16 +187,6 @@ function Get-FGTFirewallAddress {
         Get address contains with *FGT*
 
         .EXAMPLE
-        Get-FGTFirewallAddress -filter "name=@FGT,fqdn=@FGT"
-
-        Get address contains with *FGT* OR fqdn contains *FGT*
-
-        .EXAMPLE
-        Get-FGTFirewallAddress -filter "name=@FGT&fqdn!@FGT"
-
-        Get address contains with *FGT* AND NOT fqdn contains *FGT*
-
-        .EXAMPLE
         Get-FGTFirewallAddress -uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
 
         Get address with uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
@@ -219,8 +209,6 @@ function Get-FGTFirewallAddress {
         [string]$name,
         [Parameter (Mandatory = $false, ParameterSetName = "uuid")]
         [string]$uuid,
-        [Parameter(Mandatory = $false, ParameterSetName = "filter")]
-        [String]$filter,
         [Parameter (Mandatory = $false, ParameterSetName = "filter_build")]
         [string]$filter_attribute,
         [Parameter (Mandatory = $false, ParameterSetName = "name")]
@@ -268,10 +256,6 @@ function Get-FGTFirewallAddress {
             $invokeParams.add( 'filter_value', $filter_value )
             $invokeParams.add( 'filter_attribute', $filter_attribute )
             $invokeParams.add( 'filter_type', $filter_type )
-        }
-
-        if ( $filter) {
-            $invokeParams.add( 'filter', $filter )
         }
 
         $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/address' -method 'GET' -connection $connection @invokeParams
