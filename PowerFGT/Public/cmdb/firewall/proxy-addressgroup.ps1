@@ -1,6 +1,7 @@
 ﻿#
 # Copyright 2019, Alexis La Goutte <alexis dot lagoutte at gmail dot com>
 # Copyright 2019, Benjamin Perrier <ben dot perrier at outlook dot com>
+# Copyright 2020, Arthur Heijnen <arthur dot heijnen at live dot nl>
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -8,25 +9,25 @@ function Add-FGTFirewallProxyAddressGroup {
 
     <#
         .SYNOPSIS
-        Add a FortiGate Address Group
+        Add a FortiGate ProxyAddress Group
 
         .DESCRIPTION
-        Add a ProxyFortiGate Address Group
+        Add a ProxyFortiGate ProxyAddress Group
 
         .EXAMPLE
         Add-FGTFirewallProxyAddressGroup -name MyAddressGroup -member MyAddress1
 
-        Add proxyAddress Group with member MyAddress1
+        Add ProxyAddress Group with member MyAddress1
 
         .EXAMPLE
-        Add-FGTFirewallproxyAddressGroup -name MyAddressGroup -member MyAddress1, MyAddress2
+        Add-FGTFirewallProxyAddressGroup -name MyAddressGroup -member MyAddress1, MyAddress2
 
         Add ProxyAddress Group with members MyAddress1 and MyAddress2
 
         .EXAMPLE
-        Add-FGTFirewallproxyAddressGroup -name MyAddressGroup -member MyAddress1 -comment "My Address Group"
+        Add-FGTFirewallProxyAddressGroup -name MyAddressGroup -member MyAddress1 -comment "My ProxyAddress Group"
 
-        Add Address Group with member MyAddress1 and a comment
+        Add ProxyAddress Group with member MyAddress1 and a comment
     #>
 
     Param(
@@ -59,7 +60,7 @@ function Add-FGTFirewallProxyAddressGroup {
         }
 
         if ( Get-FGTFirewallProxyAddressGroup @invokeParams -name $name -connection $connection) {
-            Throw "Already an addressgroup object using the same name"
+            Throw "Already an ProxyAddressGroup object using the same name"
         }
 
         $uri = "api/v2/cmdb/firewall/proxy-addrgrp"
@@ -269,17 +270,14 @@ function Get-FGTFirewallProxyAddressGroup {
         [string]$name,
         [Parameter (Mandatory = $false, ParameterSetName = "uuid")]
         [string]$uuid,
-        [Parameter (Mandatory = $false)]
-        [Parameter (ParameterSetName = "filter")]
+        [Parameter (Mandatory = $false, ParameterSetName = "filter_build")]
         [string]$filter_attribute,
-        [Parameter (Mandatory = $false)]
-        [Parameter (ParameterSetName = "name")]
+        [Parameter (Mandatory = $false, ParameterSetName = "name")]
         [Parameter (ParameterSetName = "uuid")]
-        [Parameter (ParameterSetName = "filter")]
-        [ValidateSet('equal', 'contains')]
+        [Parameter (ParameterSetName = "filter_build")]
+        [ValidateSet('equal', 'notequal', 'contains', 'notcontains', 'less', 'lessorequal', 'greater', 'greaterorequal')]
         [string]$filter_type = "equal",
-        [Parameter (Mandatory = $false)]
-        [Parameter (ParameterSetName = "filter")]
+        [Parameter (Mandatory = $false, ParameterSetName = "filter_build")]
         [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
         [switch]$skip,

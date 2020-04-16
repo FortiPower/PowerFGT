@@ -1,6 +1,7 @@
 ﻿#
 # Copyright 2019, Alexis La Goutte <alexis dot lagoutte at gmail dot com>
 # Copyright 2019, Benjamin Perrier <ben dot perrier at outlook dot com>
+# Copyright 2020, Arthur Heijnen <arthur dot heijnen at live dot nl>
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -9,64 +10,57 @@ function Add-FGTFirewallProxyPolicy {
 
     <#
         .SYNOPSIS
-        Add a FortiGate Policy
+        Add a FortiGate ProxyPolicy
 
         .DESCRIPTION
-        Add a FortiGate Policy/Rules (source port/ip, destination port, ip, action, status...)
+        Add a FortiGate ProxyPolicy/Rules (source address, destination address, service, action, status...)
 
         .EXAMPLE
-        Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all
+        Add-FGTFirewallProxyPolicy -proxytype explicit-web -dstintf port1 -srcaddr all -dstaddr all
 
-        Add a MyFGTPolicy with source port port1 and destination port1 and source and destination all
-
-        .EXAMPLE
-        Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -nat
-
-        Add a MyFGTPolicy with NAT is enable
+        Add a explicit-web ProxyPolicy with destination interface port1, source-address and destination-address all
 
         .EXAMPLE
-        Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -action "deny"
+        Add-FGTFirewallProxyPolicy -proxytype transparent-web -dstintf port1 -srcaddr all -dstaddr all
 
-        Add a MyFGTPolicy with action is Deny
-
-        .EXAMPLE
-        Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -status:$false
-
-        Add a MyFGTPolicy with status is disable
+        Add a transparent-web ProxyPolicy with destination interface port1, source-address and destination-address all
 
         .EXAMPLE
-        Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -service "HTTP, HTTPS, SSH"
+        Add-FGTFirewallProxyPolicy -proxytype explicit-web -dstintf port1 -srcaddr all -dstaddr all -action "deny"
 
-        Add a MyFGTPolicy with multiple service port
-
-        .EXAMPLE
-        Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -schedule workhour
-
-        Add a MyFGTPolicy with schedule is workhour
+        Add a explicit-web ProxyPolicy with action is Deny
 
         .EXAMPLE
-        Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -comments "My FGT Policy"
+        Add-FGTFirewallProxyPolicy -proxytype explicit-web -dstintf port1 -srcaddr all -dstaddr all -status:$false
 
-        Add a MyFGTPolicy with comment "My FGT Policy"
-
-        .EXAMPLE
-        Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -logtraffic "all"
-
-        Add a MyFGTPolicy with log traffic all
+        Add a explicit-web ProxyPolicy with status is disable
 
         .EXAMPLE
-        Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -nat -ippool "MyIPPool"
+        Add-FGTFirewallProxyPolicy -proxytype explicit-web -dstintf port1 -srcaddr all -dstaddr all -service "HTTP, HTTPS, SSH"
 
-        Add a MyFGTPolicy with IP Pool MyIPPool (with nat)
+        Add a explicit-web ProxyPolicy with multiple services
+
+        .EXAMPLE
+        Add-FGTFirewallProxyPolicy -proxytype explicit-web -dstintf port1 -srcaddr all -dstaddr all -schedule workhour
+
+        Add a explicit-web ProxyPolicy with schedule is workhour
+
+        .EXAMPLE
+        Add-FGTFirewallProxyPolicy -proxytype explicit-web -dstintf port1 -srcaddr all -dstaddr all -comments "My FGT ProxyPolicy"
+
+        Add a explicit-web ProxyPolicy with comment "My FGT ProxyPolicy"
+
+        .EXAMPLE
+        Add-FGTFirewallProxyPolicy -proxytype explicit-web -dstintf port1 -srcaddr all -dstaddr all -logtraffic "all"
+
+        Add a explicit-web ProxyPolicy with log traffic all
     #>
 
 
     Param(
-        [Parameter (Mandatory = $false)]
-        [string]$name,
         [Parameter (Mandatory = $true)]
-        #[ValidateSet("explicit-web", "transparent-web")]
-        [string]$proxytype,
+        [ValidateSet("explicit-web", "transparent-web")]
+        [string]$proxytype = "explicit-web",
         [Parameter (Mandatory = $true)]
         [string[]]$dstintf,
         [Parameter (Mandatory = $true)]
@@ -111,18 +105,7 @@ function Add-FGTFirewallProxyPolicy {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-#        if ( Get-FGTFirewallproxyPolicy -connection $connection @invokeParams -name $name ) {
-#            Throw "Already a Policy using the same name"
-#        }
-
         $uri = "api/v2/cmdb/firewall/proxy-policy"
-
-        # Source interface
-        $srcintf_array = @()
-        #TODO check if the interface (zone ?) is valid
-        foreach ($intf in $srcintf) {
-            $srcintf_array += @{ 'name' = $intf }
-        }
 
         # Destination interface
         $dstintf_array = @()
@@ -197,10 +180,10 @@ function Get-FGTFirewallProxyPolicy {
 
     <#
         .SYNOPSIS
-        Get list of all policies/rules
+        Get list of all ProxyPolicies/rules
 
         .DESCRIPTION
-        Get list of all policies (interface source/destination, address (network) source/destination, service, action...)
+        Get list of all ProxyPolicies (source address, destination address, service, action, status...)
 
         .EXAMPLE
         Get-FGTFirewallProxyPolicy
@@ -234,17 +217,14 @@ function Get-FGTFirewallProxyPolicy {
         [string]$uuid,
         [Parameter (Mandatory = $false, ParameterSetName = "policyid")]
         [string]$policyid,
-        [Parameter (Mandatory = $false)]
-        [Parameter (ParameterSetName = "filter")]
+        [Parameter (Mandatory = $false, ParameterSetName = "filter_build")]
         [string]$filter_attribute,
-        [Parameter (Mandatory = $false)]
-        [Parameter (ParameterSetName = "uuid")]
+        [Parameter (Mandatory = $false, ParameterSetName = "uuid")]
         [Parameter (ParameterSetName = "policyid")]
-        [Parameter (ParameterSetName = "filter")]
-        [ValidateSet('equal', 'contains')]
+        [Parameter (ParameterSetName = "filter_build")]
+        [ValidateSet('equal', 'notequal', 'contains', 'notcontains', 'less', 'lessorequal', 'greater', 'greaterorequal')]
         [string]$filter_type = "equal",
-        [Parameter (Mandatory = $false)]
-        [Parameter (ParameterSetName = "filter")]
+        [Parameter (Mandatory = $false, ParameterSetName = "filter_build")]
         [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
         [switch]$skip,

@@ -1,6 +1,7 @@
 #
 # Copyright 2019, Alexis La Goutte <alexis dot lagoutte at gmail dot com>
 # Copyright 2019, Benjamin Perrier <ben dot perrier at outlook dot com>
+# Copyright 2020, Arthur Heijnen <arthur dot heijnen at live dot nl>
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -14,29 +15,39 @@ function Add-FGTFirewallProxyAddress {
         Add a FortiGate ProxyAddress (host-regex, url ...)
 
         .EXAMPLE
-        Add-FGTFirewallProxyAddress -type host-regex -name Github -hostregex '.*\.github.com'
+        Add-FGTFirewallProxyAddress -name FGT -hostregex '.*\.fortinet\.com'
 
-        Add ProxyAddress object type host-regex with name Github and value '.*\.github.com'
+        Add ProxyAddress object type host-regex with name FGT and value '.*\.fortinet\.com'
 
         .EXAMPLE
-        Add-FGTFirewallProxyAddress -type method -Name FGT -method get -hostObjectName MyFGTAddress -comment "Get-only allowed to MyFGTAddress"
+        Add-FGTFirewallProxyAddress -Name FGT -method get -hostObjectName MyFGTAddress -comment "Get-only allowed to MyFGTAddress"
 
         Add ProxyAddress object type methode with name FGT, only allow method GET to MyHost and a comment
 
         .EXAMPLE
-        Add-FGTFirewallProxyAddress -type url -name FGT -hostObjectName Github -path '/FortiPower/PowerFGT' -visibility:$false
+        Add-FGTFirewallProxyAddress -name FGT -hostObjectName 'www.fortinet.com' -path '/FortiPower/PowerFGT' -visibility:$false
 
-        Add ProxyAddress object type url with name FGT, only allow path '/FortiPower/PowerFGT' to Github  and disabled visibility
+        Add ProxyAddress object type url with name FGT, only allow path '/FortiPower/PowerFGT' to www.fortinet.com  and disabled visibility
 
         Todo: add the Category, UA and Header types
     #>
-    [CmdletBinding(PositionalBinding=$false)]
+    [CmdletBinding(DefaultParameterSetName = "default")]
     Param(
-        [Parameter (Mandatory = $true)]
-        [ValidateSet("host-regex", "url", "method",IgnoreCase = $false)]
+        [Parameter (Mandatory = $false, DontShow)]
         [string]$type,
         [Parameter (Mandatory = $true)]
+        [ValidateLength(0, 35)]
         [string]$name,
+        [Parameter (Mandatory = $false, ParameterSetName = "host-regex")]
+        [string]$hostregex,
+        [Parameter (Mandatory = $false, ParameterSetName = "url")]
+        [string]$url,
+        [Parameter (Mandatory = $false, ParameterSetName = "method")]
+        [ValidateSet("connect", "delete", "get", "head", "options", "post", "put", "trace",IgnoreCase = $false)]
+        [string]$method,
+        [Parameter (Mandatory = $false, ParameterSetName = "url")]
+        [Parameter (ParameterSetName = "method")]
+        [string]$hostObjectName,
         [Parameter (Mandatory = $false)]
         [ValidateLength(0, 255)]
         [string]$comment,
@@ -47,113 +58,11 @@ function Add-FGTFirewallProxyAddress {
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
     )
-DynamicParam
-  {
-        # Define Parameter Default Attributes
-        $ParameterAttribute = New-Object System.Management.Automation.ParameterAttribute
-        $ParameterAttribute.ParameterSetName = '__AllParameterSets'
-        $ParameterAttribute.Mandatory = $true
-        $ParameterAttribute.ValueFromPipelineByPropertyName = $false
-        $ParameterAttribute.HelpMessage = "Please enter the $type"
-
-        # Expose parameter to the namespace
-        $ParameterDictionary = New-Object System.Management.Automation.RuntimeDefinedParameterDictionary
-        
-        if ($type -eq 'host-regex')
-        {
-            # Add hostregex parameter (dash is disallowed in variable names)
-            $AttributeCollection = New-Object Collections.ObjectModel.Collection[System.Attribute]
-            $AttributeCollection.Add($ParameterAttribute)
-
-            # Create Dynamic parameter
-            $Parameter = New-Object System.Management.Automation.RuntimeDefinedParameter -ArgumentList @("hostregex", ([string]), $AttributeCollection)
-           
-            $ParameterDictionary.Add("hostregex", $Parameter)
-        }
-
-        if ($type -eq 'url')
-        {
-            # Get-FGTFirewallProxyAddress as validationSet 
-            $AttributeCollection = New-Object Collections.ObjectModel.Collection[System.Attribute]
-            $AttributeCollection.Add($ParameterAttribute)
-            
-            $invokeParams = @{ }
-            if ( $PsBoundParameters.ContainsKey('vdom') ) {
-                $invokeParams.add( 'vdom', $vdom )
-            }
-
-            $ValidateSet = (Get-FGTFirewallproxyAddress @invokeParams -filter_type equal -filter_attribute visibility -filter_value enable -connection $connection).name
-            if ( $ValidateSet ) {
-                $ParameterValidateSet = New-Object System.Management.Automation.ValidateSetAttribute -ArgumentList $ValidateSet
-                $ParameterValidateSet.IgnoreCase = $true
-                $AttributeCollection.Add($ParameterValidateSet)
-            }
-            
-            # Create Dynamic parameter
-            $Parameter = New-Object System.Management.Automation.RuntimeDefinedParameter -ArgumentList @('hostObjectName', ([string]), $AttributeCollection)
-            
-            $ParameterDictionary.Add('hostObjectName', $Parameter)
-
-            $AttributeCollection = New-Object Collections.ObjectModel.Collection[System.Attribute]
-            $AttributeCollection.Add($ParameterAttribute)
-
-            # Create Dynamic parameter
-            $Parameter = New-Object System.Management.Automation.RuntimeDefinedParameter -ArgumentList @("path", ([string]), $AttributeCollection)
-            
-            $ParameterDictionary.Add("path", $Parameter)
-        }
-        
-        if ($type -eq 'method')
-        {
-            # Get-FGTFirewallAddress as validationSet 
-            $AttributeCollection = New-Object Collections.ObjectModel.Collection[System.Attribute]
-            $AttributeCollection.Add($ParameterAttribute)
-            
-            $invokeParams = @{ }
-            if ( $PsBoundParameters.ContainsKey('vdom') ) {
-                $invokeParams.add( 'vdom', $vdom )
-            }
-
-            $ValidateSet = (Get-FGTFirewallAddress @invokeParams -filter_type equal -filter_attribute visibility -filter_value enable -connection $connection).name
-            if ( $ValidateSet ) {
-                $ParameterValidateSet = New-Object System.Management.Automation.ValidateSetAttribute -ArgumentList $ValidateSet
-                $ParameterValidateSet.IgnoreCase = $true
-                $AttributeCollection.Add($ParameterValidateSet)
-            }
-
-            # Create Dynamic parameter
-            $Parameter = New-Object System.Management.Automation.RuntimeDefinedParameter -ArgumentList @('hostObjectName', ([string]), $AttributeCollection)
-            
-            $ParameterDictionary.Add('hostObjectName', $Parameter)
-
-            $AttributeCollection = New-Object Collections.ObjectModel.Collection[System.Attribute]
-            $AttributeCollection.Add($ParameterAttribute)
-
-
-            # Add validationSet to the method parameter
-            $AttributeCollection = New-Object Collections.ObjectModel.Collection[System.Attribute]
-            $AttributeCollection.Add($ParameterAttribute)
-
-            $ValidateSet = @('connect', 'delete', 'get', 'head', 'options', 'post', 'put', 'trace')
-            $ParameterValidateSet = New-Object System.Management.Automation.ValidateSetAttribute -ArgumentList $ValidateSet
-            $ParameterValidateSet.IgnoreCase = $false
-            $AttributeCollection.Add($ParameterValidateSet)
-            
-            # Create Dynamic parameter
-            $Parameter = New-Object System.Management.Automation.RuntimeDefinedParameter -ArgumentList @($type, ([string]), $AttributeCollection)
-            
-            $ParameterDictionary.Add($type, $Parameter)
-        }
-        
-        return $ParameterDictionary
-    
-  }
 
     Begin {
-        $hostregex = $PSBoundParameters['hostregex']
-        $hostObjectName = $PSBoundParameters['hostObjectName']
-        $path = $PSBoundParameters['path']
-        $method = $PSBoundParameters['method']
+        If ($type){
+            Write-Warning "The -type option is deprecated and will be removed in future releases. Use -ip or -fqdn instead"
+        }
     }
 
     Process {
@@ -164,34 +73,38 @@ DynamicParam
         }
 
         if ( Get-FGTFirewallProxyAddress @invokeParams -name $name -connection $connection) {
-            Throw "Already an address object using the same name"
+            Throw "Already an ProxyAddress object using the same name"
         }
 
         $uri = "api/v2/cmdb/firewall/proxy-address"
 
         $proxyaddress = new-Object -TypeName PSObject
 
-        $proxyaddress | add-member -name "type" -membertype NoteProperty -Value $type
+        $proxyaddress | add-member -name "type" -membertype NoteProperty -Value $PSCmdlet.ParameterSetName
 
         $proxyaddress | add-member -name "name" -membertype NoteProperty -Value $name
         
         
-        if ( $type -eq 'host-regex' ) {
+        if ( $PSCmdlet.ParameterSetName -eq 'host-regex' ) {
             $proxyaddress | add-member "host-regex" -membertype NoteProperty -Value $hostregex
         }
 
-        if ( $type -eq 'url' ) {
+        if ( $PSCmdlet.ParameterSetName -eq 'url' ) {
             if (!(Get-FGTFirewallAddress @invokeParams -name $hostObjectName -connection $connection) -and `
                 !(Get-FGTFirewallProxyAddress @invokeParams -name $hostObjectName -connection $connection) `
             ){
-                    Throw "FirewallAddres $Hostname not Found"
+                    Throw "FirewallAddres or FirewallProxyAddres $hostObjectName not Found"
             }
             $proxyaddress | add-member -name "host" -membertype NoteProperty -Value $hostObjectName
-            $proxyaddress | add-member -name "path" -membertype NoteProperty -Value $path
+            $proxyaddress | add-member -name "path" -membertype NoteProperty -Value $url
         }
 
         
-        if ( $type -eq 'method' ) {
+        if ( $PSCmdlet.ParameterSetName -eq 'method' ) {
+            if (!(Get-FGTFirewallAddress @invokeParams -name $hostObjectName -connection $connection) `
+            ){
+                    Throw "FirewallAddres $hostObjectName not Found"
+            }
             $proxyaddress | add-member -name "host" -membertype NoteProperty -Value $hostObjectName
             $proxyaddress | add-member -name "method" -membertype NoteProperty -Value $method
         }
@@ -226,11 +139,11 @@ function Copy-FGTFirewallProxyAddress {
         Copy/Clone a FortiGate ProxyAddress
 
         .DESCRIPTION
-        Copy/Clone a FortiGate ProxyAddress (host-regex, url, category...)
+        Copy/Clone a FortiGate ProxyAddress (host-regex, url ...)
 
         .EXAMPLE
         $MyFGTProxyAddress = Get-FGTFirewallProxyAddress -name MyFGTProxyAddress
-        PS C:\>$MyFGTProxyAddress | Copy-FGTFirewallProxyAddress -name MyFGTProxyAddress_copy
+        $MyFGTProxyAddress | Copy-FGTFirewallProxyAddress -name MyFGTProxyAddress_copy
 
         Copy / Clone MyFGTProxyAddress and name MyFGTProxyAddress_copy
 
@@ -241,6 +154,7 @@ function Copy-FGTFirewallProxyAddress {
         [ValidateScript( { Confirm-FGTProxyAddress $_ })]
         [psobject]$address,
         [Parameter (Mandatory = $true)]
+        [ValidateLength(0, 35)]
         [string]$name,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
@@ -316,17 +230,14 @@ function Get-FGTFirewallProxyAddress {
         [string]$name,
         [Parameter (Mandatory = $false, ParameterSetName = "uuid")]
         [string]$uuid,
-        [Parameter (Mandatory = $false)]
-        [Parameter (ParameterSetName = "filter")]
+        [Parameter (Mandatory = $false, ParameterSetName = "filter_build")]
         [string]$filter_attribute,
-        [Parameter (Mandatory = $false)]
-        [Parameter (ParameterSetName = "name")]
+        [Parameter (Mandatory = $false, ParameterSetName = "name")]
         [Parameter (ParameterSetName = "uuid")]
-        [Parameter (ParameterSetName = "filter")]
-        [ValidateSet('equal', 'contains')]
+        [Parameter (ParameterSetName = "filter_build")]
+        [ValidateSet('equal', 'notequal', 'contains', 'notcontains', 'less', 'lessorequal', 'greater', 'greaterorequal')]
         [string]$filter_type = "equal",
-        [Parameter (Mandatory = $false)]
-        [Parameter (ParameterSetName = "filter")]
+        [Parameter (Mandatory = $false, ParameterSetName = "filter_build")]
         [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
