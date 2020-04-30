@@ -20,9 +20,9 @@ function Get-FGTSystemDns {
         Display DNS configured on the FortiGate
 
         .EXAMPLE
-        Get-FGTSystemDNS -filter_attribute primary -filter_value 192.2.0.1
+        Get-FGTSystemDNS -filter_attribute primary -filter_value 192.0.2.1
 
-        Get System DNS with primary (DNS) equal 192.2.0.1
+        Get System DNS with primary (DNS) equal 192.0.2.1
 
         .EXAMPLE
         Get-FGTSystemDNS -filter_attribute ssl-certificate -filter_value Fortinet -filter_type contains
