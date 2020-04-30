@@ -25,9 +25,9 @@ function Get-FGTSystemDns {
         Get System DNS with primary (DNS) equal 192.0.2.1
 
         .EXAMPLE
-        Get-FGTSystemDNS -filter_attribute ssl-certificate -filter_value Fortinet -filter_type contains
+        Get-FGTSystemDNS -filter_attribute domain -filter_value Fortinet -filter_type contains
 
-        Get System DNS with ssl-certificate contains Fortinet
+        Get System DNS with domain contains Fortinet
 
         .EXAMPLE
         Get-FGTSystemDns -skip
