@@ -295,13 +295,13 @@ function Set-FGTFirewallAddress {
 
         .EXAMPLE
         $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
-        PS C:\>$MyFGTAddress | Set -interface port1
+        PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -interface port1
 
         Change MyFGTAddress to set associated interface to port 1
 
         .EXAMPLE
         $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
-        PS C:\>$MyFGTAddress | Set -comment "My FGT Address" -visibility:$false
+        PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -comment "My FGT Address" -visibility:$false
 
         Change MyFGTAddress to set a new comment and disabled visibility
 
