@@ -14,24 +14,24 @@ function Add-FGTFirewallAddress {
         Add a FortiGate Address (ipmask, fqdn, widlcard...)
 
         .EXAMPLE
-        Add-FGTFirewallAddress -type ipmask -Name FGT -ip 192.2.0.0 -mask 255.255.255.0
+        Add-FGTFirewallAddress -type ipmask -Name FGT -ip 192.0.2.0 -mask 255.255.255.0
 
-        Add Address objet type ipmask with name FGT and value 192.2.0.0/24
-
-        .EXAMPLE
-        Add-FGTFirewallAddress -type ipmask -Name FGT -ip 192.2.0.0 -mask 255.255.255.0 -interface port2
-
-        Add Address objet type ipmask with name FGT, value 192.2.0.0/24 and associated to interface port2
+        Add Address objet type ipmask with name FGT and value 192.0.2.0/24
 
         .EXAMPLE
-        Add-FGTFirewallAddress -type ipmask -Name FGT -ip 192.2.0.0 -mask 255.255.255.0 -comment "My FGT Address"
+        Add-FGTFirewallAddress -type ipmask -Name FGT -ip 192.0.2.0 -mask 255.255.255.0 -interface port2
 
-        Add Address objet type ipmask with name FGT, value 192.2.0.0/24 and a comment
+        Add Address objet type ipmask with name FGT, value 192.0.2.0/24 and associated to interface port2
 
         .EXAMPLE
-        Add-FGTFirewallAddress -type ipmask -Name FGT -ip 192.2.0.0 -mask 255.255.255.0 -visibility:$false
+        Add-FGTFirewallAddress -type ipmask -Name FGT -ip 192.0.2.0 -mask 255.255.255.0 -comment "My FGT Address"
 
-        Add Address objet type ipmask with name FGT, value 192.2.0.0/24 and disabled visibility
+        Add Address objet type ipmask with name FGT, value 192.0.2.0/24 and a comment
+
+        .EXAMPLE
+        Add-FGTFirewallAddress -type ipmask -Name FGT -ip 192.0.2.0 -mask 255.255.255.0 -visibility:$false
+
+        Add Address objet type ipmask with name FGT, value 192.0.2.0/24 and disabled visibility
 
     #>
 
@@ -283,9 +283,9 @@ function Set-FGTFirewallAddress {
 
         .EXAMPLE
         $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
-        PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -ip 192.2.0.0 -mask 255.255.255.0
+        PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -ip 192.0.2.0 -mask 255.255.255.0
 
-        Change MyFGTAddress to value (ip and mask) 192.2.0.0/24
+        Change MyFGTAddress to value (ip and mask) 192.0.2.0/24
 
         .EXAMPLE
         $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
