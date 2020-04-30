@@ -20,9 +20,9 @@ function Get-FGTRouterStatic {
         Get list of all static route object
 
         .EXAMPLE
-        Get-FGTRouterStatic -filter_attribute gateway -filter_value 192.2.0.1
+        Get-FGTRouterStatic -filter_attribute gateway -filter_value 192.0.2.1
 
-        Get static route object with gateway equal 192.2.0.1
+        Get static route object with gateway equal 192.0.2.1
 
         .EXAMPLE
         Get-FGTRouterStatic -filter_attribute device -filter_value vlan -filter_type contains
