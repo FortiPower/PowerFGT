@@ -223,6 +223,35 @@ Describe "Configure Firewall Address" {
 
 }
 
+Describe "Copy Firewall Address" {
+
+    BeforeAll {
+        Add-FGTFirewallAddress -type ipmask -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0
+    }
+
+    It "Copy Firewall Address ($pester_address1 => copy_pester_address1)" {
+        Get-FGTFirewallAddress -name $pester_address1 | Copy-FGTFirewallAddress -name copy_pester_address1
+        $address = Get-FGTFirewallAddress -name copy_pester_address1
+        $address.name | Should -Be copy_pester_address1
+        $address.uuid | Should -Not -BeNullOrEmpty
+        $address.type | Should -Be "ipmask"
+        $address.'start-ip' | Should -Be "192.0.2.0"
+        $address.'end-ip' | Should -Be "255.255.255.0"
+        $address.subnet | Should -Be "192.0.2.0 255.255.255.0"
+        $address.'associated-interface' | Should -BeNullOrEmpty
+        $address.comment | Should -BeNullOrEmpty
+        $address.visibility | Should -Be $true
+    }
+
+    AfterAll {
+        #Remove copy_pester_address1
+        Get-FGTFirewallAddress -name copy_pester_address1 | Remove-FGTFirewallAddress -noconfirm
+        #Remove $pester_address1
+        Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -noconfirm
+    }
+
+}
+
 Describe "Remove Firewall Address" {
 
     BeforeEach {
