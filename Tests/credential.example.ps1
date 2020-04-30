@@ -12,3 +12,4 @@ $script:password = "enable"
 $script:httpOnly = $true
 
 #default settings use for test, can be override if needed...
+$script:pester_address1 = "pester_address1"

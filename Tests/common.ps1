@@ -6,7 +6,7 @@
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingConvertToSecureStringWithPlainText", "")]
 Param()
 # default settings for test...
-
+$script:pester_address1 = "pester_address1"
 . ../credential.ps1
 #TODO: Add check if no ipaddress/login/password info...
 
