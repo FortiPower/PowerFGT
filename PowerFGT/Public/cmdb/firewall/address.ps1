@@ -155,7 +155,7 @@ function Copy-FGTFirewallAddress {
 
         Invoke-FGTRestMethod -method "POST" -uri $uri -connection $connection @invokeParams | out-Null
 
-        Get-FGTFirewallAddress -connection $connection @invokeParams -name $_.name -eq $name
+        Get-FGTFirewallAddress -connection $connection @invokeParams -name $name
     }
 
     End {
