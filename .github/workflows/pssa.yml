@@ -3,15 +3,15 @@ on:
   pull_request:
    types: 
      labeled
-     PSSA
 jobs:
   lint:
     name: Run PSSA
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: lint
-      uses: devblackops/github-action-psscriptanalyzer@master
-      with:
-        settingsPath: .vscode/PSScriptAnalyzerSettings.psd1
-        repoToken: ${{ secrets.PSSA_GITHUB_TOKEN }}
+      - uses: actions/checkout@v1       
+      - name: lint
+        if: contains(github.event.issue.labels.*.name, 'PSSA')
+        uses: devblackops/github-action-psscriptanalyzer@master
+        with:
+          settingsPath: .vscode/PSScriptAnalyzerSettings.psd1
+          repoToken: ${{ secrets.PSSA_GITHUB_TOKEN }}
