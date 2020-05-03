@@ -3,7 +3,7 @@ on:
   pull_request:
    types: 
      labeled
-     -name PSSA
+     PSSA
 jobs:
   lint:
     name: Run PSSA
