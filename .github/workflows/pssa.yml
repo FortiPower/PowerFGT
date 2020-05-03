@@ -10,8 +10,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2       
       - name: lint
-        if: contains(github.event.issue.labels.*.name, 'PSSA')
         uses: devblackops/github-action-psscriptanalyzer@master
+        if: contains(github.event.issue.labels.*.name, 'PSSA')
         with:
           settingsPath: .vscode/PSScriptAnalyzerSettings.psd1
           repoToken: ${{ secrets.PSSA_GITHUB_TOKEN }}
