@@ -8,7 +8,7 @@ jobs:
     name: Run PSSA
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1       
+      - uses: actions/checkout@v2       
       - name: lint
         if: contains(github.event.issue.labels.*.name, 'PSSA')
         uses: devblackops/github-action-psscriptanalyzer@master
