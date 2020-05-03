@@ -124,6 +124,13 @@ Describe "Add Firewall Address" {
         $address.visibility | Should -Be "disable"
     }
 
+    It "Try to Add Address $pester_address1 (but there is already a object with same name)" {
+        #Add first address
+        Add-FGTFirewallAddress -type ipmask -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0
+        #Add Second address with same name
+        { Add-FGTFirewallAddress -type ipmask -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0 } | Should -Throw "Already an address object using the same name"
+
+    }
 }
 
 Describe "Configure Firewall Address" {
