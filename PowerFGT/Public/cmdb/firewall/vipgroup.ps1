@@ -78,9 +78,7 @@ function Add-FGTFirewallVipGroup {
         }
         $vipgrp | add-member -name "member" -membertype NoteProperty -Value $members
 
-        if ( $PsBoundParameters.ContainsKey('interface') ) {
-            $vipgrp | add-member -name "interface" -membertype NoteProperty -Value $interface
-        }
+        $vipgrp | add-member -name "interface" -membertype NoteProperty -Value $interface
 
         if ( $PsBoundParameters.ContainsKey('comment') ) {
             $vipgrp | add-member -name "comment" -membertype NoteProperty -Value $comment
