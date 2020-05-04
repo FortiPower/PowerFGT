@@ -142,4 +142,80 @@ Describe "Add Firewall Address Group" {
 
 }
 
+Describe "Configure Firewall Address Group" {
+
+    BeforeAll {
+        #Create some Address object
+        Add-FGTFirewallAddress -type ipmask -Name $pester_address1 -ip 192.0.2.1 -mask 255.255.255.255
+        Add-FGTFirewallAddress -type ipmask -Name $pester_address2 -ip 192.0.2.2 -mask 255.255.255.255
+
+        $addrgrp = Add-FGTFirewallAddressGroup -Name $pester_addressgroup -member $pester_address1
+        $script:uuid = $addrgrp.uuid
+    }
+
+    It "Change comment" {
+        Get-FGTFirewallAddressGroup -name $pester_addressgroup | Set-FGTFirewallAddressGroup -comment "Modified by PowerFGT"
+        $addressgroup = Get-FGTFirewallAddressGroup -name $pester_addressgroup
+        $addressgroup.name | Should -Be $pester_addressgroup
+        $addressgroup.uuid | Should -Not -BeNullOrEmpty
+        ($addressgroup.member).count | Should -Be "1"
+        $addressgroup.member.name | Should -BeIn $pester_address1
+        $addressgroup.comment | Should -Be "Modified by PowerFGT"
+        $addressgroup.visibility | Should -Be $true
+    }
+
+    It "Change visiblity" {
+        Get-FGTFirewallAddressGroup -name $pester_addressgroup | Set-FGTFirewallAddressGroup -visibility:$false
+        $addressgroup = Get-FGTFirewallAddressGroup -name $pester_addressgroup
+        $addressgroup.name | Should -Be $pester_addressgroup
+        $addressgroup.uuid | Should -Not -BeNullOrEmpty
+        ($addressgroup.member).count | Should -Be "1"
+        $addressgroup.member.name | Should -BeIn $pester_address1
+        $addressgroup.comment | Should -Be "Modified by PowerFGT"
+        $addressgroup.visibility | Should -Be "disable"
+    }
+
+    It "Change 1 Member ($pester_address2)" {
+        Get-FGTFirewallAddressGroup -name $pester_addressgroup | Set-FGTFirewallAddressGroup -member $pester_address2
+        $addressgroup = Get-FGTFirewallAddressGroup -name $pester_addressgroup
+        $addressgroup.name | Should -Be $pester_addressgroup
+        $addressgroup.uuid | Should -Not -BeNullOrEmpty
+        ($addressgroup.member).count | Should -Be "1"
+        $addressgroup.member.name | Should -BeIn $pester_address2
+        $addressgroup.comment | Should -Be "Modified by PowerFGT"
+        $addressgroup.visibility | Should -Be "disable"
+    }
+
+    It "Change 2 Members ($pester_address1 and $pester_address2)" {
+        Get-FGTFirewallAddressGroup -name $pester_addressgroup | Set-FGTFirewallAddressGroup -member $pester_address1, $pester_address2
+        $addressgroup = Get-FGTFirewallAddressGroup -name $pester_addressgroup
+        $addressgroup.name | Should -Be $pester_addressgroup
+        $addressgroup.uuid | Should -Not -BeNullOrEmpty
+        ($addressgroup.member).count | Should -Be "2"
+        $addressgroup.member.name | Should -BeIn $pester_address1, $pester_address2
+        $addressgroup.comment | Should -Be "Modified by PowerFGT"
+        $addressgroup.visibility | Should -Be "disable"
+    }
+
+    It "Change Name" {
+        Get-FGTFirewallAddressGroup -name $pester_addressgroup | Set-FGTFirewallAddressGroup -name "pester_addressgroup_change"
+        $addressgroup = Get-FGTFirewallAddressGroup -name "pester_addressgroup_change"
+        $addressgroup.name | Should -Be "pester_addressgroup_change"
+        $addressgroup.uuid | Should -Not -BeNullOrEmpty
+        ($addressgroup.member).count | Should -Be "2"
+        $addressgroup.member.name | Should -BeIn $pester_address1, $pester_address2
+        $addressgroup.comment | Should -Be "Modified by PowerFGT"
+        $addressgroup.visibility | Should -Be "disable"
+    }
+
+    AfterAll {
+        #Remove address group before address...
+        Get-FGTFirewallAddressGroup -uuid $script:uuid | Remove-FGTFirewallAddressGroup -noconfirm
+
+        Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -noconfirm
+        Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -noconfirm
+    }
+
+}
+
 Disconnect-FGT -noconfirm
