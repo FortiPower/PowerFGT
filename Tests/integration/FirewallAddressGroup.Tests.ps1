@@ -142,6 +142,67 @@ Describe "Add Firewall Address Group" {
 
 }
 
+Describe "Add Firewall Address Group Member" {
+
+    BeforeAll {
+        #Create some Address object
+        Add-FGTFirewallAddress -type ipmask -Name $pester_address1 -ip 192.0.2.1 -mask 255.255.255.255
+        Add-FGTFirewallAddress -type ipmask -Name $pester_address2 -ip 192.0.2.2 -mask 255.255.255.255
+        Add-FGTFirewallAddress -type ipmask -Name $pester_address3 -ip 192.0.2.3 -mask 255.255.255.255
+        Add-FGTFirewallAddress -type ipmask -Name $pester_address4 -ip 192.0.2.4 -mask 255.255.255.255
+    }
+
+    BeforeEach {
+        Add-FGTFirewallAddressGroup -Name $pester_addressgroup -member $pester_address1
+    }
+
+    AfterEach {
+        Get-FGTFirewallAddressGroup -name $pester_addressgroup | Remove-FGTFirewallAddressGroup -noconfirm
+    }
+
+    It "Add 1 member to Address Group $pester_addressgroup (with 1 member before)" {
+        Get-FGTFirewallAddressGroup -Name $pester_addressgroup | Add-FGTFirewallAddressGroupMember -member $pester_address2
+        $addressgroup = Get-FGTFirewallAddressGroup -name $pester_addressgroup
+        $addressgroup.name | Should -Be $pester_addressgroup
+        $addressgroup.uuid | Should -Not -BeNullOrEmpty
+        ($addressgroup.member).count | Should -Be "2"
+        $addressgroup.member.name | Should -BeIn $pester_address1, $pester_address2
+        $addressgroup.comment | Should -BeNullOrEmpty
+        $addressgroup.visibility | Should -Be $true
+    }
+
+    It "Add 2 members to Address Group $pester_addressgroup (with 1 member before)" {
+        Get-FGTFirewallAddressGroup -Name $pester_addressgroup | Add-FGTFirewallAddressGroupMember -member $pester_address2, $pester_address3
+        $addressgroup = Get-FGTFirewallAddressGroup -name $pester_addressgroup
+        $addressgroup.name | Should -Be $pester_addressgroup
+        $addressgroup.uuid | Should -Not -BeNullOrEmpty
+        ($addressgroup.member).count | Should -Be "3"
+        $addressgroup.member.name | Should -BeIn $pester_address1, $pester_address2, $pester_address3
+        $addressgroup.comment | Should -BeNullOrEmpty
+        $addressgroup.visibility | Should -Be $true
+    }
+
+    It "Add 2 members to Address Group $pester_addressgroup (with 2 members before)" {
+        Get-FGTFirewallAddressGroup -Name $pester_addressgroup | Add-FGTFirewallAddressGroupMember -member $pester_address2
+        Get-FGTFirewallAddressGroup -Name $pester_addressgroup | Add-FGTFirewallAddressGroupMember -member $pester_address3, $pester_address4
+        $addressgroup = Get-FGTFirewallAddressGroup -name $pester_addressgroup
+        $addressgroup.name | Should -Be $pester_addressgroup
+        $addressgroup.uuid | Should -Not -BeNullOrEmpty
+        ($addressgroup.member).count | Should -Be "4"
+        $addressgroup.member.name | Should -BeIn $pester_address1, $pester_address2, $pester_address3, $pester_address4
+        $addressgroup.comment | Should -BeNullOrEmpty
+        $addressgroup.visibility | Should -Be $true
+    }
+
+    AfterAll {
+        Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -noconfirm
+        Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -noconfirm
+        Get-FGTFirewallAddress -name $pester_address3 | Remove-FGTFirewallAddress -noconfirm
+        Get-FGTFirewallAddress -name $pester_address4 | Remove-FGTFirewallAddress -noconfirm
+    }
+
+}
+
 Describe "Configure Firewall Address Group" {
 
     BeforeAll {
