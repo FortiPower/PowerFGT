@@ -218,4 +218,40 @@ Describe "Configure Firewall Address Group" {
 
 }
 
+Describe "Copy Firewall Address Group" {
+
+    BeforeAll {
+        #Create some Address object
+        Add-FGTFirewallAddress -type ipmask -Name $pester_address1 -ip 192.0.2.1 -mask 255.255.255.255
+        Add-FGTFirewallAddress -type ipmask -Name $pester_address2 -ip 192.0.2.2 -mask 255.255.255.255
+
+        Add-FGTFirewallAddressGroup -Name $pester_addressgroup -member $pester_address1, $pester_address2
+    }
+
+
+    It "Copy Firewall Address Group ($pester_addressgroup => copy_pester_addressgroup1)" {
+        Get-FGTFirewallAddressGroup -name $pester_addressgroup | Copy-FGTFirewallAddressGroup -name copy_pester_addressgroup1
+        $addressgroup = Get-FGTFirewallAddressGroup -name copy_pester_addressgroup1
+        $addressgroup.name | Should -Be "copy_pester_addressgroup1"
+        $addressgroup.uuid | Should -Not -BeNullOrEmpty
+        ($addressgroup.member).count | Should -Be "2"
+        $addressgroup.member.name | Should -BeIn $pester_address1, $pester_address2
+        $addressgroup.comment | Should -BeNullOrEmpty
+        $addressgroup.visibility | Should -Be $true
+    }
+
+    AfterAll {
+        #Remove address group before address...
+
+        #Remove copy_pester_address1
+        Get-FGTFirewallAddressGroup -name copy_pester_addressgroup1 | Remove-FGTFirewallAddressGroup -noconfirm
+
+        Get-FGTFirewallAddressGroup -name $pester_addressgroup | Remove-FGTFirewallAddressGroup -noconfirm
+
+        Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -noconfirm
+        Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -noconfirm
+    }
+
+}
+
 Disconnect-FGT -noconfirm
