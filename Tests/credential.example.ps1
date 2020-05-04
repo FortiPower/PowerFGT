@@ -13,3 +13,8 @@ $script:httpOnly = $true
 
 #default settings use for test, can be override if needed...
 $script:pester_address1 = "pester_address1"
+$script:pester_address2 = "pester_address2"
+$script:pester_address3 = "pester_address3"
+$script:pester_address4 = "pester_address4"
+
+$script:pester_addressgroup = "pester_addressgroup"

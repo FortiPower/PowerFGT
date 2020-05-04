@@ -7,6 +7,11 @@
 Param()
 # default settings for test...
 $script:pester_address1 = "pester_address1"
+$script:pester_address2 = "pester_address2"
+$script:pester_address3 = "pester_address3"
+$script:pester_address4 = "pester_address4"
+$script:pester_addressgroup = "pester_addressgroup"
+
 . ../credential.ps1
 #TODO: Add check if no ipaddress/login/password info...
 
