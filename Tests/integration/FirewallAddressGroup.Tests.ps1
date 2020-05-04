@@ -89,6 +89,7 @@ Describe "Add Firewall Address Group" {
         $addressgroup.name | Should -Be $pester_addressgroup
         $addressgroup.uuid | Should -Not -BeNullOrEmpty
         ($addressgroup.member).count | Should -Be "1"
+        $addressgroup.member.name | Should -BeIn $pester_address1
         $addressgroup.comment | Should -BeNullOrEmpty
         $addressgroup.visibility | Should -Be $true
     }
@@ -99,6 +100,7 @@ Describe "Add Firewall Address Group" {
         $addressgroup.name | Should -Be $pester_addressgroup
         $addressgroup.uuid | Should -Not -BeNullOrEmpty
         ($addressgroup.member).count | Should -Be "1"
+        $addressgroup.member.name | Should -BeIn $pester_address1
         $addressgroup.comment | Should -Be "Add via PowerFGT"
         $addressgroup.visibility | Should -Be $true
     }
@@ -109,6 +111,7 @@ Describe "Add Firewall Address Group" {
         $addressgroup.name | Should -Be $pester_addressgroup
         $addressgroup.uuid | Should -Not -BeNullOrEmpty
         ($addressgroup.member).count | Should -Be "1"
+        $addressgroup.member.name | Should -BeIn $pester_address1
         $addressgroup.comment | Should -BeNullOrEmpty
         $addressgroup.visibility | Should -Be "disable"
     }
@@ -119,6 +122,7 @@ Describe "Add Firewall Address Group" {
         $addressgroup.name | Should -Be $pester_addressgroup
         $addressgroup.uuid | Should -Not -BeNullOrEmpty
         ($addressgroup.member).count | Should -Be "2"
+        $addressgroup.member.name | Should -BeIn $pester_address1, $pester_address2
         $addressgroup.comment | Should -BeNullOrEmpty
         $addressgroup.visibility | Should -Be $true
     }
