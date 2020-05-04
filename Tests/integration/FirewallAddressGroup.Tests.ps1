@@ -254,4 +254,25 @@ Describe "Copy Firewall Address Group" {
 
 }
 
+Describe "Remove Firewall Address Group" {
+
+    BeforeEach {
+        Add-FGTFirewallAddress -type ipmask -Name $pester_address1 -ip 192.0.2.1 -mask 255.255.255.255
+
+        Add-FGTFirewallAddressGroup -Name $pester_addressgroup -member $pester_address1
+    }
+
+    It "Remove Address Group $pester_addressgroup by pipeline" {
+        $addressgroup = Get-FGTFirewallAddressGroup -name $pester_addressgroup
+        $addressgroup | Remove-FGTFirewallAddressGroup -noconfirm
+        $addressgroup = Get-FGTFirewallAddressGroup -name $pester_addressgroup
+        $addressgroup | Should -Be $NULL
+    }
+
+    AfterAll {
+        Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -noconfirm
+    }
+
+}
+
 Disconnect-FGT -noconfirm
