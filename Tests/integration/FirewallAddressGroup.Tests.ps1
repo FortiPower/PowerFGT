@@ -17,7 +17,7 @@ Describe "Get Firewall Address Group" {
         #Add-FGTFirewallAddress -type ipmask -Name $pester_address4 -ip 192.0.2.4 -mask 255.255.255.255
         #Create addressgroup object with d object
         $script:addrgrp = Add-FGTFirewallAddressGroup -name $pester_addressgroup -member $pester_address1
-        $script:uuid = $addgrp.uuid
+        $script:uuid = $addrgrp.uuid
     }
 
     It "Get Address Group Does not throw an error" {
