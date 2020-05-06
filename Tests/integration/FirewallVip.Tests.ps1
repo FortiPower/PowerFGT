@@ -62,6 +62,117 @@ Describe "Get Firewall VIP" {
 
 }
 
+Describe "Add Firewall VIP" {
+
+    AfterEach {
+        Get-FGTFirewallVip -name $pester_vip1 | Remove-FGTFirewallVip -noconfirm
+    }
+
+    It "Add Virtual IP $pester_vip1 (type static-nat)" {
+        Add-FGTFirewallVip -Name $pester_vip1 -type static-nat -extip 192.2.0.1 -mappedip 198.51.100.1
+        $vip = Get-FGTFirewallVip -name $pester_vip1
+        $vip.name | Should -Be $pester_vip1
+        $vip.uuid | Should -Not -BeNullOrEmpty
+        $vip.comment | Should -BeNullOrEmpty
+        $vip.type | Should -Be "static-nat"
+        $vip.extip | Should -Be "192.2.0.1"
+        $vip.mappedip.range | Should -Be "198.51.100.1"
+        $vip.extintf | Should -Be "any"
+        $vip.portforward | Should -Be "disable"
+        $vip.protocol | Should -Be "tcp"
+        $vip.extport | Should -Be "0-65535"
+        $vip.mappedport | Should -Be "0-65535"
+    }
+
+    It "Add Virtual IP $pester_vip1 (type static-nat with comment)" {
+        Add-FGTFirewallVip -Name $pester_vip1 -type static-nat -extip 192.2.0.1 -mappedip 198.51.100.1 -comment "Add via PowerFGT"
+        $vip = Get-FGTFirewallVip -name $pester_vip1
+        $vip.name | Should -Be $pester_vip1
+        $vip.uuid | Should -Not -BeNullOrEmpty
+        $vip.comment | Should -Be "Add via PowerFGT"
+        $vip.type | Should -Be "static-nat"
+        $vip.extip | Should -Be "192.2.0.1"
+        $vip.mappedip.range | Should -Be "198.51.100.1"
+        $vip.extintf | Should -Be "any"
+        $vip.portforward | Should -Be "disable"
+        $vip.protocol | Should -Be "tcp"
+        $vip.extport | Should -Be "0-65535"
+        $vip.mappedport | Should -Be "0-65535"
+    }
+
+    It "Add Virtual IP $pester_vip1 (type static-nat with interface)" {
+        Add-FGTFirewallVip -Name $pester_vip1 -type static-nat -extip 192.2.0.1 -mappedip 198.51.100.1 -interface port1
+        $vip = Get-FGTFirewallVip -name $pester_vip1
+        $vip.name | Should -Be $pester_vip1
+        $vip.uuid | Should -Not -BeNullOrEmpty
+        $vip.comment | Should -BeNullOrEmpty
+        $vip.type | Should -Be "static-nat"
+        $vip.extip | Should -Be "192.2.0.1"
+        $vip.mappedip.range | Should -Be "198.51.100.1"
+        $vip.extintf | Should -Be "port1"
+        $vip.portforward | Should -Be "disable"
+        $vip.protocol | Should -Be "tcp"
+        $vip.extport | Should -Be "0-65535"
+        $vip.mappedport | Should -Be "0-65535"
+    }
+
+    It "Add Virtual IP $pester_vip1 (type static-nat with Port Forward TCP 8080)" {
+        Add-FGTFirewallVip -Name $pester_vip1 -type static-nat -extip 192.2.0.1 -mappedip 198.51.100.1 -portforward -extport 8080
+        $vip = Get-FGTFirewallVip -name $pester_vip1
+        $vip.name | Should -Be $pester_vip1
+        $vip.uuid | Should -Not -BeNullOrEmpty
+        $vip.comment | Should -BeNullOrEmpty
+        $vip.type | Should -Be "static-nat"
+        $vip.extip | Should -Be "192.2.0.1"
+        $vip.mappedip.range | Should -Be "198.51.100.1"
+        $vip.extintf | Should -Be "Any"
+        $vip.portforward | Should -Be "enable"
+        $vip.protocol | Should -Be "tcp"
+        $vip.extport | Should -Be "8080"
+        $vip.mappedport | Should -Be "8080"
+    }
+
+    It "Add Virtual IP $pester_vip1 (type static-nat with Port Forward UDP 8080)" {
+        Add-FGTFirewallVip -Name $pester_vip1 -type static-nat -extip 192.2.0.1 -mappedip 198.51.100.1 -portforward -extport 8080 -protocol udp
+        $vip = Get-FGTFirewallVip -name $pester_vip1
+        $vip.name | Should -Be $pester_vip1
+        $vip.uuid | Should -Not -BeNullOrEmpty
+        $vip.comment | Should -BeNullOrEmpty
+        $vip.type | Should -Be "static-nat"
+        $vip.extip | Should -Be "192.2.0.1"
+        $vip.mappedip.range | Should -Be "198.51.100.1"
+        $vip.extintf | Should -Be "Any"
+        $vip.portforward | Should -Be "enable"
+        $vip.protocol | Should -Be "udp"
+        $vip.extport | Should -Be "8080"
+        $vip.mappedport | Should -Be "8080"
+    }
+
+    It "Add Virtual IP $pester_vip1 (type static-nat with Port Forward TCP 8080 -> 80)" {
+        Add-FGTFirewallVip -Name $pester_vip1 -type static-nat -extip 192.2.0.1 -mappedip 198.51.100.1 -portforward -extport 8080 -mappedport 80
+        $vip = Get-FGTFirewallVip -name $pester_vip1
+        $vip.name | Should -Be $pester_vip1
+        $vip.uuid | Should -Not -BeNullOrEmpty
+        $vip.comment | Should -BeNullOrEmpty
+        $vip.type | Should -Be "static-nat"
+        $vip.extip | Should -Be "192.2.0.1"
+        $vip.mappedip.range | Should -Be "198.51.100.1"
+        $vip.extintf | Should -Be "Any"
+        $vip.portforward | Should -Be "enable"
+        $vip.protocol | Should -Be "tcp"
+        $vip.extport | Should -Be "8080"
+        $vip.mappedport | Should -Be "80"
+    }
+
+    It "Try to Add Virtual IP $pester_vip1 (but there is already a object with same name)" {
+        #Add first Virtual IP
+        Add-FGTFirewallVip -Name $pester_vip1 -type static-nat -extip 192.2.0.1 -mappedip 198.51.100.1
+        #Add Second Virtual IP with same name
+        { Add-FGTFirewallVip -Name $pester_vip1 -type static-nat -extip 192.2.0.1 -mappedip 198.51.100.1 } | Should -Throw "Already a VIP object using the same name"
+    }
+
+}
+
 Describe "Remove Firewall VIP" {
 
     BeforeEach {
