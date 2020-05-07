@@ -75,7 +75,7 @@ Describe "Connect to a FortiGate (using multi connection)" {
             { Get-FGTFirewallAddress -connection $fgt } | Should -Not -Throw
         }
         It "Use Multi connection for call Get Firewall Address Group" {
-            { Get-FGTFirewallAddressGroup  -connection $fgt } | Should -Not -Throw
+            { Get-FGTFirewallAddressGroup -connection $fgt } | Should -Not -Throw
         }
         It "Use Multi connection for call Get Firewall IP Pool" {
             { Get-FGTFirewallIPPool -connection $fgt } | Should -Not -Throw
