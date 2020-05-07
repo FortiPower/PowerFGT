@@ -73,7 +73,7 @@ function Add-FGTFirewallPolicy {
         [Parameter (Mandatory = $true)]
         [string[]]$dstaddr,
         [Parameter (Mandatory = $false)]
-        [ValidateSet("accept", "deny", "learn")]
+        [ValidateSet("accept", "deny")]
         [string]$action = "accept",
         [Parameter (Mandatory = $false)]
         [switch]$status = $true,
