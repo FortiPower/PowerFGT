@@ -69,6 +69,241 @@ Describe "Get Firewall Policy" {
 
 }
 
+Describe "Add Firewall Policy" {
+
+    AfterEach {
+        Get-FGTFirewallPolicy -name $pester_policy1 | Remove-FGTFirewallPolicy -noconfirm
+    }
+
+    It "Add Policy $pester_policy1 (port1/port2 : All/All)" {
+        Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.srcintf.name | Should -Be "port1"
+        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcaddr.name | Should -Be "all"
+        $policy.dstaddr.name | Should -Be "all"
+        $policy.action | Should -Be "accept"
+        $policy.status | Should -Be "enable"
+        $policy.service.name | Should -Be "all"
+        $policy.schedule | Should -Be "always"
+        $policy.nat | Should -Be "disable"
+        $policy.logtraffic | Should -Be "utm"
+        $policy.comments | Should -BeNullOrEmpty
+    }
+
+    It "Add Policy $pester_policy1 (with nat)" {
+        Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -nat
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.srcintf.name | Should -Be "port1"
+        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcaddr.name | Should -Be "all"
+        $policy.dstaddr.name | Should -Be "all"
+        $policy.action | Should -Be "accept"
+        $policy.status | Should -Be "enable"
+        $policy.service.name | Should -Be "all"
+        $policy.schedule | Should -Be "always"
+        $policy.nat | Should -Be "enable"
+        $policy.logtraffic | Should -Be "utm"
+        $policy.comments | Should -BeNullOrEmpty
+    }
+
+    It "Add Policy $pester_policy1 (with action deny)" {
+        Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -action deny
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.srcintf.name | Should -Be "port1"
+        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcaddr.name | Should -Be "all"
+        $policy.dstaddr.name | Should -Be "all"
+        $policy.action | Should -Be "deny"
+        $policy.status | Should -Be "enable"
+        $policy.service.name | Should -Be "all"
+        $policy.schedule | Should -Be "always"
+        $policy.nat | Should -Be "disable"
+        $policy.logtraffic | Should -Be "disable"
+        $policy.comments | Should -BeNullOrEmpty
+    }
+
+    It "Add Policy $pester_policy1 (with action deny with log)" {
+        Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -action deny -log all
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.srcintf.name | Should -Be "port1"
+        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcaddr.name | Should -Be "all"
+        $policy.dstaddr.name | Should -Be "all"
+        $policy.action | Should -Be "deny"
+        $policy.status | Should -Be "enable"
+        $policy.service.name | Should -Be "all"
+        $policy.schedule | Should -Be "always"
+        $policy.nat | Should -Be "disable"
+        $policy.logtraffic | Should -Be "all"
+        $policy.comments | Should -BeNullOrEmpty
+    }
+
+    It "Add Policy $pester_policy1 (status disable)" {
+        Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -status:$false
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.srcintf.name | Should -Be "port1"
+        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcaddr.name | Should -Be "all"
+        $policy.dstaddr.name | Should -Be "all"
+        $policy.action | Should -Be "accept"
+        $policy.status | Should -Be "disable"
+        $policy.service.name | Should -Be "all"
+        $policy.schedule | Should -Be "always"
+        $policy.nat | Should -Be "disable"
+        $policy.logtraffic | Should -Be "utm"
+        $policy.comments | Should -BeNullOrEmpty
+    }
+
+    It "Add Policy $pester_policy1 (with 1 service : HTTP)" {
+        Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -service HTTP
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.srcintf.name | Should -Be "port1"
+        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcaddr.name | Should -Be "all"
+        $policy.dstaddr.name | Should -Be "all"
+        $policy.action | Should -Be "accept"
+        $policy.status | Should -Be "enable"
+        $policy.service.name | Should -Be "HTTP"
+        $policy.schedule | Should -Be "always"
+        $policy.nat | Should -Be "disable"
+        $policy.logtraffic | Should -Be "utm"
+        $policy.comments | Should -BeNullOrEmpty
+    }
+
+    It "Add Policy $pester_policy1 (with 2 services : HTTP, HTTPS)" {
+        Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -service HTTP, HTTPS
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.srcintf.name | Should -Be "port1"
+        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcaddr.name | Should -Be "all"
+        $policy.dstaddr.name | Should -Be "all"
+        $policy.action | Should -Be "accept"
+        $policy.status | Should -Be "enable"
+        $policy.service.name | Should -BeIn "HTTP", "HTTPS"
+        $policy.schedule | Should -Be "always"
+        $policy.nat | Should -Be "disable"
+        $policy.logtraffic | Should -Be "utm"
+        $policy.comments | Should -BeNullOrEmpty
+    }
+
+    It "Add Policy $pester_policy1 (with logtraffic all)" {
+        Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -logtraffic all
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.srcintf.name | Should -Be "port1"
+        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcaddr.name | Should -Be "all"
+        $policy.dstaddr.name | Should -Be "all"
+        $policy.action | Should -Be "accept"
+        $policy.status | Should -Be "enable"
+        $policy.service.name | Should -Be "all"
+        $policy.schedule | Should -Be "always"
+        $policy.nat | Should -Be "disable"
+        $policy.logtraffic | Should -Be "all"
+        $policy.comments | Should -BeNullOrEmpty
+    }
+
+    It "Add Policy $pester_policy1 (with logtraffic disable)" {
+        Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -logtraffic disable
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.srcintf.name | Should -Be "port1"
+        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcaddr.name | Should -Be "all"
+        $policy.dstaddr.name | Should -Be "all"
+        $policy.action | Should -Be "accept"
+        $policy.status | Should -Be "enable"
+        $policy.service.name | Should -Be "all"
+        $policy.schedule | Should -Be "always"
+        $policy.nat | Should -Be "disable"
+        $policy.logtraffic | Should -Be "disable"
+        $policy.comments | Should -BeNullOrEmpty
+    }
+
+    #Add Schedule ? need API
+    It "Add Policy $pester_policy1 (with schedule none)" {
+        Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -schedule none
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.srcintf.name | Should -Be "port1"
+        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcaddr.name | Should -Be "all"
+        $policy.dstaddr.name | Should -Be "all"
+        $policy.action | Should -Be "accept"
+        $policy.status | Should -Be "enable"
+        $policy.service.name | Should -Be "All"
+        $policy.schedule | Should -Be "none"
+        $policy.nat | Should -Be "disable"
+        $policy.logtraffic | Should -Be "utm"
+        $policy.comments | Should -BeNullOrEmpty
+    }
+
+    It "Add Policy $pester_policy1 (with comments)" {
+        Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -comments "Add via PowerFGT"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.srcintf.name | Should -Be "port1"
+        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcaddr.name | Should -Be "all"
+        $policy.dstaddr.name | Should -Be "all"
+        $policy.action | Should -Be "accept"
+        $policy.status | Should -Be "enable"
+        $policy.service.name | Should -Be "All"
+        $policy.schedule | Should -Be "always"
+        $policy.nat | Should -Be "disable"
+        $policy.logtraffic | Should -Be "utm"
+        $policy.comments | Should -Be "Add via PowerFGT"
+    }
+
+    #Disable missing API for create IP Pool
+    It "Add Policy $pester_policy1 (with IP Pool)" -skip:$true {
+        Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -nat -ippool "MyIPPool"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.srcintf.name | Should -Be "port1"
+        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcaddr.name | Should -Be "all"
+        $policy.dstaddr.name | Should -Be "all"
+        $policy.action | Should -Be "accept"
+        $policy.status | Should -Be "enable"
+        $policy.service.name | Should -BeIn "HTTP", "HTTPS"
+        $policy.schedule | Should -Be "always"
+        $policy.nat | Should -Be "enable"
+        $policy.logtraffic | Should -Be "disable"
+        $policy.comments | Should -BeNullOrEmpty
+        $policy.ippool | Should -Be "enable"
+        $policy.poolname | Should -Be "MyIPPool"
+    }
+
+    It "Try to Add Policy $pester_policy1 (but there is already a object with same name)" {
+        #Add first policy
+        Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all
+        #Add Second policy with same name
+        { Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all } | Should -Throw "Already a Policy using the same name"
+
+    }
+}
+
 Describe "Remove Firewall Policy" {
 
     BeforeEach {
