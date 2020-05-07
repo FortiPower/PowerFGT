@@ -193,7 +193,6 @@ function Add-FGTFirewallPolicy {
             $policy | add-member -name "nat" -membertype NoteProperty -Value "enable"
         }
         else {
-
             $policy | add-member -name "nat" -membertype NoteProperty -Value "disable"
         }
 
