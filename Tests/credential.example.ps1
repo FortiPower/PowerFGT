@@ -20,3 +20,4 @@ $script:pester_address4 = "pester_address4"
 $script:pester_addressgroup = "pester_addressgroup"
 
 $script:pester_vip1 = "pester_vip1"
+$script:pester_policy1 = "pester_policy1"
