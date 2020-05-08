@@ -100,6 +100,7 @@ Describe "Add Firewall Policy" {
             $policy = Get-FGTFirewallPolicy -name $pester_policy1
             $policy.name | Should -Be $pester_policy1
             $policy.uuid | Should -Not -BeNullOrEmpty
+            ($policy.srcintf.name).count | Should -be "2"
             $policy.srcintf.name | Should -BeIn "port1", "port3"
             $policy.dstintf.name | Should -Be "port2"
             $policy.srcaddr.name | Should -Be "all"
@@ -119,6 +120,7 @@ Describe "Add Firewall Policy" {
             $policy.name | Should -Be $pester_policy1
             $policy.uuid | Should -Not -BeNullOrEmpty
             $policy.srcintf.name | Should -Be "port1"
+            ($policy.dstintf.name).count | Should -be "2"
             $policy.dstintf.name | Should -BeIn "port2", "port4"
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be "all"
@@ -136,7 +138,9 @@ Describe "Add Firewall Policy" {
             $policy = Get-FGTFirewallPolicy -name $pester_policy1
             $policy.name | Should -Be $pester_policy1
             $policy.uuid | Should -Not -BeNullOrEmpty
+            ($policy.srcintf.name).count | Should -be "2"
             $policy.srcintf.name | Should -BeIn "port1", "port3"
+            ($policy.dstintf.name).count | Should -be "2"
             $policy.dstintf.name | Should -BeIn "port2", "port4"
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be "all"
