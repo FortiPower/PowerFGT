@@ -705,4 +705,87 @@ Describe "Remove Firewall Policy" {
 
 }
 
+Describe "Remove Firewall Address Policy Member" {
+
+    BeforeAll {
+        #Create some Address object
+        Add-FGTFirewallAddress -type ipmask -Name $pester_address1 -ip 192.0.2.1 -mask 255.255.255.255
+        Add-FGTFirewallAddress -type ipmask -Name $pester_address2 -ip 192.0.2.2 -mask 255.255.255.255
+        Add-FGTFirewallAddress -type ipmask -Name $pester_address3 -ip 192.0.2.3 -mask 255.255.255.255
+    }
+
+    AfterEach {
+        Get-FGTFirewallPolicy -name $pester_policy1 | Remove-FGTFirewallPolicy -noconfirm
+    }
+
+    Context "Remove Member(s) to Source Address" {
+        BeforeEach {
+            Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr $pester_address1, $pester_address2, $pester_address3 -dstaddr all
+        }
+
+        It "Remove 1 member to Policy Src Address $pester_address1 (with 3 members before)" {
+            Get-FGTFirewallPolicy -Name $pester_policy1 | Remove-FGTFirewallPolicyMember -srcaddr $pester_address1
+            $policy = Get-FGTFirewallPolicy -name $pester_policy1
+            $policy.name | Should -Be $pester_policy1
+            $policy.uuid | Should -Not -BeNullOrEmpty
+            $policy.srcintf.name | Should -BeIn "port1"
+            $policy.dstintf.name | Should -Be "port2"
+            ($policy.srcaddr.name).count | Should -Be "2"
+            $policy.srcaddr.name | Should -Be $pester_address2, $pester_address3
+            $policy.dstaddr.name | Should -Be "all"
+            $policy.action | Should -Be "accept"
+            $policy.status | Should -Be "enable"
+            $policy.service.name | Should -Be "all"
+            $policy.schedule | Should -Be "always"
+            $policy.nat | Should -Be "disable"
+            $policy.logtraffic | Should -Be "utm"
+            $policy.comments | Should -BeNullOrEmpty
+        }
+
+        It "Remove 2 members to Policy Src Address $pester_address1, $pester_address2 (with 3 members before)" {
+            Get-FGTFirewallPolicy -Name $pester_policy1 | Remove-FGTFirewallPolicyMember -srcaddr $pester_address1, $pester_address2
+            $policy = Get-FGTFirewallPolicy -name $pester_policy1
+            $policy.name | Should -Be $pester_policy1
+            $policy.uuid | Should -Not -BeNullOrEmpty
+            $policy.srcintf.name | Should -BeIn "port1"
+            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcaddr.name | Should -Be $pester_address3
+            $policy.dstaddr.name | Should -Be "all"
+            $policy.action | Should -Be "accept"
+            $policy.status | Should -Be "enable"
+            $policy.service.name | Should -Be "all"
+            $policy.schedule | Should -Be "always"
+            $policy.nat | Should -Be "disable"
+            $policy.logtraffic | Should -Be "utm"
+            $policy.comments | Should -BeNullOrEmpty
+        }
+
+        It "Remove 3 members to Policy Src Address $pester_address1, $pester_address2, $pester_address3 (with 3 members before)" {
+            Get-FGTFirewallPolicy -Name $pester_policy1 | Remove-FGTFirewallPolicyMember -srcaddr $pester_address1, $pester_address2, $pester_address3
+            $policy = Get-FGTFirewallPolicy -name $pester_policy1
+            $policy.name | Should -Be $pester_policy1
+            $policy.uuid | Should -Not -BeNullOrEmpty
+            $policy.srcintf.name | Should -BeIn "port1"
+            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcaddr.name | Should -Be "all"
+            $policy.dstaddr.name | Should -Be "all"
+            $policy.action | Should -Be "accept"
+            $policy.status | Should -Be "enable"
+            $policy.service.name | Should -Be "all"
+            $policy.schedule | Should -Be "always"
+            $policy.nat | Should -Be "disable"
+            $policy.logtraffic | Should -Be "utm"
+            $policy.comments | Should -BeNullOrEmpty
+        }
+
+    }
+
+    AfterAll {
+        Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -noconfirm
+        Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -noconfirm
+        Get-FGTFirewallAddress -name $pester_address3 | Remove-FGTFirewallAddress -noconfirm
+    }
+
+}
+
 Disconnect-FGT -noconfirm
