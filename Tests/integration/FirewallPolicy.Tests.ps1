@@ -478,7 +478,7 @@ Describe "Add Firewall Policy" {
     }
 }
 
-Describe "Add Firewall Address Group Member" {
+Describe "Add Firewall Policy Member" {
 
     BeforeAll {
         #Create some Address object
@@ -705,7 +705,7 @@ Describe "Remove Firewall Policy" {
 
 }
 
-Describe "Remove Firewall Address Policy Member" {
+Describe "Remove Firewall Policy Member" {
 
     BeforeAll {
         #Create some Address object
