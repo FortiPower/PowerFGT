@@ -767,7 +767,7 @@ Describe "Remove Firewall Policy Member" {
             $policy.uuid | Should -Not -BeNullOrEmpty
             $policy.srcintf.name | Should -BeIn "port1"
             $policy.dstintf.name | Should -Be "port2"
-            $policy.srcaddr.name | Should -Be "all"
+            $policy.srcaddr.name | Should -Be $null
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "accept"
             $policy.status | Should -Be "enable"
