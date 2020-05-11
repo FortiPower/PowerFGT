@@ -12,10 +12,7 @@ Describe "Get Firewall Address Group" {
     BeforeAll {
         #Create Address object
         Add-FGTFirewallAddress -type ipmask -Name $pester_address1 -ip 192.0.2.1 -mask 255.255.255.255
-        #Add-FGTFirewallAddress -type ipmask -Name $pester_address2 -ip 192.0.2.2 -mask 255.255.255.255
-        #Add-FGTFirewallAddress -type ipmask -Name $pester_address3 -ip 192.0.2.3 -mask 255.255.255.255
-        #Add-FGTFirewallAddress -type ipmask -Name $pester_address4 -ip 192.0.2.4 -mask 255.255.255.255
-        #Create addressgroup object with d object
+        #Create addressgroup object with one member
         $script:addrgrp = Add-FGTFirewallAddressGroup -name $pester_addressgroup -member $pester_address1
         $script:uuid = $addrgrp.uuid
     }
