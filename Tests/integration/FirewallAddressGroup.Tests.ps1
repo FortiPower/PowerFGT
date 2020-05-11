@@ -353,7 +353,7 @@ Describe "Remove Firewall Address Group Member" {
         Get-FGTFirewallAddressGroup -name $pester_addressgroup | Remove-FGTFirewallAddressGroup -noconfirm
     }
 
-    It "Remove 1 member to Address Group $pester_addressgroup (with 3 member before)" {
+    It "Remove 1 member to Address Group $pester_addressgroup (with 3 members before)" {
         Get-FGTFirewallAddressGroup -Name $pester_addressgroup | Remove-FGTFirewallAddressGroupMember -member $pester_address1
         $addressgroup = Get-FGTFirewallAddressGroup -name $pester_addressgroup
         $addressgroup.name | Should -Be $pester_addressgroup
@@ -364,7 +364,7 @@ Describe "Remove Firewall Address Group Member" {
         $addressgroup.visibility | Should -Be $true
     }
 
-    It "Remove 2 members to Address Group $pester_addressgroup (with 3 member before)" {
+    It "Remove 2 members to Address Group $pester_addressgroup (with 3 members before)" {
         Get-FGTFirewallAddressGroup -Name $pester_addressgroup | Remove-FGTFirewallAddressGroupMember -member $pester_address2, $pester_address3
         $addressgroup = Get-FGTFirewallAddressGroup -name $pester_addressgroup
         $addressgroup.name | Should -Be $pester_addressgroup
