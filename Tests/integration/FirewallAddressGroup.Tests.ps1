@@ -20,7 +20,7 @@ Describe "Get Firewall Address Group" {
     It "Get Address Group Does not throw an error" {
         {
             Get-FGTFirewallAddressGroup
-        } | Should Not Throw
+        } | Should -Not -Throw
     }
 
     It "Get ALL Address Group" {

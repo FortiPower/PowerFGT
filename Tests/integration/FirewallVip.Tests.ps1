@@ -17,7 +17,7 @@ Describe "Get Firewall VIP" {
     It "Get Virtual IP Does not throw an error" {
         {
             Get-FGTFirewallVip
-        } | Should Not Throw
+        } | Should -Not -Throw
     }
 
     It "Get ALL Virtual IP" {

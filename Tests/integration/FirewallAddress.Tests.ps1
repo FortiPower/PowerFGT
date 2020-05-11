@@ -17,7 +17,7 @@ Describe "Get Firewall Address" {
     It "Get Address Does not throw an error" {
         {
             Get-FGTFirewallAddress
-        } | Should Not Throw
+        } | Should -Not -Throw
     }
 
     It "Get ALL Address" {

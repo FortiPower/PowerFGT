@@ -18,7 +18,7 @@ Describe "Get Firewall Policy" {
     It "Get Policy Does not throw an error" {
         {
             Get-FGTFirewallPolicy
-        } | Should Not Throw
+        } | Should -Not -Throw
     }
 
     It "Get ALL Policy" {
