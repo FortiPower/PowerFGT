@@ -95,7 +95,7 @@ Describe "Add Firewall Policy" {
 
     Context "Multi Source / destination Interface" {
 
-        It "Add Policy $pester_policy1 (src intf: port1,port3 and dst intf: port2)" {
+        It "Add Policy $pester_policy1 (src intf: port1, port3 and dst intf: port2)" {
             Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1, port3 -dstintf port2 -srcaddr all -dstaddr all
             $policy = Get-FGTFirewallPolicy -name $pester_policy1
             $policy.name | Should -Be $pester_policy1
@@ -133,7 +133,7 @@ Describe "Add Firewall Policy" {
             $policy.comments | Should -BeNullOrEmpty
         }
 
-        It "Add Policy $pester_policy1 (src intf: port1,port3 and dst intf: port2, port4)" {
+        It "Add Policy $pester_policy1 (src intf: port1, port3 and dst intf: port2, port4)" {
             Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1, port3 -dstintf port2, port4 -srcaddr all -dstaddr all
             $policy = Get-FGTFirewallPolicy -name $pester_policy1
             $policy.name | Should -Be $pester_policy1
@@ -182,7 +182,7 @@ Describe "Add Firewall Policy" {
             $policy.comments | Should -BeNullOrEmpty
         }
 
-        It "Add Policy $pester_policy1 (src addr: $pester_address1,$pester_address3 and dst addr: all)" {
+        It "Add Policy $pester_policy1 (src addr: $pester_address1, $pester_address3 and dst addr: all)" {
             Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr $pester_address1, $pester_address3 -dstaddr all
             $policy = Get-FGTFirewallPolicy -name $pester_policy1
             $policy.name | Should -Be $pester_policy1
