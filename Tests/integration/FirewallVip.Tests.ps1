@@ -12,6 +12,7 @@ Describe "Get Firewall VIP" {
     BeforeAll {
         $vip = Add-FGTFirewallVip -Name $pester_vip1 -type static-nat -extip 192.2.0.1 -mappedip 198.51.100.1
         $script:uuid = $vip.uuid
+        Add-FGTFirewallVip -Name $pester_vip2 -type static-nat -extip 192.2.0.2 -mappedip 198.51.100.1
     }
 
     It "Get Virtual IP Does not throw an error" {
@@ -58,6 +59,7 @@ Describe "Get Firewall VIP" {
 
     AfterAll {
         Get-FGTFirewallVip -name $pester_vip1 | Remove-FGTFirewallVip -noconfirm
+        Get-FGTFirewallVip -name $pester_vip2 | Remove-FGTFirewallVip -noconfirm
     }
 
 }

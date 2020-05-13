@@ -13,6 +13,7 @@ Describe "Get Firewall Policy" {
         $policy = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all
         $script:uuid = $policy.uuid
         $script:policyid = $policy.policyid
+        Add-FGTFirewallPolicy -name $pester_policy2 -srcintf port2 -dstintf port1 -srcaddr all -dstaddr all
     }
 
     It "Get Policy Does not throw an error" {
@@ -65,6 +66,7 @@ Describe "Get Firewall Policy" {
 
     AfterAll {
         Get-FGTFirewallPolicy -name $pester_policy1 | Remove-FGTFirewallPolicy -noconfirm
+        Get-FGTFirewallPolicy -name $pester_policy2 | Remove-FGTFirewallPolicy -noconfirm
     }
 
 }

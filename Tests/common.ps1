@@ -11,8 +11,11 @@ $script:pester_address2 = "pester_address2"
 $script:pester_address3 = "pester_address3"
 $script:pester_address4 = "pester_address4"
 $script:pester_addressgroup1 = "pester_addressgroup1"
+$script:pester_addressgroup2 = "pester_addressgroup2"
 $script:pester_vip1 = "pester_vip1"
+$script:pester_vip2 = "pester_vip2"
 $script:pester_policy1 = "pester_policy1"
+$script:pester_policy2 = "pester_policy2"
 
 . ../credential.ps1
 #TODO: Add check if no ipaddress/login/password info...

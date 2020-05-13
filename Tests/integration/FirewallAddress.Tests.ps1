@@ -12,6 +12,7 @@ Describe "Get Firewall Address" {
     BeforeAll {
         $addr = Add-FGTFirewallAddress -type ipmask -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0
         $script:uuid = $addr.uuid
+        Add-FGTFirewallAddress -type ipmask -Name $pester_address2 -ip 192.0.3.0 -mask 255.255.255.0
     }
 
     It "Get Address Does not throw an error" {
@@ -58,6 +59,7 @@ Describe "Get Firewall Address" {
 
     AfterAll {
         Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -noconfirm
+        Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -noconfirm
     }
 
 }

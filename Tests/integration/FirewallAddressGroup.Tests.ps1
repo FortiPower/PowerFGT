@@ -12,9 +12,11 @@ Describe "Get Firewall Address Group" {
     BeforeAll {
         #Create Address object
         Add-FGTFirewallAddress -type ipmask -Name $pester_address1 -ip 192.0.2.1 -mask 255.255.255.255
+        Add-FGTFirewallAddress -type ipmask -Name $pester_address2 -ip 192.0.2.2 -mask 255.255.255.255
         #Create addressgroup object with one member
         $script:addrgrp = Add-FGTFirewallAddressGroup -name $pester_addressgroup1 -member $pester_address1
         $script:uuid = $addrgrp.uuid
+        Add-FGTFirewallAddressGroup -name $pester_addressgroup2 -member $pester_address2
     }
 
     It "Get Address Group Does not throw an error" {
@@ -62,8 +64,10 @@ Describe "Get Firewall Address Group" {
     AfterAll {
         #Remove address group before address...
         Get-FGTFirewallAddressGroup -name $pester_addressgroup1 | Remove-FGTFirewallAddressGroup -noconfirm
+        Get-FGTFirewallAddressGroup -name $pester_addressgroup2 | Remove-FGTFirewallAddressGroup -noconfirm
 
         Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -noconfirm
+        Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -noconfirm
     }
 
 }
