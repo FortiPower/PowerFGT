@@ -355,7 +355,7 @@ function Set-FGTFirewallAddress {
                 $subnet = $ip.ToString()
             }
             else {
-                $subnet = $address.'start-ip'
+                $subnet += ($address.subnet -split ' ')[0]
             }
 
             $subnet += "/"
@@ -364,7 +364,7 @@ function Set-FGTFirewallAddress {
                 $subnet += $mask.ToString()
             }
             else {
-                $subnet += $address.'end-ip'
+                $subnet += ($address.subnet -split ' ')[1]
             }
 
             $_address | add-member -name "subnet" -membertype NoteProperty -Value $subnet
