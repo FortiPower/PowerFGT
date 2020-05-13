@@ -74,8 +74,8 @@ Describe "Add Firewall Address" {
         $address.name | Should -Be $pester_address1
         $address.uuid | Should -Not -BeNullOrEmpty
         $address.type | Should -Be "ipmask"
-        $address.'start-ip' | Should -Be "192.0.2.0"
-        $address.'end-ip' | Should -Be "255.255.255.0"
+        #$address.'start-ip' | Should -Be "192.0.2.0"
+        #$address.'end-ip' | Should -Be "255.255.255.0"
         $address.subnet | Should -Be "192.0.2.0 255.255.255.0"
         $address.'associated-interface' | Should -BeNullOrEmpty
         $address.comment | Should -BeNullOrEmpty
@@ -88,8 +88,8 @@ Describe "Add Firewall Address" {
         $address.name | Should -Be $pester_address1
         $address.uuid | Should -Not -BeNullOrEmpty
         $address.type | Should -Be "ipmask"
-        $address.'start-ip' | Should -Be "192.0.2.0"
-        $address.'end-ip' | Should -Be "255.255.255.0"
+        #$address.'start-ip' | Should -Be "192.0.2.0"
+        #$address.'end-ip' | Should -Be "255.255.255.0"
         $address.subnet | Should -Be "192.0.2.0 255.255.255.0"
         $address.'associated-interface' | Should -Be "port2"
         $address.comment | Should -BeNullOrEmpty
@@ -102,8 +102,8 @@ Describe "Add Firewall Address" {
         $address.name | Should -Be $pester_address1
         $address.uuid | Should -Not -BeNullOrEmpty
         $address.type | Should -Be "ipmask"
-        $address.'start-ip' | Should -Be "192.0.2.0"
-        $address.'end-ip' | Should -Be "255.255.255.0"
+        #$address.'start-ip' | Should -Be "192.0.2.0"
+        #$address.'end-ip' | Should -Be "255.255.255.0"
         $address.subnet | Should -Be "192.0.2.0 255.255.255.0"
         $address.'associated-interface' | Should -BeNullOrEmpty
         $address.comment | Should -Be "Add via PowerFGT"
@@ -116,8 +116,8 @@ Describe "Add Firewall Address" {
         $address.name | Should -Be $pester_address1
         $address.uuid | Should -Not -BeNullOrEmpty
         $address.type | Should -Be "ipmask"
-        $address.'start-ip' | Should -Be "192.0.2.0"
-        $address.'end-ip' | Should -Be "255.255.255.0"
+        #$address.'start-ip' | Should -Be "192.0.2.0"
+        #$address.'end-ip' | Should -Be "255.255.255.0"
         $address.subnet | Should -Be "192.0.2.0 255.255.255.0"
         $address.'associated-interface' | Should -BeNullOrEmpty
         $address.comment | Should -BeNullOrEmpty
@@ -146,8 +146,8 @@ Describe "Configure Firewall Address" {
         $address.name | Should -Be $pester_address1
         $address.uuid | Should -Not -BeNullOrEmpty
         $address.type | Should -Be "ipmask"
-        $address.'start-ip' | Should -Be "192.0.3.0"
-        $address.'end-ip' | Should -Be "255.255.255.0"
+        #$address.'start-ip' | Should -Be "192.0.3.0"
+        #$address.'end-ip' | Should -Be "255.255.255.0"
         $address.subnet | Should -Be "192.0.3.0 255.255.255.0"
         $address.'associated-interface' | Should -BeNullOrEmpty
         $address.comment | Should -BeNullOrEmpty
@@ -160,8 +160,8 @@ Describe "Configure Firewall Address" {
         $address.name | Should -Be $pester_address1
         $address.uuid | Should -Not -BeNullOrEmpty
         $address.type | Should -Be "ipmask"
-        $address.'start-ip' | Should -Be "192.0.3.0"
-        $address.'end-ip' | Should -Be "255.255.255.128"
+        # $address.'start-ip' | Should -Be "192.0.3.0"
+        # $address.'end-ip' | Should -Be "255.255.255.128"
         $address.subnet | Should -Be "192.0.3.0 255.255.255.128"
         $address.'associated-interface' | Should -BeNullOrEmpty
         $address.comment | Should -BeNullOrEmpty
@@ -174,8 +174,8 @@ Describe "Configure Firewall Address" {
         $address.name | Should -Be $pester_address1
         $address.uuid | Should -Not -BeNullOrEmpty
         $address.type | Should -Be "ipmask"
-        $address.'start-ip' | Should -Be "192.0.3.0"
-        $address.'end-ip' | Should -Be "255.255.255.128"
+        # $address.'start-ip' | Should -Be "192.0.3.0"
+        # $address.'end-ip' | Should -Be "255.255.255.128"
         $address.subnet | Should -Be "192.0.3.0 255.255.255.128"
         $address.'associated-interface' | Should -Be "port2"
         $address.comment | Should -BeNullOrEmpty
@@ -188,8 +188,8 @@ Describe "Configure Firewall Address" {
         $address.name | Should -Be $pester_address1
         $address.uuid | Should -Not -BeNullOrEmpty
         $address.type | Should -Be "ipmask"
-        $address.'start-ip' | Should -Be "192.0.3.0"
-        $address.'end-ip' | Should -Be "255.255.255.128"
+        # $address.'start-ip' | Should -Be "192.0.3.0"
+        # $address.'end-ip' | Should -Be "255.255.255.128"
         $address.subnet | Should -Be "192.0.3.0 255.255.255.128"
         $address.'associated-interface' | Should -Be "port2"
         $address.comment | Should -Be "Modified by PowerFGT"
@@ -202,8 +202,8 @@ Describe "Configure Firewall Address" {
         $address.name | Should -Be $pester_address1
         $address.uuid | Should -Not -BeNullOrEmpty
         $address.type | Should -Be "ipmask"
-        $address.'start-ip' | Should -Be "192.0.3.0"
-        $address.'end-ip' | Should -Be "255.255.255.128"
+        # $address.'start-ip' | Should -Be "192.0.3.0"
+        # $address.'end-ip' | Should -Be "255.255.255.128"
         $address.subnet | Should -Be "192.0.3.0 255.255.255.128"
         $address.'associated-interface' | Should -Be "port2"
         $address.comment | Should -Be "Modified by PowerFGT"
@@ -216,8 +216,8 @@ Describe "Configure Firewall Address" {
         $address.name | Should -Be "pester_address_change"
         $address.uuid | Should -Not -BeNullOrEmpty
         $address.type | Should -Be "ipmask"
-        $address.'start-ip' | Should -Be "192.0.3.0"
-        $address.'end-ip' | Should -Be "255.255.255.128"
+        # $address.'start-ip' | Should -Be "192.0.3.0"
+        # $address.'end-ip' | Should -Be "255.255.255.128"
         $address.subnet | Should -Be "192.0.3.0 255.255.255.128"
         $address.'associated-interface' | Should -Be "port2"
         $address.comment | Should -Be "Modified by PowerFGT"
@@ -242,8 +242,8 @@ Describe "Copy Firewall Address" {
         $address.name | Should -Be copy_pester_address1
         $address.uuid | Should -Not -BeNullOrEmpty
         $address.type | Should -Be "ipmask"
-        $address.'start-ip' | Should -Be "192.0.2.0"
-        $address.'end-ip' | Should -Be "255.255.255.0"
+        # $address.'start-ip' | Should -Be "192.0.2.0"
+        # $address.'end-ip' | Should -Be "255.255.255.0"
         $address.subnet | Should -Be "192.0.2.0 255.255.255.0"
         $address.'associated-interface' | Should -BeNullOrEmpty
         $address.comment | Should -BeNullOrEmpty
