@@ -17,7 +17,7 @@ function Add-FGTFirewallPolicy {
         .EXAMPLE
         Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all
 
-        Add a MyFGTPolicy with source port port1 and destination port1 and source and destination all
+        Add a MyFGTPolicy with source port port1 and destination port2 and source and destination all
 
         .EXAMPLE
         Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -nat
@@ -193,7 +193,6 @@ function Add-FGTFirewallPolicy {
             $policy | add-member -name "nat" -membertype NoteProperty -Value "enable"
         }
         else {
-
             $policy | add-member -name "nat" -membertype NoteProperty -Value "disable"
         }
 

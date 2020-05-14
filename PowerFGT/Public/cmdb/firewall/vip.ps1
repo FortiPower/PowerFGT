@@ -14,24 +14,24 @@ function Add-FGTFirewallVip {
         Add a FortiGate Virtual IP (VIP) (One to One)
 
         .EXAMPLE
-        Add-FGTFirewallVip -name myVIP1 -type static-nat -extip 192.2.0.1 -mappedip 198.51.100.1
+        Add-FGTFirewallVip -name myVIP1 -type static-nat -extip 192.0.2.1 -mappedip 198.51.100.1
 
-        Add VIP objet type static-nat (One to One ) with name myVIP1 with external IP 192.2.0.1 and mapped IP 198.51.100.1
-
-        .EXAMPLE
-        Add-FGTFirewallVip -name myVIP2 -type static-nat -extip 192.2.0.2 -mappedip 198.51.100.2 -interface port1 -comment "My FGT VIP"
-
-        Add VIP objet type static-nat (One to One ) with name myVIP1 with external IP 192.2.0.1, mapped IP 198.51.100.1, associated to interface port2 and a comment
+        Add VIP objet type static-nat (One to One) with name myVIP1 with external IP 192.0.2.1 and mapped IP 198.51.100.1
 
         .EXAMPLE
-        Add-FGTFirewallVip -name myVIP3-8080 -type static-nat -extip 192.2.0.1 -mappedip 198.51.100.1 -portforward -extport 8080
+        Add-FGTFirewallVip -name myVIP2 -type static-nat -extip 192.0.2.2 -mappedip 198.51.100.2 -interface port1 -comment "My FGT VIP"
 
-        Add VIP objet type static-nat (One to One ) with name myVIP3 with external IP 192.2.0.1 and mapped IP 198.51.100.1 with Port Forward and TCP Port 8080
+        Add VIP objet type static-nat (One to One) with name myVIP1 with external IP 192.0.2.1, mapped IP 198.51.100.1, associated to interface port2 and a comment
 
         .EXAMPLE
-        Add-FGTFirewallVip -name myVIP4-5000-6000 -type static-nat -extip 192.2.0.1 -mappedip 198.51.100.1 -portforward -extport 5000 -mappedport 6000 -protocol udp
+        Add-FGTFirewallVip -name myVIP3-8080 -type static-nat -extip 192.0.2.1 -mappedip 198.51.100.1 -portforward -extport 8080
 
-        Add VIP objet type static-nat (One to One ) with name myVIP3 with external IP 192.2.0.1 and mapped IP 198.51.100.1 with Port Forward and UDP Port 5000 mapped to port 6000
+        Add VIP objet type static-nat (One to One) with name myVIP3 with external IP 192.0.2.1 and mapped IP 198.51.100.1 with Port Forward and TCP Port 8080
+
+        .EXAMPLE
+        Add-FGTFirewallVip -name myVIP4-5000-6000 -type static-nat -extip 192.0.2.1 -mappedip 198.51.100.1 -portforward -extport 5000 -mappedport 6000 -protocol udp
+
+        Add VIP objet type static-nat (One to One) with name myVIP3 with external IP 192.0.2.1 and mapped IP 198.51.100.1 with Port Forward and UDP Port 5000 mapped to port 6000
 
     #>
 

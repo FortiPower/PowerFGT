@@ -197,7 +197,7 @@ function Get-FGTFirewallAddress {
         Get list of all address object (but only relevant attributes)
 
         .EXAMPLE
-        Get-FGTAddress -vdom vdomX
+        Get-FGTFirewallAddress -vdom vdomX
 
         Get list of all address on VdomX
 
