@@ -25,9 +25,6 @@ Function Confirm-FGTAddress {
     if ( -not ( $argument | get-member -name type -Membertype Properties)) {
         throw "Element specified does not contain an type property."
     }
-    if ( -not ( $argument | get-member -name fqdn -Membertype Properties)) {
-        throw "Element specified does not contain an fqdn property."
-    }
     if ( -not ( $argument | get-member -name country -Membertype Properties)) {
         throw "Element specified does not contain an country property."
     }
