@@ -476,8 +476,8 @@ Describe "Add Firewall Policy" {
         Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all
         #Add Second policy with same name
         { Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all } | Should -Throw "Already a Policy using the same name"
-
     }
+
 }
 
 Describe "Add Firewall Policy Member" {
