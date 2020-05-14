@@ -2,7 +2,7 @@
 
 ## Pre-Requisites
 
-The tests don't be to be run on PRODUCTION FortiGate ! there is no warning about change on Manager.
+The tests don't be to be run on PRODUCTION FortiGate ! there is no warning about change on the Firewall.
 It need to be use only for TESTS !
 
     A Fortigate (VM) with release >= 6.0.x (Tested with 6.0.x, 6.2.x and 6.4.x)
