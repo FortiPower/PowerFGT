@@ -563,6 +563,11 @@ function Remove-FGTFirewallPolicyMember {
                 $members = $members | Where-Object { $_.name -ne $remove_member }
             }
 
+            #if there is only One or less member force to be an array
+            if ( $members.count -le 1 ) {
+                $members = @($members)
+            }
+
             $_policy | add-member -name "srcaddr" -membertype NoteProperty -Value $members
         }
 
@@ -579,6 +584,11 @@ function Remove-FGTFirewallPolicyMember {
             foreach ($remove_member in $dstaddr) {
                 #May be a better (and faster) solution...
                 $members = $members | Where-Object { $_.name -ne $remove_member }
+            }
+
+            #if there is only One or less member force to be an array
+            if ( $members.count -le 1 ) {
+                $members = @($members)
             }
 
             $_policy | add-member -name "dstaddr" -membertype NoteProperty -Value $members
