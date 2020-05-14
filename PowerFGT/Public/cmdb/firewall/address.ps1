@@ -16,22 +16,22 @@ function Add-FGTFirewallAddress {
         .EXAMPLE
         Add-FGTFirewallAddress -type ipmask -Name FGT -ip 192.0.2.0 -mask 255.255.255.0
 
-        Add Address objet type ipmask with name FGT and value 192.0.2.0/24
+        Add Address object type ipmask with name FGT and value 192.0.2.0/24
 
         .EXAMPLE
         Add-FGTFirewallAddress -type ipmask -Name FGT -ip 192.0.2.0 -mask 255.255.255.0 -interface port2
 
-        Add Address objet type ipmask with name FGT, value 192.0.2.0/24 and associated to interface port2
+        Add Address object type ipmask with name FGT, value 192.0.2.0/24 and associated to interface port2
 
         .EXAMPLE
         Add-FGTFirewallAddress -type ipmask -Name FGT -ip 192.0.2.0 -mask 255.255.255.0 -comment "My FGT Address"
 
-        Add Address objet type ipmask with name FGT, value 192.0.2.0/24 and a comment
+        Add Address object type ipmask with name FGT, value 192.0.2.0/24 and a comment
 
         .EXAMPLE
         Add-FGTFirewallAddress -type ipmask -Name FGT -ip 192.0.2.0 -mask 255.255.255.0 -visibility:$false
 
-        Add Address objet type ipmask with name FGT, value 192.0.2.0/24 and disabled visibility
+        Add Address object type ipmask with name FGT, value 192.0.2.0/24 and disabled visibility
 
     #>
 
