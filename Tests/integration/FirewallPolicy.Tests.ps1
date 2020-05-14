@@ -478,6 +478,11 @@ Describe "Add Firewall Policy" {
         { Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all } | Should -Throw "Already a Policy using the same name"
     }
 
+    It "Try to Add Policy without name (unnamed policy)" {
+        #TODO: Add check where unnamed policy is allowed (need cmdlet for modified System Settings)
+        { Add-FGTFirewallPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all } | Should -Throw "You need to specifiy a name"
+    }
+
 }
 
 Describe "Add Firewall Policy Member" {
