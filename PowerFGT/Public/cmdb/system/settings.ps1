@@ -88,3 +88,73 @@ function Get-FGTSystemSettings {
     End {
     }
 }
+
+function Set-FGTSystemSettings {
+
+    <#
+        .SYNOPSIS
+        Configure a FortiGate System Settings
+
+        .DESCRIPTION
+        Change a FortiGate System Settings (lldp, gui....)
+
+        .EXAMPLE
+        Set-FGTSystemSettings -gui_allow_unnamed_policy
+
+        Enable unnamed Policy
+
+    #>
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
+    Param(
+        [Parameter (Mandatory = $false)]
+        [string]$comments,
+        [Parameter (Mandatory = $false)]
+        [switch]$gui_allow_unnamed_policy,
+        [Parameter (Mandatory = $false)]
+        [switch]$lldp_transmission,
+        [Parameter (Mandatory = $false)]
+        [switch]$lldp_reception,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/system/settings"
+
+        $_ss = new-Object -TypeName PSObject
+
+        if ( $PsBoundParameters.ContainsKey('comments') ) {
+            $_ss | add-member -name "comments" -membertype NoteProperty -Value $comments
+        }
+
+        if ( $PsBoundParameters.ContainsKey('gui_allow_unnamed_policy') ) {
+            if ($gui_allow_unnamed_policy) {
+                $_ss | Add-member -name "gui-allow-unnamed-policy" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_ss | Add-member -name "gui-allow-unnamed-policy" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ($PSCmdlet.ShouldProcess("System", 'Configure Settings')) {
+            Invoke-FGTRestMethod -method "PUT" -body $_ss -uri $uri -connection $connection @invokeParams
+        }
+
+        Get-FGTSystemSettings
+    }
+
+    End {
+    }
+}
