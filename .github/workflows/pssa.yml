@@ -1,18 +1,12 @@
 name: CI
 on:
   pull_request:
-   types: 
-     labeled
 jobs:
   lint:
     name: Run PSSA
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2       
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
+      - uses: actions/checkout@v2
       - name: lint
         uses: devblackops/github-action-psscriptanalyzer@master
         with:
