@@ -205,6 +205,7 @@ function Set-FGTConnection {
         Restore vdom configuration to default (by default root)
     #>
 
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Low')]
     Param(
         [Parameter(Mandatory = $false)]
         [string[]]$vdom,
@@ -217,7 +218,9 @@ function Set-FGTConnection {
 
     Process {
 
-        $connection.vdom = $vdom
+        if ($PSCmdlet.ShouldProcess($connection.server, 'Set default vdom on connection')) {
+            $connection.vdom = $vdom
+        }
 
     }
 
