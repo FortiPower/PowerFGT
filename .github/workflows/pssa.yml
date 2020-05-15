@@ -11,4 +11,4 @@ jobs:
         uses: devblackops/github-action-psscriptanalyzer@master
         with:
           settingsPath: .vscode/PSScriptAnalyzerSettings.psd1
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          sendComment: false
