@@ -276,4 +276,4 @@ Describe "Remove Firewall Address" {
 
 }
 
-Disconnect-FGT -noconfirm
+Disconnect-FGT -confirm:$false

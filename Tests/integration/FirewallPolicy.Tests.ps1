@@ -857,4 +857,4 @@ Describe "Remove Firewall Policy Member" {
 
 }
 
-Disconnect-FGT -noconfirm
+Disconnect-FGT -confirm:$false

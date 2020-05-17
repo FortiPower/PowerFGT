@@ -390,4 +390,4 @@ Describe "Remove Firewall Address Group Member" {
 
 }
 
-Disconnect-FGT -noconfirm
+Disconnect-FGT -confirm:$false

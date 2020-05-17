@@ -190,4 +190,4 @@ Describe "Remove Firewall VIP" {
 
 }
 
-Disconnect-FGT -noconfirm
+Disconnect-FGT -confirm:$false

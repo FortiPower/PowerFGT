@@ -8,7 +8,7 @@
 Describe  "Connect to a FortiGate (using HTTP)" {
     BeforeAll {
         #Disconnect "default connection"
-        Disconnect-FGT -noconfirm
+        Disconnect-FGT -confirm:$false
     }
     It "Connect to a FortiGate (using HTTP) and check global variable" {
         Connect-FGT $ipaddress -Username $login -password $mysecpassword -httpOnly
@@ -21,7 +21,7 @@ Describe  "Connect to a FortiGate (using HTTP)" {
         $DefaultFGTConnection.headers | Should -Not -BeNullOrEmpty
     }
     It "Disconnect to a FortiGate (using HTTP) and check global variable" {
-        Disconnect-FGT -noconfirm
+        Disconnect-FGT -confirm:$false
         $DefaultFGTConnection | Should be $null
     }
     #TODO: Connect using wrong login/password
@@ -30,7 +30,7 @@ Describe  "Connect to a FortiGate (using HTTP)" {
 Describe "Connect to a fortigate (using HTTPS)" {
     BeforeAll {
         #Disconnect "default connection"
-        #Disconnect-FGT -noconfirm
+        #Disconnect-FGT -confirm:$false
     }
     It "Connect to a FortiGate (using HTTPS and -SkipCertificateCheck) and check global variable" -Skip:($httpOnly) {
         Connect-FGT $ipaddress -Username $login -password $mysecpassword -SkipCertificateCheck
@@ -131,7 +131,7 @@ Describe "Connect to a FortiGate (using multi connection)" {
     }
 
     It "Disconnect to a FortiGate (Multi connection)" {
-        Disconnect-FGT -connection $fgt -noconfirm
+        Disconnect-FGT -connection $fgt -confirm:$false
         $DefaultFGTConnection | Should -Be $null
     }
 
