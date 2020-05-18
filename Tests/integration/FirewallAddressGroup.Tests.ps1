@@ -66,8 +66,8 @@ Describe "Get Firewall Address Group" {
         Get-FGTFirewallAddressGroup -name $pester_addressgroup1 | Remove-FGTFirewallAddressGroup -noconfirm
         Get-FGTFirewallAddressGroup -name $pester_addressgroup2 | Remove-FGTFirewallAddressGroup -noconfirm
 
-        Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -noconfirm
-        Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -noconfirm
+        Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -confirm:$false
+        Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -confirm:$false
     }
 
 }
@@ -137,8 +137,8 @@ Describe "Add Firewall Address Group" {
     }
 
     AfterAll {
-        Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -noconfirm
-        Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -noconfirm
+        Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -confirm:$false
+        Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -confirm:$false
     }
 
 }
@@ -196,10 +196,10 @@ Describe "Add Firewall Address Group Member" {
     }
 
     AfterAll {
-        Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -noconfirm
-        Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -noconfirm
-        Get-FGTFirewallAddress -name $pester_address3 | Remove-FGTFirewallAddress -noconfirm
-        Get-FGTFirewallAddress -name $pester_address4 | Remove-FGTFirewallAddress -noconfirm
+        Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -confirm:$false
+        Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -confirm:$false
+        Get-FGTFirewallAddress -name $pester_address3 | Remove-FGTFirewallAddress -confirm:$false
+        Get-FGTFirewallAddress -name $pester_address4 | Remove-FGTFirewallAddress -confirm:$false
     }
 
 }
@@ -274,8 +274,8 @@ Describe "Configure Firewall Address Group" {
         #Remove address group before address...
         Get-FGTFirewallAddressGroup -uuid $script:uuid | Remove-FGTFirewallAddressGroup -noconfirm
 
-        Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -noconfirm
-        Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -noconfirm
+        Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -confirm:$false
+        Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -confirm:$false
     }
 
 }
@@ -310,8 +310,8 @@ Describe "Copy Firewall Address Group" {
 
         Get-FGTFirewallAddressGroup -name $pester_addressgroup1 | Remove-FGTFirewallAddressGroup -noconfirm
 
-        Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -noconfirm
-        Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -noconfirm
+        Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -confirm:$false
+        Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -confirm:$false
     }
 
 }
@@ -332,7 +332,7 @@ Describe "Remove Firewall Address Group" {
     }
 
     AfterAll {
-        Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -noconfirm
+        Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -confirm:$false
     }
 
 }
@@ -383,9 +383,9 @@ Describe "Remove Firewall Address Group Member" {
     }
 
     AfterAll {
-        Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -noconfirm
-        Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -noconfirm
-        Get-FGTFirewallAddress -name $pester_address3 | Remove-FGTFirewallAddress -noconfirm
+        Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -confirm:$false
+        Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -confirm:$false
+        Get-FGTFirewallAddress -name $pester_address3 | Remove-FGTFirewallAddress -confirm:$false
     }
 
 }
