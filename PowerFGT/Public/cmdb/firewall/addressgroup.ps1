@@ -361,6 +361,7 @@ function Set-FGTFirewallAddressGroup {
 
     #>
 
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript( { Confirm-FGTAddressGroup $_ })]
@@ -424,9 +425,11 @@ function Set-FGTFirewallAddressGroup {
             }
         }
 
-        Invoke-FGTRestMethod -method "PUT" -body $_addrgrp -uri $uri -connection $connection @invokeParams | out-Null
+        if ($PSCmdlet.ShouldProcess($addrgrp.name, 'Configure Firewall Address Group')) {
+            Invoke-FGTRestMethod -method "PUT" -body $_addrgrp -uri $uri -connection $connection @invokeParams | out-Null
 
-        Get-FGTFirewallAddressGroup -connection $connection @invokeParams -name $addrgrp.name
+            Get-FGTFirewallAddressGroup -connection $connection @invokeParams -name $addrgrp.name
+        }
     }
 
     End {
@@ -449,12 +452,13 @@ function Remove-FGTFirewallAddressGroup {
 
         .EXAMPLE
         $MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
-        PS C:\>$MyFGTAddressGroup | Remove-FGTFirewallAddressGroup -noconfirm
+        PS C:\>$MyFGTAddressGroup | Remove-FGTFirewallAddressGroup -confirm:$false
 
         Remove address object $MyFGTAddressGroup with no confirmation
 
     #>
 
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'high')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript( { Confirm-FGTAddressGroup $_ })]
@@ -479,20 +483,8 @@ function Remove-FGTFirewallAddressGroup {
 
         $uri = "api/v2/cmdb/firewall/addrgrp/$($addrgrp.name)"
 
-        if ( -not ( $Noconfirm )) {
-            $message = "Remove Address Group on Fortigate"
-            $question = "Proceed with removal of Address Group $($addrgrp.name) ?"
-            $choices = New-Object Collections.ObjectModel.Collection[Management.Automation.Host.ChoiceDescription]
-            $choices.Add((New-Object Management.Automation.Host.ChoiceDescription -ArgumentList '&Yes'))
-            $choices.Add((New-Object Management.Automation.Host.ChoiceDescription -ArgumentList '&No'))
-
-            $decision = $Host.UI.PromptForChoice($message, $question, $choices, 1)
-        }
-        else { $decision = 0 }
-        if ($decision -eq 0) {
-            Write-Progress -activity "Remove Address Group"
+        if ($PSCmdlet.ShouldProcess($addrgrp.name, 'Remove Firewall Address Group')) {
             $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -connection $connection @invokeParams
-            Write-Progress -activity "Remove Address Group" -completed
         }
     }
 
@@ -523,6 +515,7 @@ function Remove-FGTFirewallAddressGroupMember {
 
     #>
 
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript( { Confirm-FGTAddressGroup $_ })]
@@ -577,9 +570,11 @@ function Remove-FGTFirewallAddressGroupMember {
             $_addrgrp | add-member -name "member" -membertype NoteProperty -Value $members
         }
 
-        Invoke-FGTRestMethod -method "PUT" -body $_addrgrp -uri $uri -connection $connection @invokeParams | Out-Null
+        if ($PSCmdlet.ShouldProcess($addrgrp.name, 'Remove Firewall Address Group Member')) {
+            Invoke-FGTRestMethod -method "PUT" -body $_addrgrp -uri $uri -connection $connection @invokeParams | Out-Null
 
-        Get-FGTFirewallAddressGroup -connection $connection @invokeParams -name $addrgrp.name
+            Get-FGTFirewallAddressGroup -connection $connection @invokeParams -name $addrgrp.name
+        }
     }
 
     End {

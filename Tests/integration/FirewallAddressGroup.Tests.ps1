@@ -63,8 +63,8 @@ Describe "Get Firewall Address Group" {
 
     AfterAll {
         #Remove address group before address...
-        Get-FGTFirewallAddressGroup -name $pester_addressgroup1 | Remove-FGTFirewallAddressGroup -noconfirm
-        Get-FGTFirewallAddressGroup -name $pester_addressgroup2 | Remove-FGTFirewallAddressGroup -noconfirm
+        Get-FGTFirewallAddressGroup -name $pester_addressgroup1 | Remove-FGTFirewallAddressGroup -confirm:$false
+        Get-FGTFirewallAddressGroup -name $pester_addressgroup2 | Remove-FGTFirewallAddressGroup -confirm:$false
 
         Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -confirm:$false
         Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -confirm:$false
@@ -81,7 +81,7 @@ Describe "Add Firewall Address Group" {
     }
 
     AfterEach {
-        Get-FGTFirewallAddressGroup -name $pester_addressgroup1 | Remove-FGTFirewallAddressGroup -noconfirm
+        Get-FGTFirewallAddressGroup -name $pester_addressgroup1 | Remove-FGTFirewallAddressGroup -confirm:$false
     }
 
     It "Add Address Group $pester_addressgroup1 (with 1 member)" {
@@ -158,7 +158,7 @@ Describe "Add Firewall Address Group Member" {
     }
 
     AfterEach {
-        Get-FGTFirewallAddressGroup -name $pester_addressgroup1 | Remove-FGTFirewallAddressGroup -noconfirm
+        Get-FGTFirewallAddressGroup -name $pester_addressgroup1 | Remove-FGTFirewallAddressGroup -confirm:$false
     }
 
     It "Add 1 member to Address Group $pester_addressgroup1 (with 1 member before)" {
@@ -272,7 +272,7 @@ Describe "Configure Firewall Address Group" {
 
     AfterAll {
         #Remove address group before address...
-        Get-FGTFirewallAddressGroup -uuid $script:uuid | Remove-FGTFirewallAddressGroup -noconfirm
+        Get-FGTFirewallAddressGroup -uuid $script:uuid | Remove-FGTFirewallAddressGroup -confirm:$false
 
         Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -confirm:$false
         Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -confirm:$false
@@ -306,9 +306,9 @@ Describe "Copy Firewall Address Group" {
         #Remove address group before address...
 
         #Remove copy_pester_address1
-        Get-FGTFirewallAddressGroup -name copy_pester_addressgroup1 | Remove-FGTFirewallAddressGroup -noconfirm
+        Get-FGTFirewallAddressGroup -name copy_pester_addressgroup1 | Remove-FGTFirewallAddressGroup -confirm:$false
 
-        Get-FGTFirewallAddressGroup -name $pester_addressgroup1 | Remove-FGTFirewallAddressGroup -noconfirm
+        Get-FGTFirewallAddressGroup -name $pester_addressgroup1 | Remove-FGTFirewallAddressGroup -confirm:$false
 
         Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -confirm:$false
         Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -confirm:$false
@@ -326,7 +326,7 @@ Describe "Remove Firewall Address Group" {
 
     It "Remove Address Group $pester_addressgroup1 by pipeline" {
         $addressgroup = Get-FGTFirewallAddressGroup -name $pester_addressgroup1
-        $addressgroup | Remove-FGTFirewallAddressGroup -noconfirm
+        $addressgroup | Remove-FGTFirewallAddressGroup -confirm:$false
         $addressgroup = Get-FGTFirewallAddressGroup -name $pester_addressgroup1
         $addressgroup | Should -Be $NULL
     }
@@ -351,7 +351,7 @@ Describe "Remove Firewall Address Group Member" {
     }
 
     AfterEach {
-        Get-FGTFirewallAddressGroup -name $pester_addressgroup1 | Remove-FGTFirewallAddressGroup -noconfirm
+        Get-FGTFirewallAddressGroup -name $pester_addressgroup1 | Remove-FGTFirewallAddressGroup -confirm:$false
     }
 
     It "Remove 1 member to Address Group $pester_addressgroup1 (with 3 members before)" {
