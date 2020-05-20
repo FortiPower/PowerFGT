@@ -332,6 +332,33 @@ Describe "Copy Firewall Address" {
 
     }
 
+    Context "fqdn" {
+
+        BeforeAll {
+            Add-FGTFirewallAddress -Name $pester_address2 -fqdn fortipower.github.io
+        }
+
+        It "Copy Firewall Address ($pester_address2 => copy_pester_address2)" {
+            Get-FGTFirewallAddress -name $pester_address2 | Copy-FGTFirewallAddress -name copy_pester_address2
+            $address = Get-FGTFirewallAddress -name copy_pester_address2
+            $address.name | Should -Be copy_pester_address2
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "fqdn"
+            $address.subnet | Should -BeNullOrEmpty
+            $address.fqdn | Should -be "fortipower.github.io"
+            $address.'associated-interface' | Should -BeNullOrEmpty
+            $address.comment | Should -BeNullOrEmpty
+            $address.visibility | Should -Be $true
+        }
+
+        AfterAll {
+            #Remove copy_pester_address1
+            Get-FGTFirewallAddress -name copy_pester_address2 | Remove-FGTFirewallAddress -confirm:$false
+            #Remove $pester_address1
+            Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -confirm:$false
+        }
+
+    }
 }
 
 Describe "Remove Firewall Address" {
