@@ -138,6 +138,66 @@ Describe "Add Firewall Address" {
 
     }
 
+    Context "fqdn" {
+
+        AfterEach {
+            Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -confirm:$false
+        }
+
+        It "Add Address $pester_address2 (type fqdn)" {
+            Add-FGTFirewallAddress -Name $pester_address2 -fqdn fortipower.github.io
+            $address = Get-FGTFirewallAddress -name $pester_address2
+            $address.name | Should -Be $pester_address2
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "fqdn"
+            $address.subnet | Should -BeNullOrEmpty
+            $address.fqdn | Should -be "fortipower.github.io"
+            $address.'associated-interface' | Should -BeNullOrEmpty
+            $address.comment | Should -BeNullOrEmpty
+            $address.visibility | Should -Be $true
+        }
+
+        It "Add Address $pester_address2 (type ipmask and interface)" {
+            Add-FGTFirewallAddress -Name $pester_address2 -fqdn fortipower.github.io -interface port2
+            $address = Get-FGTFirewallAddress -name $pester_address2
+            $address.name | Should -Be $pester_address2
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "fqdn"
+            $address.subnet | Should -BeNullOrEmpty
+            $address.fqdn | Should -be "fortipower.github.io"
+            $address.'associated-interface' | Should -Be "port2"
+            $address.comment | Should -BeNullOrEmpty
+            $address.visibility | Should -Be $true
+        }
+
+        It "Add Address $pester_address2 (type ipmask and comment)" {
+            Add-FGTFirewallAddress -Name $pester_address2 -fqdn fortipower.github.io -comment "Add via PowerFGT"
+            $address = Get-FGTFirewallAddress -name $pester_address2
+            $address.name | Should -Be $pester_address2
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "fqdn"
+            $address.subnet | Should -BeNullOrEmpty
+            $address.fqdn | Should -be "fortipower.github.io"
+            $address.'associated-interface' | Should -BeNullOrEmpty
+            $address.comment | Should -Be "Add via PowerFGT"
+            $address.visibility | Should -Be $true
+        }
+
+        It "Add Address $pester_address2 (type ipmask and visiblity disable)" {
+            Add-FGTFirewallAddress -Name $pester_address2 -fqdn fortipower.github.io -visibility:$false
+            $address = Get-FGTFirewallAddress -name $pester_address2
+            $address.name | Should -Be $pester_address2
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "fqdn"
+            $address.subnet | Should -BeNullOrEmpty
+            $address.fqdn | Should -be "fortipower.github.io"
+            $address.'associated-interface' | Should -BeNullOrEmpty
+            $address.comment | Should -BeNullOrEmpty
+            $address.visibility | Should -Be "disable"
+        }
+
+    }
+
 }
 
 Describe "Configure Firewall Address" {
