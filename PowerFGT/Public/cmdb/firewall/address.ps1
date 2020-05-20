@@ -34,9 +34,9 @@ function Add-FGTFirewallAddress {
         Add Address object type ipmask with name FGT, value 192.0.2.0/24 and disabled visibility
 
         .EXAMPLE
-        Add-FGTFirewallAddress -Name FGT -fqdn www.fortinet.com
+         Add-FGTFirewallAddress -Name FortiPower -fqdn fortipower.github.io
 
-        Add Address object type fqdn with name FGT and value www.fortinet.com
+        Add Address object type fqdn with name FortiPower and value fortipower.github.io
 
     #>
 
