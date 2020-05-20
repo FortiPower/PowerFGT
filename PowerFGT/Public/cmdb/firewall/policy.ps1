@@ -457,8 +457,6 @@ function Remove-FGTFirewallPolicy {
         [ValidateScript( { Confirm-FGTFirewallPolicy $_ })]
         [psobject]$policy,
         [Parameter(Mandatory = $false)]
-        [switch]$noconfirm,
-        [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection

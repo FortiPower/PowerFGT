@@ -268,8 +268,6 @@ function Remove-FGTFirewallVip {
         [ValidateScript( { Confirm-FGTVip $_ })]
         [psobject]$vip,
         [Parameter(Mandatory = $false)]
-        [switch]$noconfirm,
-        [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection

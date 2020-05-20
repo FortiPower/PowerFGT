@@ -252,8 +252,6 @@ function Disconnect-FGT {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]
     Param(
         [Parameter(Mandatory = $false)]
-        [switch]$noconfirm,
-        [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
     )
 

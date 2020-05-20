@@ -429,8 +429,6 @@ function Remove-FGTFirewallAddress {
         [ValidateScript( { Confirm-FGTAddress $_ })]
         [psobject]$address,
         [Parameter(Mandatory = $false)]
-        [switch]$noconfirm,
-        [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
