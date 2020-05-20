@@ -85,7 +85,7 @@ if you get a warning about `Unable to connect` Look [Issue](#Issue)
 ### Address
 
 You can create a new Address `Add-FGTFirewallAddress`, retrieve its information `Get-FGTFirewallAddress`,
-modify its properties `Set-FGTFirewallAddress`, copy/clone its properties `Copt-FGTFirewallAddress`
+modify its properties `Set-FGTFirewallAddress`, copy/clone its properties `Copy-FGTFirewallAddress`
 or delete it `Remove-FGTFirewallAddress`.
 
 ```powershell
