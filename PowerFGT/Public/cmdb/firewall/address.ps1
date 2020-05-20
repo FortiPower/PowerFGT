@@ -307,6 +307,7 @@ function Set-FGTFirewallAddress {
 
     #>
 
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript( { Confirm-FGTAddress $_ })]
@@ -388,9 +389,11 @@ function Set-FGTFirewallAddress {
             }
         }
 
-        Invoke-FGTRestMethod -method "PUT" -body $_address -uri $uri -connection $connection @invokeParams | out-Null
+        if ($PSCmdlet.ShouldProcess($address.name, 'Configure Firewall Address')) {
+            Invoke-FGTRestMethod -method "PUT" -body $_address -uri $uri -connection $connection @invokeParams | out-Null
 
-        Get-FGTFirewallAddress -connection $connection @invokeParams -name $address.name
+            Get-FGTFirewallAddress -connection $connection @invokeParams -name $address.name
+        }
     }
 
     End {
@@ -414,18 +417,17 @@ function Remove-FGTFirewallAddress {
 
         .EXAMPLE
         $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
-        PS C:\>$MyFGTAddress | Remove-FGTFirewallAddress -noconfirm
+        PS C:\>$MyFGTAddress | Remove-FGTFirewallAddress -confirm:$false
 
         Remove address object $MyFGTAddress with no confirmation
 
     #>
 
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'high')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript( { Confirm-FGTAddress $_ })]
         [psobject]$address,
-        [Parameter(Mandatory = $false)]
-        [switch]$noconfirm,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -444,20 +446,8 @@ function Remove-FGTFirewallAddress {
 
         $uri = "api/v2/cmdb/firewall/address/$($address.name)"
 
-        if ( -not ( $Noconfirm )) {
-            $message = "Remove address on Fortigate"
-            $question = "Proceed with removal of Address $($address.name) ?"
-            $choices = New-Object Collections.ObjectModel.Collection[Management.Automation.Host.ChoiceDescription]
-            $choices.Add((New-Object Management.Automation.Host.ChoiceDescription -ArgumentList '&Yes'))
-            $choices.Add((New-Object Management.Automation.Host.ChoiceDescription -ArgumentList '&No'))
-
-            $decision = $Host.UI.PromptForChoice($message, $question, $choices, 1)
-        }
-        else { $decision = 0 }
-        if ($decision -eq 0) {
-            Write-Progress -activity "Remove Address"
+        if ($PSCmdlet.ShouldProcess($address.name, 'Remove Firewall Address')) {
             $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -connection $connection @invokeParams
-            Write-Progress -activity "Remove Address" -completed
         }
     }
 

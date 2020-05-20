@@ -205,6 +205,7 @@ function Set-FGTConnection {
         Restore vdom configuration to default (by default root)
     #>
 
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Low')]
     Param(
         [Parameter(Mandatory = $false)]
         [string[]]$vdom,
@@ -217,7 +218,9 @@ function Set-FGTConnection {
 
     Process {
 
-        $connection.vdom = $vdom
+        if ($PSCmdlet.ShouldProcess($connection.server, 'Set default vdom on connection')) {
+            $connection.vdom = $vdom
+        }
 
     }
 
@@ -240,15 +243,14 @@ function Disconnect-FGT {
         Disconnect the connection
 
         .EXAMPLE
-        Disconnect-FGT -noconfirm
+        Disconnect-FGT -confirm:$false
 
         Disconnect the connection with no confirmation
 
     #>
 
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]
     Param(
-        [Parameter(Mandatory = $false)]
-        [switch]$noconfirm,
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
     )
@@ -260,25 +262,12 @@ function Disconnect-FGT {
 
         $url = "/logout"
 
-        if ( -not ( $Noconfirm )) {
-            $message = "Remove FortiGate connection."
-            $question = "Proceed with removal of FortiGate connection ?"
-            $choices = New-Object Collections.ObjectModel.Collection[Management.Automation.Host.ChoiceDescription]
-            $choices.Add((New-Object Management.Automation.Host.ChoiceDescription -ArgumentList '&Yes'))
-            $choices.Add((New-Object Management.Automation.Host.ChoiceDescription -ArgumentList '&No'))
-
-            $decision = $Host.UI.PromptForChoice($message, $question, $choices, 1)
-        }
-        else { $decision = 0 }
-        if ($decision -eq 0) {
-            Write-Progress -activity "Remove FortiGate connection"
+        if ($PSCmdlet.ShouldProcess($connection.server, 'Proceed with removal of FortiGate connection ?')) {
             $null = invoke-FGTRestMethod -method "POST" -uri $url -connection $connection
-            write-progress -activity "Remove FortiGate connection" -completed
             if (Test-Path variable:global:DefaultFGTConnection) {
                 Remove-Variable -name DefaultFGTConnection -scope global
             }
         }
-
     }
 
     End {

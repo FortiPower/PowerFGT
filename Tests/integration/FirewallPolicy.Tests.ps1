@@ -65,8 +65,8 @@ Describe "Get Firewall Policy" {
     }
 
     AfterAll {
-        Get-FGTFirewallPolicy -name $pester_policy1 | Remove-FGTFirewallPolicy -noconfirm
-        Get-FGTFirewallPolicy -name $pester_policy2 | Remove-FGTFirewallPolicy -noconfirm
+        Get-FGTFirewallPolicy -name $pester_policy1 | Remove-FGTFirewallPolicy -confirm:$false
+        Get-FGTFirewallPolicy -name $pester_policy2 | Remove-FGTFirewallPolicy -confirm:$false
     }
 
 }
@@ -74,7 +74,7 @@ Describe "Get Firewall Policy" {
 Describe "Add Firewall Policy" {
 
     AfterEach {
-        Get-FGTFirewallPolicy -name $pester_policy1 | Remove-FGTFirewallPolicy -noconfirm
+        Get-FGTFirewallPolicy -name $pester_policy1 | Remove-FGTFirewallPolicy -confirm:$false
     }
 
     It "Add Policy $pester_policy1 (port1/port2 : All/All)" {
@@ -261,10 +261,10 @@ Describe "Add Firewall Policy" {
         }
 
         AfterAll {
-            Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -noconfirm
-            Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -noconfirm
-            Get-FGTFirewallAddress -name $pester_address3 | Remove-FGTFirewallAddress -noconfirm
-            Get-FGTFirewallAddress -name $pester_address4 | Remove-FGTFirewallAddress -noconfirm
+            Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -confirm:$false
+            Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -confirm:$false
+            Get-FGTFirewallAddress -name $pester_address3 | Remove-FGTFirewallAddress -confirm:$false
+            Get-FGTFirewallAddress -name $pester_address4 | Remove-FGTFirewallAddress -confirm:$false
         }
 
     }
@@ -496,7 +496,7 @@ Describe "Add Firewall Policy Member" {
     }
 
     AfterEach {
-        Get-FGTFirewallPolicy -name $pester_policy1 | Remove-FGTFirewallPolicy -noconfirm
+        Get-FGTFirewallPolicy -name $pester_policy1 | Remove-FGTFirewallPolicy -confirm:$false
     }
 
     Context "Add Member(s) to Source Address" {
@@ -689,10 +689,10 @@ Describe "Add Firewall Policy Member" {
     }
 
     AfterAll {
-        Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -noconfirm
-        Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -noconfirm
-        Get-FGTFirewallAddress -name $pester_address3 | Remove-FGTFirewallAddress -noconfirm
-        Get-FGTFirewallAddress -name $pester_address4 | Remove-FGTFirewallAddress -noconfirm
+        Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -confirm:$false
+        Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -confirm:$false
+        Get-FGTFirewallAddress -name $pester_address3 | Remove-FGTFirewallAddress -confirm:$false
+        Get-FGTFirewallAddress -name $pester_address4 | Remove-FGTFirewallAddress -confirm:$false
     }
 
 }
@@ -705,7 +705,7 @@ Describe "Remove Firewall Policy" {
 
     It "Remove Policy $pester_policy1 by pipeline" {
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
-        $policy | Remove-FGTFirewallPolicy -noconfirm
+        $policy | Remove-FGTFirewallPolicy -confirm:$false
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
         $policy | Should -Be $NULL
     }
@@ -722,7 +722,7 @@ Describe "Remove Firewall Policy Member" {
     }
 
     AfterEach {
-        Get-FGTFirewallPolicy -name $pester_policy1 | Remove-FGTFirewallPolicy -noconfirm
+        Get-FGTFirewallPolicy -name $pester_policy1 | Remove-FGTFirewallPolicy -confirm:$false
     }
 
     Context "Remove Member(s) to Source Address" {
@@ -850,11 +850,11 @@ Describe "Remove Firewall Policy Member" {
     }
 
     AfterAll {
-        Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -noconfirm
-        Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -noconfirm
-        Get-FGTFirewallAddress -name $pester_address3 | Remove-FGTFirewallAddress -noconfirm
+        Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -confirm:$false
+        Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -confirm:$false
+        Get-FGTFirewallAddress -name $pester_address3 | Remove-FGTFirewallAddress -confirm:$false
     }
 
 }
 
-Disconnect-FGT -noconfirm
+Disconnect-FGT -confirm:$false

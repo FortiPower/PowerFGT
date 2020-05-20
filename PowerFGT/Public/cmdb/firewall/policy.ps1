@@ -445,18 +445,17 @@ function Remove-FGTFirewallPolicy {
 
         .EXAMPLE
         $MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
-        PS C:\>$MyFGTPolicy | Remove-FGTFirewallPolicy -noconfirm
+        PS C:\>$MyFGTPolicy | Remove-FGTFirewallPolicy -confirm:$false
 
         Remove Policy object MyFGTPolicy with no confirmation
 
     #>
 
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'high')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript( { Confirm-FGTFirewallPolicy $_ })]
         [psobject]$policy,
-        [Parameter(Mandatory = $false)]
-        [switch]$noconfirm,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -475,20 +474,8 @@ function Remove-FGTFirewallPolicy {
 
         $uri = "api/v2/cmdb/firewall/policy/$($policy.policyid)"
 
-        if ( -not ( $Noconfirm )) {
-            $message = "Remove Policy on Fortigate"
-            $question = "Proceed with removal of Policy $($policy.name) ?"
-            $choices = New-Object Collections.ObjectModel.Collection[Management.Automation.Host.ChoiceDescription]
-            $choices.Add((New-Object Management.Automation.Host.ChoiceDescription -ArgumentList '&Yes'))
-            $choices.Add((New-Object Management.Automation.Host.ChoiceDescription -ArgumentList '&No'))
-
-            $decision = $Host.UI.PromptForChoice($message, $question, $choices, 1)
-        }
-        else { $decision = 0 }
-        if ($decision -eq 0) {
-            Write-Progress -activity "Remove Policy"
+        if ($PSCmdlet.ShouldProcess($policy.name, 'Remove Firewall Policy')) {
             $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -connection $connection @invokeParams
-            Write-Progress -activity "Remove Policy" -completed
         }
     }
 
@@ -519,6 +506,7 @@ function Remove-FGTFirewallPolicyMember {
 
     #>
 
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript( { Confirm-FGTFirewallPolicy $_ })]
@@ -593,9 +581,11 @@ function Remove-FGTFirewallPolicyMember {
             $_policy | add-member -name "dstaddr" -membertype NoteProperty -Value $members
         }
 
-        Invoke-FGTRestMethod -method "PUT" -body $_policy -uri $uri -connection $connection @invokeParams | Out-Null
+        if ($PSCmdlet.ShouldProcess($policy.name, 'Remove Firewall Policy Group Member')) {
+            Invoke-FGTRestMethod -method "PUT" -body $_policy -uri $uri -connection $connection @invokeParams | Out-Null
 
-        Get-FGTFirewallPolicy -connection $connection @invokeParams -name $addrgrp.name
+            Get-FGTFirewallPolicy -connection $connection @invokeParams -name $addrgrp.name
+        }
     }
 
     End {

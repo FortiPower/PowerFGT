@@ -256,18 +256,17 @@ function Remove-FGTFirewallVip {
 
         .EXAMPLE
         $MyFGTVIP = Get-FGTFirewallVip -name MyFGTVIP
-        PS C:\>$MyFGTVIP | Remove-FGTFirewallVip -noconfirm
+        PS C:\>$MyFGTVIP | Remove-FGTFirewallVip -confirm:$false
 
         Remove VIP object MyFGTVIP with no confirmation
 
     #>
 
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'high')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript( { Confirm-FGTVip $_ })]
         [psobject]$vip,
-        [Parameter(Mandatory = $false)]
-        [switch]$noconfirm,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -286,20 +285,8 @@ function Remove-FGTFirewallVip {
 
         $uri = "api/v2/cmdb/firewall/vip/$($vip.name)"
 
-        if ( -not ( $Noconfirm )) {
-            $message = "Remove VIP on Fortigate"
-            $question = "Proceed with removal of VIP $($vip.name) ?"
-            $choices = New-Object Collections.ObjectModel.Collection[Management.Automation.Host.ChoiceDescription]
-            $choices.Add((New-Object Management.Automation.Host.ChoiceDescription -ArgumentList '&Yes'))
-            $choices.Add((New-Object Management.Automation.Host.ChoiceDescription -ArgumentList '&No'))
-
-            $decision = $Host.UI.PromptForChoice($message, $question, $choices, 1)
-        }
-        else { $decision = 0 }
-        if ($decision -eq 0) {
-            Write-Progress -activity "Remove VIP"
+        if ($PSCmdlet.ShouldProcess($vip.name, 'Remove Firewall VIP')) {
             $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -connection $connection @invokeParams
-            Write-Progress -activity "Remove VIP" -completed
         }
     }
 

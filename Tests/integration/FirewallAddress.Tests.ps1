@@ -58,8 +58,8 @@ Describe "Get Firewall Address" {
     }
 
     AfterAll {
-        Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -noconfirm
-        Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -noconfirm
+        Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -confirm:$false
+        Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -confirm:$false
     }
 
 }
@@ -67,7 +67,7 @@ Describe "Get Firewall Address" {
 Describe "Add Firewall Address" {
 
     AfterEach {
-        Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -noconfirm
+        Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -confirm:$false
     }
 
     It "Add Address $pester_address1 (type ipmask)" {
@@ -227,7 +227,7 @@ Describe "Configure Firewall Address" {
     }
 
     AfterAll {
-        Get-FGTFirewallAddress -uuid $script:uuid | Remove-FGTFirewallAddress -noconfirm
+        Get-FGTFirewallAddress -uuid $script:uuid | Remove-FGTFirewallAddress -confirm:$false
     }
 
 }
@@ -254,9 +254,9 @@ Describe "Copy Firewall Address" {
 
     AfterAll {
         #Remove copy_pester_address1
-        Get-FGTFirewallAddress -name copy_pester_address1 | Remove-FGTFirewallAddress -noconfirm
+        Get-FGTFirewallAddress -name copy_pester_address1 | Remove-FGTFirewallAddress -confirm:$false
         #Remove $pester_address1
-        Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -noconfirm
+        Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -confirm:$false
     }
 
 }
@@ -269,11 +269,11 @@ Describe "Remove Firewall Address" {
 
     It "Remove Address $pester_address1 by pipeline" {
         $address = Get-FGTFirewallAddress -name $pester_address1
-        $address | Remove-FGTFirewallAddress -noconfirm
+        $address | Remove-FGTFirewallAddress -confirm:$false
         $address = Get-FGTFirewallAddress -name $pester_address1
         $address | Should -Be $NULL
     }
 
 }
 
-Disconnect-FGT -noconfirm
+Disconnect-FGT -confirm:$false

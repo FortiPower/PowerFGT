@@ -58,8 +58,8 @@ Describe "Get Firewall VIP" {
     }
 
     AfterAll {
-        Get-FGTFirewallVip -name $pester_vip1 | Remove-FGTFirewallVip -noconfirm
-        Get-FGTFirewallVip -name $pester_vip2 | Remove-FGTFirewallVip -noconfirm
+        Get-FGTFirewallVip -name $pester_vip1 | Remove-FGTFirewallVIP -confirm:$false
+        Get-FGTFirewallVip -name $pester_vip2 | Remove-FGTFirewallVIP -confirm:$false
     }
 
 }
@@ -67,7 +67,7 @@ Describe "Get Firewall VIP" {
 Describe "Add Firewall VIP" {
 
     AfterEach {
-        Get-FGTFirewallVip -name $pester_vip1 | Remove-FGTFirewallVip -noconfirm
+        Get-FGTFirewallVip -name $pester_vip1 | Remove-FGTFirewallVIP -confirm:$false
     }
 
     It "Add Virtual IP $pester_vip1 (type static-nat)" {
@@ -183,11 +183,11 @@ Describe "Remove Firewall VIP" {
 
     It "Remove Virtual IP $pester_vip1 by pipeline" {
         $vip = Get-FGTFirewallVip -name $pester_vip1
-        $vip | Remove-FGTFirewallVip -noconfirm
+        $vip | Remove-FGTFirewallVIP -confirm:$false
         $vip = Get-FGTFirewallVip -name $pester_vip1
         $vip | Should -Be $NULL
     }
 
 }
 
-Disconnect-FGT -noconfirm
+Disconnect-FGT -confirm:$false
