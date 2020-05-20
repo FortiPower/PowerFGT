@@ -10,9 +10,9 @@
 Describe "Get Firewall Address" {
 
     BeforeAll {
-        $addr = Add-FGTFirewallAddress -type ipmask -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0
+        $addr = Add-FGTFirewallAddress -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0
         $script:uuid = $addr.uuid
-        Add-FGTFirewallAddress -type ipmask -Name $pester_address2 -ip 192.0.3.0 -mask 255.255.255.0
+        Add-FGTFirewallAddress -Name $pester_address2 -ip 192.0.3.0 -mask 255.255.255.0
     }
 
     It "Get Address Does not throw an error" {
@@ -73,7 +73,7 @@ Describe "Add Firewall Address" {
         }
 
         It "Add Address $pester_address1 (type ipmask)" {
-            Add-FGTFirewallAddress -type ipmask -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0
+            Add-FGTFirewallAddress -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0
             $address = Get-FGTFirewallAddress -name $pester_address1
             $address.name | Should -Be $pester_address1
             $address.uuid | Should -Not -BeNullOrEmpty
@@ -87,7 +87,7 @@ Describe "Add Firewall Address" {
         }
 
         It "Add Address $pester_address1 (type ipmask and interface)" {
-            Add-FGTFirewallAddress -type ipmask -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0 -interface port2
+            Add-FGTFirewallAddress -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0 -interface port2
             $address = Get-FGTFirewallAddress -name $pester_address1
             $address.name | Should -Be $pester_address1
             $address.uuid | Should -Not -BeNullOrEmpty
@@ -101,7 +101,7 @@ Describe "Add Firewall Address" {
         }
 
         It "Add Address $pester_address1 (type ipmask and comment)" {
-            Add-FGTFirewallAddress -type ipmask -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0 -comment "Add via PowerFGT"
+            Add-FGTFirewallAddress -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0 -comment "Add via PowerFGT"
             $address = Get-FGTFirewallAddress -name $pester_address1
             $address.name | Should -Be $pester_address1
             $address.uuid | Should -Not -BeNullOrEmpty
@@ -115,7 +115,7 @@ Describe "Add Firewall Address" {
         }
 
         It "Add Address $pester_address1 (type ipmask and visiblity disable)" {
-            Add-FGTFirewallAddress -type ipmask -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0 -visibility:$false
+            Add-FGTFirewallAddress -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0 -visibility:$false
             $address = Get-FGTFirewallAddress -name $pester_address1
             $address.name | Should -Be $pester_address1
             $address.uuid | Should -Not -BeNullOrEmpty
@@ -130,9 +130,9 @@ Describe "Add Firewall Address" {
 
         It "Try to Add Address $pester_address1 (but there is already a object with same name)" {
             #Add first address
-            Add-FGTFirewallAddress -type ipmask -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0
+            Add-FGTFirewallAddress -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0
             #Add Second address with same name
-            { Add-FGTFirewallAddress -type ipmask -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0 } | Should -Throw "Already an address object using the same name"
+            { Add-FGTFirewallAddress -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0 } | Should -Throw "Already an address object using the same name"
 
         }
 
@@ -145,7 +145,7 @@ Describe "Configure Firewall Address" {
     Context "ipmask" {
 
         BeforeAll {
-            $address = Add-FGTFirewallAddress -type ipmask -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0
+            $address = Add-FGTFirewallAddress -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0
             $script:uuid = $address.uuid
         }
 
@@ -246,7 +246,7 @@ Describe "Copy Firewall Address" {
     Context "ipmask" {
 
         BeforeAll {
-            Add-FGTFirewallAddress -type ipmask -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0
+            Add-FGTFirewallAddress -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0
         }
 
         It "Copy Firewall Address ($pester_address1 => copy_pester_address1)" {
@@ -279,7 +279,7 @@ Describe "Remove Firewall Address" {
     Context "ipmask" {
 
         BeforeEach {
-            Add-FGTFirewallAddress -type ipmask -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0
+            Add-FGTFirewallAddress -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0
         }
 
         It "Remove Address $pester_address1 by pipeline" {
