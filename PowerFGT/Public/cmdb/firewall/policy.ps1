@@ -445,7 +445,7 @@ function Remove-FGTFirewallPolicy {
 
         .EXAMPLE
         $MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
-        PS C:\>$MyFGTPolicy | Remove-FGTFirewallPolicy -noconfirm
+        PS C:\>$MyFGTPolicy | Remove-FGTFirewallPolicy -confirm:$false
 
         Remove Policy object MyFGTPolicy with no confirmation
 
