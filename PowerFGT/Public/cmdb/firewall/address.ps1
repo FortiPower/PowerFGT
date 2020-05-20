@@ -42,6 +42,7 @@ function Add-FGTFirewallAddress {
 
     Param(
         [Parameter (Mandatory = $false, DontShow)]
+        [Obsolete("Use -ip or -fqdn instead")]
         [string]$type,
         [Parameter (Mandatory = $true)]
         [string]$name,
@@ -65,9 +66,6 @@ function Add-FGTFirewallAddress {
     )
 
     Begin {
-        If ($type) {
-            Write-Warning "The -type option is deprecated and will be removed in future releases. Use -ip or -fqdn instead"
-        }
     }
 
     Process {
