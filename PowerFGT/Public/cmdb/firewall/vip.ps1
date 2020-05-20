@@ -256,7 +256,7 @@ function Remove-FGTFirewallVip {
 
         .EXAMPLE
         $MyFGTVIP = Get-FGTFirewallVip -name MyFGTVIP
-        PS C:\>$MyFGTVIP | Remove-FGTFirewallVip -noconfirm
+        PS C:\>$MyFGTVIP | Remove-FGTFirewallVip -confirm:$false
 
         Remove VIP object MyFGTVIP with no confirmation
 
