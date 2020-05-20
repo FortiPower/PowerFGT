@@ -417,7 +417,7 @@ function Remove-FGTFirewallAddress {
 
         .EXAMPLE
         $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
-        PS C:\>$MyFGTAddress | Remove-FGTFirewallAddress -noconfirm
+        PS C:\>$MyFGTAddress | Remove-FGTFirewallAddress -confirm:$false
 
         Remove address object $MyFGTAddress with no confirmation
 
