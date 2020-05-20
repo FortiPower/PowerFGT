@@ -83,19 +83,21 @@ function Add-FGTFirewallAddress {
 
         $address = new-Object -TypeName PSObject
 
-        $address | add-member -name "type" -membertype NoteProperty -Value $PSCmdlet.ParameterSetName
-
         $address | add-member -name "name" -membertype NoteProperty -Value $name
 
-        if ( $PSCmdlet.ParameterSetName -eq 'ipmask' ) {
-            $subnet = $ip.ToString()
-            $subnet += "/"
-            $subnet += $mask.ToString()
-            $address | add-member -name "subnet" -membertype NoteProperty -Value $subnet
-        }
-
-        if ( $PSCmdlet.ParameterSetName -eq 'fqdn' ) {
-            $address | add-member -name "fqdn" -membertype NoteProperty -Value $fqdn
+        switch ( $PSCmdlet.ParameterSetName ) {
+            "ipmask" {
+                $address | add-member -name "type" -membertype NoteProperty -Value "ipmask"
+                $subnet = $ip.ToString()
+                $subnet += "/"
+                $subnet += $mask.ToString()
+                $address | add-member -name "subnet" -membertype NoteProperty -Value $subnet
+            }
+            "fqdn" {
+                $address | add-member -name "type" -membertype NoteProperty -Value "fqdn"
+                $address | add-member -name "fqdn" -membertype NoteProperty -Value $fqdn
+            }
+            default { }
         }
 
         if ( $PsBoundParameters.ContainsKey('interface') ) {
