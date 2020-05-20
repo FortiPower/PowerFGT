@@ -66,7 +66,7 @@ Describe "Get Firewall Address" {
 
 Describe "Add Firewall Address" {
 
-    Context "ipmask " {
+    Context "ipmask" {
 
         AfterEach {
             Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -confirm:$false
@@ -133,7 +133,6 @@ Describe "Add Firewall Address" {
             Add-FGTFirewallAddress -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0
             #Add Second address with same name
             { Add-FGTFirewallAddress -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0 } | Should -Throw "Already an address object using the same name"
-
         }
 
     }
