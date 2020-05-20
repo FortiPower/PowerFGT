@@ -377,6 +377,22 @@ Describe "Remove Firewall Address" {
         }
 
     }
+
+    Context "fqdn" {
+
+        BeforeEach {
+            Add-FGTFirewallAddress -Name $pester_address1 -fqdn fortipower.github.io
+        }
+
+        It "Remove Address $pester_address2 by pipeline" {
+            $address = Get-FGTFirewallAddress -name $pester_address2
+            $address | Remove-FGTFirewallAddress -confirm:$false
+            $address = Get-FGTFirewallAddress -name $pester_address2
+            $address | Should -Be $NULL
+        }
+
+    }
+
 }
 
 Disconnect-FGT -confirm:$false
