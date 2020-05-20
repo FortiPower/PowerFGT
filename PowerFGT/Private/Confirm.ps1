@@ -19,9 +19,6 @@ Function Confirm-FGTAddress {
     if ( -not ( $argument | get-member -name uuid -Membertype Properties)) {
         throw "Element specified does not contain a uuid property."
     }
-    if ( -not ( $argument | get-member -name subnet -Membertype Properties)) {
-        throw "Element specified does not contain an subnet property."
-    }
     if ( -not ( $argument | get-member -name type -Membertype Properties)) {
         throw "Element specified does not contain an type property."
     }
