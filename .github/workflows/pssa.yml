@@ -8,7 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: lint
-        uses: alagoutte/github-action-psscriptanalyzer@master
+        uses: alagoutte/github-action-psscriptanalyzer@dev
         with:
           settingsPath: .vscode/PSScriptAnalyzerSettings.psd1
           sendComment: false
