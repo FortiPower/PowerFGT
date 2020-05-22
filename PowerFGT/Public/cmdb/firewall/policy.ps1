@@ -76,7 +76,7 @@ function Add-FGTFirewallPolicy {
         [ValidateSet("accept", "deny")]
         [string]$action = "accept",
         [Parameter (Mandatory = $false)]
-        [switch]$status = $true,
+        [switch]$status,
         [Parameter (Mandatory = $false)]
         [string]$schedule = "always",
         [Parameter (Mandatory = $false)]
@@ -177,6 +177,11 @@ function Add-FGTFirewallPolicy {
         $policy | add-member -name "dstaddr" -membertype NoteProperty -Value $dstaddr_array
 
         $policy | add-member -name "action" -membertype NoteProperty -Value $action
+
+        #set status enable by default (PSSA don't like to set default value for a switch parameter)
+        if ( -not $PsBoundParameters.ContainsKey('status') ) {
+            $status = $true
+        }
 
         if ($status) {
             $policy | add-member -name "status" -membertype NoteProperty -Value "enable"

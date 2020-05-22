@@ -1,4 +1,4 @@
-#
+﻿#
 # Copyright 2019, Alexis La Goutte <alexis dot lagoutte at gmail dot com>
 # Copyright 2019, Cédric Moreau <moreaucedric0 at gmail dot com>
 #
@@ -213,7 +213,7 @@ function Deploy-FGTVm {
 
 
         #Check if VMWare PowerCLI is available (not use #Require because not mandatory module)
-        if ((Get-InstalledModule -name VMware.VimAutomation.Common -ErrorAction SilentlyContinue) -eq $null) {
+        if ($null -eq (Get-InstalledModule -name VMware.VimAutomation.Common -ErrorAction SilentlyContinue)) {
             Throw "You need to install VMware.PowerCLI (Install-Module VMware.PowerCLI)"
         }
         #Write-Warning "You need to have a vSwitch configured on your vSphere environment even if you use a DVS"
@@ -223,7 +223,7 @@ function Deploy-FGTVm {
             "name"   = $name_vm
         }
 
-        if ($global:DefaultVIServers.Count -eq 0) {
+        if ($DefaultVIServers.Count -eq 0) {
             throw "Need to be connect to vCenter (use Connect-VIServer)"
         }
         if (Get-VM $name_vm -ErrorAction "silentlyContinue") {
