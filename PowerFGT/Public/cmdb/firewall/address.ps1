@@ -322,8 +322,7 @@ function Set-FGTFirewallAddress {
 
     #>
 
-    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
-    [CmdletBinding(DefaultParameterSetName = 'default')]
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium', DefaultParameterSetName = 'default')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript( { Confirm-FGTAddress $_ })]
@@ -369,7 +368,7 @@ function Set-FGTFirewallAddress {
             $address.name = $name
         }
 
-        if ( $address.type -ne $PSCmdlet.ParameterSetName ) {
+        if ( $PSCmdlet.ParameterSetName -ne "default" -and $address.type -ne $PSCmdlet.ParameterSetName ) {
             throw "Address type ($($address.type)) need to be on the same type ($($PSCmdlet.ParameterSetName))"
         }
 
