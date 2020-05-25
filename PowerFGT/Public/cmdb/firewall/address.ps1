@@ -1,4 +1,4 @@
-#
+﻿#
 # Copyright 2019, Alexis La Goutte <alexis dot lagoutte at gmail dot com>
 # Copyright 2019, Benjamin Perrier <ben dot perrier at outlook dot com>
 #
@@ -323,15 +323,18 @@ function Set-FGTFirewallAddress {
     #>
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
+    [CmdletBinding(DefaultParameterSetName = 'default')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript( { Confirm-FGTAddress $_ })]
         [psobject]$address,
         [Parameter (Mandatory = $false)]
         [string]$name,
-        [Parameter (Mandatory = $false)]
+        [Parameter (Mandatory = $false, ParameterSetName = "fqdn")]
+        [string]$fqdn,
+        [Parameter (Mandatory = $false, ParameterSetName = "ipmask")]
         [ipaddress]$ip,
-        [Parameter (Mandatory = $false)]
+        [Parameter (Mandatory = $false, ParameterSetName = "ipmask")]
         [ipaddress]$mask,
         [Parameter (Mandatory = $false)]
         [string]$interface,
@@ -366,24 +369,38 @@ function Set-FGTFirewallAddress {
             $address.name = $name
         }
 
-        if ( $PsBoundParameters.ContainsKey('ip') -or $PsBoundParameters.ContainsKey('mask') ) {
-            if ( $PsBoundParameters.ContainsKey('ip') ) {
-                $subnet = $ip.ToString()
-            }
-            else {
-                $subnet = ($address.subnet -split ' ')[0]
-            }
+        if ( $address.type -ne $PSCmdlet.ParameterSetName ) {
+            throw "Address type ($($address.type)) need to be on the same type ($($PSCmdlet.ParameterSetName))"
+        }
 
-            $subnet += "/"
+        switch ( $PSCmdlet.ParameterSetName ) {
+            "ipmask" {
+                if ( $PsBoundParameters.ContainsKey('ip') -or $PsBoundParameters.ContainsKey('mask') ) {
+                    if ( $PsBoundParameters.ContainsKey('ip') ) {
+                        $subnet = $ip.ToString()
+                    }
+                    else {
+                        $subnet = ($address.subnet -split ' ')[0]
+                    }
 
-            if ( $PsBoundParameters.ContainsKey('mask') ) {
-                $subnet += $mask.ToString()
-            }
-            else {
-                $subnet += ($address.subnet -split ' ')[1]
-            }
+                    $subnet += "/"
 
-            $_address | add-member -name "subnet" -membertype NoteProperty -Value $subnet
+                    if ( $PsBoundParameters.ContainsKey('mask') ) {
+                        $subnet += $mask.ToString()
+                    }
+                    else {
+                        $subnet += ($address.subnet -split ' ')[1]
+                    }
+
+                    $_address | add-member -name "subnet" -membertype NoteProperty -Value $subnet
+                }
+            }
+            "fqdn" {
+                if ( $PsBoundParameters.ContainsKey('fqdn') ) {
+                    $_address | add-member -name "fqdn" -membertype NoteProperty -Value $fqdn
+                }
+            }
+            default { }
         }
 
         if ( $PsBoundParameters.ContainsKey('interface') ) {
