@@ -156,7 +156,7 @@ Describe "Add Firewall Address" {
             $address.visibility | Should -Be $true
         }
 
-        It "Add Address $pester_address2 (type ipmask and interface)" {
+        It "Add Address $pester_address2 (type fqdn and interface)" {
             Add-FGTFirewallAddress -Name $pester_address2 -fqdn fortipower.github.io -interface port2
             $address = Get-FGTFirewallAddress -name $pester_address2
             $address.name | Should -Be $pester_address2
@@ -169,7 +169,7 @@ Describe "Add Firewall Address" {
             $address.visibility | Should -Be $true
         }
 
-        It "Add Address $pester_address2 (type ipmask and comment)" {
+        It "Add Address $pester_address2 (type fqdn and comment)" {
             Add-FGTFirewallAddress -Name $pester_address2 -fqdn fortipower.github.io -comment "Add via PowerFGT"
             $address = Get-FGTFirewallAddress -name $pester_address2
             $address.name | Should -Be $pester_address2
@@ -182,7 +182,7 @@ Describe "Add Firewall Address" {
             $address.visibility | Should -Be $true
         }
 
-        It "Add Address $pester_address2 (type ipmask and visiblity disable)" {
+        It "Add Address $pester_address2 (type fqdn and visiblity disable)" {
             Add-FGTFirewallAddress -Name $pester_address2 -fqdn fortipower.github.io -visibility:$false
             $address = Get-FGTFirewallAddress -name $pester_address2
             $address.name | Should -Be $pester_address2
@@ -351,9 +351,9 @@ Describe "Copy Firewall Address" {
         }
 
         AfterAll {
-            #Remove copy_pester_address1
+            #Remove copy_pester_address2
             Get-FGTFirewallAddress -name copy_pester_address2 | Remove-FGTFirewallAddress -confirm:$false
-            #Remove $pester_address1
+            #Remove $pester_address2
             Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -confirm:$false
         }
 
@@ -380,7 +380,7 @@ Describe "Remove Firewall Address" {
     Context "fqdn" {
 
         BeforeEach {
-            Add-FGTFirewallAddress -Name $pester_address1 -fqdn fortipower.github.io
+            Add-FGTFirewallAddress -Name $pester_address2 -fqdn fortipower.github.io
         }
 
         It "Remove Address $pester_address2 by pipeline" {
