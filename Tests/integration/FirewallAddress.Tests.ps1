@@ -12,7 +12,8 @@ Describe "Get Firewall Address" {
     BeforeAll {
         $addr = Add-FGTFirewallAddress -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0
         $script:uuid = $addr.uuid
-        Add-FGTFirewallAddress -Name $pester_address2 -ip 192.0.3.0 -mask 255.255.255.0
+        Add-FGTFirewallAddress -Name $pester_address2 -fqdn fortipower.github.io
+        Add-FGTFirewallAddress -Name $pester_address3 -startip 192.0.2.1 -endip 192.0.2.100
     }
 
     It "Get Address Does not throw an error" {
@@ -60,6 +61,7 @@ Describe "Get Firewall Address" {
     AfterAll {
         Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -confirm:$false
         Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -confirm:$false
+        Get-FGTFirewallAddress -name $pester_address3 | Remove-FGTFirewallAddress -confirm:$false
     }
 
 }
