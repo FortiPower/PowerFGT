@@ -278,6 +278,10 @@ Describe "Configure Firewall Address" {
             $address.visibility | Should -Be "disable"
         }
 
+        It "Try to Configure Address $pester_address1 (but it is wrong type...)" {
+            { Get-FGTFirewallAddress -name $pester_address1 | Set-FGTFirewallAddress -fqdn "fortipower.github.io" } | Should -Throw "Address type (ipmask) need to be on the same type (fqdn)"
+        }
+
         It "Change Name" {
             Get-FGTFirewallAddress -name $pester_address1 | Set-FGTFirewallAddress -name "pester_address_change"
             $address = Get-FGTFirewallAddress -name "pester_address_change"
