@@ -102,9 +102,9 @@ function Add-FGTFirewallAddress {
                 $address | add-member -name "subnet" -membertype NoteProperty -Value $subnet
             }
             "iprange" {
-                $address | add-member -name "type" -membertype NoteProperty -Value "ipraange"
-                $address | add-member -name "start-ip" -membertype NoteProperty -Value $startip
-                $address | add-member -name "end-ip" -membertype NoteProperty -Value $endip
+                $address | add-member -name "type" -membertype NoteProperty -Value "iprange"
+                $address | add-member -name "start-ip" -membertype NoteProperty -Value $startip.ToString()
+                $address | add-member -name "end-ip" -membertype NoteProperty -Value $endip.ToString()
             }
             "fqdn" {
                 $address | add-member -name "type" -membertype NoteProperty -Value "fqdn"
