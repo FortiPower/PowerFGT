@@ -302,6 +302,83 @@ Describe "Configure Firewall Address" {
 
     }
 
+    Context "fqdn" {
+
+        BeforeAll {
+            $address = Add-FGTFirewallAddress -Name $pester_address2 -fqdn fortipower.github.io
+            $script:uuid = $address.uuid
+        }
+
+        It "Change fqdn" {
+            Get-FGTFirewallAddress -name $pester_address2 | Set-FGTFirewallAddress -fqdn fortipower.github.com
+            $address = Get-FGTFirewallAddress -name $pester_address2
+            $address.name | Should -Be $pester_address2
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "fqdn"
+            $address.fqdn | Should -Be "fortipower.github.com"
+            $address.'associated-interface' | Should -BeNullOrEmpty
+            $address.comment | Should -BeNullOrEmpty
+            $address.visibility | Should -Be $true
+        }
+
+        It "Change (Associated) Interface" {
+            Get-FGTFirewallAddress -name $pester_address2 | Set-FGTFirewallAddress -interface port2
+            $address = Get-FGTFirewallAddress -name $pester_address2
+            $address.name | Should -Be $pester_address2
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "fqdn"
+            $address.fqdn | Should -Be "fortipower.github.com"
+            $address.'associated-interface' | Should -Be "port2"
+            $address.comment | Should -BeNullOrEmpty
+            $address.visibility | Should -Be $true
+        }
+
+        It "Change comment" {
+            Get-FGTFirewallAddress -name $pester_address2 | Set-FGTFirewallAddress -comment "Modified by PowerFGT"
+            $address = Get-FGTFirewallAddress -name $pester_address2
+            $address.name | Should -Be $pester_address2
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "fqdn"
+            $address.fqdn | Should -Be "fortipower.github.com"
+            $address.'associated-interface' | Should -Be "port2"
+            $address.comment | Should -Be "Modified by PowerFGT"
+            $address.visibility | Should -Be $true
+        }
+
+        It "Change visiblity" {
+            Get-FGTFirewallAddress -name $pester_address2 | Set-FGTFirewallAddress -visibility:$false
+            $address = Get-FGTFirewallAddress -name $pester_address2
+            $address.name | Should -Be $pester_address2
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "fqdn"
+            $address.fqdn | Should -Be "fortipower.github.com"
+            $address.'associated-interface' | Should -Be "port2"
+            $address.comment | Should -Be "Modified by PowerFGT"
+            $address.visibility | Should -Be "disable"
+        }
+
+        It "Try to Configure Address $pester_address2 (but it is wrong type...)" {
+            { Get-FGTFirewallAddress -name $pester_address2 | Set-FGTFirewallAddress -ip 192.0.2.0 -mask 255.255.255.0 } | Should -Throw "Address type (fqdn) need to be on the same type (ipmask)"
+        }
+
+        It "Change Name" {
+            Get-FGTFirewallAddress -name $pester_address2 | Set-FGTFirewallAddress -name "pester_address_change"
+            $address = Get-FGTFirewallAddress -name "pester_address_change"
+            $address.name | Should -Be "pester_address_change"
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "fqdn"
+            $address.fqdn | Should -Be "fortipower.github.com"
+            $address.'associated-interface' | Should -Be "port2"
+            $address.comment | Should -Be "Modified by PowerFGT"
+            $address.visibility | Should -Be "disable"
+        }
+
+        AfterAll {
+            Get-FGTFirewallAddress -uuid $script:uuid | Remove-FGTFirewallAddress -confirm:$false
+        }
+
+    }
+
 }
 
 Describe "Copy Firewall Address" {
