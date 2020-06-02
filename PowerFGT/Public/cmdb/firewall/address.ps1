@@ -11,39 +11,46 @@ function Add-FGTFirewallAddress {
         Add a FortiGate Address
 
         .DESCRIPTION
-        Add a FortiGate Address (ipmask, fqdn, widlcard...)
+        Add a FortiGate Address (ipmask, fqdn)
 
         .EXAMPLE
-        Add-FGTFirewallAddress -type ipmask -Name FGT -ip 192.0.2.0 -mask 255.255.255.0
+        Add-FGTFirewallAddress -Name FGT -ip 192.0.2.0 -mask 255.255.255.0
 
         Add Address object type ipmask with name FGT and value 192.0.2.0/24
 
         .EXAMPLE
-        Add-FGTFirewallAddress -type ipmask -Name FGT -ip 192.0.2.0 -mask 255.255.255.0 -interface port2
+        Add-FGTFirewallAddress -Name FGT -ip 192.0.2.0 -mask 255.255.255.0 -interface port2
 
         Add Address object type ipmask with name FGT, value 192.0.2.0/24 and associated to interface port2
 
         .EXAMPLE
-        Add-FGTFirewallAddress -type ipmask -Name FGT -ip 192.0.2.0 -mask 255.255.255.0 -comment "My FGT Address"
+        Add-FGTFirewallAddress -Name FGT -ip 192.0.2.0 -mask 255.255.255.0 -comment "My FGT Address"
 
         Add Address object type ipmask with name FGT, value 192.0.2.0/24 and a comment
 
         .EXAMPLE
-        Add-FGTFirewallAddress -type ipmask -Name FGT -ip 192.0.2.0 -mask 255.255.255.0 -visibility:$false
+        Add-FGTFirewallAddress -Name FGT -ip 192.0.2.0 -mask 255.255.255.0 -visibility:$false
 
         Add Address object type ipmask with name FGT, value 192.0.2.0/24 and disabled visibility
+
+        .EXAMPLE
+        Add-FGTFirewallAddress -Name FortiPower -fqdn fortipower.github.io
+
+        Add Address object type fqdn with name FortiPower and value fortipower.github.io
 
     #>
 
     Param(
-        [Parameter (Mandatory = $true)]
-        [ValidateSet("ipmask")]
+        [Parameter (Mandatory = $false, DontShow)]
+        [Obsolete("Use -ip or -fqdn instead")]
         [string]$type,
         [Parameter (Mandatory = $true)]
         [string]$name,
-        [Parameter (Mandatory = $false)]
+        [Parameter (Mandatory = $false, ParameterSetName = "fqdn")]
+        [string]$fqdn,
+        [Parameter (Mandatory = $false, ParameterSetName = "ipmask")]
         [ipaddress]$ip,
-        [Parameter (Mandatory = $false)]
+        [Parameter (Mandatory = $false, ParameterSetName = "ipmask")]
         [ipaddress]$mask,
         [Parameter (Mandatory = $false)]
         [string]$interface,
@@ -76,14 +83,22 @@ function Add-FGTFirewallAddress {
 
         $address = new-Object -TypeName PSObject
 
-        $address | add-member -name "type" -membertype NoteProperty -Value $type
-
         $address | add-member -name "name" -membertype NoteProperty -Value $name
 
-        $subnet = $ip.ToString()
-        $subnet += "/"
-        $subnet += $mask.ToString()
-        $address | add-member -name "subnet" -membertype NoteProperty -Value $subnet
+        switch ( $PSCmdlet.ParameterSetName ) {
+            "ipmask" {
+                $address | add-member -name "type" -membertype NoteProperty -Value "ipmask"
+                $subnet = $ip.ToString()
+                $subnet += "/"
+                $subnet += $mask.ToString()
+                $address | add-member -name "subnet" -membertype NoteProperty -Value $subnet
+            }
+            "fqdn" {
+                $address | add-member -name "type" -membertype NoteProperty -Value "fqdn"
+                $address | add-member -name "fqdn" -membertype NoteProperty -Value $fqdn
+            }
+            default { }
+        }
 
         if ( $PsBoundParameters.ContainsKey('interface') ) {
             #TODO check if the interface (zone ?) is valid
@@ -169,7 +184,7 @@ function Get-FGTFirewallAddress {
         Get list of all "address"
 
         .DESCRIPTION
-        Get list of all "address" (ipmask, fqdn, wildcard...)
+        Get list of all "address" (ipmask, fqdn ...)
 
         .EXAMPLE
         Get-FGTFirewallAddress
@@ -289,9 +304,9 @@ function Set-FGTFirewallAddress {
 
         .EXAMPLE
         $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
-        PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -ip 192.2.2.1
+        PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -ip 192.0.2.1
 
-        Change MyFGTAddress to value (ip) 192.2.2.1
+        Change MyFGTAddress to value (ip) 192.0.2.1
 
         .EXAMPLE
         $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
@@ -305,18 +320,26 @@ function Set-FGTFirewallAddress {
 
         Change MyFGTAddress to set a new comment and disabled visibility
 
+        .EXAMPLE
+        $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
+        PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -fqdn fortipower.github.io
+
+        Change MyFGTAddress to set a new fqdn fortipower.github.io
+
     #>
 
-    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium', DefaultParameterSetName = 'default')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript( { Confirm-FGTAddress $_ })]
         [psobject]$address,
         [Parameter (Mandatory = $false)]
         [string]$name,
-        [Parameter (Mandatory = $false)]
+        [Parameter (Mandatory = $false, ParameterSetName = "fqdn")]
+        [string]$fqdn,
+        [Parameter (Mandatory = $false, ParameterSetName = "ipmask")]
         [ipaddress]$ip,
-        [Parameter (Mandatory = $false)]
+        [Parameter (Mandatory = $false, ParameterSetName = "ipmask")]
         [ipaddress]$mask,
         [Parameter (Mandatory = $false)]
         [string]$interface,
@@ -351,24 +374,38 @@ function Set-FGTFirewallAddress {
             $address.name = $name
         }
 
-        if ( $PsBoundParameters.ContainsKey('ip') -or $PsBoundParameters.ContainsKey('mask') ) {
-            if ( $PsBoundParameters.ContainsKey('ip') ) {
-                $subnet = $ip.ToString()
-            }
-            else {
-                $subnet += ($address.subnet -split ' ')[0]
-            }
+        if ( $PSCmdlet.ParameterSetName -ne "default" -and $address.type -ne $PSCmdlet.ParameterSetName ) {
+            throw "Address type ($($address.type)) need to be on the same type ($($PSCmdlet.ParameterSetName))"
+        }
 
-            $subnet += "/"
+        switch ( $PSCmdlet.ParameterSetName ) {
+            "ipmask" {
+                if ( $PsBoundParameters.ContainsKey('ip') -or $PsBoundParameters.ContainsKey('mask') ) {
+                    if ( $PsBoundParameters.ContainsKey('ip') ) {
+                        $subnet = $ip.ToString()
+                    }
+                    else {
+                        $subnet = ($address.subnet -split ' ')[0]
+                    }
 
-            if ( $PsBoundParameters.ContainsKey('mask') ) {
-                $subnet += $mask.ToString()
-            }
-            else {
-                $subnet += ($address.subnet -split ' ')[1]
-            }
+                    $subnet += "/"
 
-            $_address | add-member -name "subnet" -membertype NoteProperty -Value $subnet
+                    if ( $PsBoundParameters.ContainsKey('mask') ) {
+                        $subnet += $mask.ToString()
+                    }
+                    else {
+                        $subnet += ($address.subnet -split ' ')[1]
+                    }
+
+                    $_address | add-member -name "subnet" -membertype NoteProperty -Value $subnet
+                }
+            }
+            "fqdn" {
+                if ( $PsBoundParameters.ContainsKey('fqdn') ) {
+                    $_address | add-member -name "fqdn" -membertype NoteProperty -Value $fqdn
+                }
+            }
+            default { }
         }
 
         if ( $PsBoundParameters.ContainsKey('interface') ) {
