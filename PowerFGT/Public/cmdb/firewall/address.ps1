@@ -19,7 +19,7 @@ function Add-FGTFirewallAddress {
         Add Address object type ipmask with name FGT and value 192.0.2.0/24
 
         .EXAMPLE
-        Add-FGTFirewallAddres -Name FGT -ip 192.0.2.0 -mask 255.255.255.0 -interface port2
+        Add-FGTFirewallAddress -Name FGT -ip 192.0.2.0 -mask 255.255.255.0 -interface port2
 
         Add Address object type ipmask with name FGT, value 192.0.2.0/24 and associated to interface port2
 
