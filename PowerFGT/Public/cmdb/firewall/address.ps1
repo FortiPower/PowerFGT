@@ -320,6 +320,12 @@ function Set-FGTFirewallAddress {
 
         Change MyFGTAddress to set a new comment and disabled visibility
 
+        .EXAMPLE
+        $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
+        PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -fqdn fortipower.github.io
+
+        Change MyFGTAddress to set a new fqdn fortipower.github.io
+
     #>
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium', DefaultParameterSetName = 'default')]
