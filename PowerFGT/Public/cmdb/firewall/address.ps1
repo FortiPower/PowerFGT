@@ -16,7 +16,7 @@ function Add-FGTFirewallAddress {
         .EXAMPLE
         Add-FGTFirewallAddress -Name FGT -ip 192.0.2.0 -mask 255.255.255.0
 
-        Add Address objet type ipmask with name FGT and value 192.0.2.0/24
+        Add Address object type ipmask with name FGT and value 192.0.2.0/24
 
         .EXAMPLE
         Add-FGTFirewallAddres -Name FGT -ip 192.0.2.0 -mask 255.255.255.0 -interface port2
@@ -34,7 +34,7 @@ function Add-FGTFirewallAddress {
         Add Address object type ipmask with name FGT, value 192.0.2.0/24 and disabled visibility
 
         .EXAMPLE
-         Add-FGTFirewallAddress -Name FortiPower -fqdn fortipower.github.io
+        Add-FGTFirewallAddress -Name FortiPower -fqdn fortipower.github.io
 
         Add Address object type fqdn with name FortiPower and value fortipower.github.io
 
@@ -184,7 +184,7 @@ function Get-FGTFirewallAddress {
         Get list of all "address"
 
         .DESCRIPTION
-        Get list of all "address" (ipmask, fqdn, wildcard...)
+        Get list of all "address" (ipmask, fqdn ...)
 
         .EXAMPLE
         Get-FGTFirewallAddress
@@ -310,13 +310,13 @@ function Set-FGTFirewallAddress {
 
         .EXAMPLE
         $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
-        PS C:\>$MyFGTAddress | SetFGTFirewallAddress -interface port1
+        PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -interface port1
 
         Change MyFGTAddress to set associated interface to port 1
 
         .EXAMPLE
         $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
-        PS C:\>$MyFGTAddress | SetFGTFirewallAddress -comment "My FGT Address" -visibility:$false
+        PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -comment "My FGT Address" -visibility:$false
 
         Change MyFGTAddress to set a new comment and disabled visibility
 
