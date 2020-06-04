@@ -39,7 +39,7 @@ function Add-FGTFirewallAddress {
         Add Address object type fqdn with name FortiPower and value fortipower.github.io
 
         .EXAMPLE
-         Add-FGTFirewallAddress -Name FGT-Range -startip 192.0.2.1 -endip 192.0.2.100
+        Add-FGTFirewallAddress -Name FGT-Range -startip 192.0.2.1 -endip 192.0.2.100
 
         Add Address object type iprange with name FGT-Range with start IP 192.0.2.1 and end ip 192.0.2.100
     #>
