@@ -301,12 +301,13 @@ function Remove-FGTFirewallProxyAddress {
 
         .EXAMPLE
         $MyFGTproxyAddress = Get-FGTFirewallProxyAddress -name MyFGTProxyAddress
-        PS C:\>$MyFGTproxyAddress | Remove-FGTFirewallProxyAddress -noconfirm
+        PS C:\>$MyFGTproxyAddress | Remove-FGTFirewallProxyAddress -confirm:$false
 
         Remove address object $MyFGTProxyAddress with no confirmation
 
     #>
 
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'high')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript( { Confirm-FGTProxyAddress $_ })]
@@ -331,21 +332,10 @@ function Remove-FGTFirewallProxyAddress {
 
         $uri = "api/v2/cmdb/firewall/proxy-address/$($address.name)"
 
-        if ( -not ( $Noconfirm )) {
-            $message = "Remove proxyaddress on Fortigate"
-            $question = "Proceed with removal of proxyAddress $($address.name) ?"
-            $choices = New-Object Collections.ObjectModel.Collection[Management.Automation.Host.ChoiceDescription]
-            $choices.Add((New-Object Management.Automation.Host.ChoiceDescription -ArgumentList '&Yes'))
-            $choices.Add((New-Object Management.Automation.Host.ChoiceDescription -ArgumentList '&No'))
-
-            $decision = $Host.UI.PromptForChoice($message, $question, $choices, 1)
-        }
-        else { $decision = 0 }
-        if ($decision -eq 0) {
-            Write-Progress -activity "Remove ProxyAddress"
+        if ($PSCmdlet.ShouldProcess($address.name, 'Remove Firewall Proxy Address')) {
             $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -connection $connection @invokeParams
-            Write-Progress -activity "Remove ProxyAddress" -completed
         }
+
     }
 
     End {
