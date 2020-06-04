@@ -455,6 +455,7 @@ Describe "Add Firewall Policy" {
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
         $policy.name | Should -Be $pester_policy1
         $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.policyid | Should -Be "23"
         $policy.srcintf.name | Should -Be "port1"
         $policy.dstintf.name | Should -Be "port2"
         $policy.srcaddr.name | Should -Be "all"
