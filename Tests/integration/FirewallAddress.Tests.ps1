@@ -145,7 +145,7 @@ Describe "Add Firewall Address" {
             Get-FGTFirewallAddress -name $pester_address3 | Remove-FGTFirewallAddress -confirm:$false
         }
 
-        It "Add Address $pester_address3 (type ipmask)" {
+        It "Add Address $pester_address3 (type iprange)" {
             Add-FGTFirewallAddress -Name $pester_address3 -startip 192.0.2.1 -endip 192.0.2.100
             $address = Get-FGTFirewallAddress -name $pester_address3
             $address.name | Should -Be $pester_address3
@@ -158,7 +158,7 @@ Describe "Add Firewall Address" {
             $address.visibility | Should -Be $true
         }
 
-        It "Add Address $pester_address3 (type ipmask and interface)" {
+        It "Add Address $pester_address3 (type iprange and interface)" {
             Add-FGTFirewallAddress -Name $pester_address3 -startip 192.0.2.1 -endip 192.0.2.100 -interface port2
             $address = Get-FGTFirewallAddress -name $pester_address3
             $address.name | Should -Be $pester_address3
@@ -171,7 +171,7 @@ Describe "Add Firewall Address" {
             $address.visibility | Should -Be $true
         }
 
-        It "Add Address $pester_address3 (type ipmask and comment)" {
+        It "Add Address $pester_address3 (type iprange and comment)" {
             Add-FGTFirewallAddress -Name $pester_address3 -startip 192.0.2.1 -endip 192.0.2.100 -comment "Add via PowerFGT"
             $address = Get-FGTFirewallAddress -name $pester_address3
             $address.name | Should -Be $pester_address3
@@ -184,7 +184,7 @@ Describe "Add Firewall Address" {
             $address.visibility | Should -Be $true
         }
 
-        It "Add Address $pester_address3 (type ipmask and visiblity disable)" {
+        It "Add Address $pester_address3 (type iprange and visiblity disable)" {
             Add-FGTFirewallAddress -Name $pester_address3 -startip 192.0.2.1 -endip 192.0.2.100 -visibility:$false
             $address = Get-FGTFirewallAddress -name $pester_address3
             $address.name | Should -Be $pester_address3
