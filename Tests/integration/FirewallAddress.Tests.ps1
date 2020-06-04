@@ -371,6 +371,101 @@ Describe "Configure Firewall Address" {
 
     }
 
+    Context "iprange" {
+
+        BeforeAll {
+            $address = Add-FGTFirewallAddress -Name $pester_address3 -startip 192.0.2.1 -endip 192.0.2.100
+            $script:uuid = $address.uuid
+        }
+
+        It "Change Start IP" {
+            Get-FGTFirewallAddress -name $pester_address3 | Set-FGTFirewallAddress -startip 192.0.2.99
+            $address = Get-FGTFirewallAddress -name $pester_address3
+            $address.name | Should -Be $pester_address3
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "iprange"
+            $address.'start-ip' | Should -Be "192.0.2.99"
+            $address.'end-ip' | Should -Be "192.0.2.100"
+            $address.'associated-interface' | Should -BeNullOrEmpty
+            $address.comment | Should -BeNullOrEmpty
+            $address.visibility | Should -Be $true
+        }
+
+        It "Change End IP" {
+            Get-FGTFirewallAddress -name $pester_address3 | Set-FGTFirewallAddress -endip 192.0.2.199
+            $address = Get-FGTFirewallAddress -name $pester_address3
+            $address.name | Should -Be $pester_address3
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "iprange"
+            $address.'start-ip' | Should -Be "192.0.2.99"
+            $address.'end-ip' | Should -Be "192.0.2.199"
+            $address.'associated-interface' | Should -BeNullOrEmpty
+            $address.comment | Should -BeNullOrEmpty
+            $address.visibility | Should -Be $true
+        }
+
+        It "Change (Associated) Interface" {
+            Get-FGTFirewallAddress -name $pester_address3 | Set-FGTFirewallAddress -interface port2
+            $address = Get-FGTFirewallAddress -name $pester_address3
+            $address.name | Should -Be $pester_address3
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "iprange"
+            $address.'start-ip' | Should -Be "192.0.2.99"
+            $address.'end-ip' | Should -Be "192.0.2.199"
+            $address.'associated-interface' | Should -Be "port2"
+            $address.comment | Should -BeNullOrEmpty
+            $address.visibility | Should -Be $true
+        }
+
+        It "Change comment" {
+            Get-FGTFirewallAddress -name $pester_address3 | Set-FGTFirewallAddress -comment "Modified by PowerFGT"
+            $address = Get-FGTFirewallAddress -name $pester_address3
+            $address.name | Should -Be $pester_address3
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "iprange"
+            $address.'start-ip' | Should -Be "192.0.2.99"
+            $address.'end-ip' | Should -Be "192.0.2.199"
+            $address.'associated-interface' | Should -Be "port2"
+            $address.comment | Should -Be "Modified by PowerFGT"
+            $address.visibility | Should -Be $true
+        }
+
+        It "Change visiblity" {
+            Get-FGTFirewallAddress -name $pester_address3 | Set-FGTFirewallAddress -visibility:$false
+            $address = Get-FGTFirewallAddress -name $pester_address3
+            $address.name | Should -Be $pester_address3
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "iprange"
+            $address.'start-ip' | Should -Be "192.0.2.99"
+            $address.'end-ip' | Should -Be "192.0.2.199"
+            $address.'associated-interface' | Should -Be "port2"
+            $address.comment | Should -Be "Modified by PowerFGT"
+            $address.visibility | Should -Be "disable"
+        }
+
+        It "Try to Configure Address $pester_address3 (but it is wrong type...)" {
+            { Get-FGTFirewallAddress -name $pester_address3 | Set-FGTFirewallAddress -fqdn "fortipower.github.io" } | Should -Throw "Address type (iprange) need to be on the same type (fqdn)"
+        }
+
+        It "Change Name" {
+            Get-FGTFirewallAddress -name $pester_address3 | Set-FGTFirewallAddress -name "pester_address_change"
+            $address = Get-FGTFirewallAddress -name "pester_address_change"
+            $address.name | Should -Be "pester_address_change"
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "iprange"
+            $address.'start-ip' | Should -Be "192.0.2.99"
+            $address.'end-ip' | Should -Be "192.0.2.199"
+            $address.'associated-interface' | Should -Be "port2"
+            $address.comment | Should -Be "Modified by PowerFGT"
+            $address.visibility | Should -Be "disable"
+        }
+
+        AfterAll {
+            Get-FGTFirewallAddress -uuid $script:uuid | Remove-FGTFirewallAddress -confirm:$false
+        }
+
+    }
+
     Context "fqdn" {
 
         BeforeAll {
