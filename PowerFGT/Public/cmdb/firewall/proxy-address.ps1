@@ -92,7 +92,7 @@ function Add-FGTFirewallProxyAddress {
             if (!(Get-FGTFirewallAddress @invokeParams -name $hostObjectName -connection $connection) -and `
                     !(Get-FGTFirewallProxyAddress @invokeParams -name $hostObjectName -connection $connection) `
             ) {
-                Throw "FirewallAddres or FirewallProxyAddres $hostObjectName not Found"
+                Throw "FirewallAddress or FirewallProxyAddress $hostObjectName not Found"
             }
             $proxyaddress | add-member -name "host" -membertype NoteProperty -Value $hostObjectName
             $proxyaddress | add-member -name "path" -membertype NoteProperty -Value $url
@@ -102,7 +102,7 @@ function Add-FGTFirewallProxyAddress {
         if ( $PSCmdlet.ParameterSetName -eq 'method' ) {
             if (!(Get-FGTFirewallAddress @invokeParams -name $hostObjectName -connection $connection) `
             ) {
-                Throw "FirewallAddres $hostObjectName not Found"
+                Throw "FirewallAddress $hostObjectName not Found"
             }
             $proxyaddress | add-member -name "host" -membertype NoteProperty -Value $hostObjectName
             $proxyaddress | add-member -name "method" -membertype NoteProperty -Value $method
