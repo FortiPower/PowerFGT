@@ -21,12 +21,12 @@ function Add-FGTFirewallProxyAddress {
         .EXAMPLE
         Add-FGTFirewallProxyAddress -Name FGT -method get -hostObjectName MyFGTAddress -comment "Get-only allowed to MyFGTAddress"
 
-        Add ProxyAddress object type methode with name FGT, only allow method GET to MyHost and a comment
+        Add ProxyAddress object type method with name FGT, only allow method GET to MyHost and a comment
 
         .EXAMPLE
-        Add-FGTFirewallProxyAddress -name FGT -hostObjectName 'www.fortinet.com' -path '/FortiPower/PowerFGT' -visibility:$false
+        Add-FGTFirewallProxyAddress -name FGT -hostObjectName fortipower.github.io -path '/PowerFGT' -visibility:$false
 
-        Add ProxyAddress object type url with name FGT, only allow path '/FortiPower/PowerFGT' to www.fortinet.com  and disabled visibility
+        Add ProxyAddress object type url with name FGT, only allow path '/PowerFGT' to fortipower.github.io and disabled visibility
 
         Todo: add the Category, UA and Header types
     #>
