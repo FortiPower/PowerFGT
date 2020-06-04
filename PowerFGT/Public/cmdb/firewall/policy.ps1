@@ -58,12 +58,19 @@ function Add-FGTFirewallPolicy {
         Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -nat -ippool "MyIPPool"
 
         Add a MyFGTPolicy with IP Pool MyIPPool (with nat)
+
+        .EXAMPLE
+        Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -policyid 23
+
+        Add a MyFGTPolicy with Policy ID equal 23
     #>
 
 
     Param(
         [Parameter (Mandatory = $false)]
         [string]$name,
+        [Parameter (Mandatory = $false)]
+        [int]$policyid,
         [Parameter (Mandatory = $true)]
         [string[]]$srcintf,
         [Parameter (Mandatory = $true)]
@@ -166,6 +173,10 @@ function Add-FGTFirewallPolicy {
 
         if ( $PsBoundParameters.ContainsKey('name') ) {
             $policy | add-member -name "name" -membertype NoteProperty -Value $name
+        }
+
+        if ( $PsBoundParameters.ContainsKey('policyid') ) {
+            $policy | add-member -name "policyid" -membertype NoteProperty -Value $policyid
         }
 
         $policy | add-member -name "srcintf" -membertype NoteProperty -Value $srcintf_array
