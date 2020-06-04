@@ -32,8 +32,6 @@ function Add-FGTFirewallProxyAddress {
     #>
     [CmdletBinding(DefaultParameterSetName = "default")]
     Param(
-        [Parameter (Mandatory = $false, DontShow)]
-        [string]$type,
         [Parameter (Mandatory = $true)]
         [ValidateLength(0, 35)]
         [string]$name,
@@ -59,9 +57,6 @@ function Add-FGTFirewallProxyAddress {
     )
 
     Begin {
-        If ($type) {
-            Write-Warning "The -type option is deprecated and will be removed in future releases. Use -ip or -fqdn instead"
-        }
     }
 
     Process {
