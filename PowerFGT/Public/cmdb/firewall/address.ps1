@@ -349,7 +349,7 @@ function Set-FGTFirewallAddress {
         $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
         PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -endip 192.0.2.200
 
-        Change MyFGTAddress to set a new enip (iprange) 192.0.2.200
+        Change MyFGTAddress to set a new endip (iprange) 192.0.2.200
 
     #>
 
