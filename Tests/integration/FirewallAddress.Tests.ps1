@@ -576,6 +576,34 @@ Describe "Copy Firewall Address" {
 
     }
 
+    Context "iprange" {
+
+        BeforeAll {
+            Add-FGTFirewallAddress -Name $pester_address3 -startip 192.0.2.1 -endip 192.0.2.100
+        }
+
+        It "Copy Firewall Address ($pester_address3 => copy_pester_address3)" {
+            Get-FGTFirewallAddress -name $pester_address3 | Copy-FGTFirewallAddress -name copy_pester_address3
+            $address = Get-FGTFirewallAddress -name copy_pester_address3
+            $address.name | Should -Be copy_pester_address3
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "iprange"
+            $address.'start-ip' | Should -Be "192.0.2.1"
+            $address.'end-ip' | Should -Be "192.0.2.100"
+            $address.'associated-interface' | Should -BeNullOrEmpty
+            $address.comment | Should -BeNullOrEmpty
+            $address.visibility | Should -Be $true
+        }
+
+        AfterAll {
+            #Remove copy_pester_address3
+            Get-FGTFirewallAddress -name copy_pester_address3 | Remove-FGTFirewallAddress -confirm:$false
+            #Remove $pester_address3
+            Get-FGTFirewallAddress -name $pester_address3 | Remove-FGTFirewallAddress -confirm:$false
+        }
+
+    }
+
     Context "fqdn" {
 
         BeforeAll {
@@ -617,6 +645,21 @@ Describe "Remove Firewall Address" {
             $address = Get-FGTFirewallAddress -name $pester_address1
             $address | Remove-FGTFirewallAddress -confirm:$false
             $address = Get-FGTFirewallAddress -name $pester_address1
+            $address | Should -Be $NULL
+        }
+
+    }
+
+    Context "iprange" {
+
+        BeforeEach {
+            Add-FGTFirewallAddress -Name $pester_address3 -startip 192.0.2.1 -endip 192.0.2.100
+        }
+
+        It "Remove Address $pester_address3 by pipeline" {
+            $address = Get-FGTFirewallAddress -name $pester_address3
+            $address | Remove-FGTFirewallAddress -confirm:$false
+            $address = Get-FGTFirewallAddress -name $pester_address3
             $address | Should -Be $NULL
         }
 
