@@ -1,6 +1,5 @@
 #
-# Copyright 2019, Alexis La Goutte <alexis dot lagoutte at gmail dot com>
-# Copyright 2019, Benjamin Perrier <ben dot perrier at outlook dot com>
+# Copyright 2020, Alexis La Goutte <alexis dot lagoutte at gmail dot com>
 # Copyright 2020, Arthur Heijnen <arthur dot heijnen at live dot nl>
 #
 # SPDX-License-Identifier: Apache-2.0
