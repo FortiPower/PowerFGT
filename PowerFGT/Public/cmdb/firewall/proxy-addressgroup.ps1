@@ -32,7 +32,7 @@ function Add-FGTFirewallProxyAddressGroup {
 
     Param(
         [Parameter (Mandatory = $true)]
-        [ValidateSet("dst","src")]
+        [ValidateSet("dst", "src")]
         [string]$type,
         [Parameter (Mandatory = $true)]
         [string]$name,

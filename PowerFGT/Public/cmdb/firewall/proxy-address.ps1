@@ -43,7 +43,7 @@ function Add-FGTFirewallProxyAddress {
         [Parameter (Mandatory = $false, ParameterSetName = "url")]
         [string]$url,
         [Parameter (Mandatory = $false, ParameterSetName = "method")]
-        [ValidateSet("connect", "delete", "get", "head", "options", "post", "put", "trace",IgnoreCase = $false)]
+        [ValidateSet("connect", "delete", "get", "head", "options", "post", "put", "trace", IgnoreCase = $false)]
         [string]$method,
         [Parameter (Mandatory = $false, ParameterSetName = "url")]
         [Parameter (ParameterSetName = "method")]
@@ -60,7 +60,7 @@ function Add-FGTFirewallProxyAddress {
     )
 
     Begin {
-        If ($type){
+        If ($type) {
             Write-Warning "The -type option is deprecated and will be removed in future releases. Use -ip or -fqdn instead"
         }
     }
@@ -83,27 +83,27 @@ function Add-FGTFirewallProxyAddress {
         $proxyaddress | add-member -name "type" -membertype NoteProperty -Value $PSCmdlet.ParameterSetName
 
         $proxyaddress | add-member -name "name" -membertype NoteProperty -Value $name
-        
-        
+
+
         if ( $PSCmdlet.ParameterSetName -eq 'host-regex' ) {
             $proxyaddress | add-member "host-regex" -membertype NoteProperty -Value $hostregex
         }
 
         if ( $PSCmdlet.ParameterSetName -eq 'url' ) {
             if (!(Get-FGTFirewallAddress @invokeParams -name $hostObjectName -connection $connection) -and `
-                !(Get-FGTFirewallProxyAddress @invokeParams -name $hostObjectName -connection $connection) `
-            ){
-                    Throw "FirewallAddres or FirewallProxyAddres $hostObjectName not Found"
+                    !(Get-FGTFirewallProxyAddress @invokeParams -name $hostObjectName -connection $connection) `
+            ) {
+                Throw "FirewallAddres or FirewallProxyAddres $hostObjectName not Found"
             }
             $proxyaddress | add-member -name "host" -membertype NoteProperty -Value $hostObjectName
             $proxyaddress | add-member -name "path" -membertype NoteProperty -Value $url
         }
 
-        
+
         if ( $PSCmdlet.ParameterSetName -eq 'method' ) {
             if (!(Get-FGTFirewallAddress @invokeParams -name $hostObjectName -connection $connection) `
-            ){
-                    Throw "FirewallAddres $hostObjectName not Found"
+            ) {
+                Throw "FirewallAddres $hostObjectName not Found"
             }
             $proxyaddress | add-member -name "host" -membertype NoteProperty -Value $hostObjectName
             $proxyaddress | add-member -name "method" -membertype NoteProperty -Value $method
@@ -171,9 +171,9 @@ function Copy-FGTFirewallProxyAddress {
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
         }
-        
+
         $uri = "api/v2/cmdb/firewall/proxy-address/$($address.name)/?action=clone&nkey=$($name)"
-        
+
         Invoke-FGTRestMethod -method "POST" -uri $uri -connection $connection @invokeParams | out-Null
 
         Get-FGTFirewallproxyAddress -connection $connection @invokeParams -name $name

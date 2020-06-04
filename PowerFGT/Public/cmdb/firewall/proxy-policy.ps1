@@ -136,7 +136,7 @@ function Add-FGTFirewallProxyPolicy {
         }
 
         $policy = new-Object -TypeName PSObject
-        
+
         $policy | add-member -name "proxy" -membertype NoteProperty -Value $proxytype
 
         $policy | add-member -name "dstintf" -membertype NoteProperty -Value $dstintf_array
