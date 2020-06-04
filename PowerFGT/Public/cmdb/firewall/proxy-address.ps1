@@ -40,7 +40,7 @@ function Add-FGTFirewallProxyAddress {
         [Parameter (Mandatory = $false, ParameterSetName = "host-regex")]
         [string]$hostregex,
         [Parameter (Mandatory = $false, ParameterSetName = "url")]
-        [string]$url,
+        [string]$path,
         [Parameter (Mandatory = $false, ParameterSetName = "method")]
         [ValidateSet("connect", "delete", "get", "head", "options", "post", "put", "trace", IgnoreCase = $false)]
         [string]$method,
@@ -95,7 +95,7 @@ function Add-FGTFirewallProxyAddress {
                 Throw "FirewallAddress or FirewallProxyAddress $hostObjectName not Found"
             }
             $proxyaddress | add-member -name "host" -membertype NoteProperty -Value $hostObjectName
-            $proxyaddress | add-member -name "path" -membertype NoteProperty -Value $url
+            $proxyaddress | add-member -name "path" -membertype NoteProperty -Value $path
         }
 
 
