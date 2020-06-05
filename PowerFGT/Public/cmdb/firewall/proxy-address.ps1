@@ -67,7 +67,7 @@ function Add-FGTFirewallProxyAddress {
         }
 
         if ( Get-FGTFirewallProxyAddress @invokeParams -name $name -connection $connection) {
-            Throw "Already an ProxyAddress object using the same name"
+            Throw "Already a ProxyAddress object using the same name"
         }
 
         $uri = "api/v2/cmdb/firewall/proxy-address"
@@ -291,7 +291,7 @@ function Remove-FGTFirewallProxyAddress {
         Remove a FortiGate ProxyAddress
 
         .DESCRIPTION
-        Remove an Proxyaddress object on the FortiGate
+        Remove a Proxyaddress object on the FortiGate
 
         .EXAMPLE
         $MyFGTProxyAddress = Get-FGTFirewallProxyAddress -name MyFGTProxyAddress
