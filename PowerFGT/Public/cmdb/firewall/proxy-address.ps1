@@ -313,8 +313,6 @@ function Remove-FGTFirewallProxyAddress {
         [ValidateScript( { Confirm-FGTProxyAddress $_ })]
         [psobject]$address,
         [Parameter(Mandatory = $false)]
-        [switch]$noconfirm,
-        [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
