@@ -91,7 +91,7 @@ function Connect-FGT {
 
     Process {
 
-        $connection = @{server = ""; session = ""; httpOnly = $false; port = ""; headers = ""; invokeParams = ""; vdom = "" }
+        $connection = @{server = ""; session = ""; httpOnly = $false; port = ""; headers = ""; invokeParams = ""; vdom = ""; version = "" }
 
         #If there is a password (and a user), create a credentials
         if ($Password) {
@@ -120,7 +120,8 @@ function Connect-FGT {
                 $port = 80
             }
             $connection.httpOnly = $true
-            $url = "http://${Server}:${port}/logincheck"
+            $url = "http://${Server}:${port}/"
+
         }
         else {
             if (!$port) {
@@ -137,11 +138,12 @@ function Connect-FGT {
                 }
             }
 
-            $url = "https://${Server}:${port}/logincheck"
+            $url = "https://${Server}:${port}/"
         }
 
+        $uri = $url + "logincheck"
         try {
-            Invoke-WebRequest $url -Method POST -Body $postParams -SessionVariable FGT @invokeParams | Out-Null
+            Invoke-WebRequest $uri -Method POST -Body $postParams -SessionVariable FGT @invokeParams | Out-Null
         }
         catch {
             Show-FGTException $_
@@ -149,7 +151,7 @@ function Connect-FGT {
         }
 
         #Search crsf cookie and to X-CSRFTOKEN
-        $cookies = $FGT.Cookies.GetCookies($url)
+        $cookies = $FGT.Cookies.GetCookies($uri)
         foreach ($cookie in $cookies) {
             if ($cookie.name -eq "ccsrftoken") {
                 $cookie_csrf = $cookie.value
@@ -166,12 +168,21 @@ function Connect-FGT {
         #Add csrf cookie to header (X-CSRFTOKEN)
         $headers = @{"X-CSRFTOKEN" = $cookie_csrf }
 
+        $uri = $url + "api/v2/monitor/system/firmware"
+        try {
+            $version = Invoke-RestMethod $uri -Method "get" -WebSession $FGT @invokeParams
+        }
+        catch {
+            throw "Unable to found FGT version"
+        }
+
         $connection.server = $server
         $connection.session = $FGT
         $connection.headers = $headers
         $connection.port = $port
         $connection.invokeParams = $invokeParams
         $connection.vdom = $vdom
+        $connection.version = [version]"$($version.results.current.major).$($version.results.current.minor).$($version.results.current.patch)"
 
         if ( $DefaultConnection ) {
             set-variable -name DefaultFGTConnection -value $connection -scope Global
