@@ -11,7 +11,7 @@ function Add-FGTFirewallAddress {
         Add a FortiGate Address
 
         .DESCRIPTION
-        Add a FortiGate Address (ipmask, fqdn)
+        Add a FortiGate Address (ipmask, iprange, fqdn)
 
         .EXAMPLE
         Add-FGTFirewallAddress -Name FGT -ip 192.0.2.0 -mask 255.255.255.0
@@ -38,6 +38,10 @@ function Add-FGTFirewallAddress {
 
         Add Address object type fqdn with name FortiPower and value fortipower.github.io
 
+        .EXAMPLE
+        Add-FGTFirewallAddress -Name FGT-Range -startip 192.0.2.1 -endip 192.0.2.100
+
+        Add Address object type iprange with name FGT-Range with start IP 192.0.2.1 and end ip 192.0.2.100
     #>
 
     Param(
@@ -52,6 +56,10 @@ function Add-FGTFirewallAddress {
         [ipaddress]$ip,
         [Parameter (Mandatory = $false, ParameterSetName = "ipmask")]
         [ipaddress]$mask,
+        [Parameter (Mandatory = $false, ParameterSetName = "iprange")]
+        [ipaddress]$startip,
+        [Parameter (Mandatory = $false, ParameterSetName = "iprange")]
+        [ipaddress]$endip,
         [Parameter (Mandatory = $false)]
         [string]$interface,
         [Parameter (Mandatory = $false)]
@@ -92,6 +100,11 @@ function Add-FGTFirewallAddress {
                 $subnet += "/"
                 $subnet += $mask.ToString()
                 $address | add-member -name "subnet" -membertype NoteProperty -Value $subnet
+            }
+            "iprange" {
+                $address | add-member -name "type" -membertype NoteProperty -Value "iprange"
+                $address | add-member -name "start-ip" -membertype NoteProperty -Value $startip.ToString()
+                $address | add-member -name "end-ip" -membertype NoteProperty -Value $endip.ToString()
             }
             "fqdn" {
                 $address | add-member -name "type" -membertype NoteProperty -Value "fqdn"
@@ -184,7 +197,7 @@ function Get-FGTFirewallAddress {
         Get list of all "address"
 
         .DESCRIPTION
-        Get list of all "address" (ipmask, fqdn ...)
+        Get list of all "address" (ipmask, iprange, fqdn...)
 
         .EXAMPLE
         Get-FGTFirewallAddress
@@ -326,6 +339,18 @@ function Set-FGTFirewallAddress {
 
         Change MyFGTAddress to set a new fqdn fortipower.github.io
 
+        .EXAMPLE
+        $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
+        PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -startip 192.0.2.100
+
+        Change MyFGTAddress to set a new startip (iprange) 192.0.2.100
+
+        .EXAMPLE
+        $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
+        PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -endip 192.0.2.200
+
+        Change MyFGTAddress to set a new endip (iprange) 192.0.2.200
+
     #>
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium', DefaultParameterSetName = 'default')]
@@ -341,6 +366,10 @@ function Set-FGTFirewallAddress {
         [ipaddress]$ip,
         [Parameter (Mandatory = $false, ParameterSetName = "ipmask")]
         [ipaddress]$mask,
+        [Parameter (Mandatory = $false, ParameterSetName = "iprange")]
+        [ipaddress]$startip,
+        [Parameter (Mandatory = $false, ParameterSetName = "iprange")]
+        [ipaddress]$endip,
         [Parameter (Mandatory = $false)]
         [string]$interface,
         [Parameter (Mandatory = $false)]
@@ -398,6 +427,15 @@ function Set-FGTFirewallAddress {
                     }
 
                     $_address | add-member -name "subnet" -membertype NoteProperty -Value $subnet
+                }
+            }
+            "iprange" {
+                if ( $PsBoundParameters.ContainsKey('startip') ) {
+                    $_address | add-member -name "start-ip" -membertype NoteProperty -Value $startip.ToString()
+                }
+
+                if ( $PsBoundParameters.ContainsKey('endip') ) {
+                    $_address | add-member -name "end-ip" -membertype NoteProperty -Value $endip.ToString()
                 }
             }
             "fqdn" {
