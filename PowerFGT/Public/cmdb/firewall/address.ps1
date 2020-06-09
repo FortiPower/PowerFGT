@@ -122,14 +122,22 @@ function Add-FGTFirewallAddress {
             $address | add-member -name "comment" -membertype NoteProperty -Value $comment
         }
 
+
         if ( $PsBoundParameters.ContainsKey('visibility') ) {
-            if ( $visibility ) {
-                $address | add-member -name "visibility" -membertype NoteProperty -Value "enable"
+            #with 6.4.x, there is no longer visibility parameter
+            if ($connection.version -ge "6.4.0") {
+                Write-Warning "-visibility parameter is not longer available with FortiOS 6.4.x and after"
             }
             else {
-                $address | add-member -name "visibility" -membertype NoteProperty -Value "disable"
+                if ( $visibility ) {
+                    $address | add-member -name "visibility" -membertype NoteProperty -Value "enable"
+                }
+                else {
+                    $address | add-member -name "visibility" -membertype NoteProperty -Value "disable"
+                }
             }
         }
+
 
         Invoke-FGTRestMethod -method "POST" -body $address -uri $uri -connection $connection @invokeParams | out-Null
 
