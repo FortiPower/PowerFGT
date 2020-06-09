@@ -59,7 +59,7 @@ function Add-FGTFirewallProxyAddressGroup {
         }
 
         if ( Get-FGTFirewallProxyAddressGroup @invokeParams -name $name -connection $connection) {
-            Throw "Already an ProxyAddressGroup object using the same name"
+            Throw "Already a ProxyAddressGroup object using the same name"
         }
 
         $uri = "api/v2/cmdb/firewall/proxy-addrgrp"
@@ -210,7 +210,7 @@ function Copy-FGTFirewallProxyAddressGroup {
         }
 
         if ( Get-FGTFirewallProxyAddressGroup @invokeParams -name $name -connection $connection) {
-            Throw "Already an ProxyAddress Group object using the same name"
+            Throw "Already a ProxyAddress Group object using the same name"
         }
 
         $uri = "api/v2/cmdb/firewall/proxy-addrgrp/$($addrgrp.name)/?action=clone&nkey=$($name)"
@@ -444,7 +444,7 @@ function Remove-FGTFirewallProxyAddressGroup {
         Remove a FortiGate ProxyAddress Group
 
         .DESCRIPTION
-        Remove an ProxyAddress Group object on the FortiGate
+        Remove a ProxyAddress Group object on the FortiGate
 
         .EXAMPLE
         $MyFGTProxyAddressGroup = Get-FGTFirewallProxyAddressGroup -name MyFGTProxyAddressGroup
