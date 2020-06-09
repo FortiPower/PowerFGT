@@ -379,4 +379,166 @@ Describe "Add Firewall Proxy Address" {
     }
 }
 
+Describe "Copy Firewall Proxy Address" {
+
+    Context "host-regex" {
+
+        BeforeAll {
+            Add-FGTFirewallProxyAddress -name $pester_proxyaddress1 -hostregex 'fortipower.github.io'
+        }
+
+        It "Copy Firewall Proxy Address ($pester_proxyaddress1 => copy_pester_address1)" {
+            Get-FGTFirewallProxyAddress -name $pester_proxyaddress1 | Copy-FGTFirewallProxyAddress -name copy_pester_proxyaddress1
+            $address = Get-FGTFirewallProxyAddress -name copy_pester_proxyaddress1
+            $address.name | Should -Be "copy_pester_proxyaddress1"
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "host-regex"
+            $address.host | Should -BeNullOrEmpty
+            $address.'host-regex' | Should -Be "fortipower.github.io"
+            $address.path | Should -BeNullOrEmpty
+            $address.method | Should -BeNullOrEmpty
+            $address.comment | Should -BeNullOrEmpty
+            $address.visibility | Should -Be $true
+        }
+
+        AfterAll {
+            #Remove copy_pester_proxyaddress1
+            Get-FGTFirewallProxyAddress -name copy_pester_proxyaddress1 | Remove-FGTFirewallProxyAddress -confirm:$false
+            #Remove $pester_proxyaddress1
+            Get-FGTFirewallProxyAddress -name $pester_proxyaddress1 | Remove-FGTFirewallProxyAddress -confirm:$false
+        }
+
+    }
+
+    Context "method" {
+
+        BeforeAll {
+            Add-FGTFirewallAddress -name $pester_address1 -fqdn 'fortipower.github.io'
+            Add-FGTFirewallProxyAddress -Name $pester_proxyaddress2 -hostObjectName $pester_address1  -method "get"
+        }
+
+        It "Copy Firewall Proxy Address ($pester_proxyaddress2 => copy_pester_proxyaddress2)" {
+            Get-FGTFirewallProxyAddress -name $pester_proxyaddress2 | Copy-FGTFirewallProxyAddress -name copy_pester_proxyaddress2
+            $address = Get-FGTFirewallProxyAddress -name copy_pester_proxyaddress2
+            $address.name | Should -Be copy_pester_proxyaddress2
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "method"
+            $address.host | Should -Be $pester_address1
+            $address.'host-regex' | Should -BeNullOrEmpty
+            $address.path | Should -BeNullOrEmpty
+            $address.method | Should -Be "get"
+            $address.comment | Should -BeNullOrEmpty
+            $address.visibility | Should -Be $true
+        }
+
+        AfterAll {
+            #Remove copy_pester_address2
+            Get-FGTFirewallProxyAddress -name copy_pester_proxyaddress2 | Remove-FGTFirewallProxyAddress -confirm:$false
+            #Remove $pester_proxyaddress2
+            Get-FGTFirewallProxyAddress -name $pester_proxyaddress2 | Remove-FGTFirewallProxyAddress -confirm:$false
+            #Remove also Firewall Address (FQDN)
+            Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -confirm:$false
+        }
+
+    }
+
+    Context "url" {
+
+        BeforeAll {
+            Add-FGTFirewallAddress -name $pester_address1 -fqdn 'fortipower.github.io'
+            Add-FGTFirewallProxyAddress -Name $pester_proxyaddress3 -hostObjectName $pester_address1  -path "/PowerFGT"
+        }
+
+        It "Copy Firewall Proxy Address ($pester_proxyaddress3 => copy_pester_proxyaddress3)" {
+            Get-FGTFirewallProxyAddress -name $pester_proxyaddress3 | Copy-FGTFirewallProxyAddress -name copy_pester_proxyaddress3
+            $address = Get-FGTFirewallProxyAddress -name copy_pester_proxyaddress3
+            $address.name | Should -Be copy_pester_proxyaddress3
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "url"
+            $address.host | Should -Be $pester_address1
+            $address.'host-regex' | Should -BeNullOrEmpty
+            $address.path | Should -Be "/PowerFGT"
+            $address.method | Should -BeNullOrEmpty
+            $address.comment | Should -BeNullOrEmpty
+            $address.visibility | Should -Be $true
+        }
+
+        AfterAll {
+            #Remove copy_pester_address2
+            Get-FGTFirewallProxyAddress -name copy_pester_proxyaddress3 | Remove-FGTFirewallProxyAddress -confirm:$false
+            #Remove $pester_proxyaddress2
+            Get-FGTFirewallProxyAddress -name $pester_proxyaddress3 | Remove-FGTFirewallProxyAddress -confirm:$false
+            #Remove also Firewall Address (FQDN)
+            Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -confirm:$false
+        }
+
+    }
+
+}
+
+Describe "Remove Firewall Proxy Address" {
+
+    Context "host-regex" {
+
+        BeforeEach {
+            Add-FGTFirewallProxyAddress -name $pester_proxyaddress1 -hostregex 'fortipower.github.io'
+        }
+
+        It "Remove Address $pester_proxyaddress1 by pipeline" {
+            $address = Get-FGTFirewallProxyAddress -name $pester_proxyaddress1
+            $address | Remove-FGTFirewallProxyAddress -confirm:$false
+            $address = Get-FGTFirewallProxyAddress -name $pester_proxyaddress1
+            $address | Should -Be $NULL
+        }
+
+    }
+
+    Context "method" {
+
+        BeforeAll {
+            Add-FGTFirewallAddress -name $pester_address1 -fqdn 'fortipower.github.io'
+        }
+
+        BeforeEach {
+            Add-FGTFirewallProxyAddress -Name $pester_proxyaddress2 -hostObjectName $pester_address1 -method get
+        }
+
+        It "Remove Address $pester_proxyaddress2 by pipeline" {
+            $address = Get-FGTFirewallProxyAddress -name $pester_proxyaddress2
+            $address | Remove-FGTFirewallProxyAddress -confirm:$false
+            $address = Get-FGTFirewallProxyAddress -name $pester_proxyaddress2
+            $address | Should -Be $NULL
+        }
+
+        AfterAll {
+            #Remove also Firewall Address (FQDN)
+            Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -confirm:$false
+        }
+    }
+
+    Context "url" {
+
+        BeforeAll {
+            Add-FGTFirewallAddress -name $pester_address1 -fqdn 'fortipower.github.io'
+        }
+
+        BeforeEach {
+            Add-FGTFirewallProxyAddress -Name $pester_proxyaddress3 -hostObjectName $pester_address1 -path "/PowerFGT"
+        }
+
+        It "Remove Address $pester_proxyaddress3 by pipeline" {
+            $address = Get-FGTFirewallProxyAddress -name $pester_proxyaddress3
+            $address | Remove-FGTFirewallProxyAddress -confirm:$false
+            $address = Get-FGTFirewallProxyAddress -name $pester_proxyaddress3
+            $address | Should -Be $NULL
+        }
+
+        AfterAll {
+            #Remove also Firewall Address (FQDN)
+            Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -confirm:$false
+        }
+    }
+
+}
+
 Disconnect-FGT -confirm:$false
