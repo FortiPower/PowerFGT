@@ -85,7 +85,9 @@ Describe "Add Firewall Address" {
             $address.subnet | Should -Be "192.0.2.0 255.255.255.0"
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
         It "Add Address $pester_address1 (type ipmask and interface)" {
@@ -99,7 +101,9 @@ Describe "Add Firewall Address" {
             $address.subnet | Should -Be "192.0.2.0 255.255.255.0"
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -BeNullOrEmpty
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
         It "Add Address $pester_address1 (type ipmask and comment)" {
@@ -113,7 +117,9 @@ Describe "Add Firewall Address" {
             $address.subnet | Should -Be "192.0.2.0 255.255.255.0"
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -Be "Add via PowerFGT"
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
         It "Add Address $pester_address1 (type ipmask and visiblity disable)" {
@@ -127,7 +133,9 @@ Describe "Add Firewall Address" {
             $address.subnet | Should -Be "192.0.2.0 255.255.255.0"
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
-            $address.visibility | Should -Be "disable"
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "disable"
+            }
         }
 
         It "Try to Add Address $pester_address1 (but there is already a object with same name)" {
@@ -155,7 +163,9 @@ Describe "Add Firewall Address" {
             $address.'end-ip' | Should -Be "192.0.2.100"
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
         It "Add Address $pester_address3 (type iprange and interface)" {
@@ -168,7 +178,9 @@ Describe "Add Firewall Address" {
             $address.'end-ip' | Should -Be "192.0.2.100"
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -BeNullOrEmpty
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
         It "Add Address $pester_address3 (type iprange and comment)" {
@@ -181,7 +193,9 @@ Describe "Add Firewall Address" {
             $address.'end-ip' | Should -Be "192.0.2.100"
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -Be "Add via PowerFGT"
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
         It "Add Address $pester_address3 (type iprange and visiblity disable)" {
@@ -194,7 +208,9 @@ Describe "Add Firewall Address" {
             $address.'end-ip' | Should -Be "192.0.2.100"
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
-            $address.visibility | Should -Be "disable"
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "disable"
+            }
         }
 
         It "Try to Add Address $pester_address3 (but there is already a object with same name)" {
@@ -222,7 +238,9 @@ Describe "Add Firewall Address" {
             $address.fqdn | Should -be "fortipower.github.io"
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
         It "Add Address $pester_address2 (type fqdn and interface)" {
@@ -235,7 +253,9 @@ Describe "Add Firewall Address" {
             $address.fqdn | Should -be "fortipower.github.io"
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -BeNullOrEmpty
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
         It "Add Address $pester_address2 (type fqdn and comment)" {
@@ -248,7 +268,9 @@ Describe "Add Firewall Address" {
             $address.fqdn | Should -be "fortipower.github.io"
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -Be "Add via PowerFGT"
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
         It "Add Address $pester_address2 (type fqdn and visiblity disable)" {
@@ -261,7 +283,9 @@ Describe "Add Firewall Address" {
             $address.fqdn | Should -be "fortipower.github.io"
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
-            $address.visibility | Should -Be "disable"
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "disable"
+            }
         }
 
     }
@@ -288,7 +312,9 @@ Describe "Configure Firewall Address" {
             $address.subnet | Should -Be "192.0.3.0 255.255.255.0"
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
         It "Change IP Mask" {
@@ -302,7 +328,9 @@ Describe "Configure Firewall Address" {
             $address.subnet | Should -Be "192.0.3.0 255.255.255.128"
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
         It "Change (Associated) Interface" {
@@ -316,7 +344,9 @@ Describe "Configure Firewall Address" {
             $address.subnet | Should -Be "192.0.3.0 255.255.255.128"
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -BeNullOrEmpty
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
         It "Change comment" {
@@ -330,7 +360,9 @@ Describe "Configure Firewall Address" {
             $address.subnet | Should -Be "192.0.3.0 255.255.255.128"
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -Be "Modified by PowerFGT"
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
         It "Change visiblity" {
@@ -344,7 +376,9 @@ Describe "Configure Firewall Address" {
             $address.subnet | Should -Be "192.0.3.0 255.255.255.128"
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -Be "Modified by PowerFGT"
-            $address.visibility | Should -Be "disable"
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "disable"
+            }
         }
 
         It "Try to Configure Address $pester_address1 (but it is wrong type...)" {
@@ -362,7 +396,9 @@ Describe "Configure Firewall Address" {
             $address.subnet | Should -Be "192.0.3.0 255.255.255.128"
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -Be "Modified by PowerFGT"
-            $address.visibility | Should -Be "disable"
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "disable"
+            }
         }
 
         AfterAll {
@@ -388,7 +424,9 @@ Describe "Configure Firewall Address" {
             $address.'end-ip' | Should -Be "192.0.2.100"
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
         It "Change End IP" {
@@ -401,7 +439,9 @@ Describe "Configure Firewall Address" {
             $address.'end-ip' | Should -Be "192.0.2.199"
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
         It "Change (Associated) Interface" {
@@ -414,7 +454,9 @@ Describe "Configure Firewall Address" {
             $address.'end-ip' | Should -Be "192.0.2.199"
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -BeNullOrEmpty
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
         It "Change comment" {
@@ -427,7 +469,9 @@ Describe "Configure Firewall Address" {
             $address.'end-ip' | Should -Be "192.0.2.199"
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -Be "Modified by PowerFGT"
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
         It "Change visiblity" {
@@ -440,7 +484,9 @@ Describe "Configure Firewall Address" {
             $address.'end-ip' | Should -Be "192.0.2.199"
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -Be "Modified by PowerFGT"
-            $address.visibility | Should -Be "disable"
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "disable"
+            }
         }
 
         It "Try to Configure Address $pester_address3 (but it is wrong type...)" {
@@ -457,7 +503,9 @@ Describe "Configure Firewall Address" {
             $address.'end-ip' | Should -Be "192.0.2.199"
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -Be "Modified by PowerFGT"
-            $address.visibility | Should -Be "disable"
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "disable"
+            }
         }
 
         AfterAll {
@@ -482,7 +530,9 @@ Describe "Configure Firewall Address" {
             $address.fqdn | Should -Be "fortipower.github.com"
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
         It "Change (Associated) Interface" {
@@ -494,7 +544,9 @@ Describe "Configure Firewall Address" {
             $address.fqdn | Should -Be "fortipower.github.com"
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -BeNullOrEmpty
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
         It "Change comment" {
@@ -506,7 +558,9 @@ Describe "Configure Firewall Address" {
             $address.fqdn | Should -Be "fortipower.github.com"
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -Be "Modified by PowerFGT"
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
         It "Change visiblity" {
@@ -518,7 +572,9 @@ Describe "Configure Firewall Address" {
             $address.fqdn | Should -Be "fortipower.github.com"
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -Be "Modified by PowerFGT"
-            $address.visibility | Should -Be "disable"
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "disable"
+            }
         }
 
         It "Try to Configure Address $pester_address2 (but it is wrong type...)" {
@@ -534,7 +590,9 @@ Describe "Configure Firewall Address" {
             $address.fqdn | Should -Be "fortipower.github.com"
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -Be "Modified by PowerFGT"
-            $address.visibility | Should -Be "disable"
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "disable"
+            }
         }
 
         AfterAll {
@@ -564,7 +622,9 @@ Describe "Copy Firewall Address" {
             $address.subnet | Should -Be "192.0.2.0 255.255.255.0"
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
         AfterAll {
@@ -592,7 +652,9 @@ Describe "Copy Firewall Address" {
             $address.'end-ip' | Should -Be "192.0.2.100"
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
         AfterAll {
@@ -620,7 +682,9 @@ Describe "Copy Firewall Address" {
             $address.fqdn | Should -be "fortipower.github.io"
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
         AfterAll {
