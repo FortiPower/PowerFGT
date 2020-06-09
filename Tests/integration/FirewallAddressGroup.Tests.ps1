@@ -11,8 +11,8 @@ Describe "Get Firewall Address Group" {
 
     BeforeAll {
         #Create Address object
-        Add-FGTFirewallAddress -type ipmask -Name $pester_address1 -ip 192.0.2.1 -mask 255.255.255.255
-        Add-FGTFirewallAddress -type ipmask -Name $pester_address2 -ip 192.0.2.2 -mask 255.255.255.255
+        Add-FGTFirewallAddress -Name $pester_address1 -ip 192.0.2.1 -mask 255.255.255.255
+        Add-FGTFirewallAddress -Name $pester_address2 -ip 192.0.2.2 -mask 255.255.255.255
         #Create addressgroup object with one member
         $script:addrgrp = Add-FGTFirewallAddressGroup -name $pester_addressgroup1 -member $pester_address1
         $script:uuid = $addrgrp.uuid
@@ -76,8 +76,8 @@ Describe "Add Firewall Address Group" {
 
     BeforeAll {
         #Create some Address object
-        Add-FGTFirewallAddress -type ipmask -Name $pester_address1 -ip 192.0.2.1 -mask 255.255.255.255
-        Add-FGTFirewallAddress -type ipmask -Name $pester_address2 -ip 192.0.2.2 -mask 255.255.255.255
+        Add-FGTFirewallAddress -Name $pester_address1 -ip 192.0.2.1 -mask 255.255.255.255
+        Add-FGTFirewallAddress -Name $pester_address2 -ip 192.0.2.2 -mask 255.255.255.255
     }
 
     AfterEach {
@@ -147,10 +147,10 @@ Describe "Add Firewall Address Group Member" {
 
     BeforeAll {
         #Create some Address object
-        Add-FGTFirewallAddress -type ipmask -Name $pester_address1 -ip 192.0.2.1 -mask 255.255.255.255
-        Add-FGTFirewallAddress -type ipmask -Name $pester_address2 -ip 192.0.2.2 -mask 255.255.255.255
-        Add-FGTFirewallAddress -type ipmask -Name $pester_address3 -ip 192.0.2.3 -mask 255.255.255.255
-        Add-FGTFirewallAddress -type ipmask -Name $pester_address4 -ip 192.0.2.4 -mask 255.255.255.255
+        Add-FGTFirewallAddress -Name $pester_address1 -ip 192.0.2.1 -mask 255.255.255.255
+        Add-FGTFirewallAddress -Name $pester_address2 -ip 192.0.2.2 -mask 255.255.255.255
+        Add-FGTFirewallAddress -Name $pester_address3 -ip 192.0.2.3 -mask 255.255.255.255
+        Add-FGTFirewallAddress -Name $pester_address4 -ip 192.0.2.4 -mask 255.255.255.255
     }
 
     BeforeEach {
@@ -208,8 +208,8 @@ Describe "Configure Firewall Address Group" {
 
     BeforeAll {
         #Create some Address object
-        Add-FGTFirewallAddress -type ipmask -Name $pester_address1 -ip 192.0.2.1 -mask 255.255.255.255
-        Add-FGTFirewallAddress -type ipmask -Name $pester_address2 -ip 192.0.2.2 -mask 255.255.255.255
+        Add-FGTFirewallAddress -Name $pester_address1 -ip 192.0.2.1 -mask 255.255.255.255
+        Add-FGTFirewallAddress -Name $pester_address2 -ip 192.0.2.2 -mask 255.255.255.255
 
         $addrgrp = Add-FGTFirewallAddressGroup -Name $pester_addressgroup1 -member $pester_address1
         $script:uuid = $addrgrp.uuid
@@ -284,8 +284,8 @@ Describe "Copy Firewall Address Group" {
 
     BeforeAll {
         #Create some Address object
-        Add-FGTFirewallAddress -type ipmask -Name $pester_address1 -ip 192.0.2.1 -mask 255.255.255.255
-        Add-FGTFirewallAddress -type ipmask -Name $pester_address2 -ip 192.0.2.2 -mask 255.255.255.255
+        Add-FGTFirewallAddress -Name $pester_address1 -ip 192.0.2.1 -mask 255.255.255.255
+        Add-FGTFirewallAddress -Name $pester_address2 -ip 192.0.2.2 -mask 255.255.255.255
 
         Add-FGTFirewallAddressGroup -Name $pester_addressgroup1 -member $pester_address1, $pester_address2
     }
@@ -319,7 +319,7 @@ Describe "Copy Firewall Address Group" {
 Describe "Remove Firewall Address Group" {
 
     BeforeEach {
-        Add-FGTFirewallAddress -type ipmask -Name $pester_address1 -ip 192.0.2.1 -mask 255.255.255.255
+        Add-FGTFirewallAddress -Name $pester_address1 -ip 192.0.2.1 -mask 255.255.255.255
 
         Add-FGTFirewallAddressGroup -Name $pester_addressgroup1 -member $pester_address1
     }
@@ -341,9 +341,9 @@ Describe "Remove Firewall Address Group Member" {
 
     BeforeAll {
         #Create some Address object
-        Add-FGTFirewallAddress -type ipmask -Name $pester_address1 -ip 192.0.2.1 -mask 255.255.255.255
-        Add-FGTFirewallAddress -type ipmask -Name $pester_address2 -ip 192.0.2.2 -mask 255.255.255.255
-        Add-FGTFirewallAddress -type ipmask -Name $pester_address3 -ip 192.0.2.3 -mask 255.255.255.255
+        Add-FGTFirewallAddress -Name $pester_address1 -ip 192.0.2.1 -mask 255.255.255.255
+        Add-FGTFirewallAddress -Name $pester_address2 -ip 192.0.2.2 -mask 255.255.255.255
+        Add-FGTFirewallAddress -Name $pester_address3 -ip 192.0.2.3 -mask 255.255.255.255
     }
 
     BeforeEach {
