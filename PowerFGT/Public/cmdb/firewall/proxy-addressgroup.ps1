@@ -363,6 +363,7 @@ function Set-FGTFirewallProxyAddressGroup {
 
     #>
 
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript( { Confirm-FGTProxyAddressGroup $_ })]
@@ -426,9 +427,11 @@ function Set-FGTFirewallProxyAddressGroup {
             }
         }
 
-        Invoke-FGTRestMethod -method "PUT" -body $_addrgrp -uri $uri -connection $connection @invokeParams | out-Null
+        if ($PSCmdlet.ShouldProcess($addrgrp.name, 'Configure Firewall Proxy Address Group')) {
+            Invoke-FGTRestMethod -method "PUT" -body $_addrgrp -uri $uri -connection $connection @invokeParams | out-Null
 
-        Get-FGTFirewallProxyAddressGroup -connection $connection @invokeParams -name $addrgrp.name
+            Get-FGTFirewallProxyAddressGroup -connection $connection @invokeParams -name $addrgrp.name
+        }
     }
 
     End {
@@ -457,12 +460,11 @@ function Remove-FGTFirewallProxyAddressGroup {
 
     #>
 
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'high')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript( { Confirm-FGTProxyAddressGroup $_ })]
         [psobject]$addrgrp,
-        [Parameter(Mandatory = $false)]
-        [switch]$noconfirm,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -481,20 +483,8 @@ function Remove-FGTFirewallProxyAddressGroup {
 
         $uri = "api/v2/cmdb/firewall/proxy-addrgrp/$($addrgrp.name)"
 
-        if ( -not ( $Noconfirm )) {
-            $message = "Remove ProxyAddress Group on Fortigate"
-            $question = "Proceed with removal of ProxyAddress Group $($addrgrp.name) ?"
-            $choices = New-Object Collections.ObjectModel.Collection[Management.Automation.Host.ChoiceDescription]
-            $choices.Add((New-Object Management.Automation.Host.ChoiceDescription -ArgumentList '&Yes'))
-            $choices.Add((New-Object Management.Automation.Host.ChoiceDescription -ArgumentList '&No'))
-
-            $decision = $Host.UI.PromptForChoice($message, $question, $choices, 1)
-        }
-        else { $decision = 0 }
-        if ($decision -eq 0) {
-            Write-Progress -activity "Remove ProxyAddress Group"
+        if ($PSCmdlet.ShouldProcess($addrgrp.name, 'Remove Firewall Proxy Address Group')) {
             $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -connection $connection @invokeParams
-            Write-Progress -activity "Remove ProxyAddress Group" -completed
         }
     }
 
@@ -525,6 +515,7 @@ function Remove-FGTFirewallProxyAddressGroupMember {
 
     #>
 
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript( { Confirm-FGTProxyAddressGroup $_ })]
@@ -572,9 +563,11 @@ function Remove-FGTFirewallProxyAddressGroupMember {
             $_addrgrp | add-member -name "member" -membertype NoteProperty -Value $members
         }
 
-        Invoke-FGTRestMethod -method "PUT" -body $_addrgrp -uri $uri -connection $connection @invokeParams | Out-Null
+        if ($PSCmdlet.ShouldProcess($addrgrp.name, 'Remove Firewall Proxy Address Group Member')) {
+            Invoke-FGTRestMethod -method "PUT" -body $_addrgrp -uri $uri -connection $connection @invokeParams | Out-Null
 
-        Get-FGTFirewallProxyAddressGroup -connection $connection @invokeParams -name $addrgrp.name
+            Get-FGTFirewallProxyAddressGroup -connection $connection @invokeParams -name $addrgrp.name
+        }
     }
 
     End {
