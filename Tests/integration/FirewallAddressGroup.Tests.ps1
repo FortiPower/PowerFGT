@@ -92,7 +92,9 @@ Describe "Add Firewall Address Group" {
         ($addressgroup.member).count | Should -Be "1"
         $addressgroup.member.name | Should -BeIn $pester_address1
         $addressgroup.comment | Should -BeNullOrEmpty
-        $addressgroup.visibility | Should -Be $true
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be $true
+        }
     }
 
     It "Add Address Group $pester_addressgroup1 (with 1 member and a comment)" {
@@ -103,7 +105,9 @@ Describe "Add Firewall Address Group" {
         ($addressgroup.member).count | Should -Be "1"
         $addressgroup.member.name | Should -BeIn $pester_address1
         $addressgroup.comment | Should -Be "Add via PowerFGT"
-        $addressgroup.visibility | Should -Be $true
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be $true
+        }
     }
 
     It "Add Address Group $pester_addressgroup1 (with 1 member and visibility disable)" {
@@ -114,7 +118,9 @@ Describe "Add Firewall Address Group" {
         ($addressgroup.member).count | Should -Be "1"
         $addressgroup.member.name | Should -BeIn $pester_address1
         $addressgroup.comment | Should -BeNullOrEmpty
-        $addressgroup.visibility | Should -Be "disable"
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be "disable"
+        }
     }
 
     It "Add Address Group $pester_addressgroup1 (with 2 members)" {
@@ -125,7 +131,9 @@ Describe "Add Firewall Address Group" {
         ($addressgroup.member).count | Should -Be "2"
         $addressgroup.member.name | Should -BeIn $pester_address1, $pester_address2
         $addressgroup.comment | Should -BeNullOrEmpty
-        $addressgroup.visibility | Should -Be $true
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be $true
+        }
     }
 
     It "Try to Add Address Group $pester_addressgroup1 (but there is already a object with same name)" {
@@ -169,7 +177,9 @@ Describe "Add Firewall Address Group Member" {
         ($addressgroup.member).count | Should -Be "2"
         $addressgroup.member.name | Should -BeIn $pester_address1, $pester_address2
         $addressgroup.comment | Should -BeNullOrEmpty
-        $addressgroup.visibility | Should -Be $true
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be $true
+        }
     }
 
     It "Add 2 members to Address Group $pester_addressgroup1 (with 1 member before)" {
@@ -180,7 +190,9 @@ Describe "Add Firewall Address Group Member" {
         ($addressgroup.member).count | Should -Be "3"
         $addressgroup.member.name | Should -BeIn $pester_address1, $pester_address2, $pester_address3
         $addressgroup.comment | Should -BeNullOrEmpty
-        $addressgroup.visibility | Should -Be $true
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be $true
+        }
     }
 
     It "Add 2 members to Address Group $pester_addressgroup1 (with 2 members before)" {
@@ -192,7 +204,9 @@ Describe "Add Firewall Address Group Member" {
         ($addressgroup.member).count | Should -Be "4"
         $addressgroup.member.name | Should -BeIn $pester_address1, $pester_address2, $pester_address3, $pester_address4
         $addressgroup.comment | Should -BeNullOrEmpty
-        $addressgroup.visibility | Should -Be $true
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be $true
+        }
     }
 
     AfterAll {
@@ -223,7 +237,9 @@ Describe "Configure Firewall Address Group" {
         ($addressgroup.member).count | Should -Be "1"
         $addressgroup.member.name | Should -BeIn $pester_address1
         $addressgroup.comment | Should -Be "Modified by PowerFGT"
-        $addressgroup.visibility | Should -Be $true
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be $true
+        }
     }
 
     It "Change visiblity" {
@@ -234,7 +250,9 @@ Describe "Configure Firewall Address Group" {
         ($addressgroup.member).count | Should -Be "1"
         $addressgroup.member.name | Should -BeIn $pester_address1
         $addressgroup.comment | Should -Be "Modified by PowerFGT"
-        $addressgroup.visibility | Should -Be "disable"
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be "disable"
+        }
     }
 
     It "Change 1 Member ($pester_address2)" {
@@ -245,7 +263,9 @@ Describe "Configure Firewall Address Group" {
         ($addressgroup.member).count | Should -Be "1"
         $addressgroup.member.name | Should -BeIn $pester_address2
         $addressgroup.comment | Should -Be "Modified by PowerFGT"
-        $addressgroup.visibility | Should -Be "disable"
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be "disable"
+        }
     }
 
     It "Change 2 Members ($pester_address1 and $pester_address2)" {
@@ -256,7 +276,9 @@ Describe "Configure Firewall Address Group" {
         ($addressgroup.member).count | Should -Be "2"
         $addressgroup.member.name | Should -BeIn $pester_address1, $pester_address2
         $addressgroup.comment | Should -Be "Modified by PowerFGT"
-        $addressgroup.visibility | Should -Be "disable"
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be "disable"
+        }
     }
 
     It "Change Name" {
@@ -267,7 +289,9 @@ Describe "Configure Firewall Address Group" {
         ($addressgroup.member).count | Should -Be "2"
         $addressgroup.member.name | Should -BeIn $pester_address1, $pester_address2
         $addressgroup.comment | Should -Be "Modified by PowerFGT"
-        $addressgroup.visibility | Should -Be "disable"
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be "disable"
+        }
     }
 
     AfterAll {
@@ -299,7 +323,9 @@ Describe "Copy Firewall Address Group" {
         ($addressgroup.member).count | Should -Be "2"
         $addressgroup.member.name | Should -BeIn $pester_address1, $pester_address2
         $addressgroup.comment | Should -BeNullOrEmpty
-        $addressgroup.visibility | Should -Be $true
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be $true
+        }
     }
 
     AfterAll {
@@ -362,7 +388,9 @@ Describe "Remove Firewall Address Group Member" {
         ($addressgroup.member).count | Should -Be "2"
         $addressgroup.member.name | Should -BeIn $pester_address2, $pester_address3
         $addressgroup.comment | Should -BeNullOrEmpty
-        $addressgroup.visibility | Should -Be $true
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be $true
+        }
     }
 
     It "Remove 2 members to Address Group $pester_addressgroup1 (with 3 members before)" {
@@ -373,7 +401,9 @@ Describe "Remove Firewall Address Group Member" {
         ($addressgroup.member).count | Should -Be "1"
         $addressgroup.member.name | Should -BeIn $pester_address1
         $addressgroup.comment | Should -BeNullOrEmpty
-        $addressgroup.visibility | Should -Be $true
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be $true
+        }
     }
 
     It "Try Remove 3 members to Address Group $pester_addressgroup1 (with 3 members before)" {
