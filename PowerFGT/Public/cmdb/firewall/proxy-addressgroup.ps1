@@ -557,7 +557,7 @@ function Remove-FGTFirewallProxyAddressGroupMember {
             }
             #check if there is always a member... (it is not possible don't have member on Address Group)
             if ( $members.count -eq 0 ) {
-                Throw "You can't remove all members. Use Remove-FGTFirewallAddressGroup to remove Address Group"
+                Throw "You can't remove all members. Use Remove-FGTFirewallProxyAddressGroup to remove Address Group"
             }
 
             #if there is only One member force to be an array
