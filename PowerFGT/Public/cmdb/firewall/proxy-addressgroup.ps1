@@ -14,19 +14,19 @@ function Add-FGTFirewallProxyAddressGroup {
         Add a ProxyFortiGate ProxyAddress Group
 
         .EXAMPLE
-        Add-FGTFirewallProxyAddressGroup -name MyAddressGroup -member MyAddress1
+        Add-FGTFirewallProxyAddressGroup -type src -name MyAddressGroup -member MyAddress1
 
-        Add ProxyAddress Group with member MyAddress1
-
-        .EXAMPLE
-        Add-FGTFirewallProxyAddressGroup -name MyAddressGroup -member MyAddress1, MyAddress2
-
-        Add ProxyAddress Group with members MyAddress1 and MyAddress2
+        Add ProxyAddress Group with type source and member MyAddress1
 
         .EXAMPLE
-        Add-FGTFirewallProxyAddressGroup -name MyAddressGroup -member MyAddress1 -comment "My ProxyAddress Group"
+        Add-FGTFirewallProxyAddressGroup -type src -name MyAddressGroup -member MyAddress1, MyAddress2
 
-        Add ProxyAddress Group with member MyAddress1 and a comment
+        Add ProxyAddress Group with type source and members MyAddress1 and MyAddress2
+
+        .EXAMPLE
+        Add-FGTFirewallProxyAddressGroup -type dst -name MyAddressGroup -member MyAddress1 -comment "My ProxyAddress Group"
+
+        Add ProxyAddress Group with type destination and member MyAddress1 and a comment
     #>
 
     Param(
