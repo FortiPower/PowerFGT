@@ -560,6 +560,11 @@ function Remove-FGTFirewallProxyAddressGroupMember {
                 Throw "You can't remove all members. Use Remove-FGTFirewallAddressGroup to remove Address Group"
             }
 
+            #if there is only One member force to be an array
+            if ( $members.count -eq 1 ) {
+                $members = @($members)
+            }
+
             $_addrgrp | add-member -name "member" -membertype NoteProperty -Value $members
         }
 
