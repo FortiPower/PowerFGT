@@ -59,7 +59,7 @@ function Add-FGTFirewallProxyPolicy {
     Param(
         [Parameter (Mandatory = $true)]
         [ValidateSet("explicit-web", "transparent-web")]
-        [string]$proxytype = "explicit-web",
+        [string]$proxytype,
         [Parameter (Mandatory = $true)]
         [string[]]$dstintf,
         [Parameter (Mandatory = $true)]
