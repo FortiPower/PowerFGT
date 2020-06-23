@@ -97,6 +97,7 @@ Describe "Add Firewall Proxy Address Group" {
             $addressgroup = Get-FGTFirewallProxyAddressGroup -name $pester_proxyaddressgroup1
             $addressgroup.name | Should -Be $pester_proxyaddressgroup1
             $addressgroup.uuid | Should -Not -BeNullOrEmpty
+            $addressgroup.type | Should -Be "src"
             ($addressgroup.member).count | Should -Be "1"
             $addressgroup.member.name | Should -BeIn $pester_proxyaddress1
             $addressgroup.comment | Should -BeNullOrEmpty
@@ -108,6 +109,7 @@ Describe "Add Firewall Proxy Address Group" {
             $addressgroup = Get-FGTFirewallProxyAddressGroup -name $pester_proxyaddressgroup1
             $addressgroup.name | Should -Be $pester_proxyaddressgroup1
             $addressgroup.uuid | Should -Not -BeNullOrEmpty
+            $addressgroup.type | Should -Be "src"
             ($addressgroup.member).count | Should -Be "1"
             $addressgroup.member.name | Should -BeIn $pester_proxyaddress1
             $addressgroup.comment | Should -Be "Add via PowerFGT"
@@ -119,6 +121,7 @@ Describe "Add Firewall Proxy Address Group" {
             $addressgroup = Get-FGTFirewallProxyAddressGroup -name $pester_proxyaddressgroup1
             $addressgroup.name | Should -Be $pester_proxyaddressgroup1
             $addressgroup.uuid | Should -Not -BeNullOrEmpty
+            $addressgroup.type | Should -Be "src"
             ($addressgroup.member).count | Should -Be "1"
             $addressgroup.member.name | Should -BeIn $pester_proxyaddress1
             $addressgroup.comment | Should -BeNullOrEmpty
@@ -130,6 +133,7 @@ Describe "Add Firewall Proxy Address Group" {
             $addressgroup = Get-FGTFirewallProxyAddressGroup -name $pester_proxyaddressgroup1
             $addressgroup.name | Should -Be $pester_proxyaddressgroup1
             $addressgroup.uuid | Should -Not -BeNullOrEmpty
+            $addressgroup.type | Should -Be "src"
             ($addressgroup.member).count | Should -Be "2"
             $addressgroup.member.name | Should -BeIn $pester_proxyaddress1, $pester_proxyaddress2
             $addressgroup.comment | Should -BeNullOrEmpty
@@ -171,6 +175,7 @@ Describe "Add Firewall Proxy Address Group" {
             $addressgroup = Get-FGTFirewallProxyAddressGroup -name $pester_proxyaddressgroup1
             $addressgroup.name | Should -Be $pester_proxyaddressgroup1
             $addressgroup.uuid | Should -Not -BeNullOrEmpty
+            $addressgroup.type | Should -Be "dst"
             ($addressgroup.member).count | Should -Be "1"
             $addressgroup.member.name | Should -BeIn $pester_proxyaddress1
             $addressgroup.comment | Should -BeNullOrEmpty
@@ -182,6 +187,7 @@ Describe "Add Firewall Proxy Address Group" {
             $addressgroup = Get-FGTFirewallProxyAddressGroup -name $pester_proxyaddressgroup1
             $addressgroup.name | Should -Be $pester_proxyaddressgroup1
             $addressgroup.uuid | Should -Not -BeNullOrEmpty
+            $addressgroup.type | Should -Be "dst"
             ($addressgroup.member).count | Should -Be "1"
             $addressgroup.member.name | Should -BeIn $pester_proxyaddress1
             $addressgroup.comment | Should -Be "Add via PowerFGT"
@@ -193,6 +199,7 @@ Describe "Add Firewall Proxy Address Group" {
             $addressgroup = Get-FGTFirewallProxyAddressGroup -name $pester_proxyaddressgroup1
             $addressgroup.name | Should -Be $pester_proxyaddressgroup1
             $addressgroup.uuid | Should -Not -BeNullOrEmpty
+            $addressgroup.type | Should -Be "dst"
             ($addressgroup.member).count | Should -Be "1"
             $addressgroup.member.name | Should -BeIn $pester_proxyaddress1
             $addressgroup.comment | Should -BeNullOrEmpty
@@ -204,6 +211,7 @@ Describe "Add Firewall Proxy Address Group" {
             $addressgroup = Get-FGTFirewallProxyAddressGroup -name $pester_proxyaddressgroup1
             $addressgroup.name | Should -Be $pester_proxyaddressgroup1
             $addressgroup.uuid | Should -Not -BeNullOrEmpty
+            $addressgroup.type | Should -Be "dst"
             ($addressgroup.member).count | Should -Be "2"
             $addressgroup.member.name | Should -BeIn $pester_proxyaddress1, $pester_proxyaddress2
             $addressgroup.comment | Should -BeNullOrEmpty
@@ -253,6 +261,7 @@ Describe "Add Firewall Proxy Address Group Member" {
         $addressgroup = Get-FGTFirewallProxyAddressGroup -name $pester_proxyaddressgroup1
         $addressgroup.name | Should -Be $pester_proxyaddressgroup1
         $addressgroup.uuid | Should -Not -BeNullOrEmpty
+        $addressgroup.type | Should -Be "src"
         ($addressgroup.member).count | Should -Be "2"
         $addressgroup.member.name | Should -BeIn $pester_proxyaddress1, $pester_proxyaddress2
         $addressgroup.comment | Should -BeNullOrEmpty
@@ -264,6 +273,7 @@ Describe "Add Firewall Proxy Address Group Member" {
         $addressgroup = Get-FGTFirewallProxyAddressGroup -name $pester_proxyaddressgroup1
         $addressgroup.name | Should -Be $pester_proxyaddressgroup1
         $addressgroup.uuid | Should -Not -BeNullOrEmpty
+        $addressgroup.type | Should -Be "src"
         ($addressgroup.member).count | Should -Be "3"
         $addressgroup.member.name | Should -BeIn $pester_proxyaddress1, $pester_proxyaddress2, $pester_proxyaddress3
         $addressgroup.comment | Should -BeNullOrEmpty
@@ -276,6 +286,7 @@ Describe "Add Firewall Proxy Address Group Member" {
         $addressgroup = Get-FGTFirewallProxyAddressGroup -name $pester_proxyaddressgroup1
         $addressgroup.name | Should -Be $pester_proxyaddressgroup1
         $addressgroup.uuid | Should -Not -BeNullOrEmpty
+        $addressgroup.type | Should -Be "src"
         ($addressgroup.member).count | Should -Be "4"
         $addressgroup.member.name | Should -BeIn $pester_proxyaddress1, $pester_proxyaddress2, $pester_proxyaddress3, $pester_proxyaddress4
         $addressgroup.comment | Should -BeNullOrEmpty
@@ -310,6 +321,7 @@ Describe "Configure Firewall Proxy Address Group" {
         $addressgroup = Get-FGTFirewallProxyAddressGroup -name $pester_proxyaddressgroup1
         $addressgroup.name | Should -Be $pester_proxyaddressgroup1
         $addressgroup.uuid | Should -Not -BeNullOrEmpty
+        $addressgroup.type | Should -Be "src"
         ($addressgroup.member).count | Should -Be "1"
         $addressgroup.member.name | Should -BeIn $pester_proxyaddress1
         $addressgroup.comment | Should -Be "Modified by PowerFGT"
@@ -321,6 +333,7 @@ Describe "Configure Firewall Proxy Address Group" {
         $addressgroup = Get-FGTFirewallProxyAddressGroup -name $pester_proxyaddressgroup1
         $addressgroup.name | Should -Be $pester_proxyaddressgroup1
         $addressgroup.uuid | Should -Not -BeNullOrEmpty
+        $addressgroup.type | Should -Be "src"
         ($addressgroup.member).count | Should -Be "1"
         $addressgroup.member.name | Should -BeIn $pester_proxyaddress1
         $addressgroup.comment | Should -Be "Modified by PowerFGT"
@@ -332,6 +345,7 @@ Describe "Configure Firewall Proxy Address Group" {
         $addressgroup = Get-FGTFirewallProxyAddressGroup -name $pester_proxyaddressgroup1
         $addressgroup.name | Should -Be $pester_proxyaddressgroup1
         $addressgroup.uuid | Should -Not -BeNullOrEmpty
+        $addressgroup.type | Should -Be "src"
         ($addressgroup.member).count | Should -Be "1"
         $addressgroup.member.name | Should -BeIn $pester_proxyaddress2
         $addressgroup.comment | Should -Be "Modified by PowerFGT"
@@ -343,6 +357,7 @@ Describe "Configure Firewall Proxy Address Group" {
         $addressgroup = Get-FGTFirewallProxyAddressGroup -name $pester_proxyaddressgroup1
         $addressgroup.name | Should -Be $pester_proxyaddressgroup1
         $addressgroup.uuid | Should -Not -BeNullOrEmpty
+        $addressgroup.type | Should -Be "src"
         ($addressgroup.member).count | Should -Be "2"
         $addressgroup.member.name | Should -BeIn $pester_proxyaddress1, $pester_proxyaddress2
         $addressgroup.comment | Should -Be "Modified by PowerFGT"
@@ -354,6 +369,7 @@ Describe "Configure Firewall Proxy Address Group" {
         $addressgroup = Get-FGTFirewallProxyAddressGroup -name "pester_proxyaddressgroup1_change"
         $addressgroup.name | Should -Be "pester_proxyaddressgroup1_change"
         $addressgroup.uuid | Should -Not -BeNullOrEmpty
+        $addressgroup.type | Should -Be "src"
         ($addressgroup.member).count | Should -Be "2"
         $addressgroup.member.name | Should -BeIn $pester_proxyaddress1, $pester_proxyaddress2
         $addressgroup.comment | Should -Be "Modified by PowerFGT"
@@ -389,6 +405,7 @@ Describe "Copy Firewall Proxy Address Group" {
         $addressgroup = Get-FGTFirewallProxyAddressGroup -name copy_pester_proxyaddressgroup1
         $addressgroup.name | Should -Be "copy_pester_proxyaddressgroup1"
         $addressgroup.uuid | Should -Not -BeNullOrEmpty
+        $addressgroup.type | Should -Be "src"
         ($addressgroup.member).count | Should -Be "2"
         $addressgroup.member.name | Should -BeIn $pester_proxyaddress1, $pester_proxyaddress2
         $addressgroup.comment | Should -BeNullOrEmpty
@@ -461,6 +478,7 @@ Describe "Remove Firewall Proxy Address Group Member" {
         $addressgroup = Get-FGTFirewallProxyAddressGroup -name $pester_proxyaddressgroup1
         $addressgroup.name | Should -Be $pester_proxyaddressgroup1
         $addressgroup.uuid | Should -Not -BeNullOrEmpty
+        $addressgroup.type | Should -Be "src"
         ($addressgroup.member).count | Should -Be "2"
         $addressgroup.member.name | Should -BeIn $pester_proxyaddress2, $pester_proxyaddress3
         $addressgroup.comment | Should -BeNullOrEmpty
@@ -472,6 +490,7 @@ Describe "Remove Firewall Proxy Address Group Member" {
         $addressgroup = Get-FGTFirewallProxyAddressGroup -name $pester_proxyaddressgroup1
         $addressgroup.name | Should -Be $pester_proxyaddressgroup1
         $addressgroup.uuid | Should -Not -BeNullOrEmpty
+        $addressgroup.type | Should -Be "src"
         ($addressgroup.member).count | Should -Be "1"
         $addressgroup.member.name | Should -BeIn $pester_proxyaddress1
         $addressgroup.comment | Should -BeNullOrEmpty
