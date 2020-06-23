@@ -297,12 +297,11 @@ function Remove-FGTFirewallProxyPolicy {
 
     #>
 
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'high')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript( { Confirm-FGTFirewallproxyPolicy $_ })]
         [psobject]$policy,
-        [Parameter(Mandatory = $false)]
-        [switch]$noconfirm,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -321,20 +320,8 @@ function Remove-FGTFirewallProxyPolicy {
 
         $uri = "api/v2/cmdb/firewall/proxy-policy/$($policy.policyid)"
 
-        if ( -not ( $Noconfirm )) {
-            $message = "Remove Policy on Fortigate"
-            $question = "Proceed with removal of ProxyPolicy $($policy.uuid) ?"
-            $choices = New-Object Collections.ObjectModel.Collection[Management.Automation.Host.ChoiceDescription]
-            $choices.Add((New-Object Management.Automation.Host.ChoiceDescription -ArgumentList '&Yes'))
-            $choices.Add((New-Object Management.Automation.Host.ChoiceDescription -ArgumentList '&No'))
-
-            $decision = $Host.UI.PromptForChoice($message, $question, $choices, 1)
-        }
-        else { $decision = 0 }
-        if ($decision -eq 0) {
-            Write-Progress -activity "Remove ProxyPolicy"
+        if ($PSCmdlet.ShouldProcess($policy.policyid, 'Remove Firewall Proxy Policy')) {
             $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -connection $connection @invokeParams
-            Write-Progress -activity "Remove ProxyPolicy" -completed
         }
     }
 
