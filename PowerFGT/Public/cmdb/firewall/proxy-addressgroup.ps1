@@ -16,17 +16,17 @@ function Add-FGTFirewallProxyAddressGroup {
         .EXAMPLE
         Add-FGTFirewallProxyAddressGroup -type src -name MyAddressGroup -member MyAddress1
 
-        Add ProxyAddress Group with type source and member MyAddress1
+        Add ProxyAddress Group with type source and member MyAddress1 (type host-regex or method)
 
         .EXAMPLE
         Add-FGTFirewallProxyAddressGroup -type src -name MyAddressGroup -member MyAddress1, MyAddress2
 
-        Add ProxyAddress Group with type source and members MyAddress1 and MyAddress2
+        Add ProxyAddress Group with type source and members MyAddress1 and MyAddress2 (type host-regex or method)
 
         .EXAMPLE
         Add-FGTFirewallProxyAddressGroup -type dst -name MyAddressGroup -member MyAddress1 -comment "My ProxyAddress Group"
 
-        Add ProxyAddress Group with type destination and member MyAddress1 and a comment
+        Add ProxyAddress Group with type destination and member MyAddress1 (type path) and a comment
     #>
 
     Param(
