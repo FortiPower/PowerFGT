@@ -109,18 +109,20 @@ function Add-FGTSystemZone {
         Add a zone
 
         .EXAMPLE
-        Add-FGTSystemZone -name PowerFGT -intrazone deny
+        Add-FGTSystemZone -name PowerFGT -intrazone deny -interfaces port5,port6
 
-        Add a zone named PowerFGT with intra-zone traffic blocked
+        Add a zone named PowerFGT with intra-zone traffic blocked and with port5 and port6 in this zone
     #>
 
     [CmdletBinding(DefaultParameterSetName = "default")]
     Param(
-        [Parameter (Mandatory = $true, Position = 1, ParameterSetName = "name")]
+        [Parameter (Mandatory = $true, Position = 1)]
         [string]$name,
         [Parameter(Mandatory = $false)]
         [ValidateSet('allow','deny')]
         [string]$intrazone,
+        [Parameter(Mandatory = $false)]
+        [string[]]$interfaces,
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
     )
@@ -132,14 +134,30 @@ function Add-FGTSystemZone {
 
         $zone = new-Object -TypeName PSObject
         $zone | add-member -name "name" -membertype NoteProperty -Value $name
-        $zone | add-member -name "q_origin_key" -membertype NoteProperty -Value $name
+
+        $get_interface = Get-FGTSystemInterface -name $interface
+
+        If($null -eq $get_interface)
+        {
+            Throw "The interface specified does not exist"
+        }
+
+        if ( $PsBoundParameters.ContainsKey('interfaces') ) {
+            $ports = @()
+            foreach ( $member in $interfaces ) {
+                $member_attributes = @{}
+                $member_attributes.add( 'interface-name', $member)
+                $ports += $member_attributes
+            }
+            $zone | add-member -name "interface" -membertype NoteProperty -Value $ports
+        }
 
         if ( $PsBoundParameters.ContainsKey('intrazone') ) {
             $zone | add-member -name "intrazone" -membertype NoteProperty -Value $intrazone
         }
 
         Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/zone' -method 'POST' -body $zone -connection $connection | Out-Null
-        Get-FGTSystemZone -name $name
+        Get-FGTSystemZone -name $name -connection $connection
 
     }
 
@@ -164,7 +182,7 @@ function Set-FGTSystemZone {
 
     [CmdletBinding(DefaultParameterSetName = "default")]
     Param(
-        [Parameter (Mandatory = $true, Position = 1, ParameterSetName = "name")]
+        [Parameter (Mandatory = $true, Position = 1)]
         [string]$name,
         [Parameter(Mandatory = $false)]
         [ValidateSet('allow','deny')]
@@ -193,7 +211,6 @@ function Set-FGTSystemZone {
             foreach ( $member in $interfaces ) {
                 $member_attributes = @{}
                 $member_attributes.add( 'interface-name', $member)
-                $member_attributes.add( 'q_origin_key', $member)
                 $ports += $member_attributes
             }
             $zone | add-member -name "interface" -membertype NoteProperty -Value $ports
@@ -204,7 +221,43 @@ function Set-FGTSystemZone {
         }
 
         Invoke-FGTRestMethod -uri "api/v2/cmdb/system/zone/${name}" -method 'PUT' -body $zone -connection $connection | Out-Null
-        Get-FGTSystemZone -name $name
+        Get-FGTSystemZone -name $name -connection $connection
+
+    }
+
+    End {
+    }
+}
+
+function Remove-FGTSystemZone {
+
+    <#
+        .SYNOPSIS
+        Remove a zone
+
+        .DESCRIPTION
+        Remove a zone
+
+        .EXAMPLE
+        Remove-FGTSystemZone -name PowerFGT
+
+        Remove the zone named PowerFGT
+    #>
+
+    [CmdletBinding(DefaultParameterSetName = "default")]
+    Param(
+        [Parameter (Mandatory = $true, Position = 1)]
+        [string]$name,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $null = Invoke-FGTRestMethod -method "DELETE" -uri "api/v2/cmdb/system/zone/${name}" -connection $connection
 
     }
 
