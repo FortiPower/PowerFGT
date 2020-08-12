@@ -139,6 +139,12 @@ Describe "Set zone" {
         $zone.interface."interface-name"[0] | Should -Be "port7"
         $zone.interface."interface-name"[1] | Should -Be "port8"
     }
+
+    It "Rermove interfaces" {
+        Set-FGTSystemZone -name "PowerFGT" -interfaces none
+        $zone = Get-FGTSystemZone -name "PowerFGT"
+        $zone.interface | Should -Be $NULL
+    }
 }
 
 Describe "Remove zone" {
