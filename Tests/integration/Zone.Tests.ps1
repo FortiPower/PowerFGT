@@ -55,7 +55,38 @@ Describe "Add zone" {
         Remove-FGTSystemZone -name PowerFGT
     }
 
-    It "Add zone PowerFGT" {
+    It "Add zone PowerFGT with intrazone deny" {
+        Add-FGTSystemZone -name "PowerFGT" -intrazone deny 
+        $zone = Get-FGTSystemZone -name "PowerFGT"
+        $zone.intrazone | Should -Be "deny"
+    }
+
+    It "Add zone PowerFGT with intrazone allow" {
+        Add-FGTSystemZone -name "PowerFGT" -intrazone allow 
+        $zone = Get-FGTSystemZone -name "PowerFGT"
+        $zone.intrazone | Should -Be "allow"
+    }
+
+    It "Add zone PowerFGT with 0 interface" {
+        Add-FGTSystemZone -name "PowerFGT" 
+        $zone = Get-FGTSystemZone -name "PowerFGT"
+        $zone.interface | Should -Be $NULL
+    }
+
+    It "Add zone PowerFGT with 1 interface" {
+        Add-FGTSystemZone -name "PowerFGT" -interfaces port9
+        $zone = Get-FGTSystemZone -name "PowerFGT"
+        $zone.interface."interface-name" | Should -Be "port9"
+    }
+
+    It "Add zone PowerFGT with 2 interfaces" {
+        Add-FGTSystemZone -name "PowerFGT" -interfaces port9,port10
+        $zone = Get-FGTSystemZone -name "PowerFGT"
+        $zone.interface."interface-name"[0] | Should -Be "port9"
+        $zone.interface."interface-name"[1] | Should -Be "port10"
+    }
+
+    It "Add zone PowerFGT with intrazone and interfaces" {
         Add-FGTSystemZone -name "PowerFGT" -intrazone deny -interfaces port9,port10
         $zone = Get-FGTSystemZone -name "PowerFGT"
         $zone.name | Should -Be "PowerFGT"
@@ -70,11 +101,6 @@ Describe "Add zone" {
         #Add Second zone with same name
         { Add-FGTSystemZone -name PowerFGT } | Should -Throw "Already a zone using the same name"
     }
-
-    It "Try to add zone without name" {
-        { Add-FGTSystemZone -intrazone allow } | Should -Throw "You need to specifiy a name"
-        Add-FGTSystemZone -name PowerFGT
-    }
 }
 
 Describe "Set zone" {
@@ -87,10 +113,18 @@ Describe "Set zone" {
     }
 
     It "Change name" {
-        Set-FGTSystemZone -name "PowerFGT" -new_name "PowerFGT_new"
+        Set-FGTSystemZone -name "PowerFGT" -zone_name "PowerFGT_new"
         $zone = Get-FGTSystemZone -name "PowerFGT_new"
         $zone.name | Should -Be "PowerFGT_new"
-        Set-FGTSystemZone -name "PowerFGT_new" -new_name "PowerFGT"
+        Set-FGTSystemZone -name "PowerFGT_new" -zone_name "PowerFGT"
+    }
+
+    It "Change name using pipelines" {
+        $zone = Get-FGTSystemZone -name "PowerFGT"
+        $zone.name | Set-FGTSystemZone -zone_name "PowerFGT_new"
+        $zone = Get-FGTSystemZone -name "PowerFGT_new"
+        $zone.name | Should -Be "PowerFGT_new"
+        Set-FGTSystemZone -name "PowerFGT_new" -zone_name "PowerFGT"
     }
 
     It "Change intrazone" {
@@ -122,7 +156,7 @@ Describe "Remove zone" {
 
     It "Remove zone PowerFGT by pipeline" {
         $zone = Get-FGTSystemZone -name "PowerFGT"
-        $zone | Remove-FGTSystemZone
+        $zone.name | Remove-FGTSystemZone
         $zone = Get-FGTSystemZone -name "PowerFGT"
         $zone | Should -Be $NULL
     }

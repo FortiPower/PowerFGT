@@ -114,9 +114,8 @@ function Add-FGTSystemZone {
         Add a zone named PowerFGT with intra-zone traffic blocked and with port5 and port6 in this zone
     #>
 
-    [CmdletBinding(DefaultParameterSetName = "default")]
     Param(
-        [Parameter (Mandatory = $false, Position = 1)]
+        [Parameter (Mandatory = $true, Position = 1)]
         [string]$name,
         [Parameter(Mandatory = $false)]
         [ValidateSet('allow','deny')]
@@ -133,14 +132,10 @@ function Add-FGTSystemZone {
     Process {
 
         $zone = new-Object -TypeName PSObject
-        if ( $PsBoundParameters.ContainsKey('name') ) {
-            $zone | add-member -name "name" -membertype NoteProperty -Value $name
-        }
-        Else{
-            Throw "You need to specifiy a name"
-        }
 
-        $get_zone_name = Get-FGTSystemZone -name $name
+        $zone | add-member -name "name" -membertype NoteProperty -Value $name
+
+        $get_zone_name = Get-FGTSystemZone -name $name -connection $connection
 
         If($null -ne $get_zone_name)
         {
@@ -150,7 +145,7 @@ function Add-FGTSystemZone {
         if ( $PsBoundParameters.ContainsKey('interfaces') ) {
             $ports = @()
             foreach ( $member in $interfaces ) {
-                $get_interface = Get-FGTSystemInterface -name $member
+                $get_interface = Get-FGTSystemInterface -name $member -connection $connection
 
                 If($null -eq $get_interface)
                 {
@@ -191,12 +186,11 @@ function Set-FGTSystemZone {
         Set the zone named PowerFGT with intra-zone traffic authorized, and with port 5 and port 6 bound to it
     #>
 
-    [CmdletBinding(DefaultParameterSetName = "default")]
     Param(
-        [Parameter (Mandatory = $true, Position = 1)]
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [string]$name,
         [Parameter (Mandatory = $false)]
-        [string]$new_name,
+        [string]$zone_name,
         [Parameter(Mandatory = $false)]
         [ValidateSet('allow','deny')]
         [string]$intrazone,
@@ -234,8 +228,8 @@ function Set-FGTSystemZone {
             $zone | add-member -name "intrazone" -membertype NoteProperty -Value $intrazone
         }
 
-        if ( $PsBoundParameters.ContainsKey('new_name') ) {
-            $zone | add-member -name "name" -membertype NoteProperty -Value $new_name
+        if ( $PsBoundParameters.ContainsKey('zone_name') ) {
+            $zone | add-member -name "name" -membertype NoteProperty -Value $zone_name
         }
 
         Invoke-FGTRestMethod -uri "api/v2/cmdb/system/zone/${name}" -method 'PUT' -body $zone -connection $connection | Out-Null
@@ -262,7 +256,7 @@ function Remove-FGTSystemZone {
         Remove the zone named PowerFGT
     #>
 
-    [CmdletBinding(DefaultParameterSetName = "default")]
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [string]$name,
@@ -275,7 +269,9 @@ function Remove-FGTSystemZone {
 
     Process {
 
-        $null = Invoke-FGTRestMethod -method "DELETE" -uri "api/v2/cmdb/system/zone/${name}" -connection $connection
+        if ($PSCmdlet.ShouldProcess($zone.name, 'Remove zone')) {
+            $null = Invoke-FGTRestMethod -method "DELETE" -uri "api/v2/cmdb/system/zone/${name}" -connection $connection
+        }
 
     }
 
