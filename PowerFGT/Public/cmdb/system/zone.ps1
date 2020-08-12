@@ -209,19 +209,24 @@ function Set-FGTSystemZone {
 
         if ( $PsBoundParameters.ContainsKey('interfaces') ) {
             $ports = @()
-            foreach ( $member in $interfaces ) {
-                $get_interface = Get-FGTSystemInterface -name $member
-
-                If($null -eq $get_interface)
-                {
-                    Throw "The interface $member does not exist"
-                }
-
-                $member_attributes = @{}
-                $member_attributes.add( 'interface-name', $member)
-                $ports += $member_attributes
+            if ($interfaces -eq "none"){
+                $zone | add-member -name "interface" -membertype NoteProperty -Value $ports
             }
-            $zone | add-member -name "interface" -membertype NoteProperty -Value $ports
+            else{
+                foreach ( $member in $interfaces ) {
+                    $get_interface = Get-FGTSystemInterface -name $member
+    
+                    If($null -eq $get_interface)
+                    {
+                        Throw "The interface $member does not exist"
+                    }
+    
+                    $member_attributes = @{}
+                    $member_attributes.add( 'interface-name', $member)
+                    $ports += $member_attributes
+                }
+                $zone | add-member -name "interface" -membertype NoteProperty -Value $ports
+            }
         }
 
         if ( $PsBoundParameters.ContainsKey('intrazone') ) {
