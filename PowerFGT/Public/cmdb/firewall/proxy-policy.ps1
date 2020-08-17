@@ -82,8 +82,6 @@ function Add-FGTFirewallProxyPolicy {
         [ValidateSet("disable", "utm", "all")]
         [string]$logtraffic,
         [Parameter (Mandatory = $false)]
-        [string[]]$ippool,
-        [Parameter (Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
