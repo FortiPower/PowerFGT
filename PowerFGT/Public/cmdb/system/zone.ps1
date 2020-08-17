@@ -283,3 +283,62 @@ function Remove-FGTSystemZone {
     End {
     }
 }
+
+function Remove-FGTSystemZoneMember {
+
+    <#
+        .SYNOPSIS
+        Remove a zone member
+
+        .DESCRIPTION
+        Remove a zone member
+
+        .EXAMPLE
+        Remove-FGTSystemZoneMember -name PowerFGT -interface port9
+
+        Remove the zone member interface port9
+    #>
+
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [string]$name,
+        [Parameter(Mandatory = $true)]
+        [string[]]$interfaces,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $zone = new-Object -TypeName PSObject
+        $get_zone = Get-FGTSystemZone -name $name
+
+        $members = @()
+        foreach ($member in $get_zone.interface) {
+            $member_name = @{ }
+            $member_name.add( 'interface-name', $member."interface-name")
+            $members += $member_name
+        }
+
+        foreach ($remove_member in $interfaces) {
+            $members = $members | Where-Object { $_."interface-name" -ne $remove_member }
+        }
+
+        if ( $members.count -le 1 ) {
+            $members = @($members)
+        }
+
+        $zone | add-member -name "interface" -membertype NoteProperty -Value $members
+        
+
+        Invoke-FGTRestMethod -uri "api/v2/cmdb/system/zone/${name}" -method 'PUT' -body $zone -connection $connection | Out-Null
+        Get-FGTSystemZone -name $name -connection $connection
+
+    }
+
+    End {
+    }
+}
