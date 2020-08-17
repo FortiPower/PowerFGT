@@ -168,4 +168,34 @@ Describe "Remove zone" {
     }
 }
 
+Describe "Remove zone members" {
+
+    BeforeEach {
+        Add-FGTSystemZone -name PowerFGT -interfaces port7,port8,port9,port10
+    }
+    AfterEach {
+        Remove-FGTSystemZone -name PowerFGT
+    }
+
+    It "Remove zone member port7 leaving 3 interfaces in the zone" {
+        Remove-FGTSystemZoneMember -name "PowerFGT" -interfaces port7
+        $zone = Get-FGTSystemZone -name "PowerFGT"
+        $zone.interface."interface-name"[0] | Should -Be "port8"
+        $zone.interface."interface-name"[1] | Should -Be "port9"
+        $zone.interface."interface-name"[2] | Should -Be "port10"
+    }
+
+    It "Remove zone members port7,port8,port9 leaving only one interface in the zone" {
+        Remove-FGTSystemZoneMember -name "PowerFGT" -interfaces port7,port8,port9
+        $zone = Get-FGTSystemZone -name "PowerFGT"
+        $zone.interface."interface-name" | Should -Be "port10"
+    }
+
+    It "Remove all zone members leaving 0 interfaces in it" {
+        Remove-FGTSystemZoneMember -name "PowerFGT" -interfaces port7,port8,port9,port10
+        $zone = Get-FGTSystemZone -name "PowerFGT"
+        $zone.interface | Should -Be $NULL
+    }
+}
+
 Disconnect-FGT -confirm:$false
