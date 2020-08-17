@@ -205,3 +205,124 @@ function Set-FGTSystemInterface {
     End {
     }
 }
+
+function Add-FGTSystemInterface {
+
+    <#
+        .SYNOPSIS
+        Add a vlan interface
+
+        .DESCRIPTION
+        Add a vlan interface
+
+        .EXAMPLE
+        Add-FGTSystemInterface
+
+        
+    #>
+
+    Param(
+        [Parameter (Mandatory = $true, Position = 1)]
+        [string]$name,
+        [Parameter (Mandatory = $true)]
+        [ValidateSet('vlan')]
+        [string]$type,
+        [Parameter (Mandatory = $false)]
+        [string]$alias,
+        [Parameter (Mandatory = $true)]
+        [ValidateSet('lan','wan','dmz','undefined')]
+        [string]$role,
+        [Parameter (Mandatory = $false)]
+        [int]$vlan_id,
+        [Parameter (Mandatory = $true)]
+        [ValidateSet('port1','port2','port3','port4','port5','port6','port7','port8','port9','port10')]
+        [string]$interface,
+        [Parameter (Mandatory = $false)]
+        [ValidateSet('https','ping','fgfm','capwap','ssh','snmp','ftm','radius-acct','ftm')]
+        [string[]]$admin_access,
+        [Parameter (Mandatory = $false)]
+        [string]$connected = $false,
+        [Parameter (Mandatory = $false)]
+        [string]$device_identification = $false,
+        [Parameter (Mandatory = $true)]
+        [ValidateSet('static','dhcp')]
+        [string]$mode,
+        [Parameter (Mandatory = $false)]
+        [string]$ip,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/system/interface"
+        $_interface = new-Object -TypeName PSObject
+
+        $_interface | add-member -name "name" -membertype NoteProperty -Value $name
+        $_interface | add-member -name "type" -membertype NoteProperty -Value $type
+        $_interface | add-member -name "role" -membertype NoteProperty -Value $role
+        $_interface | add-member -name "interface" -membertype NoteProperty -Value $interface
+        $_interface | add-member -name "mode" -membertype NoteProperty -Value $mode
+
+        if ( $PsBoundParameters.ContainsKey('alias') ) {
+            $_interface | add-member -name "alias" -membertype NoteProperty -Value $alias
+        }
+
+        if ( $PsBoundParameters.ContainsKey('vlan_id') ) {
+            $_interface | add-member -name "vlanid" -membertype NoteProperty -Value $vlan_id
+        }
+
+        if ( $PsBoundParameters.ContainsKey('admin_access') ) {
+            $allowaccess = [string]$admin_access
+            $_interface | add-member -name "allowaccess" -membertype NoteProperty -Value $allowaccess
+        }
+
+        <#switch ($connected)
+        {
+            $true
+            {
+                $connected = "up"
+            }
+            $false
+            {
+                $connected = "down"
+            }
+        }
+
+        $_interface | add-member -name "status" -membertype NoteProperty -Value $connected
+
+        switch ($device_identification)
+        {
+            $true
+            {
+                $device_identification = "enable"
+            }
+            $false
+            {
+                $device_identification = "disable"
+            }
+        }
+
+        $_interface | add-member -name "device-identification" -membertype NoteProperty -Value $device_identification
+#>
+        if ( $PsBoundParameters.ContainsKey('ip') ) {
+            $_interface | add-member -name "ip" -membertype NoteProperty -Value $ip
+        }
+
+        $response = Invoke-FGTRestMethod -uri $uri -method 'POST' -body $_interface -connection $connection @invokeParams
+        $response.results
+    }
+
+    End {
+    }
+}
