@@ -109,7 +109,7 @@ function Set-FGTSystemInterface {
         Set a vlan interface
 
         .EXAMPLE
-        Set-FGTSystemInterface -name PowerFGT -alias ALIAS_PowerFGT -role lan -mode static -ip 192.0.2.1/255.255.255.0  -admin_access ping,https -device_identification $false -connected $false
+        Set-FGTSystemInterface -name PowerFGT -alias ALIAS_PowerFGT -role lan -mode static -address_mask 192.0.2.1/255.255.255.0  -admin_access ping,https -device_identification $false -connected $false
 
         This set the interface vlan named PowerFGT with an alias, the LAN role, in static mode with 192.0.2.1 as IP, with ping and https administrative access, and with device identification disable and not connected 
     #>
@@ -129,7 +129,7 @@ function Set-FGTSystemInterface {
         [ValidateSet('static','dhcp')]
         [string]$mode,
         [Parameter (Mandatory = $false)]
-        [string]$ip,
+        [string]$address_mask,
         [Parameter (Mandatory = $false)]
         [string]$connected = $false,
         [Parameter (Mandatory = $false)]
@@ -166,8 +166,8 @@ function Set-FGTSystemInterface {
             $_interface | add-member -name "allowaccess" -membertype NoteProperty -Value $allowaccess
         }
 
-        if ( $PsBoundParameters.ContainsKey('ip') ) {
-            $_interface | add-member -name "ip" -membertype NoteProperty -Value $ip
+        if ( $PsBoundParameters.ContainsKey('address_mask') ) {
+            $_interface | add-member -name "ip" -membertype NoteProperty -Value $address_mask
         }
 
         switch ($connected)
@@ -216,9 +216,14 @@ function Add-FGTSystemInterface {
         Add a vlan interface
 
         .EXAMPLE
-        Add-FGTSystemInterface
+        Add-FGTSystemInterface -name PowerFGT -type vlan -role lan -mode static -vdom_interface root -interface port10 -vlan_id 10
 
-        
+        This add an interface vlan with only the mandatory parameters.
+
+        .EXAMPLE
+        Add-FGTSystemInterface -name PowerFGT -type vlan -alias Alias_PowerFGT -role lan -vlan_id 10 -interface port10 -admin_access https,ping,ssh -connected $true -device_identification $true -mode static -address_mask 192.0.2.1/255.255.255.0 -vdom_interface root
+
+        Add a vlan interface named PowerFGT with alias Alias_PowerFGT, role lan with vlan id 10 on interface port10. Administrative access by https and ssh, ping authorize on ip 192.0.2.1 and state connected.
     #>
 
     Param(
@@ -232,7 +237,7 @@ function Add-FGTSystemInterface {
         [Parameter (Mandatory = $true)]
         [ValidateSet('lan','wan','dmz','undefined')]
         [string]$role,
-        [Parameter (Mandatory = $false)]
+        [Parameter (Mandatory = $true)]
         [int]$vlan_id,
         [Parameter (Mandatory = $true)]
         [ValidateSet('port1','port2','port3','port4','port5','port6','port7','port8','port9','port10')]
@@ -248,7 +253,9 @@ function Add-FGTSystemInterface {
         [ValidateSet('static','dhcp')]
         [string]$mode,
         [Parameter (Mandatory = $false)]
-        [string]$ip,
+        [string]$address_mask,
+        [Parameter (Mandatory = $true)]
+        [string]$vdom_interface,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -273,6 +280,7 @@ function Add-FGTSystemInterface {
         $_interface | add-member -name "role" -membertype NoteProperty -Value $role
         $_interface | add-member -name "interface" -membertype NoteProperty -Value $interface
         $_interface | add-member -name "mode" -membertype NoteProperty -Value $mode
+        $_interface | add-member -name "vdom" -membertype NoteProperty -Value $vdom_interface
 
         if ( $PsBoundParameters.ContainsKey('alias') ) {
             $_interface | add-member -name "alias" -membertype NoteProperty -Value $alias
@@ -287,7 +295,11 @@ function Add-FGTSystemInterface {
             $_interface | add-member -name "allowaccess" -membertype NoteProperty -Value $allowaccess
         }
 
-        <#switch ($connected)
+        if ( $PsBoundParameters.ContainsKey('address_mask') ) {
+            $_interface | add-member -name "ip" -membertype NoteProperty -Value $address_mask
+        }
+
+        switch ($connected)
         {
             $true
             {
@@ -314,10 +326,6 @@ function Add-FGTSystemInterface {
         }
 
         $_interface | add-member -name "device-identification" -membertype NoteProperty -Value $device_identification
-#>
-        if ( $PsBoundParameters.ContainsKey('ip') ) {
-            $_interface | add-member -name "ip" -membertype NoteProperty -Value $ip
-        }
 
         $response = Invoke-FGTRestMethod -uri $uri -method 'POST' -body $_interface -connection $connection @invokeParams
         $response.results
