@@ -345,14 +345,9 @@ function Remove-FGTSystemInterface {
         Remove a vlan interface
 
         .EXAMPLE
-        Remove-FGTSystemInterface -name PowerFGT -type vlan -role lan -mode static -vdom_interface root -interface port10 -vlan_id 10
+        Remove-FGTSystemInterface -name PowerFGT 
 
-        This remove an interface vlan with only the mandatory parameters.
-
-        .EXAMPLE
-        Remove-FGTSystemInterface -name PowerFGT -type vlan -alias Alias_PowerFGT -role lan -vlan_id 10 -interface port10 -admin_access https,ping,ssh -connected $true -device_identification $true -mode static -address_mask 192.0.2.1/255.255.255.0 -vdom_interface root
-
-        Remove a vlan interface named PowerFGT with alias Alias_PowerFGT, role lan with vlan id 10 on interface port10. Administrative access by https and ssh, ping authorize on ip 192.0.2.1 and state connected.
+        This remove an interface vlan named PowerFGT
     #>
 
     Param(
