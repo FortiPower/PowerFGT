@@ -119,13 +119,13 @@ function Set-FGTSystemInterface {
         [string]$name,
         [Parameter (Mandatory = $false)]
         [string]$alias,
-        [Parameter (Mandatory = $true)]
+        [Parameter (Mandatory = $false)]
         [ValidateSet('lan','wan','dmz','undefined')]
         [string]$role,
         [Parameter (Mandatory = $false)]
         [ValidateSet('https','ping','fgfm','capwap','ssh','snmp','ftm','radius-acct','ftm')]
         [string[]]$admin_access,
-        [Parameter (Mandatory = $true)]
+        [Parameter (Mandatory = $false)]
         [ValidateSet('static','dhcp')]
         [string]$mode,
         [Parameter (Mandatory = $false)]
