@@ -350,6 +350,7 @@ function Remove-FGTSystemInterface {
         This remove an interface vlan named PowerFGT
     #>
 
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [string]$name,
@@ -371,8 +372,9 @@ function Remove-FGTSystemInterface {
 
         $uri = "api/v2/cmdb/system/interface/${name}"
 
-        $response = Invoke-FGTRestMethod -uri $uri -method 'DELETE' -connection $connection @invokeParams
-        $response
+        if ($PSCmdlet.ShouldProcess($name, 'Remove interface vlan')) {
+            $null = Invoke-FGTRestMethod -uri $uri -method 'DELETE' -connection $connection @invokeParams
+        }
     }
 
     End {
