@@ -20,7 +20,7 @@ function Add-FGTFirewallProxyPolicy {
         Add a explicit-web ProxyPolicy with destination interface port1, source-address and destination-address all
 
         .EXAMPLE
-        Add-FGTFirewallProxyPolicy -proxytype transparent-web -dstintf port1 -srcaddr all -dstaddr all
+        Add-FGTFirewallProxyPolicy -proxytype transparent-web -srcintf port1 -dstintf port1 -srcaddr all -dstaddr all
 
         Add a transparent-web ProxyPolicy with destination interface port1, source-address and destination-address all
 
@@ -60,6 +60,8 @@ function Add-FGTFirewallProxyPolicy {
         [Parameter (Mandatory = $true)]
         [ValidateSet("explicit-web", "transparent-web")]
         [string]$proxytype,
+        [Parameter (Mandatory = $false)]
+        [string[]]$srcintf,
         [Parameter (Mandatory = $true)]
         [string[]]$dstintf,
         [Parameter (Mandatory = $true)]
@@ -104,6 +106,13 @@ function Add-FGTFirewallProxyPolicy {
 
         $uri = "api/v2/cmdb/firewall/proxy-policy"
 
+        # Source interface
+        $srcintf_array = @()
+        #TODO check if the interface (zone ?) is valid
+        foreach ($intf in $srcintf) {
+            $srcintf_array += @{ 'name' = $intf }
+        }
+
         # Destination interface
         $dstintf_array = @()
         #TODO check if the interface (zone ?) is valid
@@ -135,6 +144,10 @@ function Add-FGTFirewallProxyPolicy {
         $policy = new-Object -TypeName PSObject
 
         $policy | add-member -name "proxy" -membertype NoteProperty -Value $proxytype
+
+        if ( $PsBoundParameters.ContainsKey('srcintf') ) {
+            $policy | add-member -name "srcintf" -membertype NoteProperty -Value $srcintf_array
+        }
 
         $policy | add-member -name "dstintf" -membertype NoteProperty -Value $dstintf_array
 
