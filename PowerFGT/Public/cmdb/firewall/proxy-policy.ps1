@@ -74,7 +74,7 @@ function Add-FGTFirewallProxyPolicy {
         [Parameter (Mandatory = $false)]
         [string]$schedule = "always",
         [Parameter (Mandatory = $false)]
-        [string[]]$service = "ALL",
+        [string[]]$service = "webproxy",
         [Parameter (Mandatory = $false)]
         [ValidateLength(0, 255)]
         [string]$comments,
