@@ -410,7 +410,7 @@ Describe "Add Firewall Proxy Policy" {
         }
 
         It "Add Proxy Policy (with policyid)" {
-            $return = Add-FGTFirewallProxyPolicy -proxytype transparent-web -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -policyid 23
+            Add-FGTFirewallProxyPolicy -proxytype transparent-web -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -policyid 23
             $policy = Get-FGTFirewallProxyPolicy -policyid 23
             $policy.uuid | Should -Not -BeNullOrEmpty
             $policy.policyid | Should -Be "23"
@@ -718,7 +718,7 @@ Describe "Add Firewall Proxy Policy" {
         }
 
         It "Add Proxy Policy (with policyid)" {
-            $return = Add-FGTFirewallProxyPolicy -proxytype explicit-web -dstintf port2 -srcaddr all -dstaddr all -policyid 23
+            Add-FGTFirewallProxyPolicy -proxytype explicit-web -dstintf port2 -srcaddr all -dstaddr all -policyid 23
             $policy = Get-FGTFirewallProxyPolicy -policyid 23
             $policy.uuid | Should -Not -BeNullOrEmpty
             $policy.policyid | Should -Be "23"
