@@ -9,50 +9,50 @@ function Add-FGTFirewallProxyPolicy {
 
     <#
         .SYNOPSIS
-        Add a FortiGate ProxyPolicy
+        Add a FortiGate Proxy Policy
 
         .DESCRIPTION
-        Add a FortiGate ProxyPolicy/Rules (source address, destination address, service, action, status...)
+        Add a FortiGate Proxy Policy/Rules (source address, destination address, service, action, status...)
 
         .EXAMPLE
         Add-FGTFirewallProxyPolicy -proxytype explicit-web -dstintf port1 -srcaddr all -dstaddr all
 
-        Add a explicit-web ProxyPolicy with destination interface port1, source-address and destination-address all
+        Add a explicit-web Proxy Policy with destination interface port1, source-address and destination-address all
 
         .EXAMPLE
         Add-FGTFirewallProxyPolicy -proxytype transparent-web -srcintf port2 -dstintf port1 -srcaddr all -dstaddr all
 
-        Add a transparent-web ProxyPolicy with source interface port2, destination interface port1, source-address and destination-address all
+        Add a transparent-web Proxy Policy with source interface port2, destination interface port1, source-address and destination-address all
 
         .EXAMPLE
         Add-FGTFirewallProxyPolicy -proxytype explicit-web -dstintf port1 -srcaddr all -dstaddr all -action "deny"
 
-        Add a explicit-web ProxyPolicy with action is Deny
+        Add a explicit-web Proxy Policy with action is Deny
 
         .EXAMPLE
         Add-FGTFirewallProxyPolicy -proxytype explicit-web -dstintf port1 -srcaddr all -dstaddr all -status:$false
 
-        Add a explicit-web ProxyPolicy with status is disable
+        Add a explicit-web Proxy Policy with status is disable
 
         .EXAMPLE
         Add-FGTFirewallProxyPolicy -proxytype explicit-web -dstintf port1 -srcaddr all -dstaddr all -service "HTTP, HTTPS, SSH"
 
-        Add a explicit-web ProxyPolicy with multiple services
+        Add a explicit-web Proxy Policy with multiple services
 
         .EXAMPLE
         Add-FGTFirewallProxyPolicy -proxytype explicit-web -dstintf port1 -srcaddr all -dstaddr all -schedule workhour
 
-        Add a explicit-web ProxyPolicy with schedule is workhour
+        Add a explicit-web Proxy Policy with schedule is workhour
 
         .EXAMPLE
         Add-FGTFirewallProxyPolicy -proxytype explicit-web -dstintf port1 -srcaddr all -dstaddr all -comments "My FGT ProxyPolicy"
 
-        Add a explicit-web ProxyPolicy with comment "My FGT ProxyPolicy"
+        Add a explicit-web Proxy Policy with comment "My FGT ProxyPolicy"
 
         .EXAMPLE
         Add-FGTFirewallProxyPolicy -proxytype explicit-web -dstintf port1 -srcaddr all -dstaddr all -logtraffic "all"
 
-        Add a explicit-web ProxyPolicy with log traffic all
+        Add a explicit-web Proxy Policy with log traffic all
     #>
 
 
@@ -201,35 +201,35 @@ function Get-FGTFirewallProxyPolicy {
 
     <#
         .SYNOPSIS
-        Get list of all ProxyPolicies/rules
+        Get list of all Proxy Policies/rules
 
         .DESCRIPTION
-        Get list of all ProxyPolicies (source address, destination address, service, action, status...)
+        Get list of all Proxy Policies (source address, destination address, service, action, status...)
 
         .EXAMPLE
         Get-FGTFirewallProxyPolicy
 
-        Get list of all Proxypolicies
+        Get list of all Proxy policies
 
         .EXAMPLE
         Get-FGTFirewallProxyPolicy -policyid 23
 
-        Get policy with id 23
+        Get Proxy policy with id 23
 
         .EXAMPLE
         Get-FGTFirewallProxyPolicy -uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
 
-        Get policy with uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
+        Get Proxy policy with uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
 
         .EXAMPLE
         Get-FGTFirewallProxyPolicy -skip
 
-        Get list of all policies (but only relevant attributes)
+        Get list of all Proxy policies (but only relevant attributes)
 
         .EXAMPLE
         Get-FGTFirewallPolicy -vdom vdomX
 
-        Get list of all policies on vdomX
+        Get list of all Proxy policies on vdomX
     #>
 
     [CmdletBinding(DefaultParameterSetName = "default")]
@@ -309,13 +309,13 @@ function Remove-FGTFirewallProxyPolicy {
         $MyFGTProxyPolicy = Get-FGTFirewallProxyPolicy -policyid 23
         PS C:\>$MyFGTProxyPolicy | Remove-FGTFirewallProxyPolicy
 
-        Remove ProxyPolicy object $MyFGTProxyPolicy
+        Remove Proxy Policy object $MyFGTProxyPolicy
 
         .EXAMPLE
         $MyFGTProxyPolicy = Get-FGTFirewallproxyPolicy -uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
         PS C:\>$MyFGTproxyPolicy | Remove-FGTFirewallproxyPolicy -noconfirm
 
-        Remove ProxyPolicy object MyFGTproxyPolicy with no confirmation
+        Remove Proxy Policy object MyFGTproxyPolicy with no confirmation
 
     #>
 
