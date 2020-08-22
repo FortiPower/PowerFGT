@@ -20,9 +20,9 @@ function Add-FGTFirewallProxyPolicy {
         Add a explicit-web ProxyPolicy with destination interface port1, source-address and destination-address all
 
         .EXAMPLE
-        Add-FGTFirewallProxyPolicy -proxytype transparent-web -srcintf port1 -dstintf port1 -srcaddr all -dstaddr all
+        Add-FGTFirewallProxyPolicy -proxytype transparent-web -srcintf port2 -dstintf port1 -srcaddr all -dstaddr all
 
-        Add a transparent-web ProxyPolicy with destination interface port1, source-address and destination-address all
+        Add a transparent-web ProxyPolicy with source interface port2, destination interface port1, source-address and destination-address all
 
         .EXAMPLE
         Add-FGTFirewallProxyPolicy -proxytype explicit-web -dstintf port1 -srcaddr all -dstaddr all -action "deny"
@@ -306,13 +306,13 @@ function Remove-FGTFirewallProxyPolicy {
         Remove a ProxyPolicy/Rule object on the FortiGate
 
         .EXAMPLE
-        $MyFGTProxyPolicy = Get-FGTFirewallProxyPolicy -name MyFGTProxyPolicy
+        $MyFGTProxyPolicy = Get-FGTFirewallProxyPolicy -policyid 23
         PS C:\>$MyFGTProxyPolicy | Remove-FGTFirewallProxyPolicy
 
         Remove ProxyPolicy object $MyFGTProxyPolicy
 
         .EXAMPLE
-        $MyFGTProxyPolicy = Get-FGTFirewallproxyPolicy -name MyFGTproxyPolicy
+        $MyFGTProxyPolicy = Get-FGTFirewallproxyPolicy -uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
         PS C:\>$MyFGTproxyPolicy | Remove-FGTFirewallproxyPolicy -noconfirm
 
         Remove ProxyPolicy object MyFGTproxyPolicy with no confirmation
