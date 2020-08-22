@@ -61,6 +61,8 @@ function Add-FGTFirewallProxyPolicy {
         [ValidateSet("explicit-web", "transparent-web")]
         [string]$proxytype,
         [Parameter (Mandatory = $false)]
+        [int]$policyid,
+        [Parameter (Mandatory = $false)]
         [string[]]$srcintf,
         [Parameter (Mandatory = $true)]
         [string[]]$dstintf,
@@ -144,6 +146,10 @@ function Add-FGTFirewallProxyPolicy {
         $policy = new-Object -TypeName PSObject
 
         $policy | add-member -name "proxy" -membertype NoteProperty -Value $proxytype
+
+        if ( $PsBoundParameters.ContainsKey('policyid') ) {
+            $policy | add-member -name "policyid" -membertype NoteProperty -Value $policyid
+        }
 
         if ( $PsBoundParameters.ContainsKey('srcintf') ) {
             $policy | add-member -name "srcintf" -membertype NoteProperty -Value $srcintf_array
