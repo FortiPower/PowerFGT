@@ -89,7 +89,9 @@ Describe "Add Firewall Proxy Address" {
             $address.path | Should -BeNullOrEmpty
             $address.method | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
 
@@ -104,7 +106,9 @@ Describe "Add Firewall Proxy Address" {
             $address.path | Should -BeNullOrEmpty
             $address.method | Should -BeNullOrEmpty
             $address.comment | Should -Be "Add via PowerFGT"
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
         It "Add Address $pester_proxyaddress1 (type host-regex and visiblity disable)" {
@@ -118,7 +122,9 @@ Describe "Add Firewall Proxy Address" {
             $address.path | Should -BeNullOrEmpty
             $address.method | Should -BeNullOrEmpty
             $address.comment | Should -BeNullorEmpty
-            $address.visibility | Should -Be "disable"
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "disable"
+            }
         }
 
         It "Try to Add Address $pester_proxyaddress1 (but there is already a object with same name)" {
@@ -151,7 +157,9 @@ Describe "Add Firewall Proxy Address" {
             $address.path | Should -BeNullOrEmpty
             $address.method | Should -Be "get"
             $address.comment | Should -BeNullorEmpty
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
         It "Add Address $pester_proxyaddress2 (type method and comment)" {
@@ -165,7 +173,9 @@ Describe "Add Firewall Proxy Address" {
             $address.path | Should -BeNullOrEmpty
             $address.method | Should -Be "get"
             $address.comment | Should -Be "Add via PowerFGT"
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
         It "Add Address $pester_proxyaddress2 (type method and visiblity disable)" {
@@ -179,7 +189,9 @@ Describe "Add Firewall Proxy Address" {
             $address.path | Should -BeNullOrEmpty
             $address.method | Should -Be "get"
             $address.comment | Should -BeNullOrEmpty
-            $address.visibility | Should -Be "disable"
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "disable"
+            }
         }
 
         It "Try to Add Address $pester_proxyaddress2 (but there is already a object with same name)" {
@@ -202,7 +214,9 @@ Describe "Add Firewall Proxy Address" {
                 $address.path | Should -BeNullOrEmpty
                 $address.method | Should -Be "connect"
                 $address.comment | Should -BeNullorEmpty
-                $address.visibility | Should -Be $true
+                if ($DefaultFGTConnection.version -lt "6.4.0") {
+                    $address.visibility | Should -Be $true
+                }
             }
 
             It "Add Address $pester_proxyaddress2 (type method delete)" {
@@ -216,7 +230,9 @@ Describe "Add Firewall Proxy Address" {
                 $address.path | Should -BeNullOrEmpty
                 $address.method | Should -Be "delete"
                 $address.comment | Should -BeNullorEmpty
-                $address.visibility | Should -Be $true
+                if ($DefaultFGTConnection.version -lt "6.4.0") {
+                    $address.visibility | Should -Be $true
+                }
             }
 
             It "Add Address $pester_proxyaddress2 (type method get)" {
@@ -230,7 +246,9 @@ Describe "Add Firewall Proxy Address" {
                 $address.path | Should -BeNullOrEmpty
                 $address.method | Should -Be "get"
                 $address.comment | Should -BeNullorEmpty
-                $address.visibility | Should -Be $true
+                if ($DefaultFGTConnection.version -lt "6.4.0") {
+                    $address.visibility | Should -Be $true
+                }
             }
 
             It "Add Address $pester_proxyaddress2 (type method head)" {
@@ -244,7 +262,9 @@ Describe "Add Firewall Proxy Address" {
                 $address.path | Should -BeNullOrEmpty
                 $address.method | Should -Be "head"
                 $address.comment | Should -BeNullorEmpty
-                $address.visibility | Should -Be $true
+                if ($DefaultFGTConnection.version -lt "6.4.0") {
+                    $address.visibility | Should -Be $true
+                }
             }
 
             It "Add Address $pester_proxyaddress2 (type method options)" {
@@ -258,7 +278,9 @@ Describe "Add Firewall Proxy Address" {
                 $address.path | Should -BeNullOrEmpty
                 $address.method | Should -Be "options"
                 $address.comment | Should -BeNullorEmpty
-                $address.visibility | Should -Be $true
+                if ($DefaultFGTConnection.version -lt "6.4.0") {
+                    $address.visibility | Should -Be $true
+                }
             }
 
             It "Add Address $pester_proxyaddress2 (type method post)" {
@@ -272,7 +294,9 @@ Describe "Add Firewall Proxy Address" {
                 $address.path | Should -BeNullOrEmpty
                 $address.method | Should -Be "post"
                 $address.comment | Should -BeNullorEmpty
-                $address.visibility | Should -Be $true
+                if ($DefaultFGTConnection.version -lt "6.4.0") {
+                    $address.visibility | Should -Be $true
+                }
             }
 
             It "Add Address $pester_proxyaddress2 (type method put)" {
@@ -286,7 +310,9 @@ Describe "Add Firewall Proxy Address" {
                 $address.path | Should -BeNullOrEmpty
                 $address.method | Should -Be "put"
                 $address.comment | Should -BeNullorEmpty
-                $address.visibility | Should -Be $true
+                if ($DefaultFGTConnection.version -lt "6.4.0") {
+                    $address.visibility | Should -Be $true
+                }
             }
 
             It "Add Address $pester_proxyaddress2 (typemethod trace)" {
@@ -300,7 +326,9 @@ Describe "Add Firewall Proxy Address" {
                 $address.path | Should -BeNullOrEmpty
                 $address.method | Should -Be "trace"
                 $address.comment | Should -BeNullorEmpty
-                $address.visibility | Should -Be $true
+                if ($DefaultFGTConnection.version -lt "6.4.0") {
+                    $address.visibility | Should -Be $true
+                }
             }
 
         }
@@ -333,7 +361,9 @@ Describe "Add Firewall Proxy Address" {
             $address.path | Should -Be "/PowerFGT"
             $address.method | Should -BeNullOrEmpty
             $address.comment | Should -BeNullorEmpty
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
         It "Add Address $pester_proxyaddress3  (type method and comment)" {
@@ -347,7 +377,9 @@ Describe "Add Firewall Proxy Address" {
             $address.path | Should -Be "/PowerFGT"
             $address.method | Should  -BeNullOrEmpty
             $address.comment | Should -Be "Add via PowerFGT"
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
         It "Add Address $pester_proxyaddress3  (type method and visiblity disable)" {
@@ -361,7 +393,9 @@ Describe "Add Firewall Proxy Address" {
             $address.path | Should -Be "/PowerFGT"
             $address.method | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
-            $address.visibility | Should -Be "disable"
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "disable"
+            }
         }
 
         It "Try to Add Address $pester_proxyaddress3  (but there is already a object with same name)" {
@@ -398,7 +432,9 @@ Describe "Copy Firewall Proxy Address" {
             $address.path | Should -BeNullOrEmpty
             $address.method | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
         AfterAll {
@@ -428,7 +464,9 @@ Describe "Copy Firewall Proxy Address" {
             $address.path | Should -BeNullOrEmpty
             $address.method | Should -Be "get"
             $address.comment | Should -BeNullOrEmpty
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
         AfterAll {
@@ -460,7 +498,9 @@ Describe "Copy Firewall Proxy Address" {
             $address.path | Should -Be "/PowerFGT"
             $address.method | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
-            $address.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be $true
+            }
         }
 
         AfterAll {

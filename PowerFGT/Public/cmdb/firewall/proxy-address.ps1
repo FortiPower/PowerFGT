@@ -109,11 +109,17 @@ function Add-FGTFirewallProxyAddress {
         }
 
         if ( $PsBoundParameters.ContainsKey('visibility') ) {
-            if ( $visibility ) {
-                $proxyaddress | add-member -name "visibility" -membertype NoteProperty -Value "enable"
+            #with 6.4.x, there is no longer visibility parameter
+            if ($connection.version -ge "6.4.0") {
+                Write-Warning "-visibility parameter is not longer available with FortiOS 6.4.x and after"
             }
             else {
-                $proxyaddress | add-member -name "visibility" -membertype NoteProperty -Value "disable"
+                if ( $visibility ) {
+                    $proxyaddress | add-member -name "visibility" -membertype NoteProperty -Value "enable"
+                }
+                else {
+                    $proxyaddress | add-member -name "visibility" -membertype NoteProperty -Value "disable"
+                }
             }
         }
 

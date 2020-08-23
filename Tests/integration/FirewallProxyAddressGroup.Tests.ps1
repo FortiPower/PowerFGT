@@ -101,7 +101,9 @@ Describe "Add Firewall Proxy Address Group" {
             ($addressgroup.member).count | Should -Be "1"
             $addressgroup.member.name | Should -BeIn $pester_proxyaddress1
             $addressgroup.comment | Should -BeNullOrEmpty
-            $addressgroup.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $addressgroup.visibility | Should -Be $true
+            }
         }
 
         It "Add Proxy Address Group $pester_proxyaddressgroup1 (with 1 member and a comment)" {
@@ -113,7 +115,9 @@ Describe "Add Firewall Proxy Address Group" {
             ($addressgroup.member).count | Should -Be "1"
             $addressgroup.member.name | Should -BeIn $pester_proxyaddress1
             $addressgroup.comment | Should -Be "Add via PowerFGT"
-            $addressgroup.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $addressgroup.visibility | Should -Be $true
+            }
         }
 
         It "Add Proxy Address Group $pester_proxyaddressgroup1 (with 1 member and visibility disable)" {
@@ -125,7 +129,9 @@ Describe "Add Firewall Proxy Address Group" {
             ($addressgroup.member).count | Should -Be "1"
             $addressgroup.member.name | Should -BeIn $pester_proxyaddress1
             $addressgroup.comment | Should -BeNullOrEmpty
-            $addressgroup.visibility | Should -Be "disable"
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $addressgroup.visibility | Should -Be "disable"
+            }
         }
 
         It "Add Proxy Address Group $pester_proxyaddressgroup1 (with 2 members)" {
@@ -137,7 +143,9 @@ Describe "Add Firewall Proxy Address Group" {
             ($addressgroup.member).count | Should -Be "2"
             $addressgroup.member.name | Should -BeIn $pester_proxyaddress1, $pester_proxyaddress2
             $addressgroup.comment | Should -BeNullOrEmpty
-            $addressgroup.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $addressgroup.visibility | Should -Be $true
+            }
         }
 
         It "Try to Add Proxy Address Group $pester_proxyaddressgroup1 (but there is already a object with same name)" {
@@ -179,7 +187,9 @@ Describe "Add Firewall Proxy Address Group" {
             ($addressgroup.member).count | Should -Be "1"
             $addressgroup.member.name | Should -BeIn $pester_proxyaddress1
             $addressgroup.comment | Should -BeNullOrEmpty
-            $addressgroup.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $addressgroup.visibility | Should -Be $true
+            }
         }
 
         It "Add Proxy Address Group $pester_proxyaddressgroup1 (with 1 member and a comment)" {
@@ -191,7 +201,9 @@ Describe "Add Firewall Proxy Address Group" {
             ($addressgroup.member).count | Should -Be "1"
             $addressgroup.member.name | Should -BeIn $pester_proxyaddress1
             $addressgroup.comment | Should -Be "Add via PowerFGT"
-            $addressgroup.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $addressgroup.visibility | Should -Be $true
+            }
         }
 
         It "Add Proxy Address Group $pester_proxyaddressgroup1 (with 1 member and visibility disable)" {
@@ -203,7 +215,9 @@ Describe "Add Firewall Proxy Address Group" {
             ($addressgroup.member).count | Should -Be "1"
             $addressgroup.member.name | Should -BeIn $pester_proxyaddress1
             $addressgroup.comment | Should -BeNullOrEmpty
-            $addressgroup.visibility | Should -Be "disable"
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $addressgroup.visibility | Should -Be "disable"
+            }
         }
 
         It "Add Proxy Address Group $pester_proxyaddressgroup1 (with 2 members)" {
@@ -215,7 +229,9 @@ Describe "Add Firewall Proxy Address Group" {
             ($addressgroup.member).count | Should -Be "2"
             $addressgroup.member.name | Should -BeIn $pester_proxyaddress1, $pester_proxyaddress2
             $addressgroup.comment | Should -BeNullOrEmpty
-            $addressgroup.visibility | Should -Be $true
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $addressgroup.visibility | Should -Be $true
+            }
         }
 
         It "Try to Add Proxy Address Group $pester_proxyaddressgroup1 (but there is already a object with same name)" {
@@ -265,7 +281,9 @@ Describe "Add Firewall Proxy Address Group Member" {
         ($addressgroup.member).count | Should -Be "2"
         $addressgroup.member.name | Should -BeIn $pester_proxyaddress1, $pester_proxyaddress2
         $addressgroup.comment | Should -BeNullOrEmpty
-        $addressgroup.visibility | Should -Be $true
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be $true
+        }
     }
 
     It "Add 2 members to Proxy Address Group $pester_proxyaddressgroup1 (with 1 member before)" {
@@ -277,7 +295,9 @@ Describe "Add Firewall Proxy Address Group Member" {
         ($addressgroup.member).count | Should -Be "3"
         $addressgroup.member.name | Should -BeIn $pester_proxyaddress1, $pester_proxyaddress2, $pester_proxyaddress3
         $addressgroup.comment | Should -BeNullOrEmpty
-        $addressgroup.visibility | Should -Be $true
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be $true
+        }
     }
 
     It "Add 2 members to Proxy Address Group $pester_proxyaddressgroup1 (with 2 members before)" {
@@ -290,7 +310,9 @@ Describe "Add Firewall Proxy Address Group Member" {
         ($addressgroup.member).count | Should -Be "4"
         $addressgroup.member.name | Should -BeIn $pester_proxyaddress1, $pester_proxyaddress2, $pester_proxyaddress3, $pester_proxyaddress4
         $addressgroup.comment | Should -BeNullOrEmpty
-        $addressgroup.visibility | Should -Be $true
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be $true
+        }
     }
 
     AfterAll {
@@ -325,7 +347,9 @@ Describe "Configure Firewall Proxy Address Group" {
         ($addressgroup.member).count | Should -Be "1"
         $addressgroup.member.name | Should -BeIn $pester_proxyaddress1
         $addressgroup.comment | Should -Be "Modified by PowerFGT"
-        $addressgroup.visibility | Should -Be $true
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be $true
+        }
     }
 
     It "Change visiblity" {
@@ -337,7 +361,9 @@ Describe "Configure Firewall Proxy Address Group" {
         ($addressgroup.member).count | Should -Be "1"
         $addressgroup.member.name | Should -BeIn $pester_proxyaddress1
         $addressgroup.comment | Should -Be "Modified by PowerFGT"
-        $addressgroup.visibility | Should -Be "disable"
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be "disable"
+        }
     }
 
     It "Change 1 Member ($pester_proxyaddress2)" {
@@ -349,7 +375,9 @@ Describe "Configure Firewall Proxy Address Group" {
         ($addressgroup.member).count | Should -Be "1"
         $addressgroup.member.name | Should -BeIn $pester_proxyaddress2
         $addressgroup.comment | Should -Be "Modified by PowerFGT"
-        $addressgroup.visibility | Should -Be "disable"
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be "disable"
+        }
     }
 
     It "Change 2 Members ($pester_proxyaddress1 and $pester_proxyaddress2)" {
@@ -361,7 +389,9 @@ Describe "Configure Firewall Proxy Address Group" {
         ($addressgroup.member).count | Should -Be "2"
         $addressgroup.member.name | Should -BeIn $pester_proxyaddress1, $pester_proxyaddress2
         $addressgroup.comment | Should -Be "Modified by PowerFGT"
-        $addressgroup.visibility | Should -Be "disable"
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be "disable"
+        }
     }
 
     It "Change Name" {
@@ -373,7 +403,9 @@ Describe "Configure Firewall Proxy Address Group" {
         ($addressgroup.member).count | Should -Be "2"
         $addressgroup.member.name | Should -BeIn $pester_proxyaddress1, $pester_proxyaddress2
         $addressgroup.comment | Should -Be "Modified by PowerFGT"
-        $addressgroup.visibility | Should -Be "disable"
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be "disable"
+        }
     }
 
     AfterAll {
@@ -409,7 +441,9 @@ Describe "Copy Firewall Proxy Address Group" {
         ($addressgroup.member).count | Should -Be "2"
         $addressgroup.member.name | Should -BeIn $pester_proxyaddress1, $pester_proxyaddress2
         $addressgroup.comment | Should -BeNullOrEmpty
-        $addressgroup.visibility | Should -Be $true
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be $true
+        }
     }
 
     AfterAll {
@@ -482,7 +516,9 @@ Describe "Remove Firewall Proxy Address Group Member" {
         ($addressgroup.member).count | Should -Be "2"
         $addressgroup.member.name | Should -BeIn $pester_proxyaddress2, $pester_proxyaddress3
         $addressgroup.comment | Should -BeNullOrEmpty
-        $addressgroup.visibility | Should -Be $true
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be $true
+        }
     }
 
     It "Remove 2 members to Proxy Address Group $pester_proxyaddressgroup1 (with 3 members before)" {
@@ -494,7 +530,9 @@ Describe "Remove Firewall Proxy Address Group Member" {
         ($addressgroup.member).count | Should -Be "1"
         $addressgroup.member.name | Should -BeIn $pester_proxyaddress1
         $addressgroup.comment | Should -BeNullOrEmpty
-        $addressgroup.visibility | Should -Be $true
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be $true
+        }
     }
 
     It "Try Remove 3 members to Proxy Address Group $pester_proxyaddressgroup1 (with 3 members before)" {
