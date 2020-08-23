@@ -15,42 +15,42 @@ function Add-FGTFirewallProxyPolicy {
         Add a FortiGate Proxy Policy/Rules (source address, destination address, service, action, status...)
 
         .EXAMPLE
-        Add-FGTFirewallProxyPolicy -proxytype explicit-web -dstintf port1 -srcaddr all -dstaddr all
+        Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port1 -srcaddr all -dstaddr all
 
         Add a explicit-web Proxy Policy with destination interface port1, source-address and destination-address all
 
         .EXAMPLE
-        Add-FGTFirewallProxyPolicy -proxytype transparent-web -srcintf port2 -dstintf port1 -srcaddr all -dstaddr all
+        Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf port2 -dstintf port1 -srcaddr all -dstaddr all
 
         Add a transparent-web Proxy Policy with source interface port2, destination interface port1, source-address and destination-address all
 
         .EXAMPLE
-        Add-FGTFirewallProxyPolicy -proxytype explicit-web -dstintf port1 -srcaddr all -dstaddr all -action "deny"
+        Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port1 -srcaddr all -dstaddr all -action "deny"
 
         Add a explicit-web Proxy Policy with action is Deny
 
         .EXAMPLE
-        Add-FGTFirewallProxyPolicy -proxytype explicit-web -dstintf port1 -srcaddr all -dstaddr all -status:$false
+        Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port1 -srcaddr all -dstaddr all -status:$false
 
         Add a explicit-web Proxy Policy with status is disable
 
         .EXAMPLE
-        Add-FGTFirewallProxyPolicy -proxytype explicit-web -dstintf port1 -srcaddr all -dstaddr all -service "HTTP, HTTPS, SSH"
+        Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port1 -srcaddr all -dstaddr all -service "HTTP, HTTPS, SSH"
 
         Add a explicit-web Proxy Policy with multiple services
 
         .EXAMPLE
-        Add-FGTFirewallProxyPolicy -proxytype explicit-web -dstintf port1 -srcaddr all -dstaddr all -schedule workhour
+        Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port1 -srcaddr all -dstaddr all -schedule workhour
 
         Add a explicit-web Proxy Policy with schedule is workhour
 
         .EXAMPLE
-        Add-FGTFirewallProxyPolicy -proxytype explicit-web -dstintf port1 -srcaddr all -dstaddr all -comments "My FGT ProxyPolicy"
+        Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port1 -srcaddr all -dstaddr all -comments "My FGT ProxyPolicy"
 
         Add a explicit-web Proxy Policy with comment "My FGT ProxyPolicy"
 
         .EXAMPLE
-        Add-FGTFirewallProxyPolicy -proxytype explicit-web -dstintf port1 -srcaddr all -dstaddr all -logtraffic "all"
+        Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port1 -srcaddr all -dstaddr all -logtraffic "all"
 
         Add a explicit-web Proxy Policy with log traffic all
     #>
@@ -59,7 +59,7 @@ function Add-FGTFirewallProxyPolicy {
     Param(
         [Parameter (Mandatory = $true)]
         [ValidateSet("explicit-web", "transparent-web")]
-        [string]$proxytype,
+        [string]$proxy,
         [Parameter (Mandatory = $false)]
         [int]$policyid,
         [Parameter (Mandatory = $false)]
@@ -145,7 +145,7 @@ function Add-FGTFirewallProxyPolicy {
 
         $policy = new-Object -TypeName PSObject
 
-        $policy | add-member -name "proxy" -membertype NoteProperty -Value $proxytype
+        $policy | add-member -name "proxy" -membertype NoteProperty -Value $proxy
 
         if ( $PsBoundParameters.ContainsKey('policyid') ) {
             $policy | add-member -name "policyid" -membertype NoteProperty -Value $policyid
