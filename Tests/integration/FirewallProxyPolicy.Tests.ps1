@@ -202,7 +202,7 @@ Describe "Add Firewall Proxy Policy" {
 
             It "Add Proxy Policy (src addr: all and dst addr: $pester_address2)" {
                 $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf port1 -dstintf port2 -srcaddr all -dstaddr $pester_address2
-                $policy = Get-FGTFirewallProxyPolicy  -policyid $return.policyid
+                $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
                 $policy.uuid | Should -Not -BeNullOrEmpty
                 $policy.policyid | Should -Be $return.policyid
                 $policy.proxy | Should -Be "transparent-web"
@@ -453,7 +453,7 @@ Describe "Add Firewall Proxy Policy" {
 
         BeforeAll {
             #Enable Explicit Proxy
-            Invoke-FGTRestMethod api/v2/cmdb/web-proxy/explicit -method PUT -body @{'status' = 'enable' }
+            Invoke-FGTRestMethod api/v2/cmdb/web-proxy/explicit -method PUT -body @{ 'status' = 'enable' }
         }
 
         It "Add Proxy Policy (port1/port2 : All/All)" {
@@ -541,7 +541,7 @@ Describe "Add Firewall Proxy Policy" {
 
             It "Add Proxy Policy (src addr: all and dst addr: $pester_address2)" {
                 $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port2 -srcaddr all -dstaddr $pester_address2
-                $policy = Get-FGTFirewallProxyPolicy  -policyid $return.policyid
+                $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
                 $policy.uuid | Should -Not -BeNullOrEmpty
                 $policy.policyid | Should -Be $return.policyid
                 $policy.proxy | Should -Be "explicit-web"
@@ -777,7 +777,7 @@ Describe "Add Firewall Proxy Policy" {
 
         AfterAll {
             #Disable Explicit Proxy
-            Invoke-FGTRestMethod api/v2/cmdb/web-proxy/explicit -method PUT -body @{'status' = 'disable' }
+            Invoke-FGTRestMethod api/v2/cmdb/web-proxy/explicit -method PUT -body @{ 'status' = 'disable' }
         }
 
     }
@@ -806,7 +806,7 @@ Describe "Remove Firewall Proxy Policy" {
 
         BeforeAll {
             #Enable Explicit Proxy
-            Invoke-FGTRestMethod api/v2/cmdb/web-proxy/explicit -method PUT -body @{'status' = 'enable' }
+            Invoke-FGTRestMethod api/v2/cmdb/web-proxy/explicit -method PUT -body @{ 'status' = 'enable' }
         }
 
         BeforeEach {
@@ -823,7 +823,7 @@ Describe "Remove Firewall Proxy Policy" {
 
         AfterAll {
             #Disable Explicit Proxy
-            Invoke-FGTRestMethod api/v2/cmdb/web-proxy/explicit -method PUT -body @{'status' = 'disable' }
+            Invoke-FGTRestMethod api/v2/cmdb/web-proxy/explicit -method PUT -body @{ 'status' = 'disable' }
         }
 
     }
