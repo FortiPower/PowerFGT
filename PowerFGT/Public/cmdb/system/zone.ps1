@@ -141,6 +141,7 @@ function Add-FGTSystemZone {
         }
 
         if ( $PsBoundParameters.ContainsKey('interfaces') ) {
+            #TODO check if interfaces exists
             $ports = @()
             foreach ( $member in $interfaces ) {
                 $member_attributes = @{}
@@ -208,13 +209,6 @@ function Set-FGTSystemZone {
             }
             else{
                 foreach ( $member in $interfaces ) {
-                    $get_interface = Get-FGTSystemInterface -name $member
-
-                    If($null -eq $get_interface)
-                    {
-                        Throw "The interface $member does not exist"
-                    }
-
                     $member_attributes = @{}
                     $member_attributes.add( 'interface-name', $member)
                     $ports += $member_attributes
