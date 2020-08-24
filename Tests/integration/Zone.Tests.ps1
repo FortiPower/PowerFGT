@@ -44,7 +44,7 @@ Describe "Get zone" {
     }
 
     AfterAll {
-        Remove-FGTSystemZone -name $pester_zone1
+        Get-FGTSystemZone $pester_zone1 | Remove-FGTSystemZone 
     }
 
 }
@@ -52,7 +52,7 @@ Describe "Get zone" {
 Describe "Add zone" {
 
     AfterEach {
-        Remove-FGTSystemZone -name $pester_zone1
+        Get-FGTSystemZone $pester_zone1 | Remove-FGTSystemZone
     }
 
     It "Add zone $pester_zone1 with intrazone deny" {
@@ -111,7 +111,7 @@ Describe "Set zone" {
         Add-FGTSystemZone -name $pester_zone1 -intrazone deny -interfaces $pester_port1,$pester_port2
     }
     AfterEach {
-        Remove-FGTSystemZone -name $pester_zone1
+        Get-FGTSystemZone $pester_zone1 | Remove-FGTSystemZone
     }
 
     It "Change name" {
@@ -155,13 +155,13 @@ Describe "Remove zone" {
 
     It "Remove zone $pester_zone1 by filtering the name" {
         $zone = Get-FGTSystemZone -name $pester_zone1
-        Remove-FGTSystemZone -name $pester_zone1
+        Get-FGTSystemZone $pester_zone1 | Remove-FGTSystemZone
         $zone = Get-FGTSystemZone -name $pester_zone1
         $zone | Should -Be $NULL
     }
 
     It "Remove zone $pester_zone1 by pipeline" {
-        Get-FGTSystemZone -name $pester_zone1 | Remove-FGTSystemZone
+        Get-FGTSystemZone $pester_zone1 | Remove-FGTSystemZone
         $zone = Get-FGTSystemZone -name $pester_zone1
         $zone | Should -Be $NULL
     }
@@ -173,7 +173,7 @@ Describe "Remove zone members" {
         Add-FGTSystemZone -name $pester_zone1 -interfaces $pester_port1,$pester_port2,$pester_port3,$pester_port4
     }
     AfterEach {
-        Remove-FGTSystemZone -name $pester_zone1
+        Get-FGTSystemZone $pester_zone1 | Remove-FGTSystemZone
     }
 
     It "Remove zone member $pester_port1 leaving 3 interfaces in the zone" {
@@ -204,7 +204,7 @@ Describe "Add zone members" {
         Add-FGTSystemZone -name $pester_zone1 -interfaces $pester_port1,$pester_port2
     }
     AfterEach {
-        Remove-FGTSystemZone -name $pester_zone1
+        Get-FGTSystemZone $pester_zone1 | Remove-FGTSystemZone
     }
 
     It "Add one zone member $pester_port3" {

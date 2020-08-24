@@ -186,10 +186,11 @@ function Set-FGTSystemZone {
         Set the zone named PowerFGT with intra-zone traffic authorized, and with port 5 and port 6 bound to it
     #>
 
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript({Confirm-FGTZone $_})]
-        [psobject]$name,
+        [psobject]$zone,
         [Parameter (Mandatory = $false)]
         [string]$zone_name,
         [Parameter(Mandatory = $false)]
@@ -206,40 +207,42 @@ function Set-FGTSystemZone {
 
     Process {
 
-        $zone = new-Object -TypeName PSObject
+        $zone_body = new-Object -TypeName PSObject
 
         if ( $PsBoundParameters.ContainsKey('interfaces') ) {
             $ports = @()
             if ($interfaces -eq "none"){
-                $zone | add-member -name "interface" -membertype NoteProperty -Value $ports
+                $zone_body | add-member -name "interface" -membertype NoteProperty -Value $ports
             }
             else{
                 foreach ( $member in $interfaces ) {
                     $get_interface = Get-FGTSystemInterface -name $member
-    
+
                     If($null -eq $get_interface)
                     {
                         Throw "The interface $member does not exist"
                     }
-    
+
                     $member_attributes = @{}
                     $member_attributes.add( 'interface-name', $member)
                     $ports += $member_attributes
                 }
-                $zone | add-member -name "interface" -membertype NoteProperty -Value $ports
+                $zone_body | add-member -name "interface" -membertype NoteProperty -Value $ports
             }
         }
 
         if ( $PsBoundParameters.ContainsKey('intrazone') ) {
-            $zone | add-member -name "intrazone" -membertype NoteProperty -Value $intrazone
+            $zone_body | add-member -name "intrazone" -membertype NoteProperty -Value $intrazone
         }
 
         if ( $PsBoundParameters.ContainsKey('zone_name') ) {
-            $zone | add-member -name "name" -membertype NoteProperty -Value $zone_name
+            $zone_body | add-member -name "name" -membertype NoteProperty -Value $zone_name
         }
 
-        Invoke-FGTRestMethod -uri "api/v2/cmdb/system/zone/$($name.name)" -method 'PUT' -body $zone -connection $connection | Out-Null
-        Get-FGTSystemZone -name $name -connection $connection
+        if ($PSCmdlet.ShouldProcess($zone.name, 'Set zone')) {
+            Invoke-FGTRestMethod -uri "api/v2/cmdb/system/zone/$($zone.name)" -method 'PUT' -body $zone_body -connection $connection | Out-Null
+            Get-FGTSystemZone -name $zone.name -connection $connection
+        }
 
     }
 
@@ -257,7 +260,7 @@ function Remove-FGTSystemZone {
         Remove a zone
 
         .EXAMPLE
-        Remove-FGTSystemZone -name PowerFGT
+        Remove-FGTSystemZone -zone PowerFGT
 
         Remove the zone named PowerFGT
     #>
@@ -266,7 +269,7 @@ function Remove-FGTSystemZone {
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript({Confirm-FGTZone $_})]
-        [psobject]$name,
+        [psobject]$zone,
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
     )
@@ -277,7 +280,7 @@ function Remove-FGTSystemZone {
     Process {
 
         if ($PSCmdlet.ShouldProcess($zone.name, 'Remove zone')) {
-            $null = Invoke-FGTRestMethod -method "DELETE" -uri "api/v2/cmdb/system/zone/$($name.name)" -connection $connection
+            $null = Invoke-FGTRestMethod -method "DELETE" -uri "api/v2/cmdb/system/zone/$($zone.name)" -connection $connection
         }
 
     }
@@ -301,6 +304,7 @@ function Remove-FGTSystemZoneMember {
         Remove the zone member interface port9
     #>
 
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript({Confirm-FGTZone $_})]
@@ -336,8 +340,10 @@ function Remove-FGTSystemZoneMember {
 
         $zone_body | add-member -name "interface" -membertype NoteProperty -Value $members
 
-        Invoke-FGTRestMethod -uri "api/v2/cmdb/system/zone/$($zone.name)" -method 'PUT' -body $zone_body -connection $connection | Out-Null
-        Get-FGTSystemZone -name $zone.name -connection $connection
+        if ($PSCmdlet.ShouldProcess($zone.name, 'Remove zone member')) {
+            Invoke-FGTRestMethod -uri "api/v2/cmdb/system/zone/$($zone.name)" -method 'PUT' -body $zone_body -connection $connection | Out-Null
+            Get-FGTSystemZone -name $zone.name -connection $connection
+        }
 
     }
 
