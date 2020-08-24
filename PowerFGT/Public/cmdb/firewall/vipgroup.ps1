@@ -35,8 +35,8 @@ function Add-FGTFirewallVipGroup {
         [string]$name,
         [Parameter (Mandatory = $true)]
         [string[]]$member,
-        [Parameter (Mandatory = $true)]
-        [string[]]$interface,
+        [Parameter (Mandatory = $false)]
+        [string]$interface = "any",
         [Parameter (Mandatory = $false)]
         [ValidateLength(0, 255)]
         [string]$comment,
