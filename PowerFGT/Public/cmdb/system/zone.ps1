@@ -135,9 +135,7 @@ function Add-FGTSystemZone {
 
         $zone | add-member -name "name" -membertype NoteProperty -Value $name
 
-        $get_zone_name = Get-FGTSystemZone -name $name -connection $connection
-
-        If($null -ne $get_zone_name)
+        If(Get-FGTSystemZone -name $name -connection $connection)
         {
             Throw "Already a zone using the same name"
         }
@@ -145,12 +143,6 @@ function Add-FGTSystemZone {
         if ( $PsBoundParameters.ContainsKey('interfaces') ) {
             $ports = @()
             foreach ( $member in $interfaces ) {
-                $get_interface = Get-FGTSystemInterface -name $member -connection $connection
-
-                If($null -eq $get_interface)
-                {
-                    Throw "The interface specified does not exist"
-                }
                 $member_attributes = @{}
                 $member_attributes.add( 'interface-name', $member)
                 $ports += $member_attributes
