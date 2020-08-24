@@ -28,6 +28,12 @@ $script:pester_proxyaddress3 = "pester_proxyaddress3"
 $script:pester_proxyaddress4 = "pester_proxyaddress4"
 $script:pester_proxyaddressgroup1 = "pester_proxyaddressgroup1"
 $script:pester_proxyaddressgroup2 = "pester_proxyaddressgroup2"
+$script:pester_port1 = "port7"
+$script:pester_port2 = "port8"
+$script:pester_port3 = "port9"
+$script:pester_port4 = "port10"
+$script:pester_zone1 = "PowerFGT1"
+$script:pester_zone2 = "PowerFGT2"
 
 . ../credential.ps1
 #TODO: Add check if no ipaddress/login/password info...

@@ -188,7 +188,8 @@ function Set-FGTSystemZone {
 
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
-        [string]$name,
+        [ValidateScript({Confirm-FGTZone $_})]
+        [psobject]$name,
         [Parameter (Mandatory = $false)]
         [string]$zone_name,
         [Parameter(Mandatory = $false)]
@@ -237,7 +238,7 @@ function Set-FGTSystemZone {
             $zone | add-member -name "name" -membertype NoteProperty -Value $zone_name
         }
 
-        Invoke-FGTRestMethod -uri "api/v2/cmdb/system/zone/${name}" -method 'PUT' -body $zone -connection $connection | Out-Null
+        Invoke-FGTRestMethod -uri "api/v2/cmdb/system/zone/$($name.name)" -method 'PUT' -body $zone -connection $connection | Out-Null
         Get-FGTSystemZone -name $name -connection $connection
 
     }
@@ -264,7 +265,8 @@ function Remove-FGTSystemZone {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
-        [string]$name,
+        [ValidateScript({Confirm-FGTZone $_})]
+        [psobject]$name,
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
     )
@@ -275,7 +277,7 @@ function Remove-FGTSystemZone {
     Process {
 
         if ($PSCmdlet.ShouldProcess($zone.name, 'Remove zone')) {
-            $null = Invoke-FGTRestMethod -method "DELETE" -uri "api/v2/cmdb/system/zone/${name}" -connection $connection
+            $null = Invoke-FGTRestMethod -method "DELETE" -uri "api/v2/cmdb/system/zone/$($name.name)" -connection $connection
         }
 
     }
@@ -301,7 +303,8 @@ function Remove-FGTSystemZoneMember {
 
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
-        [string]$name,
+        [ValidateScript({Confirm-FGTZone $_})]
+        [psobject]$zone,
         [Parameter(Mandatory = $true)]
         [string[]]$interfaces,
         [Parameter(Mandatory = $false)]
@@ -313,8 +316,8 @@ function Remove-FGTSystemZoneMember {
 
     Process {
 
-        $zone = new-Object -TypeName PSObject
-        $get_zone = Get-FGTSystemZone -name $name
+        $zone_body = new-Object -TypeName PSObject
+        $get_zone = Get-FGTSystemZone -name $zone.name
 
         $members = @()
         foreach ($member in $get_zone.interface) {
@@ -331,11 +334,66 @@ function Remove-FGTSystemZoneMember {
             $members = @($members)
         }
 
-        $zone | add-member -name "interface" -membertype NoteProperty -Value $members
-        
+        $zone_body | add-member -name "interface" -membertype NoteProperty -Value $members
 
-        Invoke-FGTRestMethod -uri "api/v2/cmdb/system/zone/${name}" -method 'PUT' -body $zone -connection $connection | Out-Null
-        Get-FGTSystemZone -name $name -connection $connection
+        Invoke-FGTRestMethod -uri "api/v2/cmdb/system/zone/$($zone.name)" -method 'PUT' -body $zone_body -connection $connection | Out-Null
+        Get-FGTSystemZone -name $zone.name -connection $connection
+
+    }
+
+    End {
+    }
+}
+
+function Add-FGTSystemZoneMember {
+
+    <#
+        .SYNOPSIS
+        Add a zone member
+
+        .DESCRIPTION
+        Add a zone member
+
+        .EXAMPLE
+        Add-FGTSystemZoneMember -name PowerFGT -interface port9
+
+        Add the zone member interface port9
+    #>
+
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [ValidateScript({Confirm-FGTZone $_})]
+        [psobject]$zone,
+        [Parameter(Mandatory = $true)]
+        [string[]]$interfaces,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $zone_body = new-Object -TypeName PSObject
+        $get_zone = Get-FGTSystemZone -name $zone.name
+
+        $members = $get_zone.interface
+
+        foreach ($add_member in $interfaces) {
+            $member_name = @{ }
+            $member_name.add( 'interface-name', $add_member)
+            $members += $member_name
+        }
+
+        if ( $members.count -le 1 ) {
+            $members = @($members)
+        }
+
+        $zone_body | add-member -name "interface" -membertype NoteProperty -Value $members
+
+        Invoke-FGTRestMethod -uri "api/v2/cmdb/system/zone/$($zone.name)" -method 'PUT' -body $zone_body -connection $connection | Out-Null
+        Get-FGTSystemZone -name $zone.name -connection $connection
 
     }
 
