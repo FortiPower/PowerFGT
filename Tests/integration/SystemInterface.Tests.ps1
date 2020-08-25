@@ -133,15 +133,8 @@ Describe "Remove System Interface" {
         Add-FGTSystemInterface -name $pester_zone1 -type vlan -role lan -mode static -vdom_interface root -interface $pester_port1 -vlan_id 10
     }
 
-    It "Remove System Interface by name" {
-        Remove-FGTSystemInterface -name $pester_zone1 -confirm:$false
-        $interface = Get-FGTSystemInterface -name $pester_zone1
-        $interface | Should -Be $NULL
-    }
-
     It "Remove System Interface by pipeline" {
-        $interface = Get-FGTSystemInterface -name $pester_zone1
-        $interface.name | Remove-FGTSystemInterface -confirm:$false
+        Get-FGTSystemInterface -name $pester_zone1 | Remove-FGTSystemInterface
         $interface = Get-FGTSystemInterface -name $pester_zone1
         $interface | Should -Be $NULL
     }
