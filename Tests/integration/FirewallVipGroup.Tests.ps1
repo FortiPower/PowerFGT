@@ -118,7 +118,7 @@ Describe "Add Firewall Vip Group" {
         #Add first Vip Group
         Add-FGTFirewallVipGroup -Name $pester_vipgroup1 -member $pester_vip1
         #Add Second Vip Group with same name
-        { Add-FGTFirewallVipGroup -Name $pester_vipgroup1 -member $pester_vip1 } | Should -Throw "Already an VipGroup object using the same name"
+        { Add-FGTFirewallVipGroup -Name $pester_vipgroup1 -member $pester_vip1 } | Should -Throw "Already a VipGroup object using the same name"
 
     }
 
@@ -192,7 +192,7 @@ Describe "Configure Firewall Vip Group" {
     BeforeAll {
         #Create some Vip object
         Add-FGTFirewallVip -Name $pester_vip1 -type static-nat -extip 192.2.0.1 -mappedip 198.51.100.1
-        Add-FGTFirewallVip -Name $pester_vip2 -type static-nat -extip 192.2.0.1 -mappedip 198.51.100.1
+        Add-FGTFirewallVip -Name $pester_vip2 -type static-nat -extip 192.2.0.2 -mappedip 198.51.100.1
 
         $addrgrp = Add-FGTFirewallVipGroup -Name $pester_vipgroup1 -member $pester_vip1
         $script:uuid = $addrgrp.uuid
