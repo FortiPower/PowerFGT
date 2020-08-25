@@ -111,7 +111,7 @@ function Set-FGTSystemInterface {
         .EXAMPLE
         Set-FGTSystemInterface -name PowerFGT -alias ALIAS_PowerFGT -role lan -mode static -address_mask 192.0.2.1/255.255.255.0  -admin_access ping,https -device_identification $false -connected $false
 
-        This set the interface vlan named PowerFGT with an alias, the LAN role, in static mode with 192.0.2.1 as IP, with ping and https administrative access, and with device identification disable and not connected 
+        This set the interface vlan named PowerFGT with an alias, the LAN role, in static mode with 192.0.2.1 as IP, with ping and https administrative access, and with device identification disable and not connected
     #>
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
@@ -348,7 +348,7 @@ function Remove-FGTSystemInterface {
         Remove a vlan interface
 
         .EXAMPLE
-        Remove-FGTSystemInterface -name PowerFGT 
+        Remove-FGTSystemInterface -name PowerFGT
 
         This remove an interface vlan named PowerFGT
     #>
