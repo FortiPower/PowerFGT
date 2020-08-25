@@ -569,6 +569,11 @@ function Remove-FGTFirewallVipGroupMember {
                 Throw "You can't remove all members. Use Remove-FGTFirewallVipGroup to remove VIP Group"
             }
 
+            #if there is only One member force to be an array
+            if ( $members.count -eq 1 ) {
+                $members = @($members)
+            }
+
             $_vipgrp | add-member -name "member" -membertype NoteProperty -Value $members
         }
 
