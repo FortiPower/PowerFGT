@@ -25,9 +25,9 @@ function Add-FGTFirewallVipGroup {
         Add VIP Group with members MyVip1 and MyVip2, associated to interface wan1
 
         .EXAMPLE
-        Add-FGTFirewallVipGroup -name MyVipGroup -member MyVip1 -comment "My VIP Group" -interface wan1
+        Add-FGTFirewallVipGroup -name MyVipGroup -member MyVip1 -comments "My VIP Group" -interface wan1
 
-        Add VIP Group with member MyVip1 and a comment, associated to interface wan1
+        Add VIP Group with member MyVip1 and a comments, associated to interface wan1
     #>
 
     Param(
@@ -39,7 +39,7 @@ function Add-FGTFirewallVipGroup {
         [string]$interface = "any",
         [Parameter (Mandatory = $false)]
         [ValidateLength(0, 255)]
-        [string]$comment,
+        [string]$comments,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -78,8 +78,8 @@ function Add-FGTFirewallVipGroup {
         #TODO: check if interface is valid (and also if members use the same interface...)
         $vipgrp | add-member -name "interface" -membertype NoteProperty -Value $interface
 
-        if ( $PsBoundParameters.ContainsKey('comment') ) {
-            $vipgrp | add-member -name "comment" -membertype NoteProperty -Value $comment
+        if ( $PsBoundParameters.ContainsKey('comments') ) {
+            $vipgrp | add-member -name "comments" -membertype NoteProperty -Value $comments
         }
 
         Invoke-FGTRestMethod -method "POST" -body $vipgrp -uri $uri -connection $connection @invokeParams | Out-Null
@@ -331,7 +331,7 @@ function Set-FGTFirewallVipGroup {
         Configure a FortiGate VIP Group
 
         .DESCRIPTION
-        Change a FortiGate VIP Group (name, member, comment...)
+        Change a FortiGate VIP Group (name, member, comments...)
 
         .EXAMPLE
         $MyFGTVipGroup = Get-FGTFirewallVipGroup -name MyFGTVipGroup
@@ -353,9 +353,9 @@ function Set-FGTFirewallVipGroup {
 
         .EXAMPLE
         $MyFGTVipGroup = Get-FGTFirewallVipGroup -name MyFGTVipGroup
-        PS C:\>$MyFGTVipGroup | Set-FGTFirewallVipGroup -comment "Modified by PowerFGT"
+        PS C:\>$MyFGTVipGroup | Set-FGTFirewallVipGroup -comments "Modified by PowerFGT"
 
-        Change MyFGTVipGroup to set a new comment
+        Change MyFGTVipGroup to set a new comments
 
     #>
 
@@ -370,7 +370,7 @@ function Set-FGTFirewallVipGroup {
         [string[]]$member,
         [Parameter (Mandatory = $false)]
         [ValidateLength(0, 255)]
-        [string]$comment,
+        [string]$comments,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -408,8 +408,8 @@ function Set-FGTFirewallVipGroup {
             $_vipgrp | add-member -name "member" -membertype NoteProperty -Value $members
         }
 
-        if ( $PsBoundParameters.ContainsKey('comment') ) {
-            $_vipgrp | add-member -name "comment" -membertype NoteProperty -Value $comment
+        if ( $PsBoundParameters.ContainsKey('comments') ) {
+            $_vipgrp | add-member -name "comments" -membertype NoteProperty -Value $comments
         }
 
         if ($PSCmdlet.ShouldProcess($addrgrp.name, 'Configure Firewall VIP Group')) {
