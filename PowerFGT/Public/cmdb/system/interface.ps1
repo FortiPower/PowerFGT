@@ -114,6 +114,7 @@ function Set-FGTSystemInterface {
         This set the interface vlan named PowerFGT with an alias, the LAN role, in static mode with 192.0.2.1 as IP, with ping and https administrative access, and with device identification disable and not connected 
     #>
 
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
     Param(
         [Parameter (Mandatory = $true, Position = 1)]
         [string]$name,
@@ -198,8 +199,10 @@ function Set-FGTSystemInterface {
 
         $_interface | add-member -name "device-identification" -membertype NoteProperty -Value $device_identification
 
-        $response = Invoke-FGTRestMethod -uri $uri -method 'PUT' -body $_interface -connection $connection @invokeParams
-        $response.results
+        if ($PSCmdlet.ShouldProcess($name, 'Set interface vlan')) {
+            $response = Invoke-FGTRestMethod -uri $uri -method 'PUT' -body $_interface -connection $connection @invokeParams
+            $response.results
+        }
     }
 
     End {
