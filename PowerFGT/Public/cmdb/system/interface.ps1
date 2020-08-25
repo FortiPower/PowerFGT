@@ -356,7 +356,7 @@ function Remove-FGTSystemInterface {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
-        [string]$name,
+        [psobject]$interface,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -373,9 +373,9 @@ function Remove-FGTSystemInterface {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $uri = "api/v2/cmdb/system/interface/${name}"
+        $uri = "api/v2/cmdb/system/interface/$($interface.name)"
 
-        if ($PSCmdlet.ShouldProcess($name, 'Remove interface vlan')) {
+        if ($PSCmdlet.ShouldProcess($interface.name, 'Remove interface vlan')) {
             $null = Invoke-FGTRestMethod -uri $uri -method 'DELETE' -connection $connection @invokeParams
         }
     }

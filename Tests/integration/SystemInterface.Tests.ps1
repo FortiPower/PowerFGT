@@ -13,8 +13,7 @@ Describe "Get System Interface" {
         Add-FGTSystemInterface -name $pester_zone1 -type vlan -role lan -mode static -vdom_interface root -interface $pester_port1 -vlan_id 10
     }
     AfterAll {
-        $remove = Get-FGTSystemInterface -name $pester_zone1
-        $remove.name | Remove-FGTSystemInterface -confirm:$false
+        Get-FGTSystemInterface -name $pester_zone1 | Remove-FGTSystemInterface
     }
 
     It "Get interface does not throw an error" {
@@ -43,8 +42,7 @@ Describe "Get System Interface" {
 Describe "Add System Interface" {
 
     AfterEach {
-        $remove = Get-FGTSystemInterface -name $pester_zone1
-        $remove.name | Remove-FGTSystemInterface -confirm:$false
+        Get-FGTSystemInterface -name $pester_zone1 | Remove-FGTSystemInterface
     }
 
     It "Add System Interface" {
@@ -82,8 +80,7 @@ Describe "Set System Interface" {
         Add-FGTSystemInterface -name $pester_zone1 -type vlan -role lan -mode static -vdom_interface root -interface $pester_port1 -vlan_id 10
     }
     AfterAll {
-        $remove = Get-FGTSystemInterface -name $pester_zone1
-        $remove.name | Remove-FGTSystemInterface -confirm:$false
+        Get-FGTSystemInterface -name $pester_zone1 | Remove-FGTSystemInterface
     }
 
     It "Set System Interface alias" {
