@@ -369,6 +369,7 @@ function Set-FGTFirewallVipGroup {
 
     #>
 
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript( { Confirm-FGTVipGroup $_ })]
@@ -432,9 +433,11 @@ function Set-FGTFirewallVipGroup {
             }
         }
 
-        Invoke-FGTRestMethod -method "PUT" -body $_vipgrp -uri $uri -connection $connection @invokeParams | out-Null
+        if ($PSCmdlet.ShouldProcess($addrgrp.name, 'Configure Firewall VIP Group')) {
+            Invoke-FGTRestMethod -method "PUT" -body $_vipgrp -uri $uri -connection $connection @invokeParams | out-Null
 
-        Get-FGTFirewallVipGroup -connection $connection @invokeParams -name $vipgrp.name
+            Get-FGTFirewallVipGroup -connection $connection @invokeParams -name $vipgrp.name
+        }
     }
 
     End {
@@ -458,18 +461,17 @@ function Remove-FGTFirewallVipGroup {
 
         .EXAMPLE
         $MyFGTVipGroup = Get-FGTFirewallVipGroup -name MyFGTVipGroup
-        PS C:\>$MyFGTVipGroup | Remove-FGTFirewallVipGroup -noconfirm
+        PS C:\>$MyFGTVipGroup | Remove-FGTFirewallVipGroup -confirm:$false
 
         Remove VIP Group object MyFGTVipGroup with no confirmation
 
     #>
 
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'high')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript( { Confirm-FGTVipGroup $_ })]
         [psobject]$vipgrp,
-        [Parameter(Mandatory = $false)]
-        [switch]$noconfirm,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -488,20 +490,8 @@ function Remove-FGTFirewallVipGroup {
 
         $uri = "api/v2/cmdb/firewall/vipgrp/$($vipgrp.name)"
 
-        if ( -not ( $Noconfirm )) {
-            $message = "Remove VIP Group on Fortigate"
-            $question = "Proceed with removal of VIP Group $($vipgrp.name) ?"
-            $choices = New-Object Collections.ObjectModel.Collection[Management.Automation.Host.ChoiceDescription]
-            $choices.Add((New-Object Management.Automation.Host.ChoiceDescription -ArgumentList '&Yes'))
-            $choices.Add((New-Object Management.Automation.Host.ChoiceDescription -ArgumentList '&No'))
-
-            $decision = $Host.UI.PromptForChoice($message, $question, $choices, 1)
-        }
-        else { $decision = 0 }
-        if ($decision -eq 0) {
-            Write-Progress -activity "Remove VIP Group"
+        if ($PSCmdlet.ShouldProcess($addrgrp.name, 'Remove Firewall VIP Group')) {
             $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -connection $connection @invokeParams
-            Write-Progress -activity "Remove VIP Group" -completed
         }
     }
 
@@ -532,6 +522,7 @@ function Remove-FGTFirewallVipGroupMember {
 
     #>
 
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript( { Confirm-FGTVipGroup $_ })]
@@ -581,9 +572,12 @@ function Remove-FGTFirewallVipGroupMember {
             $_vipgrp | add-member -name "member" -membertype NoteProperty -Value $members
         }
 
-        Invoke-FGTRestMethod -method "PUT" -body $_vipgrp -uri $uri -connection $connection @invokeParams | Out-Null
+        if ($PSCmdlet.ShouldProcess($addrgrp.name, 'Remove Firewall VIP Group Member')) {
 
-        Get-FGTFirewallVipGroup -connection $connection @invokeParams -name $vipgrp.name
+            Invoke-FGTRestMethod -method "PUT" -body $_vipgrp -uri $uri -connection $connection @invokeParams | Out-Null
+
+            Get-FGTFirewallVipGroup -connection $connection @invokeParams -name $vipgrp.name
+        }
     }
 
     End {
