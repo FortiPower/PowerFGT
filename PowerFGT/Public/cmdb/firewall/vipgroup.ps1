@@ -77,6 +77,7 @@ function Add-FGTFirewallVipGroup {
         }
         $vipgrp | add-member -name "member" -membertype NoteProperty -Value $members
 
+        #TODO: check if interface is valid (and also if members use the same interface...)
         $vipgrp | add-member -name "interface" -membertype NoteProperty -Value $interface
 
         if ( $PsBoundParameters.ContainsKey('comment') ) {
