@@ -40,8 +40,6 @@ function Add-FGTFirewallVipGroup {
         [Parameter (Mandatory = $false)]
         [ValidateLength(0, 255)]
         [string]$comment,
-        [Parameter (Mandatory = $false)]
-        [boolean]$visibility,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -82,15 +80,6 @@ function Add-FGTFirewallVipGroup {
 
         if ( $PsBoundParameters.ContainsKey('comment') ) {
             $vipgrp | add-member -name "comment" -membertype NoteProperty -Value $comment
-        }
-
-        if ( $PsBoundParameters.ContainsKey('visibility') ) {
-            if ( $visibility ) {
-                $vipgrp | add-member -name "visibility" -membertype NoteProperty -Value "enable"
-            }
-            else {
-                $vipgrp | add-member -name "visibility" -membertype NoteProperty -Value "disable"
-            }
         }
 
         Invoke-FGTRestMethod -method "POST" -body $vipgrp -uri $uri -connection $connection @invokeParams | Out-Null
@@ -364,9 +353,9 @@ function Set-FGTFirewallVipGroup {
 
         .EXAMPLE
         $MyFGTVipGroup = Get-FGTFirewallVipGroup -name MyFGTVipGroup
-        PS C:\>$MyFGTVipGroup | Set-FGTFirewallVipGroup -comment "invisible VIPGrp" -visibility:$false
+        PS C:\>$MyFGTVipGroup | Set-FGTFirewallVipGroup -comment "Modified by PowerFGT"
 
-        Change MyFGTVipGroup to set a new comment and disable visibility
+        Change MyFGTVipGroup to set a new comment
 
     #>
 
@@ -382,8 +371,6 @@ function Set-FGTFirewallVipGroup {
         [Parameter (Mandatory = $false)]
         [ValidateLength(0, 255)]
         [string]$comment,
-        [Parameter (Mandatory = $false)]
-        [boolean]$visibility,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -423,15 +410,6 @@ function Set-FGTFirewallVipGroup {
 
         if ( $PsBoundParameters.ContainsKey('comment') ) {
             $_vipgrp | add-member -name "comment" -membertype NoteProperty -Value $comment
-        }
-
-        if ( $PsBoundParameters.ContainsKey('visibility') ) {
-            if ( $visibility ) {
-                $_vipgrp | add-member -name "visibility" -membertype NoteProperty -Value "enable"
-            }
-            else {
-                $_vipgrp | add-member -name "visibility" -membertype NoteProperty -Value "disable"
-            }
         }
 
         if ($PSCmdlet.ShouldProcess($addrgrp.name, 'Configure Firewall VIP Group')) {
