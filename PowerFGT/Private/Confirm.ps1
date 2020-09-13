@@ -145,7 +145,7 @@ Function Confirm-FGTVipGroup {
         throw "Element specified does not contain a name property."
     }
     if ( -not ( $argument | get-member -name uuid -Membertype Properties)) {
-        throw "Element specified does not contain a uuid property."
+        throw "Element specified does not contain an uuid property."
     }
     if ( -not ( $argument | get-member -name member -Membertype Properties)) {
         throw "Element specified does not contain a member property."
