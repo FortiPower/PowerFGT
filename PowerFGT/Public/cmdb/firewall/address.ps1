@@ -126,7 +126,7 @@ function Add-FGTFirewallAddress {
         if ( $PsBoundParameters.ContainsKey('visibility') ) {
             #with 6.4.x, there is no longer visibility parameter
             if ($connection.version -ge "6.4.0") {
-                Write-Warning "-visibility parameter is not longer available with FortiOS 6.4.x and after"
+                Write-Warning "-visibility parameter is no longer available with FortiOS 6.4.x and after"
             }
             else {
                 if ( $visibility ) {
@@ -466,7 +466,7 @@ function Set-FGTFirewallAddress {
         if ( $PsBoundParameters.ContainsKey('visibility') ) {
             #with 6.4.x, there is no longer visibility parameter
             if ($connection.version -ge "6.4.0") {
-                Write-Warning "-visibility parameter is not longer available with FortiOS 6.4.x and after"
+                Write-Warning "-visibility parameter is no longer available with FortiOS 6.4.x and after"
             }
             else {
                 if ( $visibility ) {
