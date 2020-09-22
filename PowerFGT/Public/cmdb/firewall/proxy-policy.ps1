@@ -17,7 +17,7 @@ function Add-FGTFirewallProxyPolicy {
         .EXAMPLE
         Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port1 -srcaddr all -dstaddr all
 
-        Add a explicit-web Proxy Policy with destination interface port1, source-address and destination-address all
+        Add an explicit-web Proxy Policy with destination interface port1, source-address and destination-address all
 
         .EXAMPLE
         Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf port2 -dstintf port1 -srcaddr all -dstaddr all
@@ -27,32 +27,32 @@ function Add-FGTFirewallProxyPolicy {
         .EXAMPLE
         Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port1 -srcaddr all -dstaddr all -action "deny"
 
-        Add a explicit-web Proxy Policy with action is Deny
+        Add an explicit-web Proxy Policy with action is Deny
 
         .EXAMPLE
         Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port1 -srcaddr all -dstaddr all -status:$false
 
-        Add a explicit-web Proxy Policy with status is disable
+        Add an explicit-web Proxy Policy with status is disable
 
         .EXAMPLE
         Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port1 -srcaddr all -dstaddr all -service "HTTP, HTTPS, SSH"
 
-        Add a explicit-web Proxy Policy with multiple services
+        Add an explicit-web Proxy Policy with multiple services
 
         .EXAMPLE
         Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port1 -srcaddr all -dstaddr all -schedule workhour
 
-        Add a explicit-web Proxy Policy with schedule is workhour
+        Add an explicit-web Proxy Policy with schedule is workhour
 
         .EXAMPLE
         Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port1 -srcaddr all -dstaddr all -comments "My FGT ProxyPolicy"
 
-        Add a explicit-web Proxy Policy with comment "My FGT ProxyPolicy"
+        Add an explicit-web Proxy Policy with comment "My FGT ProxyPolicy"
 
         .EXAMPLE
         Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port1 -srcaddr all -dstaddr all -logtraffic "all"
 
-        Add a explicit-web Proxy Policy with log traffic all
+        Add an explicit-web Proxy Policy with log traffic all
     #>
 
 
@@ -268,6 +268,8 @@ function Get-FGTFirewallProxyPolicy {
             $invokeParams.add( 'vdom', $vdom )
         }
 
+        $uri = "api/v2/cmdb/firewall/proxy-policy"
+
         #Filtering
         switch ( $PSCmdlet.ParameterSetName ) {
             "uuid" {
@@ -288,7 +290,7 @@ function Get-FGTFirewallProxyPolicy {
             $invokeParams.add( 'filter_type', $filter_type )
         }
 
-        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/proxy-policy' -method 'GET' -connection $connection @invokeParams
+        $reponse = Invoke-FGTRestMethod -uri $uri -method 'GET' -connection $connection @invokeParams
         $reponse.results
     }
 
