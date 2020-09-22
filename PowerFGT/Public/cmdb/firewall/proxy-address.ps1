@@ -78,7 +78,6 @@ function Add-FGTFirewallProxyAddress {
 
         $proxyaddress | add-member -name "name" -membertype NoteProperty -Value $name
 
-
         if ( $PSCmdlet.ParameterSetName -eq 'host-regex' ) {
             $proxyaddress | add-member "host-regex" -membertype NoteProperty -Value $hostregex
         }
@@ -93,7 +92,6 @@ function Add-FGTFirewallProxyAddress {
             $proxyaddress | add-member -name "path" -membertype NoteProperty -Value $path
         }
 
-
         if ( $PSCmdlet.ParameterSetName -eq 'method' ) {
             if (!(Get-FGTFirewallAddress @invokeParams -name $hostObjectName -connection $connection) `
             ) {
@@ -103,7 +101,6 @@ function Add-FGTFirewallProxyAddress {
             $proxyaddress | add-member -name "method" -membertype NoteProperty -Value $method
         }
 
-
         if ( $PsBoundParameters.ContainsKey('comment') ) {
             $proxyaddress | add-member -name "comment" -membertype NoteProperty -Value $comment
         }
@@ -111,7 +108,7 @@ function Add-FGTFirewallProxyAddress {
         if ( $PsBoundParameters.ContainsKey('visibility') ) {
             #with 6.4.x, there is no longer visibility parameter
             if ($connection.version -ge "6.4.0") {
-                Write-Warning "-visibility parameter is not longer available with FortiOS 6.4.x and after"
+                Write-Warning "-visibility parameter is no longer available with FortiOS 6.4.x and after"
             }
             else {
                 if ( $visibility ) {
@@ -143,7 +140,7 @@ function Copy-FGTFirewallProxyAddress {
 
         .EXAMPLE
         $MyFGTProxyAddress = Get-FGTFirewallProxyAddress -name MyFGTProxyAddress
-        $MyFGTProxyAddress | Copy-FGTFirewallProxyAddress -name MyFGTProxyAddress_copy
+        PS C:\>$MyFGTProxyAddress | Copy-FGTFirewallProxyAddress -name MyFGTProxyAddress_copy
 
         Copy / Clone MyFGTProxyAddress and name MyFGTProxyAddress_copy
 
@@ -260,6 +257,8 @@ function Get-FGTFirewallProxyAddress {
             $invokeParams.add( 'vdom', $vdom )
         }
 
+        $uri = "api/v2/cmdb/firewall/proxy-address"
+
         switch ( $PSCmdlet.ParameterSetName ) {
             "name" {
                 $filter_value = $name
@@ -279,7 +278,7 @@ function Get-FGTFirewallProxyAddress {
             $invokeParams.add( 'filter_type', $filter_type )
         }
 
-        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/proxy-address' -method 'GET' -connection $connection @invokeParams
+        $response = Invoke-FGTRestMethod -uri $uri -method 'GET' -connection $connection @invokeParams
 
         $response.results
 
