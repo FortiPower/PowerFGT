@@ -67,24 +67,23 @@ Function Confirm-FGTProxyAddress {
     #Check if it looks like an ProxyAddress element
 
     if ( -not ( $argument | get-member -name name -Membertype Properties)) {
-        throw "Element specified does not contain an name property."
+        throw "Element specified does not contain a name property."
     }
     if ( -not ( $argument | get-member -name uuid -Membertype Properties)) {
-        throw "Element specified does not contain a uuid property."
+        throw "Element specified does not contain an uuid property."
     }
     if ( -not ( $argument | get-member -name host -Membertype Properties)) {
         throw "Element specified does not contain an host property."
     }
     if ( -not ( $argument | get-member -name category -Membertype Properties)) {
-        throw "Element specified does not contain an category property."
+        throw "Element specified does not contain a category property."
     }
     if ( -not ( $argument | get-member -name method -Membertype Properties)) {
-        throw "Element specified does not contain an methode property."
+        throw "Element specified does not contain a method property."
     }
     if ( -not ( $argument | get-member -name ua -Membertype Properties)) {
         throw "Element specified does not contain an ua property."
     }
-
 
     $true
 
@@ -100,16 +99,16 @@ Function Confirm-FGTProxyAddressGroup {
     #Check if it looks like an ProxyAddress Group element
 
     if ( -not ( $argument | get-member -name name -Membertype Properties)) {
-        throw "Element specified does not contain an name property."
+        throw "Element specified does not contain a name property."
     }
     if ( -not ( $argument | get-member -name uuid -Membertype Properties)) {
-        throw "Element specified does not contain a uuid property."
+        throw "Element specified does not contain an uuid property."
     }
     if ( -not ( $argument | get-member -name member -Membertype Properties)) {
-        throw "Element specified does not contain an member property."
+        throw "Element specified does not contain a member property."
     }
     if ( -not ( $argument | get-member -name comment -Membertype Properties)) {
-        throw "Element specified does not contain an comment property."
+        throw "Element specified does not contain a comment property."
     }
 
     $true
@@ -167,31 +166,31 @@ Function Confirm-FGTFirewallProxyPolicy {
     #Check if it looks like an Firewall ProxyPolicy element
 
     if ( -not ( $argument | get-member -name policyid -Membertype Properties)) {
-        throw "Element specified does not contain an policyid property."
+        throw "Element specified does not contain a policyid property."
     }
     if ( -not ( $argument | get-member -name proxy -Membertype Properties)) {
-        throw "Element specified does not contain an proxy property."
+        throw "Element specified does not contain a proxy property."
     }
     if ( -not ( $argument | get-member -name uuid -Membertype Properties)) {
-        throw "Element specified does not contain a uuid property."
+        throw "Element specified does not contain an uuid property."
     }
     if ( -not ( $argument | get-member -name srcintf -Membertype Properties)) {
-        throw "Element specified does not contain an srcintf property."
+        throw "Element specified does not contain a srcintf property."
     }
     if ( -not ( $argument | get-member -name dstaddr -Membertype Properties)) {
-        throw "Element specified does not contain an dstaddr property."
+        throw "Element specified does not contain a dstaddr property."
     }
     if ( -not ( $argument | get-member -name srcaddr -Membertype Properties)) {
-        throw "Element specified does not contain an srcaddr property."
+        throw "Element specified does not contain a srcaddr property."
     }
     if ( -not ( $argument | get-member -name dstaddr -Membertype Properties)) {
-        throw "Element specified does not contain an dstaddr property."
+        throw "Element specified does not contain a dstaddr property."
     }
     if ( -not ( $argument | get-member -name action -Membertype Properties)) {
-        throw "Element specified does not contain an action property."
+        throw "Element specified does not contain a action property."
     }
     if ( -not ( $argument | get-member -name status -Membertype Properties)) {
-        throw "Element specified does not contain an status property."
+        throw "Element specified does not contain a status property."
     }
 
     $true
