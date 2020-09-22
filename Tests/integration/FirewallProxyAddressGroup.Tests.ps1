@@ -153,7 +153,6 @@ Describe "Add Firewall Proxy Address Group" {
             Add-FGTFirewallProxyAddressGroup -type src -name $pester_proxyaddressgroup1 -member $pester_proxyaddress1
             #Add Second Proxy Address Group with same name
             { Add-FGTFirewallProxyAddressGroup -type src -name $pester_proxyaddressgroup1 -member $pester_proxyaddress1 } | Should -Throw "Already a ProxyAddressGroup object using the same name"
-
         }
 
         AfterAll {

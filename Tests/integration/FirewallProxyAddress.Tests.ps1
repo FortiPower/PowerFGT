@@ -94,7 +94,6 @@ Describe "Add Firewall Proxy Address" {
             }
         }
 
-
         It "Add Address $pester_proxyaddress1 (type host-regex and comment)" {
             Add-FGTFirewallProxyAddress -name $pester_proxyaddress1 -hostregex 'fortipower.github.io' -comment "Add via PowerFGT"
             $address = Get-FGTFirewallProxyAddress -name $pester_proxyaddress1
@@ -513,7 +512,6 @@ Describe "Copy Firewall Proxy Address" {
         }
 
     }
-
 }
 
 Describe "Remove Firewall Proxy Address" {
@@ -577,8 +575,8 @@ Describe "Remove Firewall Proxy Address" {
             #Remove also Firewall Address (FQDN)
             Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -confirm:$false
         }
-    }
 
+    }
 }
 
 Disconnect-FGT -confirm:$false
