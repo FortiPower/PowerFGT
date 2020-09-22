@@ -14,18 +14,17 @@ Function Confirm-FGTAddress {
     #Check if it looks like an Address element
 
     if ( -not ( $argument | get-member -name name -Membertype Properties)) {
-        throw "Element specified does not contain an name property."
+        throw "Element specified does not contain a name property."
     }
     if ( -not ( $argument | get-member -name uuid -Membertype Properties)) {
-        throw "Element specified does not contain a uuid property."
+        throw "Element specified does not contain an uuid property."
     }
     if ( -not ( $argument | get-member -name type -Membertype Properties)) {
-        throw "Element specified does not contain an type property."
+        throw "Element specified does not contain a type property."
     }
     if ( -not ( $argument | get-member -name country -Membertype Properties)) {
-        throw "Element specified does not contain an country property."
+        throw "Element specified does not contain a country property."
     }
-
 
     $true
 
@@ -41,16 +40,16 @@ Function Confirm-FGTAddressGroup {
     #Check if it looks like an Address element
 
     if ( -not ( $argument | get-member -name name -Membertype Properties)) {
-        throw "Element specified does not contain an name property."
+        throw "Element specified does not contain a name property."
     }
     if ( -not ( $argument | get-member -name uuid -Membertype Properties)) {
-        throw "Element specified does not contain a uuid property."
+        throw "Element specified does not contain an uuid property."
     }
     if ( -not ( $argument | get-member -name member -Membertype Properties)) {
-        throw "Element specified does not contain an member property."
+        throw "Element specified does not contain a member property."
     }
     if ( -not ( $argument | get-member -name comment -Membertype Properties)) {
-        throw "Element specified does not contain an comment property."
+        throw "Element specified does not contain a comment property."
     }
 
     $true
@@ -67,31 +66,31 @@ Function Confirm-FGTFirewallPolicy {
     #Check if it looks like an Firewall Policy element
 
     if ( -not ( $argument | get-member -name policyid -Membertype Properties)) {
-        throw "Element specified does not contain an policyid property."
+        throw "Element specified does not contain a policyid property."
     }
     if ( -not ( $argument | get-member -name name -Membertype Properties)) {
-        throw "Element specified does not contain an name property."
+        throw "Element specified does not contain a name property."
     }
     if ( -not ( $argument | get-member -name uuid -Membertype Properties)) {
-        throw "Element specified does not contain a uuid property."
+        throw "Element specified does not contain an uuid property."
     }
     if ( -not ( $argument | get-member -name srcintf -Membertype Properties)) {
-        throw "Element specified does not contain an srcintf property."
+        throw "Element specified does not contain a srcintf property."
     }
     if ( -not ( $argument | get-member -name dstaddr -Membertype Properties)) {
-        throw "Element specified does not contain an dstaddr property."
+        throw "Element specified does not contain a dstaddr property."
     }
     if ( -not ( $argument | get-member -name srcaddr -Membertype Properties)) {
-        throw "Element specified does not contain an srcaddr property."
+        throw "Element specified does not contain a srcaddr property."
     }
     if ( -not ( $argument | get-member -name dstaddr -Membertype Properties)) {
-        throw "Element specified does not contain an dstaddr property."
+        throw "Element specified does not contain a dstaddr property."
     }
     if ( -not ( $argument | get-member -name action -Membertype Properties)) {
         throw "Element specified does not contain an action property."
     }
     if ( -not ( $argument | get-member -name status -Membertype Properties)) {
-        throw "Element specified does not contain an status property."
+        throw "Element specified does not contain a status property."
     }
 
     $true
@@ -108,13 +107,13 @@ Function Confirm-FGTVip {
     #Check if it looks like an VIP element
 
     if ( -not ( $argument | get-member -name name -Membertype Properties)) {
-        throw "Element specified does not contain an name property."
+        throw "Element specified does not contain a name property."
     }
     if ( -not ( $argument | get-member -name uuid -Membertype Properties)) {
-        throw "Element specified does not contain a uuid property."
+        throw "Element specified does not contain an uuid property."
     }
     if ( -not ( $argument | get-member -name type -Membertype Properties)) {
-        throw "Element specified does not contain an type property."
+        throw "Element specified does not contain a type property."
     }
     if ( -not ( $argument | get-member -name extintf -Membertype Properties)) {
         throw "Element specified does not contain an extintf property."
@@ -123,7 +122,7 @@ Function Confirm-FGTVip {
         throw "Element specified does not contain an extip property."
     }
     if ( -not ( $argument | get-member -name mappedip -Membertype Properties)) {
-        throw "Element specified does not contain an mappedip property."
+        throw "Element specified does not contain a mappedip property."
     }
 
     $true
