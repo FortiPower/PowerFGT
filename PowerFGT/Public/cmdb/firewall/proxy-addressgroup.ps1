@@ -86,7 +86,7 @@ function Add-FGTFirewallProxyAddressGroup {
         if ( $PsBoundParameters.ContainsKey('visibility') ) {
             #with 6.4.x, there is no longer visibility parameter
             if ($connection.version -ge "6.4.0") {
-                Write-Warning "-visibility parameter is not longer available with FortiOS 6.4.x and after"
+                Write-Warning "-visibility parameter is no longer available with FortiOS 6.4.x and after"
             }
             else {
                 if ( $visibility ) {
@@ -189,7 +189,7 @@ function Copy-FGTFirewallProxyAddressGroup {
         $MyFGTProxyAddressGroup = Get-FGTFirewallProxyAddressGroup -name MyFGTProxyAddressGroup
         PS C:\>$MyFGTProxyAddressGroup | Copy-FGTProxyFirewallAddressGroup -name MyFGTProxyAddressGroup_copy
 
-        Copy / Clone MyFGTproxyAddressGroup and name MyFGTProxyAddress_copy
+        Copy / Clone MyFGTproxyAddressGroup with new name MyFGTProxyAddressGroup_copy
 
     #>
 
@@ -229,6 +229,7 @@ function Copy-FGTFirewallProxyAddressGroup {
     End {
     }
 }
+
 function Get-FGTFirewallProxyAddressGroup {
 
     <#
@@ -449,6 +450,7 @@ function Set-FGTFirewallProxyAddressGroup {
     End {
     }
 }
+
 function Remove-FGTFirewallProxyAddressGroup {
 
     <#
