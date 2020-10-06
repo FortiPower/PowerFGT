@@ -86,6 +86,15 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Firewall Policy" {
             { Get-FGTFirewallPolicy -connection $fgt } | Should -Not -Throw
         }
+        It "Use Multi connection for call Get Firewall Proxy Address" {
+            { Get-FGTFirewallProxyAddress -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get Firewall Proxy Address Group" {
+            { Get-FGTFirewallProxyAddressGroup -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get Firewall Proxy Policy" {
+            { Get-FGTFirewallProxyPolicy -connection $fgt } | Should -Not -Throw
+        }
         It "Use Multi connection for call Get Firewall Service Custom" {
             { Get-FGTFirewallServiceCustom -connection $fgt } | Should -Not -Throw
         }
