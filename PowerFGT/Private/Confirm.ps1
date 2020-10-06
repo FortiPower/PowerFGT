@@ -4,6 +4,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
+# Contribution by Brett Pound <brett underscore pound at hotmail dot com>, March 2020
+#
 Function Confirm-FGTAddress {
 
     Param (
@@ -225,6 +227,31 @@ Function Confirm-FGTVip {
         throw "Element specified does not contain an mappedip property."
     }
 
+    $true
+
+}
+
+Function Confirm-FGTVipGroup {
+
+    Param (
+        [Parameter (Mandatory = $true)]
+        [object]$argument
+    )
+
+    #Check if it looks like a VIP Group element
+
+    if ( -not ( $argument | get-member -name name -Membertype Properties)) {
+        throw "Element specified does not contain a name property."
+    }
+    if ( -not ( $argument | get-member -name uuid -Membertype Properties)) {
+        throw "Element specified does not contain an uuid property."
+    }
+    if ( -not ( $argument | get-member -name member -Membertype Properties)) {
+        throw "Element specified does not contain a member property."
+    }
+    if ( -not ( $argument | get-member -name interface -Membertype Properties)) {
+        throw "Element specified does not contain an interface property."
+    }
     $true
 
 }

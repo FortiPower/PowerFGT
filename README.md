@@ -20,7 +20,8 @@ With this module (version 0.4.1) you can manage:
 - Static Route (Get)
 - System Global (Get)
 - [VDOM](#VDOM) (Get)
-- [Virtual IP](#Virtual-IP) (Get/Add/Remove object type static-nat)
+- [Virtual IP](#Virtual-IP) (Add/Get/Remove object type static-nat)
+- Virtual IP Group (Add/Get/Copy/Set/Remove and Add/Remove Member)
 - Virtual WAN Link/SD-WAN (Get)
 - VPN IPsec Phase 1/Phase 2 Interface (Get)
 - Zone (Get)
@@ -264,7 +265,7 @@ Actually, support only `equal` and `contains` filter type
 ### Address Group
 
 You can create a new Address Group `Add-FGTFirewallAddressGroup`, retrieve its information `Get-FGTFirewallAddressGroup`,
-modify its properties `Set-FGTFirewallAddressGroup`, copy/clone its properties `Copt-FGTFirewallAddressGroup`,
+modify its properties `Set-FGTFirewallAddressGroup`, copy/clone its properties `Copy-FGTFirewallAddressGroup`,
 Add member to Address Group `Add-FGTFirewallAddressGroupMember` and remove member `Remove-FGTFirewallAddressGroupMember`,
 or delete it `Remove-FGTFirewallAddressGroup`.  
 
@@ -706,13 +707,17 @@ Add-FGTFirewallAddressGroupMember
 Add-FGTFirewallPolicy
 Add-FGTFirewallPolicyMember
 Add-FGTFirewallVip
+Add-FGTFirewallVipGroup
+Add-FGTFirewallVipGroupMember
 Confirm-FGTAddress
 Confirm-FGTAddressGroup
 Confirm-FGTFirewallPolicy
 Confirm-FGTVip
+Confirm-FGTVipGroup
 Connect-FGT
 Copy-FGTFirewallAddress
 Copy-FGTFirewallAddressGroup
+Copy-FGTFirewallVipGroup
 Deploy-FGTVm
 Disconnect-FGT
 Get-FGTFirewallAddress
@@ -722,6 +727,7 @@ Get-FGTFirewallPolicy
 Get-FGTFirewallServiceCustom
 Get-FGTFirewallServiceGroup
 Get-FGTFirewallVip
+Get-FGTFirewallVipGroup
 Get-FGTRouterPolicy
 Get-FGTRouterStatic
 Get-FGTSystemDns
@@ -741,10 +747,14 @@ Remove-FGTFirewallAddressGroupMember
 Remove-FGTFirewallPolicy
 Remove-FGTFirewallPolicyMember
 Remove-FGTFirewallVip
+Remove-FGTFirewallVipGroup
+Remove-FGTFirewallVipGroupMember
 Set-FGTCipherSSL
 Set-FGTConnection
 Set-FGTFirewallAddress
 Set-FGTFirewallAddressGroup
+Set-FGTFirewallVip
+Set-FGTFirewallVipGroup
 Set-FGTUntrustedSSL
 Show-FGTException
 ```
