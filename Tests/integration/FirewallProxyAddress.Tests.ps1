@@ -349,7 +349,7 @@ Describe "Add Firewall Proxy Address" {
             Get-FGTFirewallProxyAddress -name $pester_proxyaddress3 | Remove-FGTFirewallProxyAddress -confirm:$false
         }
 
-        It "Add Address $pester_proxyaddress3  (type url)" {
+        It "Add Address $pester_proxyaddress3 (type url)" {
             Add-FGTFirewallProxyAddress -Name $pester_proxyaddress3 -hostObjectName $pester_address1 -path "/PowerFGT"
             $address = Get-FGTFirewallProxyAddress -name $pester_proxyaddress3
             $address.name | Should -Be $pester_proxyaddress3
@@ -365,7 +365,7 @@ Describe "Add Firewall Proxy Address" {
             }
         }
 
-        It "Add Address $pester_proxyaddress3  (type method and comment)" {
+        It "Add Address $pester_proxyaddress3 (type method and comment)" {
             Add-FGTFirewallProxyAddress -Name $pester_proxyaddress3 -hostObjectName $pester_address1 -path "/PowerFGT" -comment "Add via PowerFGT"
             $address = Get-FGTFirewallProxyAddress -name $pester_proxyaddress3
             $address.name | Should -Be $pester_proxyaddress3
@@ -381,7 +381,7 @@ Describe "Add Firewall Proxy Address" {
             }
         }
 
-        It "Add Address $pester_proxyaddress3  (type method and visiblity disable)" {
+        It "Add Address $pester_proxyaddress3 (type method and visiblity disable)" {
             Add-FGTFirewallProxyAddress -Name $pester_proxyaddress3 -hostObjectName $pester_address1 -path "/PowerFGT" -visibility:$false
             $address = Get-FGTFirewallProxyAddress -name $pester_proxyaddress3
             $address.name | Should -Be $pester_proxyaddress3
@@ -397,7 +397,7 @@ Describe "Add Firewall Proxy Address" {
             }
         }
 
-        It "Try to Add Address $pester_proxyaddress3  (but there is already a object with same name)" {
+        It "Try to Add Address $pester_proxyaddress3 (but there is already a object with same name)" {
             #Add first address
             Add-FGTFirewallProxyAddress -Name $pester_proxyaddress3 -method get -hostObjectName $pester_address1
             #Add Second address with same name
