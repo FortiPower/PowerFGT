@@ -6,10 +6,6 @@
 . ../common.ps1
 
 Describe  "Connect to a FortiGate (using HTTP)" {
-    BeforeAll {
-        #Disconnect "default connection"
-        Disconnect-FGT -confirm:$false
-    }
     It "Connect to a FortiGate (using HTTP) and check global variable" {
         Connect-FGT $ipaddress -Username $login -password $mysecpassword -httpOnly -port $port
         $DefaultFGTConnection | Should -Not -BeNullOrEmpty
@@ -29,10 +25,6 @@ Describe  "Connect to a FortiGate (using HTTP)" {
 }
 
 Describe "Connect to a fortigate (using HTTPS)" {
-    BeforeAll {
-        #Disconnect "default connection"
-        #Disconnect-FGT -confirm:$false
-    }
     It "Connect to a FortiGate (using HTTPS and -SkipCertificateCheck) and check global variable" -Skip:($httpOnly) {
         Connect-FGT $ipaddress -Username $login -password $mysecpassword -SkipCertificateCheck -port $port
         $DefaultFGTConnection | Should -Not -BeNullOrEmpty
