@@ -106,7 +106,12 @@ function Add-FGTSystemZone {
         Add a zone
 
         .DESCRIPTION
-        Add a zone
+        Add a zone (name, intrazone, member...)
+
+        .EXAMPLE
+        Add-FGTSystemZone -name PowerFGT -intrazone allow -interfaces port5
+
+        Add a zone named PowerFGT with intra-zone traffic Allow and with port5
 
         .EXAMPLE
         Add-FGTSystemZone -name PowerFGT -intrazone deny -interfaces port5,port6
