@@ -33,20 +33,20 @@ $script:pester_proxyaddressgroup2 = "pester_proxyaddressgroup2"
 $script:mysecpassword = ConvertTo-SecureString $password -AsPlainText -Force
 
 $script:invokeParams = @{
-    Server = $ipaddress;
+    Server   = $ipaddress;
     username = $login;
     password = $mysecpassword;
 }
 
 if ($httpOnly) {
     if ($null -eq $port) {
-        $port = 80
+        $script:port = '80'
     }
     $invokeParams.add('httpOnly', $true)
 }
 else {
     if ($null -eq $port) {
-        $port = 443
+        $script:port = '443'
     }
     $invokeParams.add('SkipCertificateCheck', $true)
 }
