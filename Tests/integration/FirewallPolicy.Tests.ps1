@@ -7,6 +7,10 @@
 #include common configuration
 . ../common.ps1
 
+BeforeAll {
+    Connect-FGT @invokeParams
+}
+
 Describe "Get Firewall Policy" {
 
     BeforeAll {
@@ -876,4 +880,6 @@ Describe "Remove Firewall Policy Member" {
 
 }
 
-Disconnect-FGT -confirm:$false
+AfterAll {
+    Disconnect-FGT -confirm:$false
+}

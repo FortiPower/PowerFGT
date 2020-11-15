@@ -7,6 +7,10 @@
 #include common configuration
 . ../common.ps1
 
+BeforeAll {
+    Connect-FGT @invokeParams
+}
+
 Describe "Get Firewall Proxy Address Group" {
 
     BeforeAll {
@@ -551,4 +555,6 @@ Describe "Remove Firewall Proxy Address Group Member" {
 
 }
 
-Disconnect-FGT -confirm:$false
+AfterAll {
+    Disconnect-FGT -confirm:$false
+}
