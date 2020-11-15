@@ -11,11 +11,11 @@ Describe  "Connect to a FortiGate (using HTTP)" {
         Disconnect-FGT -confirm:$false
     }
     It "Connect to a FortiGate (using HTTP) and check global variable" {
-        Connect-FGT $ipaddress -Username $login -password $mysecpassword -httpOnly
+        Connect-FGT $ipaddress -Username $login -password $mysecpassword -httpOnly -port $port
         $DefaultFGTConnection | Should -Not -BeNullOrEmpty
         $DefaultFGTConnection.server | Should -Be $ipaddress
         $DefaultFGTConnection.invokeParams | Should -Not -BeNullOrEmpty
-        $DefaultFGTConnection.port | Should -Be "80"
+        $DefaultFGTConnection.port | Should -Be $port
         $DefaultFGTConnection.httpOnly | Should -Be $true
         $DefaultFGTConnection.session | Should -Not -BeNullOrEmpty
         $DefaultFGTConnection.headers | Should -Not -BeNullOrEmpty
@@ -34,11 +34,11 @@ Describe "Connect to a fortigate (using HTTPS)" {
         #Disconnect-FGT -confirm:$false
     }
     It "Connect to a FortiGate (using HTTPS and -SkipCertificateCheck) and check global variable" -Skip:($httpOnly) {
-        Connect-FGT $ipaddress -Username $login -password $mysecpassword -SkipCertificateCheck
+        Connect-FGT $ipaddress -Username $login -password $mysecpassword -SkipCertificateCheck -port $port
         $DefaultFGTConnection | Should -Not -BeNullOrEmpty
         $DefaultFGTConnection.server | Should -Be $ipaddress
         $DefaultFGTConnection.invokeParams | Should -Not BeNullOrEmpty
-        $DefaultFGTConnection.port | Should -Be "443"
+        $DefaultFGTConnection.port | Should -Be $port
         $DefaultFGTConnection.httpOnly | Should -Be $false
         $DefaultFGTConnection.session | Should -Not -BeNullOrEmpty
         $DefaultFGTConnection.headers | Should -Not -BeNullOrEmpty
@@ -57,12 +57,12 @@ Describe "Connect to a fortigate (using HTTPS)" {
 
 Describe "Connect to a FortiGate (using multi connection)" {
     It "Connect to a FortiGate (using HTTPS and store on fgt variable)" {
-        $script:fgt = Connect-FGT $ipaddress -Username $login -password $mysecpassword -httpOnly -SkipCertificate -DefaultConnection:$false
+        $script:fgt = Connect-FGT $ipaddress -Username $login -password $mysecpassword -httpOnly -SkipCertificate -DefaultConnection:$false -port $port
         $DefaultFGTConnection | Should -BeNullOrEmpty
         $fgt.session | Should -Not -BeNullOrEmpty
         $fgt.server | Should -Be $ipaddress
         $fgt.invokeParams | Should -Not -BeNullOrEmpty
-        $fgt.port | Should -Be "80"
+        $fgt.port | Should -Be $port
         $fgt.httpOnly | Should -Be $true
         $fgt.session | Should -Not -BeNullOrEmpty
         $fgt.headers | Should -Not -BeNullOrEmpty
