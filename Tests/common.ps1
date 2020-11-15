@@ -3,6 +3,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
+#Requires -Modules @{ ModuleName="Pester"; ModuleVersion="5.1.0" }
+
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingConvertToSecureStringWithPlainText", "")]
 Param()
 # default settings for test...
