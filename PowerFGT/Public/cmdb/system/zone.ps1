@@ -118,7 +118,7 @@ function Add-FGTSystemZone {
         [Parameter (Mandatory = $true, Position = 1)]
         [string]$name,
         [Parameter(Mandatory = $false)]
-        [ValidateSet('allow','deny')]
+        [ValidateSet('allow', 'deny')]
         [string]$intrazone,
         [Parameter(Mandatory = $false)]
         [string[]]$interfaces,
@@ -135,8 +135,7 @@ function Add-FGTSystemZone {
 
         $zone | add-member -name "name" -membertype NoteProperty -Value $name
 
-        If(Get-FGTSystemZone -name $name -connection $connection)
-        {
+        If (Get-FGTSystemZone -name $name -connection $connection) {
             Throw "Already a zone using the same name"
         }
 
@@ -182,12 +181,12 @@ function Set-FGTSystemZone {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
-        [ValidateScript({Confirm-FGTZone $_})]
+        [ValidateScript( { Confirm-FGTZone $_ })]
         [psobject]$zone,
         [Parameter (Mandatory = $false)]
         [string]$zone_name,
         [Parameter(Mandatory = $false)]
-        [ValidateSet('allow','deny')]
+        [ValidateSet('allow', 'deny')]
         [string]$intrazone,
         [Parameter(Mandatory = $false)]
         [string[]]$interfaces,
@@ -204,10 +203,10 @@ function Set-FGTSystemZone {
 
         if ( $PsBoundParameters.ContainsKey('interfaces') ) {
             $ports = @()
-            if ($interfaces -eq "none"){
+            if ($interfaces -eq "none") {
                 $zone_body | add-member -name "interface" -membertype NoteProperty -Value $ports
             }
-            else{
+            else {
                 foreach ( $member in $interfaces ) {
                     $member_attributes = @{}
                     $member_attributes.add( 'interface-name', $member)
@@ -254,7 +253,7 @@ function Remove-FGTSystemZone {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
-        [ValidateScript({Confirm-FGTZone $_})]
+        [ValidateScript( { Confirm-FGTZone $_ })]
         [psobject]$zone,
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
@@ -293,7 +292,7 @@ function Remove-FGTSystemZoneMember {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
-        [ValidateScript({Confirm-FGTZone $_})]
+        [ValidateScript( { Confirm-FGTZone $_ })]
         [psobject]$zone,
         [Parameter(Mandatory = $true)]
         [string[]]$interfaces,
@@ -354,7 +353,7 @@ function Add-FGTSystemZoneMember {
 
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
-        [ValidateScript({Confirm-FGTZone $_})]
+        [ValidateScript( { Confirm-FGTZone $_ })]
         [psobject]$zone,
         [Parameter(Mandatory = $true)]
         [string[]]$interfaces,
