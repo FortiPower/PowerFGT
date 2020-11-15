@@ -44,7 +44,7 @@ Describe "Get zone" {
     }
 
     AfterAll {
-        Get-FGTSystemZone $pester_zone1 | Remove-FGTSystemZone 
+        Get-FGTSystemZone $pester_zone1 | Remove-FGTSystemZone
     }
 
 }
@@ -82,19 +82,19 @@ Describe "Add zone" {
     }
 
     It "Add zone $pester_zone1 with 2 interfaces" {
-        Add-FGTSystemZone -name $pester_zone1 -interfaces $pester_port1,$pester_port2
+        Add-FGTSystemZone -name $pester_zone1 -interfaces $pester_port1, $pester_port2
         $zone = Get-FGTSystemZone -name $pester_zone1
         $zone.interface.count | Should -Be 2
-        $zone.interface."interface-name" | Should -BeIn $pester_port1,$pester_port2
+        $zone.interface."interface-name" | Should -BeIn $pester_port1, $pester_port2
     }
 
     It "Add zone $pester_zone1 with intrazone and interfaces" {
-        Add-FGTSystemZone -name $pester_zone1 -intrazone deny -interfaces $pester_port1,$pester_port2
+        Add-FGTSystemZone -name $pester_zone1 -intrazone deny -interfaces $pester_port1, $pester_port2
         $zone = Get-FGTSystemZone -name $pester_zone1
         $zone.name | Should -Be $pester_zone1
         $zone.intrazone | Should -Be "deny"
         $zone.interface.count | Should -Be 2
-        $zone.interface."interface-name" | Should -BeIn $pester_port1,$pester_port2
+        $zone.interface."interface-name" | Should -BeIn $pester_port1, $pester_port2
     }
 
     It "Try to add zone $pester_zone1 (but there is already an object with same name)" {
@@ -108,7 +108,7 @@ Describe "Add zone" {
 Describe "Set zone" {
 
     BeforeEach {
-        Add-FGTSystemZone -name $pester_zone1 -intrazone deny -interfaces $pester_port1,$pester_port2
+        Add-FGTSystemZone -name $pester_zone1 -intrazone deny -interfaces $pester_port1, $pester_port2
     }
     AfterEach {
         Get-FGTSystemZone $pester_zone1 | Remove-FGTSystemZone
@@ -134,10 +134,10 @@ Describe "Set zone" {
     }
 
     It "Change interfaces" {
-        Get-FGTSystemZone -name $pester_zone1 | Set-FGTSystemZone -interfaces $pester_port1,$pester_port2
+        Get-FGTSystemZone -name $pester_zone1 | Set-FGTSystemZone -interfaces $pester_port1, $pester_port2
         $zone = Get-FGTSystemZone -name $pester_zone1
         $zone.interface.count | Should -Be 2
-        $zone.interface."interface-name" | Should -BeIn $pester_port1,$pester_port2
+        $zone.interface."interface-name" | Should -BeIn $pester_port1, $pester_port2
     }
 
     It "Remove interfaces" {
@@ -170,7 +170,7 @@ Describe "Remove zone" {
 Describe "Remove zone members" {
 
     BeforeEach {
-        Add-FGTSystemZone -name $pester_zone1 -interfaces $pester_port1,$pester_port2,$pester_port3,$pester_port4
+        Add-FGTSystemZone -name $pester_zone1 -interfaces $pester_port1, $pester_port2, $pester_port3, $pester_port4
     }
     AfterEach {
         Get-FGTSystemZone $pester_zone1 | Remove-FGTSystemZone
@@ -180,18 +180,18 @@ Describe "Remove zone members" {
         Get-FGTSystemZone -name $pester_zone1 | Remove-FGTSystemZoneMember -interfaces $pester_port1
         $zone = Get-FGTSystemZone -name $pester_zone1
         $zone.interface.count | Should -Be 3
-        $zone.interface."interface-name" | Should -BeIn $pester_port2,$pester_port3,$pester_port4
+        $zone.interface."interface-name" | Should -BeIn $pester_port2, $pester_port3, $pester_port4
     }
 
     It "Remove zone members $pester_port1,$pester_port2,$pester_port3 leaving only one interface in the zone" {
-        Get-FGTSystemZone -name $pester_zone1 | Remove-FGTSystemZoneMember -interfaces $pester_port1,$pester_port2,$pester_port3
+        Get-FGTSystemZone -name $pester_zone1 | Remove-FGTSystemZoneMember -interfaces $pester_port1, $pester_port2, $pester_port3
         $zone = Get-FGTSystemZone -name $pester_zone1
         $zone.interface."interface-name" | Should -Be $pester_port4
         $zone.interface.count | Should -Be 1
     }
 
     It "Remove all zone members leaving 0 interfaces in it" {
-        Get-FGTSystemZone -name $pester_zone1 | Remove-FGTSystemZoneMember -interfaces $pester_port1,$pester_port2,$pester_port3,$pester_port4
+        Get-FGTSystemZone -name $pester_zone1 | Remove-FGTSystemZoneMember -interfaces $pester_port1, $pester_port2, $pester_port3, $pester_port4
         $zone = Get-FGTSystemZone -name $pester_zone1
         $zone.interface | Should -Be $NULL
         $zone.interface.count | Should -Be 0
@@ -201,7 +201,7 @@ Describe "Remove zone members" {
 Describe "Add zone members" {
 
     BeforeEach {
-        Add-FGTSystemZone -name $pester_zone1 -interfaces $pester_port1,$pester_port2
+        Add-FGTSystemZone -name $pester_zone1 -interfaces $pester_port1, $pester_port2
     }
     AfterEach {
         Get-FGTSystemZone $pester_zone1 | Remove-FGTSystemZone
@@ -211,14 +211,14 @@ Describe "Add zone members" {
         Get-FGTSystemZone -name $pester_zone1 | Add-FGTSystemZoneMember -interfaces $pester_port3
         $zone = Get-FGTSystemZone -name $pester_zone1
         $zone.interface.count | Should -Be 3
-        $zone.interface."interface-name" | Should -BeIn $pester_port1,$pester_port2,$pester_port3
+        $zone.interface."interface-name" | Should -BeIn $pester_port1, $pester_port2, $pester_port3
     }
 
     It "Add multiple zone member $pester_port3,$pester_port4" {
-        Get-FGTSystemZone -name $pester_zone1 | Add-FGTSystemZoneMember -interfaces $pester_port3,$pester_port4
+        Get-FGTSystemZone -name $pester_zone1 | Add-FGTSystemZoneMember -interfaces $pester_port3, $pester_port4
         $zone = Get-FGTSystemZone -name $pester_zone1
         $zone.interface.count | Should -Be 4
-        $zone.interface."interface-name" | Should -BeIn $pester_port1,$pester_port2,$pester_port3,$pester_port4
+        $zone.interface."interface-name" | Should -BeIn $pester_port1, $pester_port2, $pester_port3, $pester_port4
     }
 }
 
