@@ -32,15 +32,22 @@ $script:pester_proxyaddressgroup2 = "pester_proxyaddressgroup2"
 
 $script:mysecpassword = ConvertTo-SecureString $password -AsPlainText -Force
 
+$script:invokeParams = @{
+    Server = $ipaddress;
+    username = $login;
+    password = $mysecpassword;
+}
+
 if ($httpOnly) {
     if ($null -eq $port) {
         $port = 80
     }
-    Connect-FGT -Server $ipaddress -Username $login -password $mysecpassword -httpOnly -port $port
+    $invokeParams.add('httpOnly', $true)
 }
 else {
     if ($null -eq $port) {
         $port = 443
     }
-    Connect-FGT -Server $ipaddress -Username $login -password $mysecpassword -SkipCertificateCheck -port $port
+    $invokeParams.add('SkipCertificateCheck', $true)
 }
+$invokeParams.add('port', $port)
