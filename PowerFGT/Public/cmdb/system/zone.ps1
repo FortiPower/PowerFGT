@@ -1,6 +1,6 @@
 ﻿#
 # Copyright 2019, Alexis La Goutte <alexis dot lagoutte at gmail dot com>
-# Copyright 2019, Benjamin Perrier <ben dot perrier at outlook dot com>
+# Copyright 2020, Cédric Moreau <moreaucedric0 at gmail dot com>
 #
 # SPDX-License-Identifier: Apache-2.0
 #
