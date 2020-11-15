@@ -23,7 +23,7 @@ Describe  "Connect to a FortiGate (using HTTP)" {
     }
     It "Disconnect to a FortiGate (using HTTP) and check global variable" {
         Disconnect-FGT -confirm:$false
-        $DefaultFGTConnection | Should be $null
+        $DefaultFGTConnection | Should -Be $null
     }
     #TODO: Connect using wrong login/password
 }
