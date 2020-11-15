@@ -175,12 +175,22 @@ function Set-FGTSystemZone {
         Set a zone
 
         .DESCRIPTION
-        Set a zone
+        Configure a zone (name, intrazone, member...)
 
         .EXAMPLE
-        Set-FGTSystemZone -name PowerFGT -intrazone deny -interfaces port5,port6
+        Get-FGTSystemZone -name PowerFGT | Set-FGTSystemZone -intrazone deny
 
-        Set the zone named PowerFGT with intra-zone traffic authorized, and with port 5 and port 6 bound to it
+        Set the zone named PowerFGT with intra-zone traffic deny
+
+        .EXAMPLE
+        Get-FGTSystemZone -name PowerFGT | Set-FGTSystemZone -interfaces port5,port6
+
+        Set the zone named PowerFGT with port 5 and port 6 bound to it
+
+        .EXAMPLE
+        Get-FGTSystemZone -name PowerFGT | Set-FGTSystemZone -zone_name new_PowerFGT
+
+        Set the zone named PowerFGT with new name new_PowerFGT
     #>
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
