@@ -348,7 +348,7 @@ Describe "Remove Firewall Vip Group Member" {
     It "Try Remove 3 members to Vip Group $pester_vipgroup1 (with 3 members before)" {
         {
             Get-FGTFirewallVipGroup -Name $pester_vipgroup1 | Remove-FGTFirewallVipGroupMember -member $pester_vip1, $pester_vip2, $pester_vip3
-        } | Should Throw "You can't remove all members. Use Remove-FGTFirewallVipGroup to remove Vip Group"
+        } | Should -Throw "You can't remove all members. Use Remove-FGTFirewallVipGroup to remove Vip Group"
     }
 
     AfterAll {
