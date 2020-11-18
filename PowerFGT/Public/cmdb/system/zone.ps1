@@ -270,7 +270,7 @@ function Remove-FGTSystemZone {
         Remove the zone named myPowerFGTZone without confirmation
     #>
 
-    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'high')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript( { Confirm-FGTZone $_ })]
