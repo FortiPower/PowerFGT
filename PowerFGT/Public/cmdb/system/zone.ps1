@@ -296,12 +296,17 @@ function Remove-FGTSystemZoneMember {
         Remove a zone member
 
         .DESCRIPTION
-        Remove a zone member
+        Remove a zone member interface
 
         .EXAMPLE
-        Remove-FGTSystemZoneMember -name PowerFGT -interface port9
+        Get-FGTSystemZone myPowerFGTZone | Remove-FGTSystemZoneMember -name PowerFGT -interface port9
 
-        Remove the zone member interface port9
+        Remove the zone named myPowerFGTZone member interface port9
+
+        .EXAMPLE
+        Get-FGTSystemZone myPowerFGTZone | Remove-FGTSystemZoneMember -name PowerFGT -interface port8, port9
+
+        Remove the zone named myPowerFGTZone member interface port8 and port9
     #>
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
