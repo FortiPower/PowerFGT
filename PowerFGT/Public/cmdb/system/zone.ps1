@@ -358,12 +358,18 @@ function Add-FGTSystemZoneMember {
         Add a zone member
 
         .DESCRIPTION
-        Add a zone member
+        Add a zone member interface
 
         .EXAMPLE
-        Add-FGTSystemZoneMember -name PowerFGT -interface port9
+        Get-FGTSystemZone myPowerFGTZone | Add-FGTSystemZoneMember -interface port9
 
-        Add the zone member interface port9
+        Add the zone named myPowerFGTZone member interface port9
+
+        .EXAMPLE
+        Get-FGTSystemZone myPowerFGTZone | Add-FGTSystemZoneMember -interface port8, port9
+
+        Add the zone named myPowerFGTZone member interface port8 and port9
+
     #>
 
     Param(
