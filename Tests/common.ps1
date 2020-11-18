@@ -32,8 +32,8 @@ $script:pester_port1 = "port7"
 $script:pester_port2 = "port8"
 $script:pester_port3 = "port9"
 $script:pester_port4 = "port10"
-$script:pester_zone1 = "PowerFGT1"
-$script:pester_zone2 = "PowerFGT2"
+$script:pester_zone1 = "pester_zone1"
+$script:pester_zone2 = "pester_zone2"
 
 . ../credential.ps1
 #TODO: Add check if no ipaddress/login/password info...
