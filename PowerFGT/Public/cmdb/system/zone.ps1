@@ -109,14 +109,14 @@ function Add-FGTSystemZone {
         Add a zone (name, intrazone, member...)
 
         .EXAMPLE
-        Add-FGTSystemZone -name PowerFGT -intrazone allow -interfaces port5
+        Add-FGTSystemZone -name myPowerFGTZone -intrazone allow -interfaces port5
 
-        Add a zone named PowerFGT with intra-zone traffic Allow and with port5
+        Add a zone named myPowerFGTZone with intra-zone traffic Allow and with port5
 
         .EXAMPLE
-        Add-FGTSystemZone -name PowerFGT -intrazone deny -interfaces port5,port6
+        Add-FGTSystemZone -name myPowerFGTZone -intrazone deny -interfaces port5,port6
 
-        Add a zone named PowerFGT with intra-zone traffic blocked and with port5 and port6 in this zone
+        Add a zone named myPowerFGTZone with intra-zone traffic blocked and with port5 and port6 in this zone
     #>
 
     Param(
@@ -178,19 +178,19 @@ function Set-FGTSystemZone {
         Configure a zone (name, intrazone, member...)
 
         .EXAMPLE
-        Get-FGTSystemZone -name PowerFGT | Set-FGTSystemZone -intrazone deny
+        Get-FGTSystemZone -name myPowerFGTZone | Set-FGTSystemZone -intrazone deny
 
-        Set the zone named PowerFGT with intra-zone traffic deny
-
-        .EXAMPLE
-        Get-FGTSystemZone -name PowerFGT | Set-FGTSystemZone -interfaces port5,port6
-
-        Set the zone named PowerFGT with port 5 and port 6 bound to it
+        Set the zone named myPowerFGTZone with intra-zone traffic deny
 
         .EXAMPLE
-        Get-FGTSystemZone -name PowerFGT | Set-FGTSystemZone -zone_name new_PowerFGT
+        Get-FGTSystemZone -name myPowerFGTZone | Set-FGTSystemZone -interfaces port5, port6
 
-        Set the zone named PowerFGT with new name new_PowerFGT
+        Set the zone named myPowerFGTZone with port 5 and port 6 bound to it
+
+        .EXAMPLE
+        Get-FGTSystemZone -name myPowerFGTZone | Set-FGTSystemZone -zone_name new_myPowerFGTZone
+
+        Set the zone named myPowerFGTZone with new name new_myPowerFGTZone
     #>
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
