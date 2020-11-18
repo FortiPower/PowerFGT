@@ -158,13 +158,6 @@ Describe "Remove zone" {
         Add-FGTSystemZone -name $pester_zone1
     }
 
-    It "Remove zone $pester_zone1 by filtering the name" {
-        $zone = Get-FGTSystemZone -name $pester_zone1
-        Get-FGTSystemZone $pester_zone1 | Remove-FGTSystemZone
-        $zone = Get-FGTSystemZone -name $pester_zone1
-        $zone | Should -Be $NULL
-    }
-
     It "Remove zone $pester_zone1 by pipeline" {
         Get-FGTSystemZone $pester_zone1 | Remove-FGTSystemZone
         $zone = Get-FGTSystemZone -name $pester_zone1
