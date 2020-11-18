@@ -49,7 +49,7 @@ Describe "Get zone" {
     }
 
     AfterAll {
-        Get-FGTSystemZone $pester_zone1 | Remove-FGTSystemZone
+        Get-FGTSystemZone $pester_zone1 | Remove-FGTSystemZone -confirm:$false
     }
 
 }
@@ -57,7 +57,7 @@ Describe "Get zone" {
 Describe "Add zone" {
 
     AfterEach {
-        Get-FGTSystemZone $pester_zone1 | Remove-FGTSystemZone
+        Get-FGTSystemZone $pester_zone1 | Remove-FGTSystemZone -confirm:$false
     }
 
     It "Add zone $pester_zone1 with intrazone deny" {
@@ -116,7 +116,7 @@ Describe "Set zone" {
         Add-FGTSystemZone -name $pester_zone1 -intrazone deny -interfaces $pester_port1, $pester_port2
     }
     AfterEach {
-        Get-FGTSystemZone $pester_zone1 | Remove-FGTSystemZone
+        Get-FGTSystemZone $pester_zone1 | Remove-FGTSystemZone -confirm:$false
     }
 
     It "Change name" {
@@ -159,7 +159,7 @@ Describe "Remove zone" {
     }
 
     It "Remove zone $pester_zone1 by pipeline" {
-        Get-FGTSystemZone $pester_zone1 | Remove-FGTSystemZone
+        Get-FGTSystemZone $pester_zone1 | Remove-FGTSystemZone -confirm:$false
         $zone = Get-FGTSystemZone -name $pester_zone1
         $zone | Should -Be $NULL
     }
@@ -171,7 +171,7 @@ Describe "Remove zone members" {
         Add-FGTSystemZone -name $pester_zone1 -interfaces $pester_port1, $pester_port2, $pester_port3, $pester_port4
     }
     AfterEach {
-        Get-FGTSystemZone $pester_zone1 | Remove-FGTSystemZone
+        Get-FGTSystemZone $pester_zone1 | Remove-FGTSystemZone -confirm:$false
     }
 
     It "Remove zone member $pester_port1 leaving 3 interfaces in the zone" {
@@ -202,7 +202,7 @@ Describe "Add zone members" {
         Add-FGTSystemZone -name $pester_zone1 -interfaces $pester_port1, $pester_port2
     }
     AfterEach {
-        Get-FGTSystemZone $pester_zone1 | Remove-FGTSystemZone
+        Get-FGTSystemZone $pester_zone1 | Remove-FGTSystemZone -confirm:$false
     }
 
     It "Add one zone member $pester_port3" {
