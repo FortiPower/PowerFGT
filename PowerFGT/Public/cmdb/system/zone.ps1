@@ -235,7 +235,7 @@ function Set-FGTSystemZone {
             $zone_body | add-member -name "intrazone" -membertype NoteProperty -Value $intrazone
         }
 
-        if ( $PsBoundParameters.ContainsKey('zone_name') ) {
+        if ( $PsBoundParameters.ContainsKey('name') ) {
             $zone_body | add-member -name "name" -membertype NoteProperty -Value $name
         }
 
