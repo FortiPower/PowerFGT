@@ -7,6 +7,10 @@
 #include common configuration
 . ../common.ps1
 
+BeforeAll {
+    Connect-FGT @invokeParams
+}
+
 Describe "Get Firewall Proxy Address Group" {
 
     BeforeAll {
@@ -537,7 +541,7 @@ Describe "Remove Firewall Proxy Address Group Member" {
     It "Try Remove 3 members to Proxy Address Group $pester_proxyaddressgroup1 (with 3 members before)" {
         {
             Get-FGTFirewallProxyAddressGroup -Name $pester_proxyaddressgroup1 | Remove-FGTFirewallProxyAddressGroupMember -member $pester_proxyaddress1, $pester_proxyaddress2, $pester_proxyaddress3
-        } | Should Throw "You can't remove all members. Use Remove-FGTFirewallProxyAddressGroup to remove Proxy Address Group"
+        } | Should -Throw "You can't remove all members. Use Remove-FGTFirewallProxyAddressGroup to remove Proxy Address Group"
     }
 
     AfterAll {
@@ -551,4 +555,6 @@ Describe "Remove Firewall Proxy Address Group Member" {
 
 }
 
-Disconnect-FGT -confirm:$false
+AfterAll {
+    Disconnect-FGT -confirm:$false
+}

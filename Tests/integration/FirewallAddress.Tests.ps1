@@ -7,6 +7,10 @@
 #include common configuration
 . ../common.ps1
 
+BeforeAll {
+    Connect-FGT @invokeParams
+}
+
 Describe "Get Firewall Address" {
 
     BeforeAll {
@@ -746,4 +750,6 @@ Describe "Remove Firewall Address" {
 
 }
 
-Disconnect-FGT -confirm:$false
+AfterAll {
+    Disconnect-FGT -confirm:$false
+}

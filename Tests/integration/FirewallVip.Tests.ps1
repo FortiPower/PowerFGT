@@ -7,6 +7,10 @@
 #include common configuration
 . ../common.ps1
 
+BeforeAll {
+    Connect-FGT @invokeParams
+}
+
 Describe "Get Firewall VIP" {
 
     BeforeAll {
@@ -190,4 +194,6 @@ Describe "Remove Firewall VIP" {
 
 }
 
-Disconnect-FGT -confirm:$false
+AfterAll {
+    Disconnect-FGT -confirm:$false
+}

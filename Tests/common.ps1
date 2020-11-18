@@ -3,6 +3,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
+#Requires -Modules @{ ModuleName="Pester"; ModuleVersion="5.1.0" }
+
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingConvertToSecureStringWithPlainText", "")]
 Param()
 # default settings for test...
@@ -32,9 +34,22 @@ $script:pester_proxyaddressgroup2 = "pester_proxyaddressgroup2"
 
 $script:mysecpassword = ConvertTo-SecureString $password -AsPlainText -Force
 
+$script:invokeParams = @{
+    Server   = $ipaddress;
+    username = $login;
+    password = $mysecpassword;
+}
+
 if ($httpOnly) {
-    Connect-FGT -Server $ipaddress -Username $login -password $mysecpassword -httpOnly
+    if ($null -eq $port) {
+        $script:port = '80'
+    }
+    $invokeParams.add('httpOnly', $true)
 }
 else {
-    Connect-FGT -Server $ipaddress -Username $login -password $mysecpassword -SkipCertificateCheck
+    if ($null -eq $port) {
+        $script:port = '443'
+    }
+    $invokeParams.add('SkipCertificateCheck', $true)
 }
+$invokeParams.add('port', $port)

@@ -7,6 +7,10 @@
 #include common configuration
 . ../common.ps1
 
+BeforeAll {
+    Connect-FGT @invokeParams
+}
+
 Describe "Get Firewall Address Group" {
 
     BeforeAll {
@@ -409,7 +413,7 @@ Describe "Remove Firewall Address Group Member" {
     It "Try Remove 3 members to Address Group $pester_addressgroup1 (with 3 members before)" {
         {
             Get-FGTFirewallAddressGroup -Name $pester_addressgroup1 | Remove-FGTFirewallAddressGroupMember -member $pester_address1, $pester_address2, $pester_address3
-        } | Should Throw "You can't remove all members. Use Remove-FGTFirewallAddressGroup to remove Address Group"
+        } | Should -Throw "You can't remove all members. Use Remove-FGTFirewallAddressGroup to remove Address Group"
     }
 
     AfterAll {
@@ -420,4 +424,6 @@ Describe "Remove Firewall Address Group Member" {
 
 }
 
-Disconnect-FGT -confirm:$false
+AfterAll {
+    Disconnect-FGT -confirm:$false
+}
