@@ -238,10 +238,14 @@ function Set-FGTSystemZone {
         if ( $PsBoundParameters.ContainsKey('name') ) {
             $zone_body | add-member -name "name" -membertype NoteProperty -Value $name
         }
+        else {
+            # kept name for get system zone after...
+            $name = $zone.name
+        }
 
         if ($PSCmdlet.ShouldProcess($zone.name, 'Set zone')) {
             Invoke-FGTRestMethod -uri "api/v2/cmdb/system/zone/$($zone.name)" -method 'PUT' -body $zone_body -connection $connection | Out-Null
-            Get-FGTSystemZone -name $zone.name -connection $connection
+            Get-FGTSystemZone -name $name -connection $connection
         }
 
     }
