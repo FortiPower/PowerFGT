@@ -188,7 +188,7 @@ function Set-FGTSystemZone {
         Set the zone named myPowerFGTZone with port 5 and port 6 bound to it
 
         .EXAMPLE
-        Get-FGTSystemZone -name myPowerFGTZone | Set-FGTSystemZone -zone_name new_myPowerFGTZone
+        Get-FGTSystemZone -name myPowerFGTZone | Set-FGTSystemZone -name new_myPowerFGTZone
 
         Set the zone named myPowerFGTZone with new name new_myPowerFGTZone
     #>
@@ -199,7 +199,7 @@ function Set-FGTSystemZone {
         [ValidateScript( { Confirm-FGTZone $_ })]
         [psobject]$zone,
         [Parameter (Mandatory = $false)]
-        [string]$zone_name,
+        [string]$name,
         [Parameter(Mandatory = $false)]
         [ValidateSet('allow', 'deny')]
         [string]$intrazone,
@@ -236,7 +236,7 @@ function Set-FGTSystemZone {
         }
 
         if ( $PsBoundParameters.ContainsKey('zone_name') ) {
-            $zone_body | add-member -name "name" -membertype NoteProperty -Value $zone_name
+            $zone_body | add-member -name "name" -membertype NoteProperty -Value $name
         }
 
         if ($PSCmdlet.ShouldProcess($zone.name, 'Set zone')) {

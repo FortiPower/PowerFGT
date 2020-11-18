@@ -120,10 +120,10 @@ Describe "Set zone" {
     }
 
     It "Change name" {
-        Get-FGTSystemZone -name $pester_zone1 | Set-FGTSystemZone -zone_name $pester_zone2
+        Get-FGTSystemZone -name $pester_zone1 | Set-FGTSystemZone -name $pester_zone2
         $zone = Get-FGTSystemZone -name $pester_zone2
         $zone.name | Should -Be $pester_zone2
-        Get-FGTSystemZone -name $pester_zone2 | Set-FGTSystemZone -zone_name $pester_zone1
+        Get-FGTSystemZone -name $pester_zone2 | Set-FGTSystemZone -name $pester_zone1
     }
 
     It "Change intrazone in allow" {
