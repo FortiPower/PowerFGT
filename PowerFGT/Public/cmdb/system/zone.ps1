@@ -260,9 +260,14 @@ function Remove-FGTSystemZone {
         Remove a zone
 
         .EXAMPLE
-        Remove-FGTSystemZone -zone PowerFGT
+        Get-FGTSystemZone myPowerFGTZone | Remove-FGTSystemZone
 
-        Remove the zone named PowerFGT
+        Remove the zone named myPowerFGTZone
+
+        .EXAMPLE
+        Get-FGTSystemZone myPowerFGTZone | Remove-FGTSystemZone -confirm:$false
+
+        Remove the zone named myPowerFGTZone without confirmation
     #>
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
