@@ -139,10 +139,10 @@ Describe "Set zone" {
     }
 
     It "Change interfaces" {
-        Get-FGTSystemZone -name $pester_zone1 | Set-FGTSystemZone -interfaces $pester_port1, $pester_port2
+        Get-FGTSystemZone -name $pester_zone1 | Set-FGTSystemZone -interfaces $pester_port3, $pester_port4
         $zone = Get-FGTSystemZone -name $pester_zone1
         $zone.interface.count | Should -Be 2
-        $zone.interface."interface-name" | Should -BeIn $pester_port1, $pester_port2
+        $zone.interface."interface-name" | Should -BeIn $pester_port3, $pester_port4
     }
 
     It "Remove interfaces" {
