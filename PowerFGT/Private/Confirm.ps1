@@ -263,10 +263,10 @@ Function Confirm-FGTZone {
     #Check if it looks like an Zone element
 
     if ( -not ( $argument | get-member -name name -Membertype Properties)) {
-        throw "Element specified does not contain an name property."
+        throw "Element specified does not contain a name property."
     }
     if ( -not ( $argument | get-member -name intrazone -Membertype Properties)) {
-        throw "Element specified does not contain a intrazone property."
+        throw "Element specified does not contain an intrazone property."
     }
     if ( -not ( $argument | get-member -name interface -Membertype Properties)) {
         throw "Element specified does not contain an interface property."
