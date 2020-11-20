@@ -7,6 +7,9 @@
 #include common configuration
 . ../common.ps1
 
+BeforeAll {
+    Connect-FGT @invokeParams
+}
 Describe "Get System Interface" {
 
     BeforeAll {
@@ -141,4 +144,6 @@ Describe "Remove System Interface" {
 
 }
 
-Disconnect-FGT -confirm:$false
+AfterAll {
+    Disconnect-FGT -confirm:$false
+}
