@@ -46,7 +46,7 @@ Describe "Add System Interface" {
     }
 
     It "Add System Interface" {
-        Add-FGTSystemInterface -name $pester_zone1 -type vlan -alias Alias_$pester_zone1 -role lan -vlan_id 10 -interface $pester_port1 -admin_access https,ping,ssh -connected $true -device_identification $true -mode static -address_mask 192.0.2.1/255.255.255.0 -vdom_interface root
+        Add-FGTSystemInterface -name $pester_zone1 -type vlan -alias Alias_$pester_zone1 -role lan -vlan_id 10 -interface $pester_port1 -admin_access https, ping, ssh -connected $true -device_identification $true -mode static -address_mask 192.0.2.1/255.255.255.0 -vdom_interface root
         $interface = Get-FGTSystemInterface -name $pester_zone1
         $interface.name | Should -Be $pester_zone1
         $interface.type | Should -Be "vlan"
@@ -120,7 +120,7 @@ Describe "Set System Interface" {
     }
 
     It "Set System Interface administrative access" {
-        Set-FGTSystemInterface -name $pester_zone1 -admin_access https,ssh
+        Set-FGTSystemInterface -name $pester_zone1 -admin_access https, ssh
         $interface = Get-FGTSystemInterface -name $pester_zone1
         $interface.allowaccess | Should -Be "https ssh"
     }
