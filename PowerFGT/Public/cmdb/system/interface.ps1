@@ -121,13 +121,13 @@ function Set-FGTSystemInterface {
         [Parameter (Mandatory = $false)]
         [string]$alias,
         [Parameter (Mandatory = $false)]
-        [ValidateSet('lan','wan','dmz','undefined')]
+        [ValidateSet('lan', 'wan', 'dmz', 'undefined')]
         [string]$role,
         [Parameter (Mandatory = $false)]
-        [ValidateSet('https','ping','fgfm','capwap','ssh','snmp','ftm','radius-acct','ftm')]
+        [ValidateSet('https', 'ping', 'fgfm', 'capwap', 'ssh', 'snmp', 'ftm', 'radius-acct', 'ftm')]
         [string[]]$admin_access,
         [Parameter (Mandatory = $false)]
-        [ValidateSet('static','dhcp')]
+        [ValidateSet('static', 'dhcp')]
         [string]$mode,
         [Parameter (Mandatory = $false)]
         [string]$address_mask,
@@ -171,28 +171,22 @@ function Set-FGTSystemInterface {
             $_interface | add-member -name "ip" -membertype NoteProperty -Value $address_mask
         }
 
-        switch ($connected)
-        {
-            $true
-            {
+        switch ($connected) {
+            $true {
                 $connected = "up"
             }
-            $false
-            {
+            $false {
                 $connected = "down"
             }
         }
 
         $_interface | add-member -name "status" -membertype NoteProperty -Value $connected
 
-        switch ($device_identification)
-        {
-            $true
-            {
+        switch ($device_identification) {
+            $true {
                 $device_identification = "enable"
             }
-            $false
-            {
+            $false {
                 $device_identification = "disable"
             }
         }
@@ -238,22 +232,22 @@ function Add-FGTSystemInterface {
         [Parameter (Mandatory = $false)]
         [string]$alias,
         [Parameter (Mandatory = $true)]
-        [ValidateSet('lan','wan','dmz','undefined')]
+        [ValidateSet('lan', 'wan', 'dmz', 'undefined')]
         [string]$role,
         [Parameter (Mandatory = $true)]
         [int]$vlan_id,
         [Parameter (Mandatory = $true)]
-        [ValidateSet('port1','port2','port3','port4','port5','port6','port7','port8','port9','port10')]
+        [ValidateSet('port1', 'port2', 'port3', 'port4', 'port5', 'port6', 'port7', 'port8', 'port9', 'port10')]
         [string]$interface,
         [Parameter (Mandatory = $false)]
-        [ValidateSet('https','ping','fgfm','capwap','ssh','snmp','ftm','radius-acct','ftm')]
+        [ValidateSet('https', 'ping', 'fgfm', 'capwap', 'ssh', 'snmp', 'ftm', 'radius-acct', 'ftm')]
         [string[]]$admin_access,
         [Parameter (Mandatory = $false)]
         [string]$connected = $false,
         [Parameter (Mandatory = $false)]
         [string]$device_identification = $false,
         [Parameter (Mandatory = $true)]
-        [ValidateSet('static','dhcp')]
+        [ValidateSet('static', 'dhcp')]
         [string]$mode,
         [Parameter (Mandatory = $false)]
         [string]$address_mask,
@@ -302,28 +296,22 @@ function Add-FGTSystemInterface {
             $_interface | add-member -name "ip" -membertype NoteProperty -Value $address_mask
         }
 
-        switch ($connected)
-        {
-            $true
-            {
+        switch ($connected) {
+            $true {
                 $connected = "up"
             }
-            $false
-            {
+            $false {
                 $connected = "down"
             }
         }
 
         $_interface | add-member -name "status" -membertype NoteProperty -Value $connected
 
-        switch ($device_identification)
-        {
-            $true
-            {
+        switch ($device_identification) {
+            $true {
                 $device_identification = "enable"
             }
-            $false
-            {
+            $false {
                 $device_identification = "disable"
             }
         }
