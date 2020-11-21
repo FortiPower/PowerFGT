@@ -128,6 +128,8 @@ function Add-FGTSystemZone {
         [Parameter(Mandatory = $false)]
         [string[]]$interfaces,
         [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
     )
 
@@ -136,11 +138,16 @@ function Add-FGTSystemZone {
 
     Process {
 
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
         $zone = new-Object -TypeName PSObject
 
         $zone | add-member -name "name" -membertype NoteProperty -Value $name
 
-        If (Get-FGTSystemZone -name $name -connection $connection) {
+        If (Get-FGTSystemZone -name $name -connection $connection @invokeParams) {
             Throw "Already a zone using the same name"
         }
 
@@ -159,8 +166,8 @@ function Add-FGTSystemZone {
             $zone | add-member -name "intrazone" -membertype NoteProperty -Value $intrazone
         }
 
-        Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/zone' -method 'POST' -body $zone -connection $connection | Out-Null
-        Get-FGTSystemZone -name $name -connection $connection
+        Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/zone' -method 'POST' -body $zone -connection $connection @invokeParams | Out-Null
+        Get-FGTSystemZone -name $name -connection $connection @invokeParams
 
     }
 
@@ -206,6 +213,8 @@ function Set-FGTSystemZone {
         [Parameter(Mandatory = $false)]
         [string[]]$interfaces,
         [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
     )
 
@@ -213,6 +222,11 @@ function Set-FGTSystemZone {
     }
 
     Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
 
         $zone_body = new-Object -TypeName PSObject
 
@@ -244,8 +258,8 @@ function Set-FGTSystemZone {
         }
 
         if ($PSCmdlet.ShouldProcess($zone.name, 'Set zone')) {
-            Invoke-FGTRestMethod -uri "api/v2/cmdb/system/zone/$($zone.name)" -method 'PUT' -body $zone_body -connection $connection | Out-Null
-            Get-FGTSystemZone -name $name -connection $connection
+            Invoke-FGTRestMethod -uri "api/v2/cmdb/system/zone/$($zone.name)" -method 'PUT' -body $zone_body -connection $connection @invokeParams | Out-Null
+            Get-FGTSystemZone -name $name -connection $connection @invokeParams
         }
 
     }
@@ -280,6 +294,8 @@ function Remove-FGTSystemZone {
         [ValidateScript( { Confirm-FGTZone $_ })]
         [psobject]$zone,
         [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
     )
 
@@ -288,8 +304,13 @@ function Remove-FGTSystemZone {
 
     Process {
 
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
         if ($PSCmdlet.ShouldProcess($zone.name, 'Remove zone')) {
-            $null = Invoke-FGTRestMethod -method "DELETE" -uri "api/v2/cmdb/system/zone/$($zone.name)" -connection $connection
+            $null = Invoke-FGTRestMethod -method "DELETE" -uri "api/v2/cmdb/system/zone/$($zone.name)" -connection $connection @invokeParams
         }
 
     }
@@ -326,6 +347,8 @@ function Remove-FGTSystemZoneMember {
         [Parameter(Mandatory = $true)]
         [string[]]$interfaces,
         [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
     )
 
@@ -334,8 +357,13 @@ function Remove-FGTSystemZoneMember {
 
     Process {
 
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
         $zone_body = new-Object -TypeName PSObject
-        $get_zone = Get-FGTSystemZone -name $zone.name
+        $get_zone = Get-FGTSystemZone -name $zone.name @invokeParams
 
         $members = @()
         foreach ($member in $get_zone.interface) {
@@ -355,8 +383,8 @@ function Remove-FGTSystemZoneMember {
         $zone_body | add-member -name "interface" -membertype NoteProperty -Value $members
 
         if ($PSCmdlet.ShouldProcess($zone.name, 'Remove zone member')) {
-            Invoke-FGTRestMethod -uri "api/v2/cmdb/system/zone/$($zone.name)" -method 'PUT' -body $zone_body -connection $connection | Out-Null
-            Get-FGTSystemZone -name $zone.name -connection $connection
+            Invoke-FGTRestMethod -uri "api/v2/cmdb/system/zone/$($zone.name)" -method 'PUT' -body $zone_body -connection $connection @invokeParams | Out-Null
+            Get-FGTSystemZone -name $zone.name -connection $connection @invokeParams
         }
 
     }
@@ -393,6 +421,8 @@ function Add-FGTSystemZoneMember {
         [Parameter(Mandatory = $true)]
         [string[]]$interfaces,
         [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
     )
 
@@ -401,8 +431,13 @@ function Add-FGTSystemZoneMember {
 
     Process {
 
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
         $zone_body = new-Object -TypeName PSObject
-        $get_zone = Get-FGTSystemZone -name $zone.name
+        $get_zone = Get-FGTSystemZone -name $zone.name @invokeParams
 
         $members = $get_zone.interface
 
@@ -418,8 +453,8 @@ function Add-FGTSystemZoneMember {
 
         $zone_body | add-member -name "interface" -membertype NoteProperty -Value $members
 
-        Invoke-FGTRestMethod -uri "api/v2/cmdb/system/zone/$($zone.name)" -method 'PUT' -body $zone_body -connection $connection | Out-Null
-        Get-FGTSystemZone -name $zone.name -connection $connection
+        Invoke-FGTRestMethod -uri "api/v2/cmdb/system/zone/$($zone.name)" -method 'PUT' -body $zone_body -connection $connection @invokeParams | Out-Null
+        Get-FGTSystemZone -name $zone.name -connection $connection @invokeParams
 
     }
 
