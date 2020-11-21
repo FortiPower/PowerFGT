@@ -249,9 +249,28 @@ Function Confirm-FGTVipGroup {
     if ( -not ( $argument | get-member -name member -Membertype Properties)) {
         throw "Element specified does not contain a member property."
     }
+
+    $true
+}
+
+Function Confirm-FGTZone {
+
+    Param (
+        [Parameter (Mandatory = $true)]
+        [object]$argument
+    )
+
+    #Check if it looks like an Zone element
+
+    if ( -not ( $argument | get-member -name name -Membertype Properties)) {
+        throw "Element specified does not contain a name property."
+    }
+    if ( -not ( $argument | get-member -name intrazone -Membertype Properties)) {
+        throw "Element specified does not contain an intrazone property."
+    }
     if ( -not ( $argument | get-member -name interface -Membertype Properties)) {
         throw "Element specified does not contain an interface property."
     }
-    $true
 
+    $true
 }
