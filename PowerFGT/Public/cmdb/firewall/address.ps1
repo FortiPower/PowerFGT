@@ -122,7 +122,6 @@ function Add-FGTFirewallAddress {
             $address | add-member -name "comment" -membertype NoteProperty -Value $comment
         }
 
-
         if ( $PsBoundParameters.ContainsKey('visibility') ) {
             #with 6.4.x, there is no longer visibility parameter
             if ($connection.version -ge "6.4.0") {
@@ -137,7 +136,6 @@ function Add-FGTFirewallAddress {
                 }
             }
         }
-
 
         Invoke-FGTRestMethod -method "POST" -body $address -uri $uri -connection $connection @invokeParams | out-Null
 
