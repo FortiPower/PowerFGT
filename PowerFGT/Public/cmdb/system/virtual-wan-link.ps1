@@ -24,7 +24,7 @@ function Get-FGTSystemVirtualWANLink {
         Get Virtual Wan Link with mode equal standalone
 
         .EXAMPLE
-        Get-FGTSystemHA -filter_attribute load-balance-mode -filter_value ip -filter_type contains
+        Get-FGTSystemVirtualWANLink -filter_attribute load-balance-mode -filter_value ip -filter_type contains
 
         Get Virtual Wan Link with load-balance-modecontains ip
 
