@@ -64,6 +64,8 @@ function Get-FGTSystemVirtualWANLink {
 
     Process {
 
+        $uri = 'api/v2/cmdb/system/virtual-wan-link'
+
         $invokeParams = @{ }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
@@ -80,7 +82,13 @@ function Get-FGTSystemVirtualWANLink {
             $invokeParams.add( 'filter_type', $filter_type )
         }
 
-        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/virtual-wan-link' -method 'GET' -connection $connection @invokeParams
+        #with 6.4.x, it is a new uri -> SD-WAN
+        if ($connection.version -ge "6.4.0") {
+            $uri = "api/v2/cmdb/system/sdwan"
+            Write-Warning "Please use Get-FGTSystemSDWAN, Virtual WAN Link is not longer available with FortiOS 6.4.x and after"
+        }
+
+        $reponse = Invoke-FGTRestMethod -uri $uri -method 'GET' -connection $connection @invokeParams
         $reponse.results
     }
 
