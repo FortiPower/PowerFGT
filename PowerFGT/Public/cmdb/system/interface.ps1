@@ -103,10 +103,10 @@ function Set-FGTSystemInterface {
 
     <#
         .SYNOPSIS
-        Set a vlan interface
+        Set an interface
 
         .DESCRIPTION
-        Set a vlan interface
+        Set an interface
 
         .EXAMPLE
         Set-FGTSystemInterface -name PowerFGT -alias ALIAS_PowerFGT -role lan -mode static -address_mask 192.0.2.1/255.255.255.0  -admin_access ping,https -device_identification $false -connected $false
@@ -117,6 +117,7 @@ function Set-FGTSystemInterface {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
     Param(
         [Parameter (Mandatory = $true, Position = 1)]
+        [ValidateLength(1, 15)]
         [string]$name,
         [Parameter (Mandatory = $false)]
         [string]$alias,
@@ -132,11 +133,15 @@ function Set-FGTSystemInterface {
         [Parameter (Mandatory = $false)]
         [string]$address_mask,
         [Parameter (Mandatory = $false)]
-        [string]$connected = $false,
+        [string]$connected,
         [Parameter (Mandatory = $false)]
-        [string]$device_identification = $false,
+        [string]$device_identification,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
+        [Parameter(ParameterSetName = 'dhcprelay', Mandatory = $false)]
+        [bool]$dhcprelay,
+        [Parameter(ParameterSetName = 'dhcprelay', Mandatory = $true)]
+        [String[]]$dhcprelayip,
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
     )
@@ -155,15 +160,20 @@ function Set-FGTSystemInterface {
         $_interface = new-Object -TypeName PSObject
 
         $_interface | add-member -name "name" -membertype NoteProperty -Value $name
-        $_interface | add-member -name "role" -membertype NoteProperty -Value $role
-        $_interface | add-member -name "mode" -membertype NoteProperty -Value $mode
+        if ( $PsBoundParameters.ContainsKey('role') ) {
+            $_interface | add-member -name "role" -membertype NoteProperty -Value $role
+        }
+
+        if ( $PsBoundParameters.ContainsKey('mode') ) {
+            $_interface | add-member -name "mode" -membertype NoteProperty -Value $mode
+        }
 
         if ( $PsBoundParameters.ContainsKey('alias') ) {
             $_interface | add-member -name "alias" -membertype NoteProperty -Value $alias
         }
 
         if ( $PsBoundParameters.ContainsKey('admin_access') ) {
-            $allowaccess = [string]$admin_access
+            $allowaccess = $admin_access -join ","
             $_interface | add-member -name "allowaccess" -membertype NoteProperty -Value $allowaccess
         }
 
@@ -171,27 +181,49 @@ function Set-FGTSystemInterface {
             $_interface | add-member -name "ip" -membertype NoteProperty -Value $address_mask
         }
 
-        switch ($connected) {
-            $true {
-                $connected = "up"
+        if ( $PsBoundParameters.ContainsKey('connected') ) {
+            switch ($connected) {
+                $true {
+                    $connected = "up"
+                }
+                $false {
+                    $connected = "down"
+                }
             }
-            $false {
-                $connected = "down"
-            }
+
+            $_interface | add-member -name "status" -membertype NoteProperty -Value $connected
         }
 
-        $_interface | add-member -name "status" -membertype NoteProperty -Value $connected
+        if ( $PsBoundParameters.ContainsKey('device_identification') ) {
+            switch ($device_identification) {
+                $true {
+                    $device_identification = "enable"
+                }
+                $false {
+                    $device_identification = "disable"
+                }
+            }
 
-        switch ($device_identification) {
-            $true {
-                $device_identification = "enable"
-            }
-            $false {
-                $device_identification = "disable"
-            }
+            $_interface | add-member -name "device-identification" -membertype NoteProperty -Value $device_identification
         }
 
-        $_interface | add-member -name "device-identification" -membertype NoteProperty -Value $device_identification
+        if ( $PsBoundParameters.ContainsKey('dhcprelay') ) {
+            switch ($dhcprelay) {
+                $true {
+                    $dhcprelayoption = "enable"
+                }
+                $false {
+                    $dhcprelayoption = "disable"
+                }
+            }
+
+            $_interface | add-member -name "dhcp-relay-service" -membertype NoteProperty -Value $dhcprelayoption
+        }
+
+        if ( $PsBoundParameters.ContainsKey('dhcprelayip') ) {
+            $dhcprelayipoption = $dhcprelayip -join ","
+            $_interface | add-member -name "dhcp-relay-ip" -membertype NoteProperty -Value $dhcprelayipoption
+        }
 
         if ($PSCmdlet.ShouldProcess($name, 'Set interface vlan')) {
             $response = Invoke-FGTRestMethod -uri $uri -method 'PUT' -body $_interface -connection $connection @invokeParams
@@ -225,6 +257,7 @@ function Add-FGTSystemInterface {
 
     Param(
         [Parameter (Mandatory = $true, Position = 1)]
+        [ValidateLength(1, 15)]
         [string]$name,
         [Parameter (Mandatory = $true)]
         [ValidateSet('vlan')]
@@ -237,7 +270,6 @@ function Add-FGTSystemInterface {
         [Parameter (Mandatory = $true)]
         [int]$vlan_id,
         [Parameter (Mandatory = $true)]
-        [ValidateSet('port1', 'port2', 'port3', 'port4', 'port5', 'port6', 'port7', 'port8', 'port9', 'port10')]
         [string]$interface,
         [Parameter (Mandatory = $false)]
         [ValidateSet('https', 'ping', 'fgfm', 'capwap', 'ssh', 'snmp', 'ftm', 'radius-acct', 'ftm')]
