@@ -138,13 +138,25 @@ function Set-FGTSystemInterface {
         [string]$device_identification,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
-        [Parameter(ParameterSetName = 'dhcprelay', Mandatory = $false)]
+        [Parameter(Mandatory = $false)]
         [bool]$dhcprelay,
-        [Parameter(ParameterSetName = 'dhcprelay', Mandatory = $true)]
-        [String[]]$dhcprelayip,
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
     )
+
+    DynamicParam {
+        If ($dhcprelay) {
+            $attributes = New-Object -Type System.Management.Automation.ParameterAttribute
+            $attributes.Mandatory = $true
+            $attributeCollection = New-Object -Type System.Collections.ObjectModel.Collection[System.Attribute]
+            $attributeCollection.Add($attributes)
+
+            $dynParam1 = New-Object -Type System.Management.Automation.RuntimeDefinedParameter("dhcprelayip", [string[]], $attributeCollection)
+            $paramDictionary = New-Object -Type System.Management.Automation.RuntimeDefinedParameterDictionary
+            $paramDictionary.Add("dhcprelayip", $dynParam1)
+            return $paramDictionary
+        }
+    }
 
     Begin {
     }
