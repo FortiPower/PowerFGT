@@ -145,4 +145,9 @@ Describe "Connect to a FortiGate (using multi connection)" {
         $DefaultFGTConnection | Should -Be $null
     }
 
+    AfterAll {
+        #Remove script scope variable
+        Remove-Variable -name fgt -scope script
+    }
+
 }
