@@ -14,7 +14,7 @@ Configure a FortiGate Address Group
 
 ```
 Set-FGTFirewallAddressGroup [-addrgrp] <PSObject> [-name <String>] [-member <String[]>] [-comment <String>]
- [-visibility <Boolean>] [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+ [-visibility <Boolean>] [-vdom <String[]>] [-connection <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -25,36 +25,32 @@ Change a FortiGate Address Group (name, member, comment...)
 ### EXAMPLE 1
 ```
 $MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
+PS C:\>$MyFGTAddressGroup | Set-FGTFirewallAddressGroup -member MyAddress1
 ```
-
-PS C:\\\>$MyFGTAddressGroup | Set-FGTFirewallAddressGroup -member MyAddress1
 
 Change MyFGTAddressGroup member to MyAddress1
 
 ### EXAMPLE 2
 ```
 $MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
+PS C:\>$MyFGTAddressGroup | Set-FGTFirewallAddressGroup -member MyAddress1, MyAddress2
 ```
-
-PS C:\\\>$MyFGTAddressGroup | Set-FGTFirewallAddressGroup -member MyAddress1, MyAddress2
 
 Change MyFGTAddressGroup member to MyAddress1
 
 ### EXAMPLE 3
 ```
 $MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
+PS C:\>$MyFGTAddressGroup | Set-FGTFirewallAddressGroup -name MyFGTAddressGroup2
 ```
-
-PS C:\\\>$MyFGTAddressGroup | Set-FGTFirewallAddressGroup -name MyFGTAddressGroup2
 
 Rename MyFGTAddressGroup member to MyFGTAddressGroup2
 
 ### EXAMPLE 4
 ```
 $MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
+PS C:\>$MyFGTAddressGroup | Set-FGTFirewallAddressGroup -visibility:$false
 ```
-
-PS C:\\\>$MyFGTAddressGroup | Set-FGTFirewallAddressGroup -visibility:$false
 
 Change MyFGTAddressGroup to set a new comment and disabled visibility
 
@@ -161,6 +157,37 @@ Aliases:
 Required: False
 Position: Named
 Default value: $DefaultFGTConnection
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WhatIf
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: wi
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

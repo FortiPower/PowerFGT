@@ -54,27 +54,24 @@ Connect to a FortiGate using HTTPS (with port 4443) with IP 192.0.2.1 using (Get
 ### EXAMPLE 5
 ```
 $cred = get-credential
-```
-
 Connect-FGT -Server 192.0.2.1 -credential $cred
+```
 
 Connect to a FortiGate with IP 192.0.2.1 and passing (Get-)credential
 
 ### EXAMPLE 6
 ```
 $mysecpassword = ConvertTo-SecureString mypassword -AsPlainText -Force
-```
-
 Connect-FGT -Server 192.0.2.1 -Username manager -Password $mysecpassword
+```
 
 Connect to a FortiGate with IP 192.0.2.1 using Username and Password
 
 ### EXAMPLE 7
 ```
 $fw1 = Connect-ArubaFGT -Server 192.0.2.1
-```
-
 Connect to an FortiGate with IP 192.0.2.1 and store connection info to $fw1 variable
+```
 
 ### EXAMPLE 8
 ```

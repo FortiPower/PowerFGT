@@ -5,43 +5,59 @@ online version:
 schema: 2.0.0
 ---
 
-# Remove-FGTFirewallPolicyMember
+# Set-FGTFirewallVipGroup
 
 ## SYNOPSIS
-Remove a FortiGate Policy Member
+Configure a FortiGate VIP Group
 
 ## SYNTAX
 
 ```
-Remove-FGTFirewallPolicyMember [-policy] <PSObject> [-srcaddr <String[]>] [-dstaddr <String[]>]
+Set-FGTFirewallVipGroup [-vipgrp] <PSObject> [-name <String>] [-member <String[]>] [-comments <String>]
  [-vdom <String[]>] [-connection <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Remove a FortiGate Policy Member (source or destination address)
+Change a FortiGate VIP Group (name, member, comments...)
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-$MyFGTPolicy = Get-FGTFirewallAddressGroup -name MyFGTPolicy
-PS C:\>$MyFGTPolicy | Remove-FGTFirewallAddressGroupMember -member MyAddress1
+$MyFGTVipGroup = Get-FGTFirewallVipGroup -name MyFGTVipGroup
+PS C:\>$MyFGTVipGroup | Set-FGTFirewallVipGroup -member MyVip1
 ```
 
-Remove MyAddress1 member to MyFGTPolicy
+Change MyFGTVipGroup member to MyVip1
 
 ### EXAMPLE 2
 ```
-$MyFGTPolicy = Get-FGTFirewallAddressGroup -name MyFGTPolicy
-PS C:\>$MyFGTPolicy | Remove-FGTFirewallAddressGroupMember -member MyAddress1, MyAddress2
+$MyFGTVipGroup = Get-FGTFirewallVipGroup -name MyFGTVipGroup
+PS C:\>$MyFGTVipGroup | Set-FGTFirewallVipGroup -member MyVip1, MyVip2
 ```
 
-Remove MyAddress1 and MyAddress2 member to MyFGTPolicy
+Change MyFGTVipGroup member to MyVip1 and MyVip2
+
+### EXAMPLE 3
+```
+$MyFGTVipGroup = Get-FGTFirewallVipGroup -name MyFGTVipGroup
+PS C:\>$MyFGTVipGroup | Set-FGTFirewallVipGroup -name MyFGTVipGroup2
+```
+
+Rename MyFGTVipGroup member to MyFGTVipGroup2
+
+### EXAMPLE 4
+```
+$MyFGTVipGroup = Get-FGTFirewallVipGroup -name MyFGTVipGroup
+PS C:\>$MyFGTVipGroup | Set-FGTFirewallVipGroup -comments "Modified by PowerFGT"
+```
+
+Change MyFGTVipGroup to set a new comments
 
 ## PARAMETERS
 
-### -policy
-{{ Fill policy Description }}
+### -vipgrp
+{{ Fill vipgrp Description }}
 
 ```yaml
 Type: PSObject
@@ -55,8 +71,23 @@ Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
-### -srcaddr
-{{ Fill srcaddr Description }}
+### -name
+{{ Fill name Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -member
+{{ Fill member Description }}
 
 ```yaml
 Type: String[]
@@ -70,11 +101,11 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -dstaddr
-{{ Fill dstaddr Description }}
+### -comments
+{{ Fill comments Description }}
 
 ```yaml
-Type: String[]
+Type: String
 Parameter Sets: (All)
 Aliases:
 

@@ -5,43 +5,43 @@ online version:
 schema: 2.0.0
 ---
 
-# Remove-FGTFirewallPolicyMember
+# Remove-FGTFirewallProxyAddressGroupMember
 
 ## SYNOPSIS
-Remove a FortiGate Policy Member
+Remove a FortiGate ProxyAddress Group Member
 
 ## SYNTAX
 
 ```
-Remove-FGTFirewallPolicyMember [-policy] <PSObject> [-srcaddr <String[]>] [-dstaddr <String[]>]
- [-vdom <String[]>] [-connection <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Remove-FGTFirewallProxyAddressGroupMember [-addrgrp] <PSObject> [-member <String[]>] [-vdom <String[]>]
+ [-connection <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Remove a FortiGate Policy Member (source or destination address)
+Remove a FortiGate ProxyAddress Group Member
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-$MyFGTPolicy = Get-FGTFirewallAddressGroup -name MyFGTPolicy
-PS C:\>$MyFGTPolicy | Remove-FGTFirewallAddressGroupMember -member MyAddress1
+$MyFGTProxyAddressGroup = Get-FGTFirewallProxyAddressGroup -name MyFGTProxyAddressGroup
+PS C:\>$MyFGTProxyAddressGroup | Remove-FGTFirewallProxyAddressGroupMember -member MyAddress1
 ```
 
-Remove MyAddress1 member to MyFGTPolicy
+Remove MyAddress1 member to MyFGTproxyAddressGroup
 
 ### EXAMPLE 2
 ```
-$MyFGTPolicy = Get-FGTFirewallAddressGroup -name MyFGTPolicy
-PS C:\>$MyFGTPolicy | Remove-FGTFirewallAddressGroupMember -member MyAddress1, MyAddress2
+$MyFGTProxyAddressGroup = Get-FGTFirewallproxyAddressGroup -name MyFGTProxyAddressGroup
+PS C:\>$MyFGTProxyAddressGroup | Remove-FGTFirewallProxyAddressGroupMember -member MyAddress1, MyAddress2
 ```
 
-Remove MyAddress1 and MyAddress2 member to MyFGTPolicy
+Remove MyAddress1 and MyAddress2 member to MyFGTProxyAddressGroup
 
 ## PARAMETERS
 
-### -policy
-{{ Fill policy Description }}
+### -addrgrp
+{{ Fill addrgrp Description }}
 
 ```yaml
 Type: PSObject
@@ -55,23 +55,8 @@ Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
-### -srcaddr
-{{ Fill srcaddr Description }}
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -dstaddr
-{{ Fill dstaddr Description }}
+### -member
+{{ Fill member Description }}
 
 ```yaml
 Type: String[]

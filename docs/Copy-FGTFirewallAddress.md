@@ -26,9 +26,8 @@ Copy/Clone a FortiGate Address (ip, mask, comment, associated interface...
 ### EXAMPLE 1
 ```
 $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
+PS C:\>$MyFGTAddress | Copy-FGTFirewallAddress -name MyFGTAddress_copy
 ```
-
-PS C:\\\>$MyFGTAddress | Copy-FGTFirewallAddress -name MyFGTAddress_copy
 
 Copy / Clone MyFGTAddress and name MyFGTAddress_copy
 

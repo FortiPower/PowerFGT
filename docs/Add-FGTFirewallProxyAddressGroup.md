@@ -5,69 +5,93 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-FGTRouterPolicy
+# Add-FGTFirewallProxyAddressGroup
 
 ## SYNOPSIS
-Get list of all "route policy"
+Add a FortiGate ProxyAddress Group
 
 ## SYNTAX
 
-### default (Default)
 ```
-Get-FGTRouterPolicy [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
- [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
-```
-
-### filter
-```
-Get-FGTRouterPolicy [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
- [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+Add-FGTFirewallProxyAddressGroup [-type] <String> [-name] <String> [-member] <String[]> [[-comment] <String>]
+ [[-visibility] <Boolean>] [[-vdom] <String[]>] [[-connection] <PSObject>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Get list of all "route policy" (Source, Destination, Protocol, Action...)
+Add a ProxyFortiGate ProxyAddress Group
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Get-FGTRouterPolicy
+Add-FGTFirewallProxyAddressGroup -type src -name MyAddressGroup -member MyAddress1
 ```
 
-Get list of all route policy object
+Add ProxyAddress Group with type source and member MyAddress1 (type host-regex or method)
 
 ### EXAMPLE 2
 ```
-Get-FGTRouterPolicy -filter_attribute gateway -filter_value 192.0.2.1
+Add-FGTFirewallProxyAddressGroup -type src -name MyAddressGroup -member MyAddress1, MyAddress2
 ```
 
-Get route policy object with gateway equal 192.0.2.1
+Add ProxyAddress Group with type source and members MyAddress1 and MyAddress2 (type host-regex or method)
 
 ### EXAMPLE 3
 ```
-Get-FGTRouterPolicy -filter_attribute device -filter_value port -filter_type contains
+Add-FGTFirewallProxyAddressGroup -type dst -name MyAddressGroup -member MyAddress1 -comment "My ProxyAddress Group"
 ```
 
-Get route policy object with device contains port
-
-### EXAMPLE 4
-```
-Get-FGTRouterPolicy -skip
-```
-
-Get list of all route policy object (but only relevant attributes)
-
-### EXAMPLE 5
-```
-Get-FGTRouterPolicy -vdom vdomX
-```
-
-Get list of all route policy object on vdomX
+Add ProxyAddress Group with type destination and member MyAddress1 (type path) and a comment
 
 ## PARAMETERS
 
-### -filter_attribute
-{{ Fill filter_attribute Description }}
+### -type
+{{ Fill type Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -name
+{{ Fill name Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -member
+{{ Fill member Description }}
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 3
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -comment
+{{ Fill comment Description }}
 
 ```yaml
 Type: String
@@ -75,53 +99,22 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 4
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -filter_type
-{{ Fill filter_type Description }}
+### -visibility
+{{ Fill visibility Description }}
 
 ```yaml
-Type: String
+Type: Boolean
 Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
-Default value: Equal
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -filter_value
-{{ Fill filter_value Description }}
-
-```yaml
-Type: PSObject
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -skip
-Ignores the specified number of objects and then gets the remaining objects.
-Enter the number of objects to skip.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
+Position: 5
 Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -136,7 +129,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 6
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -151,7 +144,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 7
 Default value: $DefaultFGTConnection
 Accept pipeline input: False
 Accept wildcard characters: False

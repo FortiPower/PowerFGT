@@ -5,64 +5,64 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-FGTRouterPolicy
+# Get-FGTSystemSettings
 
 ## SYNOPSIS
-Get list of all "route policy"
+Get list of System Settings
 
 ## SYNTAX
 
 ### default (Default)
 ```
-Get-FGTRouterPolicy [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
+Get-FGTSystemSettings [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
  [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
 ```
 
 ### filter
 ```
-Get-FGTRouterPolicy [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
+Get-FGTSystemSettings [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
  [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Get list of all "route policy" (Source, Destination, Protocol, Action...)
+Get list of System Settings (opmode, bfd, gui...)
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Get-FGTRouterPolicy
+Get-FGTSystemSettings
 ```
 
-Get list of all route policy object
+Get list of all System Settings
 
 ### EXAMPLE 2
 ```
-Get-FGTRouterPolicy -filter_attribute gateway -filter_value 192.0.2.1
+Get-FGTSystemSettings -filter_attribute opmode -filter_value nat
 ```
 
-Get route policy object with gateway equal 192.0.2.1
+Get System with op mode equal nat
 
 ### EXAMPLE 3
 ```
-Get-FGTRouterPolicy -filter_attribute device -filter_value port -filter_type contains
+Get-FGTSystemSettings -filter_attribute comments -filter_value Fortinet -filter_type contains
 ```
 
-Get route policy object with device contains port
+Get System with comment contains Fortinet
 
 ### EXAMPLE 4
 ```
-Get-FGTRouterPolicy -skip
+Get-FGTSystemSettings -skip
 ```
 
-Get list of all route policy object (but only relevant attributes)
+Get list of all System Settings (but only relevant attributes)
 
 ### EXAMPLE 5
 ```
-Get-FGTRouterPolicy -vdom vdomX
+Get-FGTSystemSettings -vdom vdomX
 ```
 
-Get list of all route policy object on vdomX
+Get list of all System Settings on vdomX
 
 ## PARAMETERS
 

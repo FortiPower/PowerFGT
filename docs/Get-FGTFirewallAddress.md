@@ -37,7 +37,7 @@ Get-FGTFirewallAddress [-filter_attribute <String>] [-filter_type <String>] [-fi
 ```
 
 ## DESCRIPTION
-Get list of all "address" (ipmask, fqdn, wildcard...)
+Get list of all "address" (ipmask, iprange, fqdn...)
 
 ## EXAMPLES
 
@@ -78,7 +78,7 @@ Get list of all address object (but only relevant attributes)
 
 ### EXAMPLE 6
 ```
-Get-FGTAddress -vdom vdomX
+Get-FGTFirewallAddress -vdom vdomX
 ```
 
 Get list of all address on VdomX

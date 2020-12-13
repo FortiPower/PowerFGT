@@ -5,106 +5,92 @@ online version:
 schema: 2.0.0
 ---
 
-# Add-FGTFirewallPolicy
+# Add-FGTFirewallProxyPolicy
 
 ## SYNOPSIS
-Add a FortiGate Policy
+Add a FortiGate Proxy Policy
 
 ## SYNTAX
 
 ```
-Add-FGTFirewallPolicy [[-name] <String>] [[-policyid] <Int32>] [-srcintf] <String[]> [-dstintf] <String[]>
- [-srcaddr] <String[]> [-dstaddr] <String[]> [[-action] <String>] [-status] [[-schedule] <String>]
- [[-service] <String[]>] [-nat] [[-comments] <String>] [[-logtraffic] <String>] [[-ippool] <String[]>] [-skip]
+Add-FGTFirewallProxyPolicy [-proxy] <String> [[-policyid] <Int32>] [[-srcintf] <String[]>]
+ [-dstintf] <String[]> [-srcaddr] <String[]> [-dstaddr] <String[]> [[-action] <String>] [-status]
+ [[-schedule] <String>] [[-service] <String[]>] [[-comments] <String>] [[-logtraffic] <String>] [-skip]
  [[-vdom] <String[]>] [[-connection] <PSObject>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Add a FortiGate Policy/Rules (source port/ip, destination port, ip, action, status...)
+Add a FortiGate Proxy Policy/Rules (source address, destination address, service, action, status...)
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all
+Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port1 -srcaddr all -dstaddr all
 ```
 
-Add a MyFGTPolicy with source port port1 and destination port2 and source and destination all
+Add an explicit-web Proxy Policy with destination interface port1, source-address and destination-address all
 
 ### EXAMPLE 2
 ```
-Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -nat
+Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf port2 -dstintf port1 -srcaddr all -dstaddr all
 ```
 
-Add a MyFGTPolicy with NAT is enable
+Add a transparent-web Proxy Policy with source interface port2, destination interface port1, source-address and destination-address all
 
 ### EXAMPLE 3
 ```
-Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -action "deny"
+Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port1 -srcaddr all -dstaddr all -action "deny"
 ```
 
-Add a MyFGTPolicy with action is Deny
+Add an explicit-web Proxy Policy with action is Deny
 
 ### EXAMPLE 4
 ```
-Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -status:$false
+Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port1 -srcaddr all -dstaddr all -status:$false
 ```
 
-Add a MyFGTPolicy with status is disable
+Add an explicit-web Proxy Policy with status is disable
 
 ### EXAMPLE 5
 ```
-Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -service "HTTP, HTTPS, SSH"
+Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port1 -srcaddr all -dstaddr all -service "HTTP, HTTPS, SSH"
 ```
 
-Add a MyFGTPolicy with multiple service port
+Add an explicit-web Proxy Policy with multiple services
 
 ### EXAMPLE 6
 ```
-Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -schedule workhour
+Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port1 -srcaddr all -dstaddr all -schedule workhour
 ```
 
-Add a MyFGTPolicy with schedule is workhour
+Add an explicit-web Proxy Policy with schedule is workhour
 
 ### EXAMPLE 7
 ```
-Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -comments "My FGT Policy"
+Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port1 -srcaddr all -dstaddr all -comments "My FGT ProxyPolicy"
 ```
 
-Add a MyFGTPolicy with comment "My FGT Policy"
+Add an explicit-web Proxy Policy with comment "My FGT ProxyPolicy"
 
 ### EXAMPLE 8
 ```
-Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -logtraffic "all"
+Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port1 -srcaddr all -dstaddr all -logtraffic "all"
 ```
 
-Add a MyFGTPolicy with log traffic all
-
-### EXAMPLE 9
-```
-Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -nat -ippool "MyIPPool"
-```
-
-Add a MyFGTPolicy with IP Pool MyIPPool (with nat)
-
-### EXAMPLE 10
-```
-Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -policyid 23
-```
-
-Add a MyFGTPolicy with Policy ID equal 23
+Add an explicit-web Proxy Policy with log traffic all
 
 ## PARAMETERS
 
-### -name
-{{ Fill name Description }}
+### -proxy
+{{ Fill proxy Description }}
 
 ```yaml
 Type: String
 Parameter Sets: (All)
 Aliases:
 
-Required: False
+Required: True
 Position: 1
 Default value: None
 Accept pipeline input: False
@@ -134,7 +120,7 @@ Type: String[]
 Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
 Position: 3
 Default value: None
 Accept pipeline input: False
@@ -241,22 +227,7 @@ Aliases:
 
 Required: False
 Position: 9
-Default value: ALL
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -nat
-{{ Fill nat Description }}
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
+Default value: Webproxy
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -291,21 +262,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ippool
-{{ Fill ippool Description }}
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 12
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -skip
 Ignores the specified number of objects and then gets the remaining objects.
 Enter the number of objects to skip.
@@ -331,7 +287,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 13
+Position: 12
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -346,7 +302,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 14
+Position: 13
 Default value: $DefaultFGTConnection
 Accept pipeline input: False
 Accept wildcard characters: False

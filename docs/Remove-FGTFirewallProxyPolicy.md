@@ -5,38 +5,38 @@ online version:
 schema: 2.0.0
 ---
 
-# Remove-FGTFirewallPolicyMember
+# Remove-FGTFirewallProxyPolicy
 
 ## SYNOPSIS
-Remove a FortiGate Policy Member
+Remove a FortiGate ProxyPolicy
 
 ## SYNTAX
 
 ```
-Remove-FGTFirewallPolicyMember [-policy] <PSObject> [-srcaddr <String[]>] [-dstaddr <String[]>]
- [-vdom <String[]>] [-connection <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Remove-FGTFirewallProxyPolicy [-policy] <PSObject> [-vdom <String[]>] [-connection <PSObject>] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Remove a FortiGate Policy Member (source or destination address)
+Remove a ProxyPolicy/Rule object on the FortiGate
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-$MyFGTPolicy = Get-FGTFirewallAddressGroup -name MyFGTPolicy
-PS C:\>$MyFGTPolicy | Remove-FGTFirewallAddressGroupMember -member MyAddress1
+$MyFGTProxyPolicy = Get-FGTFirewallProxyPolicy -policyid 23
+PS C:\>$MyFGTProxyPolicy | Remove-FGTFirewallProxyPolicy
 ```
 
-Remove MyAddress1 member to MyFGTPolicy
+Remove Proxy Policy object $MyFGTProxyPolicy
 
 ### EXAMPLE 2
 ```
-$MyFGTPolicy = Get-FGTFirewallAddressGroup -name MyFGTPolicy
-PS C:\>$MyFGTPolicy | Remove-FGTFirewallAddressGroupMember -member MyAddress1, MyAddress2
+$MyFGTProxyPolicy = Get-FGTFirewallproxyPolicy -uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
+PS C:\>$MyFGTproxyPolicy | Remove-FGTFirewallproxyPolicy -noconfirm
 ```
 
-Remove MyAddress1 and MyAddress2 member to MyFGTPolicy
+Remove Proxy Policy object MyFGTproxyPolicy with no confirmation
 
 ## PARAMETERS
 
@@ -52,36 +52,6 @@ Required: True
 Position: 2
 Default value: None
 Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
-
-### -srcaddr
-{{ Fill srcaddr Description }}
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -dstaddr
-{{ Fill dstaddr Description }}
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

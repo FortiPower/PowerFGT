@@ -25,18 +25,16 @@ Add a FortiGate Policy Member (source or destination address)
 ### EXAMPLE 1
 ```
 $MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
+PS C:\>$MyFGTPolicy | Add-FGTFirewallPolicyMember -srcaddr MyAddress1
 ```
-
-PS C:\\\>$MyFGTPolicy | Add-FGTFirewallPolicyMember -srcaddr MyAddress1
 
 Add MyAddress1 member to source of MyFGTPolicy
 
 ### EXAMPLE 2
 ```
 $MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
+PS C:\>$MyFGTPolicy | Add-FGTFirewallPolicyMember -dstaddr MyAddress1, MyAddress2
 ```
-
-PS C:\\\>$MyFGTPolicy | Add-FGTFirewallPolicyMember -dstaddr MyAddress1, MyAddress2
 
 Add MyAddress1 and MyAddress2 member to destination of MyFGTPolicy
 

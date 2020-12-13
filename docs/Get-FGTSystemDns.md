@@ -38,17 +38,17 @@ Display DNS configured on the FortiGate
 
 ### EXAMPLE 2
 ```
-Get-FGTSystemDNS -filter_attribute primary -filter_value 192.2.0.1
+Get-FGTSystemDNS -filter_attribute primary -filter_value 192.0.2.1
 ```
 
-Get System DNS with primary (DNS) equal 192.2.0.1
+Get System DNS with primary (DNS) equal 192.0.2.1
 
 ### EXAMPLE 3
 ```
-Get-FGTSystemDNS -filter_attribute ssl-certificate -filter_value Fortinet -filter_type contains
+Get-FGTSystemDNS -filter_attribute domain -filter_value Fortinet -filter_type contains
 ```
 
-Get System DNS with ssl-certificate contains Fortinet
+Get System DNS with domain contains Fortinet
 
 ### EXAMPLE 4
 ```

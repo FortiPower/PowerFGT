@@ -5,47 +5,38 @@ online version:
 schema: 2.0.0
 ---
 
-# Copy-FGTFirewallAddressGroup
+# Add-FGTSystemZone
 
 ## SYNOPSIS
-Copy/Clone a FortiGate Address Group
+Add a zone
 
 ## SYNTAX
 
 ```
-Copy-FGTFirewallAddressGroup [-addrgrp] <PSObject> -name <String> [-vdom <String[]>] [-connection <PSObject>]
- [<CommonParameters>]
+Add-FGTSystemZone [-name] <String> [-intrazone <String>] [-interfaces <String[]>] [-vdom <String[]>]
+ [-connection <PSObject>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Copy/Clone a FortiGate Address Group (name, member...)
+Add a zone (name, intrazone, member...)
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-$MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
-PS C:\>$MyFGTAddressGroup | Copy-FGTFirewallAddressGroup -name MyFGTAddressGroup_copy
+Add-FGTSystemZone -name myPowerFGTZone -intrazone allow -interfaces port5
 ```
 
-Copy / Clone MyFGTAddressGroup and name MyFGTAddress_copy
+Add a zone named myPowerFGTZone with intra-zone traffic Allow and with port5
+
+### EXAMPLE 2
+```
+Add-FGTSystemZone -name myPowerFGTZone -intrazone deny -interfaces port5,port6
+```
+
+Add a zone named myPowerFGTZone with intra-zone traffic blocked and with port5 and port6 in this zone
 
 ## PARAMETERS
-
-### -addrgrp
-{{ Fill addrgrp Description }}
-
-```yaml
-Type: PSObject
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 2
-Default value: None
-Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
 
 ### -name
 {{ Fill name Description }}
@@ -56,6 +47,36 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -intrazone
+{{ Fill intrazone Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -interfaces
+{{ Fill interfaces Description }}
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False

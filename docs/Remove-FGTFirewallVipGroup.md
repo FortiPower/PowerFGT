@@ -5,35 +5,43 @@ online version:
 schema: 2.0.0
 ---
 
-# Copy-FGTFirewallAddressGroup
+# Remove-FGTFirewallVipGroup
 
 ## SYNOPSIS
-Copy/Clone a FortiGate Address Group
+Remove a FortiGate VIP Group
 
 ## SYNTAX
 
 ```
-Copy-FGTFirewallAddressGroup [-addrgrp] <PSObject> -name <String> [-vdom <String[]>] [-connection <PSObject>]
- [<CommonParameters>]
+Remove-FGTFirewallVipGroup [-vipgrp] <PSObject> [-vdom <String[]>] [-connection <PSObject>] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Copy/Clone a FortiGate Address Group (name, member...)
+Remove a VIP Group object on the FortiGate
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-$MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
-PS C:\>$MyFGTAddressGroup | Copy-FGTFirewallAddressGroup -name MyFGTAddressGroup_copy
+$MyFGTVipGroup = Get-FGTFirewallVipGroup -name MyFGTVipGroup
+PS C:\>$MyFGTVipGroup | Remove-FGTFirewallVipGroup
 ```
 
-Copy / Clone MyFGTAddressGroup and name MyFGTAddress_copy
+Remove VIP Group object MyFGTVipGroup
+
+### EXAMPLE 2
+```
+$MyFGTVipGroup = Get-FGTFirewallVipGroup -name MyFGTVipGroup
+PS C:\>$MyFGTVipGroup | Remove-FGTFirewallVipGroup -confirm:$false
+```
+
+Remove VIP Group object MyFGTVipGroup with no confirmation
 
 ## PARAMETERS
 
-### -addrgrp
-{{ Fill addrgrp Description }}
+### -vipgrp
+{{ Fill vipgrp Description }}
 
 ```yaml
 Type: PSObject
@@ -44,21 +52,6 @@ Required: True
 Position: 2
 Default value: None
 Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
-
-### -name
-{{ Fill name Description }}
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -88,6 +81,37 @@ Aliases:
 Required: False
 Position: Named
 Default value: $DefaultFGTConnection
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WhatIf
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: wi
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

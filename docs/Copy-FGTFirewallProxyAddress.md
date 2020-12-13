@@ -5,35 +5,35 @@ online version:
 schema: 2.0.0
 ---
 
-# Copy-FGTFirewallAddressGroup
+# Copy-FGTFirewallProxyAddress
 
 ## SYNOPSIS
-Copy/Clone a FortiGate Address Group
+Copy/Clone a FortiGate ProxyAddress
 
 ## SYNTAX
 
 ```
-Copy-FGTFirewallAddressGroup [-addrgrp] <PSObject> -name <String> [-vdom <String[]>] [-connection <PSObject>]
+Copy-FGTFirewallProxyAddress [-address] <PSObject> -name <String> [-vdom <String[]>] [-connection <PSObject>]
  [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Copy/Clone a FortiGate Address Group (name, member...)
+Copy/Clone a FortiGate ProxyAddress (host-regex, url ...)
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-$MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
-PS C:\>$MyFGTAddressGroup | Copy-FGTFirewallAddressGroup -name MyFGTAddressGroup_copy
+$MyFGTProxyAddress = Get-FGTFirewallProxyAddress -name MyFGTProxyAddress
+PS C:\>$MyFGTProxyAddress | Copy-FGTFirewallProxyAddress -name MyFGTProxyAddress_copy
 ```
 
-Copy / Clone MyFGTAddressGroup and name MyFGTAddress_copy
+Copy / Clone MyFGTProxyAddress and name MyFGTProxyAddress_copy
 
 ## PARAMETERS
 
-### -addrgrp
-{{ Fill addrgrp Description }}
+### -address
+{{ Fill address Description }}
 
 ```yaml
 Type: PSObject

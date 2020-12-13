@@ -13,7 +13,7 @@ Disconnect a FortiGate
 ## SYNTAX
 
 ```
-Disconnect-FGT [-noconfirm] [[-connection] <PSObject>] [<CommonParameters>]
+Disconnect-FGT [[-connection] <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -30,27 +30,12 @@ Disconnect the connection
 
 ### EXAMPLE 2
 ```
-Disconnect-FGT -noconfirm
+Disconnect-FGT -confirm:$false
 ```
 
 Disconnect the connection with no confirmation
 
 ## PARAMETERS
-
-### -noconfirm
-{{ Fill noconfirm Description }}
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
 
 ### -connection
 {{ Fill connection Description }}
@@ -63,6 +48,37 @@ Aliases:
 Required: False
 Position: 1
 Default value: $DefaultFGTConnection
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WhatIf
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: wi
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

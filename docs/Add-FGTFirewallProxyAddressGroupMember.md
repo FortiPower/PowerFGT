@@ -5,30 +5,38 @@ online version:
 schema: 2.0.0
 ---
 
-# Copy-FGTFirewallAddressGroup
+# Add-FGTFirewallProxyAddressGroupMember
 
 ## SYNOPSIS
-Copy/Clone a FortiGate Address Group
+Add a FortiGate ProxyAddress Group Member
 
 ## SYNTAX
 
 ```
-Copy-FGTFirewallAddressGroup [-addrgrp] <PSObject> -name <String> [-vdom <String[]>] [-connection <PSObject>]
- [<CommonParameters>]
+Add-FGTFirewallProxyAddressGroupMember [-addrgrp] <PSObject> [-member <String[]>] [-vdom <String[]>]
+ [-connection <PSObject>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Copy/Clone a FortiGate Address Group (name, member...)
+Add a FortiGate ProxyAddress Group Member
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-$MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
-PS C:\>$MyFGTAddressGroup | Copy-FGTFirewallAddressGroup -name MyFGTAddressGroup_copy
+$MyFGTProxyAddressGroup = Get-FGTFirewallProxyAddressGroup -name MyFGTproxyAddressGroup
+PS C:\>$MyFGTProxyAddressGroup | Add-FGTFirewallProxyAddressGroupMember -member MyAddress1
 ```
 
-Copy / Clone MyFGTAddressGroup and name MyFGTAddress_copy
+Add MyAddress1 member to MyFGTproxyAddressGroup
+
+### EXAMPLE 2
+```
+$MyFGTProxyAddressGroup = Get-FGTFirewallProxyAddressGroup -name MyFGTProxyAddressGroup
+PS C:\>$MyFGTProxyAddressGroup | Add-FGTFirewallProxyAddressGroupMember -member MyAddress1, MyAddress2
+```
+
+Add MyAddress1 and MyAddress2 member to MyFGTProxyAddressGroup
 
 ## PARAMETERS
 
@@ -47,15 +55,15 @@ Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
-### -name
-{{ Fill name Description }}
+### -member
+{{ Fill member Description }}
 
 ```yaml
-Type: String
+Type: String[]
 Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
