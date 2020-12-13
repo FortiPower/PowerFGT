@@ -20,6 +20,7 @@ With this module (version 0.4.1) you can manage:
 - Service Group (Get)
 - Static Route (Get)
 - System Global (Get)
+- System Settings (Get)
 - [VDOM](#vdom) (Get)
 - [Virtual IP](#virtual-ip) (Add/Get/Remove object type static-nat)
 - [Virtual IP Group](#virtual-ip-group) (Add/Get/Copy/Set/Remove and Add/Remove Member)
