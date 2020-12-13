@@ -413,7 +413,7 @@ or delete it `Remove-FGTFirewallAddressGroup`.
 
 ### Virtual IP
 
-You can create a new Address Group `Add-FGTFirewallVip`, retrieve its information `Get-FGTFirewallVip`,
+You can create a new Virtual IP `Add-FGTFirewallVip`, retrieve its information `Get-FGTFirewallVip`,
 or delete it `Remove-FGTFirewallVip`.
 
 ```powershell
@@ -472,7 +472,7 @@ or delete it `Remove-FGTFirewallVip`.
     mappedport                       : 80
     [...]
 
-# Remove an address Group
+# Remove a Virtual IP
     Get-FGTFirewallVip -name myVIP1 | Remove-FGTFirewallVip
 
     Remove VIP on Fortigate
@@ -482,7 +482,7 @@ or delete it `Remove-FGTFirewallVip`.
 
 ### Policy
 
-You can create a new Address Group `Add-FGTFirewallPolicy`, retrieve its information `Get-FGTFirewallPolicy`
+You can create a new Policy `Add-FGTFirewallPolicy`, retrieve its information `Get-FGTFirewallPolicy`
 Add member to source or destinationn address `Add-FGTFirewallPolicyMember` and remove member `Add-FGTFirewallPolicyMember`,
 or delete it `Remove-FGTFirewallPolicy`.
 
