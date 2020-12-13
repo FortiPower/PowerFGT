@@ -699,6 +699,14 @@ Try to connect using `Connect-FGT -SkipCertificateCheck`
 
 You can use also `Connect-FGT -httpOnly` for connect using HTTP (NOT RECOMMENDED !)
 
+# How to contribute
+
+Contribution and feature requests are more than welcome. Please use the following methods:
+
+  * For bugs and [issues](https://github.com/FortiPower/PowerFGT/issues), please use the [issues](https://github.com/FortiPower/PowerFGT/issues) register with details of the problem.
+  * For Feature Requests, please use the [issues](https://github.com/FortiPower/PowerFGT/issues) register with details of what's required.
+  * For code contribution (bug fixes, or feature request), please request fork PowerFGT, create a feature/fix branch, add tests if needed then submit a pull request.
+
 # List of available command
 ```powershell
 Add-FGTFirewallAddress
