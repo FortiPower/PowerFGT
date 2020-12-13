@@ -6,36 +6,36 @@ This is a Powershell module for configure a FortiGate (Fortinet) Firewall.
 
 With this module (version 0.4.1) you can manage:
 
-- [Address](#Address) (Add/Get/Copy/Set/Remove object type ipmask/subnet, FQDN, iprange)
-- [AddressGroup](#Address-Group) (Add/Get/Copy/Set/Remove and Add/Remove Member)
+- [Address](#address) (Add/Get/Copy/Set/Remove object type ipmask/subnet, FQDN, iprange)
+- [AddressGroup](#address-group) (Add/Get/Copy/Set/Remove and Add/Remove Member)
 - DNS (Get)
 - HA (Get)
 - Interface (Get)
 - IP Pool (Get)
 - Local User (Get)
-- [Policy](#Policy) (Add/Get/Remove)
+- [Policy](#policy) (Add/Get/Remove)
 - RoutePolicy (Get)
 - Service (Get)
 - Service Group (Get)
 - Static Route (Get)
 - System Global (Get)
-- [VDOM](#VDOM) (Get)
-- [Virtual IP](#Virtual-IP) (Add/Get/Remove object type static-nat)
+- [VDOM](#vdom) (Get)
+- [Virtual IP](#virtual-ip) (Add/Get/Remove object type static-nat)
 - Virtual IP Group (Add/Get/Copy/Set/Remove and Add/Remove Member)
 - Virtual WAN Link/SD-WAN (Get)
 - VPN IPsec Phase 1/Phase 2 Interface (Get)
 - Zone (Get)
 
 There is some extra feature
-- [Invoke API](#Invoke-API)
-- [Filtering](#Filtering)
-- [Multi Connection](#MultiConnection)
+- [Invoke API](#invoke-api)
+- [Filtering](#filtering)
+- [Multi Connection](#multiconnection)
 
 More functionality will be added later.
 
 Connection can use HTTPS (default) or HTTP  
 Tested with FortiGate (using 5.6.x and 6.0.x firmware but it will be also work with 5.4.x)  
-Add (Experimental) support of [VDOM](#VDOM) is available using -vdom parameter for each cmdlet  
+Add (Experimental) support of [VDOM](#vdom) is available using -vdom parameter for each cmdlet  
 Don't use support to connect using API Token from 5.6.x (and later)
 
 # Usage
@@ -80,7 +80,7 @@ The first thing to do is to connect to a FortiGate Firewall with the command `Co
 
 #we get a prompt for credential
 ```
-if you get a warning about `Unable to connect` Look [Issue](#Issue)
+if you get a warning about `Unable to connect` Look [Issue](#issue)
 
 
 ### Address
