@@ -6,7 +6,7 @@ This is a Powershell module for configure a FortiGate (Fortinet) Firewall.
 
 With this module (version 0.4.1) you can manage:
 
-- [Address](#Address) (Add/Get/Copy/Set/Remove object type ipmask/subnet, FQDN)
+- [Address](#Address) (Add/Get/Copy/Set/Remove object type ipmask/subnet, FQDN, iprange)
 - [AddressGroup](#Address-Group) (Add/Get/Copy/Set/Remove and Add/Remove Member)
 - DNS (Get)
 - HA (Get)
@@ -104,7 +104,7 @@ or delete it `Remove-FGTFirewallAddress`.
     swscan.apple.com             swscan.apple.com             a918d1dc-368c-51e9-08a7-c6004bf38fb9 0.0.0.0 0.0.0.0
     update.microsoft.com         update.microsoft.com         a918d650-368c-51e9-0cca-5f006a059f0b 0.0.0.0 0.0.0.0
 
-# Create an address
+# Create an address (type ipmask)
     Add-FGTFirewallAddress -Name 'My PowerFGT Network' -ip 192.0.2.1 -mask 255.255.255.0
 
     q_origin_key         : My PowerFGT Network
@@ -218,6 +218,66 @@ or delete it `Remove-FGTFirewallAddress`.
 
 # Remove an address
     Get-FGTFirewallAddress -name "My Network" | Remove-FGTFirewallAddress
+
+#You can also create other address type like fqdn or iprange
+
+#create an address (type fqdn)
+Add-FGTFirewallAddress -Name FortiPower -fqdn fortipower.github.io
+
+    name                 : FortiPower
+    q_origin_key         : FortiPower
+    uuid                 : 98af3292-3d6e-51eb-f488-f04057fbb871
+    type                 : fqdn
+    sub-type             : sdn
+    clearpass-spt        : unknown
+    start-mac            : 00:00:00:00:00:00
+    end-mac              : 00:00:00:00:00:00
+    fqdn                 : fortipower.github.io
+    country              : 
+    cache-ttl            : 0
+    sdn                  : 
+    fsso-group           : {}
+    interface            : 
+    comment              : 
+    visibility           : enable
+    associated-interface : 
+    color                : 0
+    filter               : 
+    sdn-addr-type        : private
+    obj-id               : 
+    list                 : {}
+    tagging              : {}
+    allow-routing        : disable
+
+#create an address (type iprange)
+Add-FGTFirewallAddress -Name MyRange -startip 192.0.2.1 -endip 192.0.2.100
+
+    name                 : MyRange
+    q_origin_key         : MyRange
+    uuid                 : a683a420-3d6e-51eb-5c90-f471f85943e8
+    type                 : iprange
+    sub-type             : sdn
+    clearpass-spt        : unknown
+    start-mac            : 00:00:00:00:00:00
+    end-mac              : 00:00:00:00:00:00
+    start-ip             : 192.0.2.1
+    end-ip               : 192.0.2.100
+    country              : 
+    cache-ttl            : 0
+    sdn                  : 
+    fsso-group           : {}
+    interface            : 
+    comment              : 
+    visibility           : enable
+    associated-interface : 
+    color                : 0
+    filter               : 
+    sdn-addr-type        : private
+    obj-id               : 
+    list                 : {}
+    tagging              : {}
+    allow-routing        : disable
+
 ```
 
 ### Filtering
