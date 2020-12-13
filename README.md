@@ -21,7 +21,7 @@ With this module (version 0.4.1) you can manage:
 - System Global (Get)
 - [VDOM](#vdom) (Get)
 - [Virtual IP](#virtual-ip) (Add/Get/Remove object type static-nat)
-- Virtual IP Group (Add/Get/Copy/Set/Remove and Add/Remove Member)
+- [Virtual IP Group](#virtual-ip-group) (Add/Get/Copy/Set/Remove and Add/Remove Member)
 - Virtual WAN Link/SD-WAN (Get)
 - VPN IPsec Phase 1/Phase 2 Interface (Get)
 - [Zone](#zone) (Add/Get/Set/Remove and Add/Remove Member)
@@ -479,6 +479,76 @@ or delete it `Remove-FGTFirewallVip`.
     Proceed with removal of VIP myVIP1 ?
     [Y] Yes  [N] No  [?] Help (default is "N"): Y
 ```
+
+### Address Group
+
+You can create a new VIP Group `Add-FGTFirewallVIPGroup`, retrieve its information `Get-FGTFirewallVIPGroup`,
+modify its properties `Set-FGTFirewallVIPGroup`, copy/clone its properties `Copy-FGTFirewallVIPGroup`,
+Add member to Address Group `Add-FGTFirewallVIPGroupMember` and remove member `Remove-FGTFirewallVIPGroupMember`,
+or delete it `Remove-FGTFirewallVIPGroup`.  
+
+```powershell
+
+# Get information about ALL VIP Group (using Format Table)
+    Get-FGTFirewallVipGroup | Format-Table
+
+    name       q_origin_key uuid                                 interface color comments member
+    ----       ------------ ----                                 --------- ----- -------- ------
+    MyVIPGroup MyVIPGroup   cb875532-3d82-51eb-f120-075c29c10657 any           0          {@{name=myVIP1; q_origin_key=myVIP1}, @{name=myVIP2; q_origin_key=myVIP2}}
+
+# Add a VIP Group with myVIP1 and myVIP2
+    Add-FGTFirewallVIPGroup -name "MyVIPGroup" -member myVIP1, myVIP2
+
+    name         : MyVIPGroup
+    q_origin_key : MyVIPGroup
+    uuid         : cb875532-3d82-51eb-f120-075c29c10657
+    interface    : any
+    color        : 0
+    comments     :
+    member       : {@{name=myVIP1; q_origin_key=myVIP1}, @{name=myVIP2; q_origin_key=myVIP2}}
+
+# Add myVIP3 member to existing Virtual IP GROUP
+    Get-FGTFirewallVIPGroup -name "MyVIPGroup" | Add-FGTFirewallVIPGroupMember -member myVIP3
+
+    name         : MyVIPGroup
+    q_origin_key : MyVIPGroup
+    uuid         : cb875532-3d82-51eb-f120-075c29c10657
+    interface    : any
+    color        : 0
+    comments     :
+    member       : {@{name=myVIP1; q_origin_key=myVIP1}, @{name=myVIP2; q_origin_key=myVIP2}, @{name=myVIP3; q_origin_key=myVIP3}}
+
+# Remove myVIP2 member to existing Virtual IP Group
+    Get-FGTFirewallVIPGroup -name "MyVIPGroup" | Remove-FGTFirewallVIPGroupMember -member myVIP2
+
+    name         : MyVIPGroup
+    q_origin_key : MyVIPGroup
+    uuid         : cb875532-3d82-51eb-f120-075c29c10657
+    interface    : any
+    color        : 0
+    comments     :
+    member       : {@{name=myVIP1; q_origin_key=myVIP1}, @{name=myVIP3; q_origin_key=myVIP3}}
+
+# Modify a Virtual IP Group
+    Get-FGTFirewallVIPGroup -name "MyVIPGroup" | Set-FGTFirewallVIPGroup -comment "My Virtual IP with only myVIP2" -member myVIP2
+
+    name         : MyVIPGroup
+    q_origin_key : MyVIPGroup
+    uuid         : cb875532-3d82-51eb-f120-075c29c10657
+    interface    : any
+    color        : 0
+    comments     : My Virtual IP with only myVIP2
+    member       : {@{name=myVIP2; q_origin_key=myVIP2}}
+
+# Remove a Virtual IP Group
+    Get-FGTFirewallVIPGroup -name "MyVIPGroup" | Remove-FGTFirewallVIPGroup
+
+    Confirm
+    Are you sure you want to perform this action?
+    Performing the operation "Remove Firewall VIP Group" on target "MyVIPGroup".
+    [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): y
+```
+
 
 ### Policy
 
