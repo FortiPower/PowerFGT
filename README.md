@@ -14,6 +14,7 @@ With this module (version 0.4.1) you can manage:
 - IP Pool (Get)
 - Local User (Get)
 - [Policy](#policy) (Add/Get/Remove)
+- [Proxy Address/Address Group/ Policy](#proxy) (Add/Get/Set/Remove)
 - RoutePolicy (Get)
 - Service (Get)
 - Service Group (Get)
@@ -810,6 +811,16 @@ You can also change default vdom using
     Set-FGTConnection -vdom vdomY
 [...]
 ```
+
+### Proxy
+
+There is also cmdlet for Proxy
+- Proxy Address (Add/Copy/Get/Remove-FGTFirewallProxyAddress)
+- Proxy Address Group (Add/Copy/Get/Set/Remove-FGTFirewallProxyAddressGroup)
+- Proxy Policy (Add/Get/Remove-FGTFirewallProxyPolicy)
+
+For Proxy Policy, it is possible to specific explict proxy or transparent
+For FortiGate 6.0.x, you need to enable proxy mode before (and enable feature)
 
 ### MultiConnection
 
