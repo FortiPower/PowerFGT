@@ -664,7 +664,7 @@ or delete it `Remove-FGTFirewallPolicy`.
 
 ### Zone
 
-You can create a new Zone `Add-FGTSystemZone`, retrieve its information `Get-FGTFirewallAddressGroup`,
+You can create a new Zone `Add-FGTSystemZone`, retrieve its information `Get-FGTFSystemZone`,
 modify its properties `Set-SystemZone`,
 Add member to Zone `Add-SystemZoneMember` and remove member `Remove-SystemZoneMember`,
 or delete it `Remove-SystemZone`.  
