@@ -24,7 +24,7 @@ With this module (version 0.4.1) you can manage:
 - Virtual IP Group (Add/Get/Copy/Set/Remove and Add/Remove Member)
 - Virtual WAN Link/SD-WAN (Get)
 - VPN IPsec Phase 1/Phase 2 Interface (Get)
-- Zone (Get)
+- [Zone](#zone) (Add/Get/Set/Remove and Add/Remove Member)
 
 There is some extra feature
 - [Invoke API](#invoke-api)
@@ -590,6 +590,74 @@ or delete it `Remove-FGTFirewallPolicy`.
     Remove Policy on Fortigate
     Proceed with removal of Policy MyFGTPolicy2 ?
     [Y] Yes  [N] No  [?] Help (default is "N"): y
+```
+
+### Zone
+
+You can create a new Zone `Add-FGTSystemZone`, retrieve its information `Get-FGTFirewallAddressGroup`,
+modify its properties `Set-SystemZone`,
+Add member to Zone `Add-SystemZoneMember` and remove member `Remove-SystemZoneMember`,
+or delete it `Remove-SystemZone`.  
+
+```powershell
+
+# Get information about ALL Zone
+    Get-FGTSystemZone
+
+    name         : myPowerFGTZone
+    q_origin_key : myPowerFGTZone
+    tagging      : {}
+    description  :
+    intrazone    : deny
+    interface    : {@{interface-name=port5; q_origin_key=port5}, @{interface-name=port6; q_origin_key=port6}}
+
+# Add new Zone myPowerFGTZone2 with port7 and intrazone allowed
+    Add-FGTSystemZone -name myPowerFGTZone2 -intrazone allow -interfaces port7
+
+    name         : myPowerFGTZone2
+    q_origin_key : myPowerFGTZone2
+    tagging      : {}
+    description  :
+    intrazone    : allow
+    interface    : {@{interface-name=port7; q_origin_key=port7}}
+
+# Add new member (port8) to existing zone myPowerFGTZone2
+    Get-FGTSystemZone -name myPowerFGTZone2 | Add-FGTSystemZoneMember -interfaces port8
+
+    name         : myPowerFGTZone2
+    q_origin_key : myPowerFGTZone2
+    tagging      : {}
+    description  :
+    intrazone    : allow
+    interface    : {@{interface-name=port7; q_origin_key=port7}, @{interface-name=port8; q_origin_key=port8}}
+
+# Remove port7 member to existing zone myPowerFGTZone2
+    Get-FGTSystemZone -name myPowerFGTZone2 | Remove-FGTSystemZoneMember -interfaces port7
+
+    name         : myPowerFGTZone2
+    q_origin_key : myPowerFGTZone2
+    tagging      : {}
+    description  :
+    intrazone    : allow
+    interface    : {@{interface-name=port8; q_origin_key=port8}}
+
+# Modify a Zone (intrazone, interface...)
+    Get-FGTSystemZone -name myPowerFGTZone2 | Set-FGTSystemZone -intrazone deny
+
+    name         : myPowerFGTZone2
+    q_origin_key : myPowerFGTZone2
+    tagging      : {}
+    description  :
+    intrazone    : deny
+    interface    : {@{interface-name=port8; q_origin_key=port8}}
+
+# Remove a zone
+    Get-FGTSystemZone -name myPowerFGTZone2 | Remove-FGTSystemZone
+
+    Confirm
+    Are you sure you want to perform this action?
+    Performing the operation "Remove zone" on target "myPowerFGTZone2".
+    [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): Y
 ```
 
 ### Invoke API
