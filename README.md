@@ -801,8 +801,16 @@ Show-FGTException
 - <https://github.com/alagoutte>
 - <https://twitter.com/alagoutte>
 
-**Benjamin Perrier**
-- <https://github.com/benper44>
+# Contributors
+
+- Arthur Heijnen
+- Benjamin Perrier
+- Brett Pound
+- Cédric Moreau
+- Evan Chisholm
+- Jelmer Jaarsma
+
+Sort by name (*git shortlog -s*)
 
 # Special Thanks
 
