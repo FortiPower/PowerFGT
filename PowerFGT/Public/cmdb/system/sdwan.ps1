@@ -4,39 +4,39 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-function Get-FGTSystemVirtualWANLink {
+function Get-FGTSystemSDWAN {
 
     <#
         .SYNOPSIS
-        Get Virtual Wan Link (SD-WAN) Settings
+        Get SD-WAN Settings
 
         .DESCRIPTION
-        Get Virtual Wan Link Settings (status, load balance mode, members, health-check... )
+        Get SD-WAN (status, load balance mode, members, health-check... )
 
         .EXAMPLE
-        Get-FGTSystemVirtualWANLink
+        Get-FGTSystemSDWAN
 
-        Get Virtual Wan Link Settings
-
-        .EXAMPLE
-        Get-FGTSystemVirtualWANLink -filter_attribute status -filter_value enable
-
-        Get Virtual Wan Link with mode equal standalone
+        Get SD-WAN  Settings
 
         .EXAMPLE
-        Get-FGTSystemVirtualWANLink -filter_attribute load-balance-mode -filter_value ip -filter_type contains
+        Get-FGTSystemSDWAN -filter_attribute status -filter_value enable
 
-        Get Virtual Wan Link with load-balance-modecontains ip
-
-        .EXAMPLE
-        Get-FGTSystemVirtualWANLink -skip
-
-        Get Virtual Wan Link Settings (but only relevant attributes)
+        Get SD-WAN with mode equal standalone
 
         .EXAMPLE
-        Get-FGTSystemVirtualWANLink -vdom vdomX
+        Get-FGTSystemSDWAN -filter_attribute load-balance-mode -filter_value ip -filter_type contains
 
-        Get Virtual Wan Link Settings on vdomX
+        Get SD-WAN with load-balance-modecontains ip
+
+        .EXAMPLE
+        Get-FGTSystemSDWAN -skip
+
+        Get SD-WAN Settings (but only relevant attributes)
+
+        .EXAMPLE
+        Get-FGTSystemSDWAN -vdom vdomX
+
+        Get SD-WAN Settings on vdomX
     #>
 
     [CmdletBinding(DefaultParameterSetName = "default")]
@@ -64,7 +64,7 @@ function Get-FGTSystemVirtualWANLink {
 
     Process {
 
-        $uri = 'api/v2/cmdb/system/virtual-wan-link'
+        $uri = 'api/v2/cmdb/system/sdwan'
 
         $invokeParams = @{ }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
@@ -82,10 +82,9 @@ function Get-FGTSystemVirtualWANLink {
             $invokeParams.add( 'filter_type', $filter_type )
         }
 
-        #with 6.4.x, it is a new uri -> SD-WAN
-        if ($connection.version -ge "6.4.0") {
-            $uri = "api/v2/cmdb/system/sdwan"
-            Write-Warning "Please use Get-FGTSystemSDWAN, Virtual WAN Link is not longer available with FortiOS 6.4.x and after"
+        #before 6.4.x, it is not available need to use Virtual WAN Link
+        if ($connection.version -lt "6.4.0") {
+            Throw "Please use Get-FGTSystemVirtualWANLink, SD-WAN is not available before FortiOS 6.4.x"
         }
 
         $reponse = Invoke-FGTRestMethod -uri $uri -method 'GET' -connection $connection @invokeParams

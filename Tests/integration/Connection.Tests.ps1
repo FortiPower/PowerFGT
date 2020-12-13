@@ -120,6 +120,12 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get System Virtual WAN Link (SD-WAN)" {
             { Get-FGTSystemVirtualWANLink -connection $fgt } | Should -Not -Throw
         }
+        It "Use Multi connection for call Get System SD-WAN (> 6.4.0)" -skip:($fgt_version -lt "6.4.0") {
+            { Get-FGTSystemSDWAN -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get System SD-WAN (< 6.4.0)" -skip:($fgt_version -ge "6.4.0") {
+            { Get-FGTSystemSDWAN -connection $fgt } | Should -Throw "Please use Get-FGTSystemVirtualWANLink, SD-WAN is not available before FortiOS 6.4.x"
+        }
         It "Use Multi connection for call Get System Zone " {
             { Get-FGTSystemZone -connection $fgt } | Should -Not -Throw
         }
@@ -137,6 +143,11 @@ Describe "Connect to a FortiGate (using multi connection)" {
     It "Disconnect to a FortiGate (Multi connection)" {
         Disconnect-FGT -connection $fgt -confirm:$false
         $DefaultFGTConnection | Should -Be $null
+    }
+
+    AfterAll {
+        #Remove script scope variable
+        Remove-Variable -name fgt -scope script
     }
 
 }

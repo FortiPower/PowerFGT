@@ -6,6 +6,7 @@
 #Requires -Modules @{ ModuleName="Pester"; ModuleVersion="5.1.0" }
 
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingConvertToSecureStringWithPlainText", "")]
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignments", "")]
 Param()
 # default settings for test...
 $script:pester_address1 = "pester_address1"
@@ -59,3 +60,8 @@ else {
     $invokeParams.add('SkipCertificateCheck', $true)
 }
 $invokeParams.add('port', $port)
+
+#Make a connection for check info and store version (used for some test...)
+$fgt = Connect-FGT @invokeParams
+$fgt_version = $fgt.version
+Disconnect-FGT -confirm:$false
