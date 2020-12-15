@@ -5,35 +5,41 @@ online version:
 schema: 2.0.0
 ---
 
-# Copy-FGTFirewallAddressGroup
+# Add-FGTSystemZoneMember
 
 ## SYNOPSIS
-Copy/Clone a FortiGate Address Group
+Add a zone member
 
 ## SYNTAX
 
 ```
-Copy-FGTFirewallAddressGroup [-addrgrp] <PSObject> -name <String> [-vdom <String[]>] [-connection <PSObject>]
+Add-FGTSystemZoneMember [-zone] <PSObject> -interfaces <String[]> [-vdom <String[]>] [-connection <PSObject>]
  [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Copy/Clone a FortiGate Address Group (name, member...)
+Add a zone member interface
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-$MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
-PS C:\>$MyFGTAddressGroup | Copy-FGTFirewallAddressGroup -name MyFGTAddressGroup_copy
+Get-FGTSystemZone myPowerFGTZone | Add-FGTSystemZoneMember -interface port9
 ```
 
-Copy / Clone MyFGTAddressGroup and name MyFGTAddress_copy
+Add the zone named myPowerFGTZone member interface port9
+
+### EXAMPLE 2
+```
+Get-FGTSystemZone myPowerFGTZone | Add-FGTSystemZoneMember -interface port8, port9
+```
+
+Add the zone named myPowerFGTZone member interface port8 and port9
 
 ## PARAMETERS
 
-### -addrgrp
-{{ Fill addrgrp Description }}
+### -zone
+{{ Fill zone Description }}
 
 ```yaml
 Type: PSObject
@@ -47,11 +53,11 @@ Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
-### -name
-{{ Fill name Description }}
+### -interfaces
+{{ Fill interfaces Description }}
 
 ```yaml
-Type: String
+Type: String[]
 Parameter Sets: (All)
 Aliases:
 

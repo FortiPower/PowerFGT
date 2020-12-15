@@ -5,43 +5,48 @@ online version:
 schema: 2.0.0
 ---
 
-# Remove-FGTFirewallPolicyMember
+# Set-FGTSystemZone
 
 ## SYNOPSIS
-Remove a FortiGate Policy Member
+Set a zone
 
 ## SYNTAX
 
 ```
-Remove-FGTFirewallPolicyMember [-policy] <PSObject> [-srcaddr <String[]>] [-dstaddr <String[]>]
+Set-FGTSystemZone [-zone] <PSObject> [-name <String>] [-intrazone <String>] [-interfaces <String[]>]
  [-vdom <String[]>] [-connection <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Remove a FortiGate Policy Member (source or destination address)
+Configure a zone (name, intrazone, member...)
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-$MyFGTPolicy = Get-FGTFirewallAddressGroup -name MyFGTPolicy
-PS C:\>$MyFGTPolicy | Remove-FGTFirewallAddressGroupMember -member MyAddress1
+Get-FGTSystemZone -name myPowerFGTZone | Set-FGTSystemZone -intrazone deny
 ```
 
-Remove MyAddress1 member to MyFGTPolicy
+Set the zone named myPowerFGTZone with intra-zone traffic deny
 
 ### EXAMPLE 2
 ```
-$MyFGTPolicy = Get-FGTFirewallAddressGroup -name MyFGTPolicy
-PS C:\>$MyFGTPolicy | Remove-FGTFirewallAddressGroupMember -member MyAddress1, MyAddress2
+Get-FGTSystemZone -name myPowerFGTZone | Set-FGTSystemZone -interfaces port5, port6
 ```
 
-Remove MyAddress1 and MyAddress2 member to MyFGTPolicy
+Set the zone named myPowerFGTZone with port 5 and port 6 bound to it
+
+### EXAMPLE 3
+```
+Get-FGTSystemZone -name myPowerFGTZone | Set-FGTSystemZone -name new_myPowerFGTZone
+```
+
+Set the zone named myPowerFGTZone with new name new_myPowerFGTZone
 
 ## PARAMETERS
 
-### -policy
-{{ Fill policy Description }}
+### -zone
+{{ Fill zone Description }}
 
 ```yaml
 Type: PSObject
@@ -55,11 +60,11 @@ Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
-### -srcaddr
-{{ Fill srcaddr Description }}
+### -name
+{{ Fill name Description }}
 
 ```yaml
-Type: String[]
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -70,8 +75,23 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -dstaddr
-{{ Fill dstaddr Description }}
+### -intrazone
+{{ Fill intrazone Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -interfaces
+{{ Fill interfaces Description }}
 
 ```yaml
 Type: String[]

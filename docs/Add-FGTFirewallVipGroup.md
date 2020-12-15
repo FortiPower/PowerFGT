@@ -5,53 +5,58 @@ online version:
 schema: 2.0.0
 ---
 
-# Remove-FGTFirewallAddressGroupMember
+# Add-FGTFirewallVipGroup
 
 ## SYNOPSIS
-Remove a FortiGate Address Group Member
+Add a FortiGate VIP Group
 
 ## SYNTAX
 
 ```
-Remove-FGTFirewallAddressGroupMember [-addrgrp] <PSObject> [-member <String[]>] [-vdom <String[]>]
- [-connection <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Add-FGTFirewallVipGroup [-name] <String> [-member] <String[]> [[-interface] <String>] [[-comments] <String>]
+ [[-vdom] <String[]>] [[-connection] <PSObject>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Remove a FortiGate Address Group Member
+Add a FortiGate VIP Group
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-$MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
-PS C:\>$MyFGTAddressGroup | Remove-FGTFirewallAddressGroupMember -member MyAddress1
+Add-FGTFirewallVipGroup -name MyVipGroup -member MyVip1 -interface wan1
 ```
 
-Remove MyAddress1 member to MyFGTAddressGroup
+Add VIP Group with member MyVip1, associated to interface wan1
 
 ### EXAMPLE 2
 ```
-$MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
-PS C:\>$MyFGTAddressGroup | Remove-FGTFirewallAddressGroupMember -member MyAddress1, MyAddress2
+Add-FGTFirewallVipGroup -name MyVipGroup -member MyVip1, MyVip2 -interface wan1
 ```
 
-Remove MyAddress1 and MyAddress2 member to MyFGTAddressGroup
+Add VIP Group with members MyVip1 and MyVip2, associated to interface wan1
+
+### EXAMPLE 3
+```
+Add-FGTFirewallVipGroup -name MyVipGroup -member MyVip1 -comments "My VIP Group" -interface wan1
+```
+
+Add VIP Group with member MyVip1 and a comments, associated to interface wan1
 
 ## PARAMETERS
 
-### -addrgrp
-{{ Fill addrgrp Description }}
+### -name
+{{ Fill name Description }}
 
 ```yaml
-Type: PSObject
+Type: String
 Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: 2
+Position: 1
 Default value: None
-Accept pipeline input: True (ByValue)
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -63,8 +68,38 @@ Type: String[]
 Parameter Sets: (All)
 Aliases:
 
+Required: True
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -interface
+{{ Fill interface Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
 Required: False
-Position: Named
+Position: 3
+Default value: Any
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -comments
+{{ Fill comments Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 4
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -79,7 +114,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 5
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -94,39 +129,8 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 6
 Default value: $DefaultFGTConnection
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -WhatIf
-Shows what would happen if the cmdlet runs.
-The cmdlet is not run.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases: wi
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Confirm
-Prompts you for confirmation before running the cmdlet.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases: cf
-
-Required: False
-Position: Named
-Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

@@ -5,35 +5,35 @@ online version:
 schema: 2.0.0
 ---
 
-# Copy-FGTFirewallAddressGroup
+# Copy-FGTFirewallVipGroup
 
 ## SYNOPSIS
-Copy/Clone a FortiGate Address Group
+Copy/Clone a FortiGate VIP Group
 
 ## SYNTAX
 
 ```
-Copy-FGTFirewallAddressGroup [-addrgrp] <PSObject> -name <String> [-vdom <String[]>] [-connection <PSObject>]
+Copy-FGTFirewallVipGroup [-vipgrp] <PSObject> -name <String> [-vdom <String[]>] [-connection <PSObject>]
  [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Copy/Clone a FortiGate Address Group (name, member...)
+Copy/Clone a FortiGate VIP Group (name, member...)
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-$MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
-PS C:\>$MyFGTAddressGroup | Copy-FGTFirewallAddressGroup -name MyFGTAddressGroup_copy
+$MyFGTVipGroup = Get-FGTFirewallVipGroup -name MyFGTVipGroup
+PS C:\>$MyFGTVipGroup | Copy-FGTFirewallVipGroup -name MyFGTVipGroup_copy
 ```
 
-Copy / Clone MyFGTAddressGroup and name MyFGTAddress_copy
+Copy / Clone MyFGTVipGroup and name MyFGTVipGroup_copy
 
 ## PARAMETERS
 
-### -addrgrp
-{{ Fill addrgrp Description }}
+### -vipgrp
+{{ Fill vipgrp Description }}
 
 ```yaml
 Type: PSObject

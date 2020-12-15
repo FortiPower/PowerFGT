@@ -54,7 +54,7 @@ Get Zone named MyZone
 Get-FGTSystemZone -name FGT -filter_type contains
 ```
 
-Get vdom contains with *FGT*
+Get zone contains with *FGT*
 
 ### EXAMPLE 4
 ```

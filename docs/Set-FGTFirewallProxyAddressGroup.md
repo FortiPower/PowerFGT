@@ -5,43 +5,60 @@ online version:
 schema: 2.0.0
 ---
 
-# Remove-FGTFirewallPolicyMember
+# Set-FGTFirewallProxyAddressGroup
 
 ## SYNOPSIS
-Remove a FortiGate Policy Member
+Configure a FortiGate ProxyAddress Group
 
 ## SYNTAX
 
 ```
-Remove-FGTFirewallPolicyMember [-policy] <PSObject> [-srcaddr <String[]>] [-dstaddr <String[]>]
- [-vdom <String[]>] [-connection <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Set-FGTFirewallProxyAddressGroup [-addrgrp] <PSObject> [-name <String>] [-member <String[]>]
+ [-comment <String>] [-visibility <Boolean>] [-vdom <String[]>] [-connection <PSObject>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Remove a FortiGate Policy Member (source or destination address)
+Change a FortiGate ProxyAddress Group (name, member, comment...)
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-$MyFGTPolicy = Get-FGTFirewallAddressGroup -name MyFGTPolicy
-PS C:\>$MyFGTPolicy | Remove-FGTFirewallAddressGroupMember -member MyAddress1
+$MyFGTProxyAddressGroup = Get-FGTFirewallProxyAddressGroup -name MyFGTProxyAddressGroup
+PS C:\>$MyFGTProxyAddressGroup | Set-FGTFirewallProxyAddressGroup -member MyAddress1
 ```
 
-Remove MyAddress1 member to MyFGTPolicy
+Change MyFGTProxyAddressGroup member to MyAddress1
 
 ### EXAMPLE 2
 ```
-$MyFGTPolicy = Get-FGTFirewallAddressGroup -name MyFGTPolicy
-PS C:\>$MyFGTPolicy | Remove-FGTFirewallAddressGroupMember -member MyAddress1, MyAddress2
+$MyFGTProxyAddressGroup = Get-FGTFirewallProxyAddressGroup -name MyFGTProxyAddressGroup
+PS C:\>$MyFGTProxyAddressGroup | Set-FGTFirewallProxyAddressGroup -member MyAddress1, MyAddress2
 ```
 
-Remove MyAddress1 and MyAddress2 member to MyFGTPolicy
+Change MyFGTProxyAddressGroup member to MyAddress1
+
+### EXAMPLE 3
+```
+$MyFGTProxyAddressGroup = Get-FGTFirewallProxyAddressGroup -name MyFGTProxyAddressGroup
+PS C:\>$MyFGTProxyAddressGroup | Set-FGTFirewallProxyAddressGroup -name MyFGTProxyAddressGroup2
+```
+
+Rename MyFGTProxyAddressGroup member to MyFGTProxyAddressGroup2
+
+### EXAMPLE 4
+```
+$MyFGTProxyAddressGroup = Get-FGTFirewallProxyAddressGroup -name MyFGTproxyAddressGroup
+PS C:\>$MyFGTProxyAddressGroup | Set-FGTFirewallProxyAddressGroup -visibility:$false
+```
+
+Change MyFGTProxyAddressGroup to set a new comment and disabled visibility
 
 ## PARAMETERS
 
-### -policy
-{{ Fill policy Description }}
+### -addrgrp
+{{ Fill addrgrp Description }}
 
 ```yaml
 Type: PSObject
@@ -55,8 +72,23 @@ Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
-### -srcaddr
-{{ Fill srcaddr Description }}
+### -name
+{{ Fill name Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -member
+{{ Fill member Description }}
 
 ```yaml
 Type: String[]
@@ -70,17 +102,32 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -dstaddr
-{{ Fill dstaddr Description }}
+### -comment
+{{ Fill comment Description }}
 
 ```yaml
-Type: String[]
+Type: String
 Parameter Sets: (All)
 Aliases:
 
 Required: False
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -visibility
+{{ Fill visibility Description }}
+
+```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

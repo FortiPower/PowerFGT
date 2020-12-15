@@ -13,8 +13,8 @@ Remove a FortiGate Address
 ## SYNTAX
 
 ```
-Remove-FGTFirewallAddressGroup [-addrgrp] <PSObject> [-noconfirm] [-vdom <String[]>] [-connection <PSObject>]
- [<CommonParameters>]
+Remove-FGTFirewallAddressGroup [-addrgrp] <PSObject> [-vdom <String[]>] [-connection <PSObject>] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -25,18 +25,16 @@ Remove an Address Group object on the FortiGate
 ### EXAMPLE 1
 ```
 $MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
+PS C:\>$MyFGTAddressGroup | Remove-FGTFirewallAddressGroup
 ```
-
-PS C:\\\>$MyFGTAddressGroup | Remove-FGTFirewallAddressGroup
 
 Remove Address Group object $MyFGTAddressGroup
 
 ### EXAMPLE 2
 ```
 $MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
+PS C:\>$MyFGTAddressGroup | Remove-FGTFirewallAddressGroup -confirm:$false
 ```
-
-PS C:\\\>$MyFGTAddressGroup | Remove-FGTFirewallAddressGroup -noconfirm
 
 Remove address object $MyFGTAddressGroup with no confirmation
 
@@ -54,21 +52,6 @@ Required: True
 Position: 2
 Default value: None
 Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
-
-### -noconfirm
-{{ Fill noconfirm Description }}
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -98,6 +81,37 @@ Aliases:
 Required: False
 Position: Named
 Default value: $DefaultFGTConnection
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WhatIf
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: wi
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

@@ -5,73 +5,121 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-FGTRouterPolicy
+# Get-FGTFirewallProxyAddress
 
 ## SYNOPSIS
-Get list of all "route policy"
+Get list of all "proxy-address"
 
 ## SYNTAX
 
 ### default (Default)
 ```
-Get-FGTRouterPolicy [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
- [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+Get-FGTFirewallProxyAddress [-skip] [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
 ```
 
-### filter
+### name
 ```
-Get-FGTRouterPolicy [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
- [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+Get-FGTFirewallProxyAddress [[-name] <String>] [-filter_type <String>] [-skip] [-vdom <String[]>]
+ [-connection <PSObject>] [<CommonParameters>]
+```
+
+### uuid
+```
+Get-FGTFirewallProxyAddress [-uuid <String>] [-filter_type <String>] [-skip] [-vdom <String[]>]
+ [-connection <PSObject>] [<CommonParameters>]
+```
+
+### filter_build
+```
+Get-FGTFirewallProxyAddress [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>]
+ [-skip] [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Get list of all "route policy" (Source, Destination, Protocol, Action...)
+Get list of all "proxy-address" (host-regex, url ...)
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Get-FGTRouterPolicy
+Get-FGTFirewallProxyAddress
 ```
 
-Get list of all route policy object
+Get list of all proxy-address object
 
 ### EXAMPLE 2
 ```
-Get-FGTRouterPolicy -filter_attribute gateway -filter_value 192.0.2.1
+Get-FGTFirewallProxyAddress -name myFGTPoxyAddress
 ```
 
-Get route policy object with gateway equal 192.0.2.1
+Get proxy-address named myFGTProxyAddress
 
 ### EXAMPLE 3
 ```
-Get-FGTRouterPolicy -filter_attribute device -filter_value port -filter_type contains
+Get-FGTFirewallProxyAddress -name FGT -filter_type contains
 ```
 
-Get route policy object with device contains port
+Get proxy-address contains with *FGT*
 
 ### EXAMPLE 4
 ```
-Get-FGTRouterPolicy -skip
+Get-FGTFirewallProxyAddress -uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
 ```
 
-Get list of all route policy object (but only relevant attributes)
+Get proxy-address with uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
 
 ### EXAMPLE 5
 ```
-Get-FGTRouterPolicy -vdom vdomX
+Get-FGTFirewallProxyAddress -skip
 ```
 
-Get list of all route policy object on vdomX
+Get list of all proxy-address object (but only relevant attributes)
+
+### EXAMPLE 6
+```
+Get-FGTFirewallProxyAddress -vdom vdomX
+```
+
+Get list of all proxy-address on VdomX
 
 ## PARAMETERS
+
+### -name
+{{ Fill name Description }}
+
+```yaml
+Type: String
+Parameter Sets: name
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -uuid
+{{ Fill uuid Description }}
+
+```yaml
+Type: String
+Parameter Sets: uuid
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ### -filter_attribute
 {{ Fill filter_attribute Description }}
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: filter_build
 Aliases:
 
 Required: False
@@ -86,7 +134,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: name, uuid, filter_build
 Aliases:
 
 Required: False
@@ -101,7 +149,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: PSObject
-Parameter Sets: (All)
+Parameter Sets: filter_build
 Aliases:
 
 Required: False

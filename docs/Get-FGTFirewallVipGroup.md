@@ -5,66 +5,115 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-FGTRouterPolicy
+# Get-FGTFirewallVipGroup
 
 ## SYNOPSIS
-Get list of all "route policy"
+Get VIP group(s) configured
 
 ## SYNTAX
 
 ### default (Default)
 ```
-Get-FGTRouterPolicy [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
+Get-FGTFirewallVipGroup [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
  [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+```
+
+### name
+```
+Get-FGTFirewallVipGroup [[-name] <String>] [-filter_attribute <String>] [-filter_type <String>]
+ [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+```
+
+### uuid
+```
+Get-FGTFirewallVipGroup [-uuid <String>] [-filter_attribute <String>] [-filter_type <String>]
+ [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
 ```
 
 ### filter
 ```
-Get-FGTRouterPolicy [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
+Get-FGTFirewallVipGroup [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
  [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Get list of all "route policy" (Source, Destination, Protocol, Action...)
+Show VIP group(s) configured (Name, Member...)
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Get-FGTRouterPolicy
+Get-FGTFirewallVipGroup
 ```
 
-Get list of all route policy object
+Display all VIP groups.
 
 ### EXAMPLE 2
 ```
-Get-FGTRouterPolicy -filter_attribute gateway -filter_value 192.0.2.1
+Get-FGTFirewallVipGroup -name myFGTVipGroup
 ```
 
-Get route policy object with gateway equal 192.0.2.1
+Get VIP Group named myFGTVipGroup
 
 ### EXAMPLE 3
 ```
-Get-FGTRouterPolicy -filter_attribute device -filter_value port -filter_type contains
+Get-FGTFirewallVipGroup -name FGT -filter_type contains
 ```
 
-Get route policy object with device contains port
+Get VIP Group(s) containing *FGT*
 
 ### EXAMPLE 4
 ```
-Get-FGTRouterPolicy -skip
+Get-FGTFirewallVipGroup -uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
 ```
 
-Get list of all route policy object (but only relevant attributes)
+Get VIP Group with uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
 
 ### EXAMPLE 5
 ```
-Get-FGTRouterPolicy -vdom vdomX
+Get-FGTFirewallVipGroup -skip
 ```
 
-Get list of all route policy object on vdomX
+Display all VIP groups (but only relevant attributes)
+
+### EXAMPLE 6
+```
+Get-FGTFirewallVipGroup -vdom vdomX
+```
+
+Display all VIP groups on vdomX
 
 ## PARAMETERS
+
+### -name
+{{ Fill name Description }}
+
+```yaml
+Type: String
+Parameter Sets: name
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -uuid
+{{ Fill uuid Description }}
+
+```yaml
+Type: String
+Parameter Sets: uuid
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ### -filter_attribute
 {{ Fill filter_attribute Description }}

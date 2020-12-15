@@ -5,35 +5,43 @@ online version:
 schema: 2.0.0
 ---
 
-# Copy-FGTFirewallAddressGroup
+# Add-FGTFirewallVipGroupMember
 
 ## SYNOPSIS
-Copy/Clone a FortiGate Address Group
+Add a FortiGate VIP Group Member
 
 ## SYNTAX
 
 ```
-Copy-FGTFirewallAddressGroup [-addrgrp] <PSObject> -name <String> [-vdom <String[]>] [-connection <PSObject>]
- [<CommonParameters>]
+Add-FGTFirewallVipGroupMember [-vipgrp] <PSObject> [-member <String[]>] [-vdom <String[]>]
+ [-connection <PSObject>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Copy/Clone a FortiGate Address Group (name, member...)
+Add a FortiGate VIP Group Member
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-$MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
-PS C:\>$MyFGTAddressGroup | Copy-FGTFirewallAddressGroup -name MyFGTAddressGroup_copy
+$MyFGTVipGroup = Get-FGTFirewallVipGroup -name MyFGTVipGroup
+PS C:\>$MyFGTVipGroup | Add-FGTFirewallVipGroupMember -member MyVip1
 ```
 
-Copy / Clone MyFGTAddressGroup and name MyFGTAddress_copy
+Add MyVip1 member to MyFGTVipGroup
+
+### EXAMPLE 2
+```
+$MyFGTVipGroup = Get-FGTFirewallVipGroup -name MyFGTVipGroup
+PS C:\>$MyFGTVipGroup | Add-FGTFirewallVipGroupMember -member MyVip1, MyVip2
+```
+
+Add MyVip1 and MyVip2 member to MyFGTVipGroup
 
 ## PARAMETERS
 
-### -addrgrp
-{{ Fill addrgrp Description }}
+### -vipgrp
+{{ Fill vipgrp Description }}
 
 ```yaml
 Type: PSObject
@@ -47,15 +55,15 @@ Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
-### -name
-{{ Fill name Description }}
+### -member
+{{ Fill member Description }}
 
 ```yaml
-Type: String
+Type: String[]
 Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
