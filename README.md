@@ -219,7 +219,12 @@ or delete it `Remove-FGTFirewallAddress`.
     allow-routing        : disable
 
 # Remove an address
-    Get-FGTFirewallAddress -name "My Network" | Remove-FGTFirewallAddress
+    Get-FGTFirewallAddress -name "MyNetwork" | Remove-FGTFirewallAddress
+
+    Confirm
+    Are you sure you want to perform this action?
+    Performing the operation "Remove Firewall Address" on target "MyNetwork".
+    [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"):Y
 
 #You can also create other address type like fqdn or iprange
 
@@ -408,9 +413,10 @@ or delete it `Remove-FGTFirewallAddressGroup`.
 # Remove an address Group
     Get-FGTFirewallAddressGroup -name "My Address Group" | Remove-FGTFirewallAddressGroup
 
-    Remove address group on Fortigate
-    Proceed with removal of Address Group My Address Group ?
-    [Y] Yes  [N] No  [?] Help (default is "N"): y
+    Confirm
+    Are you sure you want to perform this action?
+    Performing the operation "Remove Firewall Address Group" on target "My Address Group".
+    [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): Y
 ```
 
 ### Virtual IP
@@ -477,9 +483,10 @@ or delete it `Remove-FGTFirewallVip`.
 # Remove a Virtual IP
     Get-FGTFirewallVip -name myVIP1 | Remove-FGTFirewallVip
 
-    Remove VIP on Fortigate
-    Proceed with removal of VIP myVIP1 ?
-    [Y] Yes  [N] No  [?] Help (default is "N"): Y
+    Confirm
+    Are you sure you want to perform this action?
+    Performing the operation "Remove Firewall VIP" on target "myVIP1".
+    [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): Y
 ```
 
 ### Address Group
@@ -655,7 +662,6 @@ or delete it `Remove-FGTFirewallPolicy`.
     schedule                  : always
     schedule-timeout          : disable
     [...]
-
 
 # Remove a Policy
     Get-FGTFirewallPolicy -name MyFGTPolicy2 | Remove-FGTFirewallPolicy
