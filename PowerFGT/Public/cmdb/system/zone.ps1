@@ -123,7 +123,7 @@ function Add-FGTSystemZone {
         [Parameter (Mandatory = $true, Position = 1)]
         [string]$name,
         [Parameter(Mandatory = $false)]
-        [ValidateSet('allow', 'deny')]
+        [ValidateSet('allow', 'deny', IgnoreCase = $false)]
         [string]$intrazone,
         [Parameter(Mandatory = $false)]
         [string[]]$interfaces,
@@ -208,7 +208,7 @@ function Set-FGTSystemZone {
         [Parameter (Mandatory = $false)]
         [string]$name,
         [Parameter(Mandatory = $false)]
-        [ValidateSet('allow', 'deny')]
+        [ValidateSet('allow', 'deny', IgnoreCase = $false)]
         [string]$intrazone,
         [Parameter(Mandatory = $false)]
         [string[]]$interfaces,
