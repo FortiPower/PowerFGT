@@ -469,7 +469,7 @@ function Remove-FGTFirewallVipGroup {
 
         $uri = "api/v2/cmdb/firewall/vipgrp/$($vipgrp.name)"
 
-        if ($PSCmdlet.ShouldProcess($addrgrp.name, 'Remove Firewall VIP Group')) {
+        if ($PSCmdlet.ShouldProcess($vipgrp.name, 'Remove Firewall VIP Group')) {
             $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -connection $connection @invokeParams
         }
     }
