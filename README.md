@@ -855,7 +855,7 @@ For example to get interface of 2 FortiGate
 ....
 
 # Get Interface for second FortiGate
-    Get-FGTSystemInterface -connection $fw1 | Format-Table
+    Get-FGTSystemInterface -connection $fw2 | Format-Table
 
     q_origin_key  name          vdom vrf cli-conn-status fortilink mode   distance priority dhcp-relay-service
     ------------  ----          ---- --- --------------- --------- ----   -------- -------- ------------------
