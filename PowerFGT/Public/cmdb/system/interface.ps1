@@ -245,20 +245,20 @@ function Add-FGTSystemInterface {
 
     <#
         .SYNOPSIS
-        Add a vlan interface
+        Add an interface
 
         .DESCRIPTION
-        Add a vlan interface
+        Add an interface
 
         .EXAMPLE
         Add-FGTSystemInterface -name PowerFGT -type vlan -role lan -mode static -vdom_interface root -interface port10 -vlan_id 10
 
-        This add an interface vlan with only the mandatory parameters.
+        This creates a new interface using only mandatory parameters.
 
         .EXAMPLE
         Add-FGTSystemInterface -name PowerFGT -type vlan -alias Alias_PowerFGT -role lan -vlan_id 10 -interface port10 -admin_access https,ping,ssh -connected $true -device_identification $true -mode static -address_mask 192.0.2.1/255.255.255.0 -vdom_interface root
 
-        Add a vlan interface named PowerFGT with alias Alias_PowerFGT, role lan with vlan id 10 on interface port10. Administrative access by https and ssh, ping authorize on ip 192.0.2.1 and state connected.
+        Create an interface named PowerFGT with alias Alias_PowerFGT, role lan with vlan id 10 on interface port10. Administrative access by https and ssh, ping authorize on ip 192.0.2.1 and state connected.
     #>
 
     Param(
@@ -281,7 +281,7 @@ function Add-FGTSystemInterface {
         [ValidateSet('https', 'ping', 'fgfm', 'capwap', 'ssh', 'snmp', 'ftm', 'radius-acct', 'ftm')]
         [string[]]$admin_access,
         [Parameter (Mandatory = $false)]
-        [string]$connected = $false,
+        [bool]$connected = $false,
         [Parameter (Mandatory = $false)]
         [string]$device_identification = $false,
         [Parameter (Mandatory = $true)]
@@ -368,15 +368,15 @@ function Remove-FGTSystemInterface {
 
     <#
         .SYNOPSIS
-        Remove a vlan interface
+        Remove an interface
 
         .DESCRIPTION
-        Remove a vlan interface
+        Remove an interface
 
         .EXAMPLE
         Remove-FGTSystemInterface -name PowerFGT
 
-        This remove an interface vlan named PowerFGT
+        This removes an interface named PowerFGT
     #>
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
