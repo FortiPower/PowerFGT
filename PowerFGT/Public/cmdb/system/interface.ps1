@@ -219,19 +219,6 @@ function Set-FGTSystemInterface {
             $_interface | add-member -name "device-identification" -membertype NoteProperty -Value $device_identificationoption
         }
 
-        if ( $PsBoundParameters.ContainsKey('dhcprelay') ) {
-            switch ($dhcprelay) {
-                $true {
-                    $dhcprelayoption = "enable"
-                }
-                $false {
-                    $dhcprelayoption = "disable"
-                }
-            }
-
-            $_interface | add-member -name "dhcp-relay-service" -membertype NoteProperty -Value $dhcprelayoption
-        }
-
         if ( $PsBoundParameters.ContainsKey('dhcprelayip') ) {
             if ($null -eq $dhcprelayip) {
                 $_interface | add-member -name "dhcp-relay-ip" -membertype NoteProperty -Value ""
