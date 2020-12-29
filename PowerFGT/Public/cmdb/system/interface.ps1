@@ -135,13 +135,13 @@ function Set-FGTSystemInterface {
         [Parameter (Mandatory = $false)]
         [string]$alias,
         [Parameter (Mandatory = $false)]
-        [ValidateSet('lan', 'wan', 'dmz', 'undefined')]
+        [ValidateSet('lan', 'wan', 'dmz', 'undefined', IgnoreCase = $false)]
         [string]$role,
         [Parameter (Mandatory = $false)]
-        [ValidateSet('https', 'ping', 'fgfm', 'capwap', 'ssh', 'snmp', 'ftm', 'radius-acct', 'ftm')]
+        [ValidateSet('https', 'ping', 'fgfm', 'capwap', 'ssh', 'snmp', 'ftm', 'radius-acct', 'ftm', IgnoreCase = $false)]
         [string[]]$admin_access,
         [Parameter (Mandatory = $false)]
-        [ValidateSet('static', 'dhcp')]
+        [ValidateSet('static', 'dhcp', IgnoreCase = $false)]
         [string]$mode,
         [Parameter (Mandatory = $false)]
         [string]$address_mask,
@@ -185,7 +185,7 @@ function Set-FGTSystemInterface {
         }
 
         if ( $PsBoundParameters.ContainsKey('admin_access') ) {
-            $allowaccess = $admin_access -join ","
+            $allowaccess = $admin_access -join " "
             $_interface | add-member -name "allowaccess" -membertype NoteProperty -Value $allowaccess
         }
 
@@ -266,26 +266,26 @@ function Add-FGTSystemInterface {
         [ValidateLength(1, 15)]
         [string]$name,
         [Parameter (Mandatory = $true)]
-        [ValidateSet('vlan')]
+        [ValidateSet("physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "hard-switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "hdlc", "switch-vlan", "emac-vlan")]
         [string]$type,
         [Parameter (Mandatory = $false)]
         [string]$alias,
         [Parameter (Mandatory = $true)]
-        [ValidateSet('lan', 'wan', 'dmz', 'undefined')]
+        [ValidateSet('lan', 'wan', 'dmz', 'undefined', IgnoreCase = $false)]
         [string]$role,
         [Parameter (Mandatory = $true)]
         [int]$vlan_id,
         [Parameter (Mandatory = $true)]
         [string]$interface,
         [Parameter (Mandatory = $false)]
-        [ValidateSet('https', 'ping', 'fgfm', 'capwap', 'ssh', 'snmp', 'ftm', 'radius-acct', 'ftm')]
+        [ValidateSet('https', 'ping', 'fgfm', 'capwap', 'ssh', 'snmp', 'ftm', 'radius-acct', 'ftm', IgnoreCase = $false)]
         [string[]]$admin_access,
         [Parameter (Mandatory = $false)]
         [bool]$connected = $false,
         [Parameter (Mandatory = $false)]
         [string]$device_identification = $false,
         [Parameter (Mandatory = $true)]
-        [ValidateSet('static', 'dhcp')]
+        [ValidateSet('static', 'dhcp', IgnoreCase = $false)]
         [string]$mode,
         [Parameter (Mandatory = $false)]
         [string]$address_mask,
@@ -326,7 +326,7 @@ function Add-FGTSystemInterface {
         }
 
         if ( $PsBoundParameters.ContainsKey('admin_access') ) {
-            $allowaccess = [string]$admin_access
+            $allowaccess = $admin_access -join " "
             $_interface | add-member -name "allowaccess" -membertype NoteProperty -Value $allowaccess
         }
 
@@ -358,6 +358,7 @@ function Add-FGTSystemInterface {
 
         $response = Invoke-FGTRestMethod -uri $uri -method 'POST' -body $_interface -connection $connection @invokeParams
         $response.results
+        Get-FGTSystemInterface -name $name -connection $connection @invokeParams
     }
 
     End {
@@ -374,12 +375,12 @@ function Remove-FGTSystemInterface {
         Remove an interface
 
         .EXAMPLE
-        Remove-FGTSystemInterface -name PowerFGT
+        Get-FGTSystemInterface -name PowerFGT | Remove-FGTSystemInterface
 
-        This removes an interface named PowerFGT
+        Removes the interface PowerFGT which was retrieved with Get-FGTSystemInterface
     #>
 
-    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [psobject]$interface,
