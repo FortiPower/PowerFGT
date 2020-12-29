@@ -196,27 +196,27 @@ function Set-FGTSystemInterface {
         if ( $PsBoundParameters.ContainsKey('connected') ) {
             switch ($connected) {
                 $true {
-                    $connected = "up"
+                    $connectedoption = "up"
                 }
                 $false {
-                    $connected = "down"
+                    $connectedoption = "down"
                 }
             }
 
-            $_interface | add-member -name "status" -membertype NoteProperty -Value $connected
+            $_interface | add-member -name "status" -membertype NoteProperty -Value $connectedoption
         }
 
         if ( $PsBoundParameters.ContainsKey('device_identification') ) {
             switch ($device_identification) {
                 $true {
-                    $device_identification = "enable"
+                    $device_identificationoption = "enable"
                 }
                 $false {
-                    $device_identification = "disable"
+                    $device_identificationoption = "disable"
                 }
             }
 
-            $_interface | add-member -name "device-identification" -membertype NoteProperty -Value $device_identification
+            $_interface | add-member -name "device-identification" -membertype NoteProperty -Value $device_identificationoption
         }
 
         if ( $PsBoundParameters.ContainsKey('dhcprelay') ) {
