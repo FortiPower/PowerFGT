@@ -103,15 +103,28 @@ function Set-FGTSystemInterface {
 
     <#
         .SYNOPSIS
-        Set an interface
+        Modify an interface
 
         .DESCRIPTION
-        Set an interface
+        Modify the properties of an existing interface
+
+        .PARAMETER dhcprelayip
+        Enables DHCP relay on the interface with the supplied ip address(es). Specify $null to disable DHCP relay.
 
         .EXAMPLE
         Set-FGTSystemInterface -name PowerFGT -alias ALIAS_PowerFGT -role lan -mode static -address_mask 192.0.2.1/255.255.255.0  -admin_access ping,https -device_identification $false -connected $false
 
-        This set the interface vlan named PowerFGT with an alias, the LAN role, in static mode with 192.0.2.1 as IP, with ping and https administrative access, and with device identification disable and not connected
+        This modifies the interface named PowerFGT with an alias, the LAN role, in static mode with 192.0.2.1 as IP, with ping and https administrative access, and with device identification disable and not connected
+
+        .EXAMPLE
+        Set-FGTSystemInterface -name PowerFGT -dhcprelayip "10.0.0.1","10.0.0.2"
+
+        This enables DHCP relay and sets 2 ip addresses to relay to.
+
+        .EXAMPLE
+        Set-FGTSystemInterface -name PowerFGT -dhcprelayip $null
+
+        This disables DCHP relay and clears the relay ip addresses
     #>
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
@@ -133,30 +146,17 @@ function Set-FGTSystemInterface {
         [Parameter (Mandatory = $false)]
         [string]$address_mask,
         [Parameter (Mandatory = $false)]
-        [string]$connected,
+        [bool]$connected,
         [Parameter (Mandatory = $false)]
         [string]$device_identification,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
-        [bool]$dhcprelay,
+        [string[]]$dhcprelayip,
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
     )
 
-    DynamicParam {
-        If ($dhcprelay) {
-            $attributes = New-Object -Type System.Management.Automation.ParameterAttribute
-            $attributes.Mandatory = $true
-            $attributeCollection = New-Object -Type System.Collections.ObjectModel.Collection[System.Attribute]
-            $attributeCollection.Add($attributes)
-
-            $dynParam1 = New-Object -Type System.Management.Automation.RuntimeDefinedParameter("dhcprelayip", [string[]], $attributeCollection)
-            $paramDictionary = New-Object -Type System.Management.Automation.RuntimeDefinedParameterDictionary
-            $paramDictionary.Add("dhcprelayip", $dynParam1)
-            return $paramDictionary
-        }
-    }
 
     Begin {
     }
@@ -233,8 +233,15 @@ function Set-FGTSystemInterface {
         }
 
         if ( $PsBoundParameters.ContainsKey('dhcprelayip') ) {
-            $dhcprelayipoption = $dhcprelayip -join ","
-            $_interface | add-member -name "dhcp-relay-ip" -membertype NoteProperty -Value $dhcprelayipoption
+            if ($null -eq $dhcprelayip) {
+                $_interface | add-member -name "dhcp-relay-ip" -membertype NoteProperty -Value ""
+                $_interface | add-member -name "dhcp-relay-service" -membertype NoteProperty -Value "disable"
+            }
+            else {
+                $dhcprelayipoption = $dhcprelayip -join " "
+                $_interface | add-member -name "dhcp-relay-ip" -membertype NoteProperty -Value $dhcprelayipoption
+                $_interface | add-member -name "dhcp-relay-service" -membertype NoteProperty -Value "enable"
+            }
         }
 
         if ($PSCmdlet.ShouldProcess($name, 'Set interface vlan')) {
