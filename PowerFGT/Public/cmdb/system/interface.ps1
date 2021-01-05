@@ -108,6 +108,9 @@ function Set-FGTSystemInterface {
         .DESCRIPTION
         Modify the properties of an existing interface
 
+        .PARAMETER netmask
+        Specifies the subnet mask. Can be specified in the form '255.255.255.0' or '24'
+
         .PARAMETER dhcprelayip
         Enables DHCP relay on the interface with the supplied ip address(es). Specify $null to disable DHCP relay.
 
@@ -127,7 +130,7 @@ function Set-FGTSystemInterface {
         This disables DCHP relay and clears the relay ip addresses
     #>
 
-    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium', DefaultParameterSetName = "NoIP")]
     Param(
         [Parameter (Mandatory = $true, Position = 1)]
         [ValidateLength(1, 15)]
@@ -143,8 +146,11 @@ function Set-FGTSystemInterface {
         [Parameter (Mandatory = $false)]
         [ValidateSet('static', 'dhcp')]
         [string]$mode,
-        [Parameter (Mandatory = $false)]
-        [string]$address_mask,
+        [Parameter (ParameterSetName = "IP", Mandatory = $true)]
+        [ValidateScript( { $_ -match [IPAddress]$_ })]
+        [string]$ip,
+        [Parameter (ParameterSetName = "IP", Mandatory = $true)]
+        [string]$netmask,
         [Parameter (Mandatory = $false)]
         [ValidateSet('up', 'down')]
         [string]$status,
@@ -193,8 +199,8 @@ function Set-FGTSystemInterface {
             $_interface | add-member -name "allowaccess" -membertype NoteProperty -Value $allowaccess
         }
 
-        if ( $PsBoundParameters.ContainsKey('address_mask') ) {
-            $_interface | add-member -name "ip" -membertype NoteProperty -Value $address_mask
+        if ( $PsBoundParameters.ContainsKey('ip') -and $PsBoundParameters.ContainsKey('netmask') ) {
+            $_interface | add-member -name "ip" -membertype NoteProperty -Value "$ip/$netmask"
         }
 
         if ( $PsBoundParameters.ContainsKey('device_identification') ) {
@@ -241,17 +247,20 @@ function Add-FGTSystemInterface {
         .DESCRIPTION
         Add an interface
 
+        .PARAMETER netmask
+        Specifies the subnet mask. Can be specified in the form '255.255.255.0' or '24'
+
         .EXAMPLE
         Add-FGTSystemInterface -name PowerFGT -type vlan -role lan -mode static -vdom_interface root -interface port10 -vlan_id 10
 
         This creates a new interface using only mandatory parameters.
 
         .EXAMPLE
-        Add-FGTSystemInterface -name PowerFGT -type vlan -alias Alias_PowerFGT -role lan -vlan_id 10 -interface port10 -admin_access https,ping,ssh -status up $true -device_identification $true -mode static -address_mask 192.0.2.1/255.255.255.0 -vdom_interface root
+        Add-FGTSystemInterface -name PowerFGT -type vlan -alias Alias_PowerFGT -role lan -vlan_id 10 -interface port10 -admin_access https,ping,ssh -status up $true -device_identification $true -mode static -ip 192.0.2.1 -netmask 255.255.255.0 -vdom_interface root
 
         Create an interface named PowerFGT with alias Alias_PowerFGT, role lan with vlan id 10 on interface port10. Administrative access by https and ssh, ping authorize on ip 192.0.2.1 and state connected.
     #>
-
+    [CmdletBinding(DefaultParameterSetName = 'NoIP')]
     Param(
         [Parameter (Mandatory = $true, Position = 1)]
         [ValidateLength(1, 15)]
@@ -279,8 +288,11 @@ function Add-FGTSystemInterface {
         [Parameter (Mandatory = $true)]
         [ValidateSet('static', 'dhcp')]
         [string]$mode,
-        [Parameter (Mandatory = $false)]
-        [string]$address_mask,
+        [Parameter (ParameterSetName = 'IP', Mandatory = $true)]
+        [ValidateScript( { $_ -match [IPAddress]$_ })]
+        [string]$ip,
+        [Parameter (ParameterSetName = 'IP', Mandatory = $true)]
+        [string]$netmask,
         [Parameter (Mandatory = $true)]
         [string]$vdom_interface,
         [Parameter(Mandatory = $false)]
@@ -322,8 +334,8 @@ function Add-FGTSystemInterface {
             $_interface | add-member -name "allowaccess" -membertype NoteProperty -Value $allowaccess
         }
 
-        if ( $PsBoundParameters.ContainsKey('address_mask') ) {
-            $_interface | add-member -name "ip" -membertype NoteProperty -Value $address_mask
+        if ( $PsBoundParameters.ContainsKey('ip') -and $PsBoundParameters.ContainsKey('netmask')) {
+            $_interface | add-member -name "ip" -membertype NoteProperty -Value "$ip/$address_mask"
         }
 
         if ( $PsBoundParameters.ContainsKey('status') ) {
