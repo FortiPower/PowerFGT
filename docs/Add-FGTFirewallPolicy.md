@@ -13,10 +13,10 @@ Add a FortiGate Policy
 ## SYNTAX
 
 ```
-Add-FGTFirewallPolicy [-name] <String> [-srcintf] <String[]> [-dstintf] <String[]> [-srcaddr] <String[]>
- [-dstaddr] <String[]> [[-action] <String>] [-status] [[-schedule] <String>] [[-service] <String[]>] [-nat]
- [[-comments] <String>] [[-logtraffic] <String>] [[-ippool] <String[]>] [-skip] [[-vdom] <String[]>]
- [[-connection] <PSObject>] [<CommonParameters>]
+Add-FGTFirewallPolicy [[-name] <String>] [[-policyid] <Int32>] [-srcintf] <String[]> [-dstintf] <String[]>
+ [-srcaddr] <String[]> [-dstaddr] <String[]> [[-action] <String>] [-status] [[-schedule] <String>]
+ [[-service] <String[]>] [-nat] [[-comments] <String>] [[-logtraffic] <String>] [[-ippool] <String[]>] [-skip]
+ [[-vdom] <String[]>] [[-connection] <PSObject>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -29,7 +29,7 @@ Add a FortiGate Policy/Rules (source port/ip, destination port, ip, action, stat
 Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all
 ```
 
-Add a MyFGTPolicy with source port port1 and destination port1 and source and destination all
+Add a MyFGTPolicy with source port port1 and destination port2 and source and destination all
 
 ### EXAMPLE 2
 ```
@@ -87,6 +87,13 @@ Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr a
 
 Add a MyFGTPolicy with IP Pool MyIPPool (with nat)
 
+### EXAMPLE 10
+```
+Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -policyid 23
+```
+
+Add a MyFGTPolicy with Policy ID equal 23
+
 ## PARAMETERS
 
 ### -name
@@ -97,9 +104,24 @@ Type: String
 Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
 Position: 1
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -policyid
+{{ Fill policyid Description }}
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -113,7 +135,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: 2
+Position: 3
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -128,7 +150,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: 3
+Position: 4
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -143,7 +165,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: 4
+Position: 5
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -158,7 +180,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: 5
+Position: 6
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -173,7 +195,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 6
+Position: 7
 Default value: Accept
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -189,7 +211,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: True
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -203,7 +225,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 7
+Position: 8
 Default value: Always
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -218,7 +240,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 8
+Position: 9
 Default value: ALL
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -248,7 +270,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 9
+Position: 10
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -263,7 +285,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 10
+Position: 11
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -278,7 +300,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 11
+Position: 12
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -309,7 +331,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 12
+Position: 13
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -324,7 +346,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 13
+Position: 14
 Default value: $DefaultFGTConnection
 Accept pipeline input: False
 Accept wildcard characters: False

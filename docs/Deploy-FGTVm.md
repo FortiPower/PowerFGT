@@ -37,7 +37,7 @@ You can even preconfigure your VM with the network configuration, the hostname, 
 
 ### EXAMPLE 1
 ```
-Deploy-FGTVm -ovf_path "C:\FortiGate-VM64.vapp.ovf" -vm_Host "fortipowerfgt-01" -datastore "data_fortipowerfgt-01" -cluster "cluster_fortipowerfgt-01" -name_vm "Forti-VM" -Inventory "Firewall" -hostname "powerfgt" -dns_primary 192.0.2.1 -dns_secondary 192.0.2.2 -int0_network_mode Static -int0_ip 192.0.2.10 -int0_netmask 255.255.255.0 -int0_gateway 192.0.2.254 -int0_port_group "powerfgt_vlan_mgmt" -net_adapter "vmxnet3"
+Deploy-FGTVm -ovf_path "C:\FortiGate-VM64.vapp.ovf" -vm_Host "fortipowerfgt-01" -datastore "data_fortipowerfgt-01" -cluster "cluster_fortipowerfgt-01" -name_vm "Forti-VM" -inventory "Firewall" -hostname "powerfgt" -dns_primary 192.0.2.1 -dns_secondary 192.0.2.2 -int0_network_mode Static -int0_ip 192.0.2.10 -int0_netmask 255.255.255.0 -int0_gateway 192.0.2.254 -int0_port_group "powerfgt_vlan_mgmt" -net_adapter "vmxnet3"
 ```
 
 This install your .ovf on your vsphere with the host, the datastore, the cluster, the folder to place it and the name of your vm.
@@ -46,9 +46,7 @@ It also configure your vm with a hostname, an network configuration, the network
 ### EXAMPLE 2
 ```
 $fortiBuildParams = @{
-```
-
-ovf_path                    = "C:\FortiGate-VM64.vapp.ovf"
+    ovf_path                    = "C:\FortiGate-VM64.vapp.ovf"
     vm_host                     = "fortipowerfgt-01"
     datastore                   = "data_fortipowerfgt-01"
     Cluster                     = "cluster_fortipowerfgt-01"
@@ -100,6 +98,7 @@ ovf_path                    = "C:\FortiGate-VM64.vapp.ovf"
     int9_netmask                = "255.255.255.0"
     int9_port_group             = "powerfgt_vlan_10"
 } # end $fortiBuildParams
+```
 
 PS\>Deploy-FGTVm @fortiBuildParams
 

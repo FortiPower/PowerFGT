@@ -14,7 +14,7 @@ Remove a FortiGate Policy Member
 
 ```
 Remove-FGTFirewallPolicyMember [-policy] <PSObject> [-srcaddr <String[]>] [-dstaddr <String[]>]
- [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+ [-vdom <String[]>] [-connection <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -25,18 +25,16 @@ Remove a FortiGate Policy Member (source or destination address)
 ### EXAMPLE 1
 ```
 $MyFGTPolicy = Get-FGTFirewallAddressGroup -name MyFGTPolicy
+PS C:\>$MyFGTPolicy | Remove-FGTFirewallAddressGroupMember -member MyAddress1
 ```
-
-PS C:\\\>$MyFGTPolicy | Remove-FGTFirewallAddressGroupMember -member MyAddress1
 
 Remove MyAddress1 member to MyFGTPolicy
 
 ### EXAMPLE 2
 ```
 $MyFGTPolicy = Get-FGTFirewallAddressGroup -name MyFGTPolicy
+PS C:\>$MyFGTPolicy | Remove-FGTFirewallAddressGroupMember -member MyAddress1, MyAddress2
 ```
-
-PS C:\\\>$MyFGTPolicy | Remove-FGTFirewallAddressGroupMember -member MyAddress1, MyAddress2
 
 Remove MyAddress1 and MyAddress2 member to MyFGTPolicy
 
@@ -113,6 +111,37 @@ Aliases:
 Required: False
 Position: Named
 Default value: $DefaultFGTConnection
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WhatIf
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: wi
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

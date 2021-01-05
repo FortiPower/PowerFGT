@@ -4,38 +4,40 @@
 
 This is a Powershell module for configure a FortiGate (Fortinet) Firewall.
 
-With this module (version 0.4.1) you can manage:
+With this module (version 0.5.0) you can manage:
 
-- [Address](#Address) (Add/Get/Copy/Set/Remove object type ipmask/subnet, FQDN)
-- [AddressGroup](#Address-Group) (Add/Get/Copy/Set/Remove and Add/Remove Member)
+- [Address](#address) (Add/Get/Copy/Set/Remove object type ipmask/subnet, FQDN, iprange)
+- [AddressGroup](#address-group) (Add/Get/Copy/Set/Remove and Add/Remove Member)
 - DNS (Get)
 - HA (Get)
 - Interface (Get)
 - IP Pool (Get)
 - Local User (Get)
-- [Policy](#Policy) (Add/Get/Remove)
+- [Policy](#policy) (Add/Get/Remove)
+- [Proxy Address/Address Group/ Policy](#proxy) (Add/Get/Set/Remove)
 - RoutePolicy (Get)
 - Service (Get)
 - Service Group (Get)
 - Static Route (Get)
 - System Global (Get)
-- [VDOM](#VDOM) (Get)
-- [Virtual IP](#Virtual-IP) (Add/Get/Remove object type static-nat)
-- Virtual IP Group (Add/Get/Copy/Set/Remove and Add/Remove Member)
+- System Settings (Get)
+- [VDOM](#vdom) (Get)
+- [Virtual IP](#virtual-ip) (Add/Get/Remove object type static-nat)
+- [Virtual IP Group](#virtual-ip-group) (Add/Get/Copy/Set/Remove and Add/Remove Member)
 - Virtual WAN Link/SD-WAN (Get)
 - VPN IPsec Phase 1/Phase 2 Interface (Get)
-- Zone (Get)
+- [Zone](#zone) (Add/Get/Set/Remove and Add/Remove Member)
 
 There is some extra feature
-- [Invoke API](#Invoke-API)
-- [Filtering](#Filtering)
-- [Multi Connection](#MultiConnection)
+- [Invoke API](#invoke-api)
+- [Filtering](#filtering)
+- [Multi Connection](#multiconnection)
 
 More functionality will be added later.
 
 Connection can use HTTPS (default) or HTTP  
 Tested with FortiGate (using 5.6.x and 6.0.x firmware but it will be also work with 5.4.x)  
-Add (Experimental) support of [VDOM](#VDOM) is available using -vdom parameter for each cmdlet  
+Add (Experimental) support of [VDOM](#vdom) is available using -vdom parameter for each cmdlet  
 Don't use support to connect using API Token from 5.6.x (and later)
 
 # Usage
@@ -80,7 +82,7 @@ The first thing to do is to connect to a FortiGate Firewall with the command `Co
 
 #we get a prompt for credential
 ```
-if you get a warning about `Unable to connect` Look [Issue](#Issue)
+if you get a warning about `Unable to connect` Look [Issue](#issue)
 
 
 ### Address
@@ -104,7 +106,7 @@ or delete it `Remove-FGTFirewallAddress`.
     swscan.apple.com             swscan.apple.com             a918d1dc-368c-51e9-08a7-c6004bf38fb9 0.0.0.0 0.0.0.0
     update.microsoft.com         update.microsoft.com         a918d650-368c-51e9-0cca-5f006a059f0b 0.0.0.0 0.0.0.0
 
-# Create an address
+# Create an address (type ipmask)
     Add-FGTFirewallAddress -Name 'My PowerFGT Network' -ip 192.0.2.1 -mask 255.255.255.0
 
     q_origin_key         : My PowerFGT Network
@@ -217,7 +219,72 @@ or delete it `Remove-FGTFirewallAddress`.
     allow-routing        : disable
 
 # Remove an address
-    Get-FGTFirewallAddress -name "My Network" | Remove-FGTFirewallAddress
+    Get-FGTFirewallAddress -name "MyNetwork" | Remove-FGTFirewallAddress
+
+    Confirm
+    Are you sure you want to perform this action?
+    Performing the operation "Remove Firewall Address" on target "MyNetwork".
+    [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"):Y
+
+#You can also create other address type like fqdn or iprange
+
+# Create an address (type fqdn)
+Add-FGTFirewallAddress -Name FortiPower -fqdn fortipower.github.io
+
+    name                 : FortiPower
+    q_origin_key         : FortiPower
+    uuid                 : 98af3292-3d6e-51eb-f488-f04057fbb871
+    type                 : fqdn
+    sub-type             : sdn
+    clearpass-spt        : unknown
+    start-mac            : 00:00:00:00:00:00
+    end-mac              : 00:00:00:00:00:00
+    fqdn                 : fortipower.github.io
+    country              : 
+    cache-ttl            : 0
+    sdn                  : 
+    fsso-group           : {}
+    interface            : 
+    comment              : 
+    visibility           : enable
+    associated-interface : 
+    color                : 0
+    filter               : 
+    sdn-addr-type        : private
+    obj-id               : 
+    list                 : {}
+    tagging              : {}
+    allow-routing        : disable
+
+# Create an address (type iprange)
+Add-FGTFirewallAddress -Name MyRange -startip 192.0.2.1 -endip 192.0.2.100
+
+    name                 : MyRange
+    q_origin_key         : MyRange
+    uuid                 : a683a420-3d6e-51eb-5c90-f471f85943e8
+    type                 : iprange
+    sub-type             : sdn
+    clearpass-spt        : unknown
+    start-mac            : 00:00:00:00:00:00
+    end-mac              : 00:00:00:00:00:00
+    start-ip             : 192.0.2.1
+    end-ip               : 192.0.2.100
+    country              : 
+    cache-ttl            : 0
+    sdn                  : 
+    fsso-group           : {}
+    interface            : 
+    comment              : 
+    visibility           : enable
+    associated-interface : 
+    color                : 0
+    filter               : 
+    sdn-addr-type        : private
+    obj-id               : 
+    list                 : {}
+    tagging              : {}
+    allow-routing        : disable
+
 ```
 
 ### Filtering
@@ -346,14 +413,15 @@ or delete it `Remove-FGTFirewallAddressGroup`.
 # Remove an address Group
     Get-FGTFirewallAddressGroup -name "My Address Group" | Remove-FGTFirewallAddressGroup
 
-    Remove address group on Fortigate
-    Proceed with removal of Address Group My Address Group ?
-    [Y] Yes  [N] No  [?] Help (default is "N"): y
+    Confirm
+    Are you sure you want to perform this action?
+    Performing the operation "Remove Firewall Address Group" on target "My Address Group".
+    [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): Y
 ```
 
 ### Virtual IP
 
-You can create a new Address Group `Add-FGTFirewallVip`, retrieve its information `Get-FGTFirewallVip`,
+You can create a new Virtual IP `Add-FGTFirewallVip`, retrieve its information `Get-FGTFirewallVip`,
 or delete it `Remove-FGTFirewallVip`.
 
 ```powershell
@@ -412,17 +480,88 @@ or delete it `Remove-FGTFirewallVip`.
     mappedport                       : 80
     [...]
 
-# Remove an address Group
+# Remove a Virtual IP
     Get-FGTFirewallVip -name myVIP1 | Remove-FGTFirewallVip
 
-    Remove VIP on Fortigate
-    Proceed with removal of VIP myVIP1 ?
-    [Y] Yes  [N] No  [?] Help (default is "N"): Y
+    Confirm
+    Are you sure you want to perform this action?
+    Performing the operation "Remove Firewall VIP" on target "myVIP1".
+    [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): Y
 ```
+
+### Address Group
+
+You can create a new VIP Group `Add-FGTFirewallVIPGroup`, retrieve its information `Get-FGTFirewallVIPGroup`,
+modify its properties `Set-FGTFirewallVIPGroup`, copy/clone its properties `Copy-FGTFirewallVIPGroup`,
+Add member to Address Group `Add-FGTFirewallVIPGroupMember` and remove member `Remove-FGTFirewallVIPGroupMember`,
+or delete it `Remove-FGTFirewallVIPGroup`.  
+
+```powershell
+
+# Get information about ALL VIP Group (using Format Table)
+    Get-FGTFirewallVipGroup | Format-Table
+
+    name       q_origin_key uuid                                 interface color comments member
+    ----       ------------ ----                                 --------- ----- -------- ------
+    MyVIPGroup MyVIPGroup   cb875532-3d82-51eb-f120-075c29c10657 any           0          {@{name=myVIP1; q_origin_key=myVIP1}, @{name=myVIP2; q_origin_key=myVIP2}}
+
+# Add a VIP Group with myVIP1 and myVIP2
+    Add-FGTFirewallVIPGroup -name "MyVIPGroup" -member myVIP1, myVIP2
+
+    name         : MyVIPGroup
+    q_origin_key : MyVIPGroup
+    uuid         : cb875532-3d82-51eb-f120-075c29c10657
+    interface    : any
+    color        : 0
+    comments     :
+    member       : {@{name=myVIP1; q_origin_key=myVIP1}, @{name=myVIP2; q_origin_key=myVIP2}}
+
+# Add myVIP3 member to existing Virtual IP GROUP
+    Get-FGTFirewallVIPGroup -name "MyVIPGroup" | Add-FGTFirewallVIPGroupMember -member myVIP3
+
+    name         : MyVIPGroup
+    q_origin_key : MyVIPGroup
+    uuid         : cb875532-3d82-51eb-f120-075c29c10657
+    interface    : any
+    color        : 0
+    comments     :
+    member       : {@{name=myVIP1; q_origin_key=myVIP1}, @{name=myVIP2; q_origin_key=myVIP2}, @{name=myVIP3; q_origin_key=myVIP3}}
+
+# Remove myVIP2 member to existing Virtual IP Group
+    Get-FGTFirewallVIPGroup -name "MyVIPGroup" | Remove-FGTFirewallVIPGroupMember -member myVIP2
+
+    name         : MyVIPGroup
+    q_origin_key : MyVIPGroup
+    uuid         : cb875532-3d82-51eb-f120-075c29c10657
+    interface    : any
+    color        : 0
+    comments     :
+    member       : {@{name=myVIP1; q_origin_key=myVIP1}, @{name=myVIP3; q_origin_key=myVIP3}}
+
+# Modify a Virtual IP Group
+    Get-FGTFirewallVIPGroup -name "MyVIPGroup" | Set-FGTFirewallVIPGroup -comment "My Virtual IP with only myVIP2" -member myVIP2
+
+    name         : MyVIPGroup
+    q_origin_key : MyVIPGroup
+    uuid         : cb875532-3d82-51eb-f120-075c29c10657
+    interface    : any
+    color        : 0
+    comments     : My Virtual IP with only myVIP2
+    member       : {@{name=myVIP2; q_origin_key=myVIP2}}
+
+# Remove a Virtual IP Group
+    Get-FGTFirewallVIPGroup -name "MyVIPGroup" | Remove-FGTFirewallVIPGroup
+
+    Confirm
+    Are you sure you want to perform this action?
+    Performing the operation "Remove Firewall VIP Group" on target "MyVIPGroup".
+    [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): y
+```
+
 
 ### Policy
 
-You can create a new Address Group `Add-FGTFirewallPolicy`, retrieve its information `Get-FGTFirewallPolicy`
+You can create a new Policy `Add-FGTFirewallPolicy`, retrieve its information `Get-FGTFirewallPolicy`
 Add member to source or destinationn address `Add-FGTFirewallPolicyMember` and remove member `Add-FGTFirewallPolicyMember`,
 or delete it `Remove-FGTFirewallPolicy`.
 
@@ -431,8 +570,8 @@ or delete it `Remove-FGTFirewallPolicy`.
     Get-FGTFirewallPolicy | Format-Table
     q_origin_key policyid name         uuid                                 srcintf                             dstintf                             srcaddr
     ------------ -------- ----         ----                                 -------                             -------                             -------
-            1        1 MyFGTPolicy  31a7ad9e-266e-51ea-1691-4906abad2e8b {@{q_origin_key=port1; name=port1}} {@{q_origin_key=port2; name=port2}} {@{q_origin_key=all; name=all}
-            2        2 MyFGTPolicy2 3c8e5212-266e-51ea-2300-dc5fcb1a8e2a {@{q_origin_key=port1; name=port1}} {@{q_origin_key=port3; name=port3}} {@{q_origin_key=all; name=all}}
+            1           1 MyFGTPolicy  31a7ad9e-266e-51ea-1691-4906abad2e8b {@{q_origin_key=port1; name=port1}} {@{q_origin_key=port2; name=port2}} {@{q_origin_key=all; name=all}
+            2           2 MyFGTPolicy2 3c8e5212-266e-51ea-2300-dc5fcb1a8e2a {@{q_origin_key=port1; name=port1}} {@{q_origin_key=port3; name=port3}} {@{q_origin_key=all; name=all}}
 
 # Add Policy (MyFGTPolicy) allow ALL traffic between port1 to port2
     Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all
@@ -524,12 +663,79 @@ or delete it `Remove-FGTFirewallPolicy`.
     schedule-timeout          : disable
     [...]
 
-
 # Remove a Policy
     Get-FGTFirewallPolicy -name MyFGTPolicy2 | Remove-FGTFirewallPolicy
     Remove Policy on Fortigate
     Proceed with removal of Policy MyFGTPolicy2 ?
     [Y] Yes  [N] No  [?] Help (default is "N"): y
+```
+
+### Zone
+
+You can create a new Zone `Add-FGTSystemZone`, retrieve its information `Get-FGTFSystemZone`,
+modify its properties `Set-SystemZone`,
+Add member to Zone `Add-SystemZoneMember` and remove member `Remove-SystemZoneMember`,
+or delete it `Remove-SystemZone`.  
+
+```powershell
+
+# Get information about ALL Zone
+    Get-FGTSystemZone
+
+    name         : myPowerFGTZone
+    q_origin_key : myPowerFGTZone
+    tagging      : {}
+    description  :
+    intrazone    : deny
+    interface    : {@{interface-name=port5; q_origin_key=port5}, @{interface-name=port6; q_origin_key=port6}}
+
+# Add new Zone myPowerFGTZone2 with port7 and intrazone allowed
+    Add-FGTSystemZone -name myPowerFGTZone2 -intrazone allow -interfaces port7
+
+    name         : myPowerFGTZone2
+    q_origin_key : myPowerFGTZone2
+    tagging      : {}
+    description  :
+    intrazone    : allow
+    interface    : {@{interface-name=port7; q_origin_key=port7}}
+
+# Add new member (port8) to existing zone myPowerFGTZone2
+    Get-FGTSystemZone -name myPowerFGTZone2 | Add-FGTSystemZoneMember -interfaces port8
+
+    name         : myPowerFGTZone2
+    q_origin_key : myPowerFGTZone2
+    tagging      : {}
+    description  :
+    intrazone    : allow
+    interface    : {@{interface-name=port7; q_origin_key=port7}, @{interface-name=port8; q_origin_key=port8}}
+
+# Remove port7 member to existing zone myPowerFGTZone2
+    Get-FGTSystemZone -name myPowerFGTZone2 | Remove-FGTSystemZoneMember -interfaces port7
+
+    name         : myPowerFGTZone2
+    q_origin_key : myPowerFGTZone2
+    tagging      : {}
+    description  :
+    intrazone    : allow
+    interface    : {@{interface-name=port8; q_origin_key=port8}}
+
+# Modify a Zone (intrazone, interface...)
+    Get-FGTSystemZone -name myPowerFGTZone2 | Set-FGTSystemZone -intrazone deny
+
+    name         : myPowerFGTZone2
+    q_origin_key : myPowerFGTZone2
+    tagging      : {}
+    description  :
+    intrazone    : deny
+    interface    : {@{interface-name=port8; q_origin_key=port8}}
+
+# Remove a zone
+    Get-FGTSystemZone -name myPowerFGTZone2 | Remove-FGTSystemZone
+
+    Confirm
+    Are you sure you want to perform this action?
+    Performing the operation "Remove zone" on target "myPowerFGTZone2".
+    [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): Y
 ```
 
 ### Invoke API
@@ -613,6 +819,16 @@ You can also change default vdom using
 [...]
 ```
 
+### Proxy
+
+There is also cmdlet for Proxy
+- Proxy Address (Add/Copy/Get/Remove-FGTFirewallProxyAddress)
+- Proxy Address Group (Add/Copy/Get/Set/Remove-FGTFirewallProxyAddressGroup)
+- Proxy Policy (Add/Get/Remove-FGTFirewallProxyPolicy)
+
+For Proxy Policy, it is possible to specific explict proxy or transparent
+For FortiGate 6.0.x, you need to enable proxy mode before (and enable feature)
+
 ### MultiConnection
 
 From release 0.3.0, it is possible to connect on same times to multi FortiGate
@@ -639,7 +855,7 @@ For example to get interface of 2 FortiGate
 ....
 
 # Get Interface for second FortiGate
-    Get-FGTSystemInterface -connection $fw1 | Format-Table
+    Get-FGTSystemInterface -connection $fw2 | Format-Table
 
     q_origin_key  name          vdom vrf cli-conn-status fortilink mode   distance priority dhcp-relay-service
     ------------  ----          ---- --- --------------- --------- ----   -------- -------- ------------------
@@ -699,6 +915,18 @@ Try to connect using `Connect-FGT -SkipCertificateCheck`
 
 You can use also `Connect-FGT -httpOnly` for connect using HTTP (NOT RECOMMENDED !)
 
+# How to contribute
+
+Contribution and feature requests are more than welcome. Please use the following methods:
+
+  * For bugs and [issues](https://github.com/FortiPower/PowerFGT/issues), please use the [issues](https://github.com/FortiPower/PowerFGT/issues) register with details of the problem.
+  * For Feature Requests, please use the [issues](https://github.com/FortiPower/PowerFGT/issues) register with details of what's required.
+  * For code contribution (bug fixes, or feature request), please request fork PowerFGT, create a feature/fix branch, add tests if needed then submit a pull request.
+
+# Contact
+
+Currently, [@alagoutte](#author) started this project and will keep maintaining it. Reach out to me via [Twitter](#author), Email (see top of file) or the [issues](https://github.com/FortiPower/PowerFGT/issues) Page here on GitHub. If you want to contribute, also get in touch with me.
+
 # List of available command
 ```powershell
 Add-FGTFirewallAddress
@@ -706,17 +934,29 @@ Add-FGTFirewallAddressGroup
 Add-FGTFirewallAddressGroupMember
 Add-FGTFirewallPolicy
 Add-FGTFirewallPolicyMember
+Add-FGTFirewallProxyAddress
+Add-FGTFirewallProxyAddressGroup
+Add-FGTFirewallProxyAddressGroupMember
+Add-FGTFirewallProxyPolicy
 Add-FGTFirewallVip
 Add-FGTFirewallVipGroup
 Add-FGTFirewallVipGroupMember
+Add-FGTSystemZone
+Add-FGTSystemZoneMember
 Confirm-FGTAddress
 Confirm-FGTAddressGroup
 Confirm-FGTFirewallPolicy
+Confirm-FGTFirewallProxyPolicy
+Confirm-FGTProxyAddress
+Confirm-FGTProxyAddressGroup
 Confirm-FGTVip
 Confirm-FGTVipGroup
+Confirm-FGTZone
 Connect-FGT
 Copy-FGTFirewallAddress
 Copy-FGTFirewallAddressGroup
+Copy-FGTFirewallProxyAddress
+Copy-FGTFirewallProxyAddressGroup
 Copy-FGTFirewallVipGroup
 Deploy-FGTVm
 Disconnect-FGT
@@ -724,6 +964,9 @@ Get-FGTFirewallAddress
 Get-FGTFirewallAddressGroup
 Get-FGTFirewallIPPool
 Get-FGTFirewallPolicy
+Get-FGTFirewallProxyAddress
+Get-FGTFirewallProxyAddressGroup
+Get-FGTFirewallProxyPolicy
 Get-FGTFirewallServiceCustom
 Get-FGTFirewallServiceGroup
 Get-FGTFirewallVip
@@ -734,6 +977,8 @@ Get-FGTSystemDns
 Get-FGTSystemGlobal
 Get-FGTSystemHA
 Get-FGTSystemInterface
+Get-FGTSystemSDWAN
+Get-FGTSystemSettings
 Get-FGTSystemVdom
 Get-FGTSystemVirtualWANLink
 Get-FGTSystemZone
@@ -746,15 +991,22 @@ Remove-FGTFirewallAddressGroup
 Remove-FGTFirewallAddressGroupMember
 Remove-FGTFirewallPolicy
 Remove-FGTFirewallPolicyMember
+Remove-FGTFirewallProxyAddress
+Remove-FGTFirewallProxyAddressGroup
+Remove-FGTFirewallProxyAddressGroupMember
+Remove-FGTFirewallProxyPolicy
 Remove-FGTFirewallVip
 Remove-FGTFirewallVipGroup
 Remove-FGTFirewallVipGroupMember
+Remove-FGTSystemZone
+Remove-FGTSystemZoneMember
 Set-FGTCipherSSL
 Set-FGTConnection
 Set-FGTFirewallAddress
 Set-FGTFirewallAddressGroup
-Set-FGTFirewallVip
+Set-FGTFirewallProxyAddressGroup
 Set-FGTFirewallVipGroup
+Set-FGTSystemZone
 Set-FGTUntrustedSSL
 Show-FGTException
 ```
@@ -765,8 +1017,16 @@ Show-FGTException
 - <https://github.com/alagoutte>
 - <https://twitter.com/alagoutte>
 
-**Benjamin Perrier**
-- <https://github.com/benper44>
+# Contributors
+
+- Arthur Heijnen
+- Benjamin Perrier
+- Brett Pound
+- Cédric Moreau
+- Evan Chisholm
+- Jelmer Jaarsma
+
+Sort by name (*git shortlog -s*)
 
 # Special Thanks
 

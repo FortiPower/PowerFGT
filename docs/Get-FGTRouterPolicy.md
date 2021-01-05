@@ -38,17 +38,17 @@ Get list of all route policy object
 
 ### EXAMPLE 2
 ```
-Get-FGTRouterPolicy -filter_attribute gateway -filter_value 192.2.0.1
+Get-FGTRouterPolicy -filter_attribute gateway -filter_value 192.0.2.1
 ```
 
-Get route policy object with gateway equal 192.2.0.1
+Get route policy object with gateway equal 192.0.2.1
 
 ### EXAMPLE 3
 ```
-Get-FGTRouterPolicy -filter_attribute device -filter_value vlan -filter_type contains
+Get-FGTRouterPolicy -filter_attribute device -filter_value port -filter_type contains
 ```
 
-Get route policy bject with device contains port
+Get route policy object with device contains port
 
 ### EXAMPLE 4
 ```

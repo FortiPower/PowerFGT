@@ -14,7 +14,7 @@ Remove a FortiGate Address Group Member
 
 ```
 Remove-FGTFirewallAddressGroupMember [-addrgrp] <PSObject> [-member <String[]>] [-vdom <String[]>]
- [-connection <PSObject>] [<CommonParameters>]
+ [-connection <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -25,18 +25,16 @@ Remove a FortiGate Address Group Member
 ### EXAMPLE 1
 ```
 $MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
+PS C:\>$MyFGTAddressGroup | Remove-FGTFirewallAddressGroupMember -member MyAddress1
 ```
-
-PS C:\\\>$MyFGTAddressGroup | Remove-FGTFirewallAddressGroupMember -member MyAddress1
 
 Remove MyAddress1 member to MyFGTAddressGroup
 
 ### EXAMPLE 2
 ```
 $MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
+PS C:\>$MyFGTAddressGroup | Remove-FGTFirewallAddressGroupMember -member MyAddress1, MyAddress2
 ```
-
-PS C:\\\>$MyFGTAddressGroup | Remove-FGTFirewallAddressGroupMember -member MyAddress1, MyAddress2
 
 Remove MyAddress1 and MyAddress2 member to MyFGTAddressGroup
 
@@ -98,6 +96,37 @@ Aliases:
 Required: False
 Position: Named
 Default value: $DefaultFGTConnection
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WhatIf
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: wi
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

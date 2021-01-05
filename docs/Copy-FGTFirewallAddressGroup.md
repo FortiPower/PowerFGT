@@ -25,9 +25,8 @@ Copy/Clone a FortiGate Address Group (name, member...)
 ### EXAMPLE 1
 ```
 $MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
+PS C:\>$MyFGTAddressGroup | Copy-FGTFirewallAddressGroup -name MyFGTAddressGroup_copy
 ```
-
-PS C:\\\>$MyFGTAddressGroup | Copy-FGTFirewallAddressGroup -name MyFGTAddressGroup_copy
 
 Copy / Clone MyFGTAddressGroup and name MyFGTAddress_copy
 

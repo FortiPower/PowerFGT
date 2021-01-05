@@ -25,18 +25,16 @@ Add a FortiGate Address Group Member
 ### EXAMPLE 1
 ```
 $MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
+PS C:\>$MyFGTAddressGroup | Add-FGTFirewallAddressGroupMember -member MyAddress1
 ```
-
-PS C:\\\>$MyFGTAddressGroup | Add-FGTFirewallAddressGroupMember -member MyAddress1
 
 Add MyAddress1 member to MyFGTAddressGroup
 
 ### EXAMPLE 2
 ```
 $MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
+PS C:\>$MyFGTAddressGroup | Add-FGTFirewallAddressGroupMember -member MyAddress1, MyAddress2
 ```
-
-PS C:\\\>$MyFGTAddressGroup | Add-FGTFirewallAddressGroupMember -member MyAddress1, MyAddress2
 
 Add MyAddress1 and MyAddress2 member to MyFGTAddressGroup
 
