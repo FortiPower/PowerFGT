@@ -378,6 +378,11 @@ function Remove-FGTSystemInterface {
         Get-FGTSystemInterface -name PowerFGT | Remove-FGTSystemInterface
 
         Removes the interface PowerFGT which was retrieved with Get-FGTSystemInterface
+
+        .EXAMPLE
+        Get-FGTSystemInterface -name PowerFGT | Remove-FGTSystemInterface -Confirm:$false
+
+        Removes the interface PowerFGT and suppresses the confirmation question
     #>
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]
