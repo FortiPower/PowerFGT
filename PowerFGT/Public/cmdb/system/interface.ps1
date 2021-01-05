@@ -392,6 +392,7 @@ function Remove-FGTSystemInterface {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [ValidateScript( { Confirm-FGTInterface $_ })]
         [psobject]$interface,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
