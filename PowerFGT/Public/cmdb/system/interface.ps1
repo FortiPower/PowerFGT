@@ -146,7 +146,8 @@ function Set-FGTSystemInterface {
         [Parameter (Mandatory = $false)]
         [string]$address_mask,
         [Parameter (Mandatory = $false)]
-        [bool]$connected,
+        [ValidateSet('up', 'down')]
+        [string]$status,
         [Parameter (Mandatory = $false)]
         [string]$device_identification,
         [Parameter(Mandatory = $false)]
@@ -184,6 +185,9 @@ function Set-FGTSystemInterface {
             $_interface | add-member -name "alias" -membertype NoteProperty -Value $alias
         }
 
+        if ( $PsBoundParameters.ContainsKey('status') ) {
+            $_interface | add-member -name "status" -membertype NoteProperty -Value $status.ToLower()
+        }
         if ( $PsBoundParameters.ContainsKey('admin_access') ) {
             $allowaccess = $admin_access -join " "
             $_interface | add-member -name "allowaccess" -membertype NoteProperty -Value $allowaccess
@@ -191,19 +195,6 @@ function Set-FGTSystemInterface {
 
         if ( $PsBoundParameters.ContainsKey('address_mask') ) {
             $_interface | add-member -name "ip" -membertype NoteProperty -Value $address_mask
-        }
-
-        if ( $PsBoundParameters.ContainsKey('connected') ) {
-            switch ($connected) {
-                $true {
-                    $connectedoption = "up"
-                }
-                $false {
-                    $connectedoption = "down"
-                }
-            }
-
-            $_interface | add-member -name "status" -membertype NoteProperty -Value $connectedoption
         }
 
         if ( $PsBoundParameters.ContainsKey('device_identification') ) {
@@ -256,7 +247,7 @@ function Add-FGTSystemInterface {
         This creates a new interface using only mandatory parameters.
 
         .EXAMPLE
-        Add-FGTSystemInterface -name PowerFGT -type vlan -alias Alias_PowerFGT -role lan -vlan_id 10 -interface port10 -admin_access https,ping,ssh -connected $true -device_identification $true -mode static -address_mask 192.0.2.1/255.255.255.0 -vdom_interface root
+        Add-FGTSystemInterface -name PowerFGT -type vlan -alias Alias_PowerFGT -role lan -vlan_id 10 -interface port10 -admin_access https,ping,ssh -status up $true -device_identification $true -mode static -address_mask 192.0.2.1/255.255.255.0 -vdom_interface root
 
         Create an interface named PowerFGT with alias Alias_PowerFGT, role lan with vlan id 10 on interface port10. Administrative access by https and ssh, ping authorize on ip 192.0.2.1 and state connected.
     #>
@@ -281,7 +272,8 @@ function Add-FGTSystemInterface {
         [ValidateSet('https', 'ping', 'fgfm', 'capwap', 'ssh', 'snmp', 'ftm', 'radius-acct', 'ftm', IgnoreCase = $false)]
         [string[]]$admin_access,
         [Parameter (Mandatory = $false)]
-        [bool]$connected = $false,
+        [ValidateSet('up', 'down')]
+        [string]$status = "up",
         [Parameter (Mandatory = $false)]
         [string]$device_identification = $false,
         [Parameter (Mandatory = $true)]
@@ -334,16 +326,9 @@ function Add-FGTSystemInterface {
             $_interface | add-member -name "ip" -membertype NoteProperty -Value $address_mask
         }
 
-        switch ($connected) {
-            $true {
-                $connected = "up"
-            }
-            $false {
-                $connected = "down"
-            }
+        if ( $PsBoundParameters.ContainsKey('status') ) {
+            $_interface | add-member -name "status" -membertype NoteProperty -Value $status
         }
-
-        $_interface | add-member -name "status" -membertype NoteProperty -Value $connected
 
         switch ($device_identification) {
             $true {
