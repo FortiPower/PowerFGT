@@ -301,3 +301,31 @@ Function Confirm-FGTInterface {
 
     $true
 }
+
+Function Confirm-FGTInterface {
+
+    Param (
+        [Parameter (Mandatory = $true)]
+        [object]$argument
+    )
+
+    #Check if it looks like an Interface element
+
+    if ( -not ( $argument | get-member -name name -Membertype Properties)) {
+        throw "Element specified does not contain a name property."
+    }
+    if ( -not ( $argument | get-member -name mode -Membertype Properties)) {
+        throw "Element specified does not contain a mode property."
+    }
+    if ( -not ( $argument | get-member -name allowaccess -Membertype Properties)) {
+        throw "Element specified does not contain an allowaccess property."
+    }
+    if ( -not ( $argument | get-member -name type -Membertype Properties)) {
+        throw "Element specified does not contain a type property."
+    }
+    if ( -not ( $argument | get-member -name status -Membertype Properties)) {
+        throw "Element specified does not contain a status property."
+    }
+
+    $true
+}
