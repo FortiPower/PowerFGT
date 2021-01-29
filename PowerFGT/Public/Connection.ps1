@@ -142,6 +142,7 @@ function Connect-FGT {
         }
 
         $uri = $url + "logincheck"
+        $iwrResponse = $null
         try {
             $iwrResponse = Invoke-WebRequest $uri -Method POST -Body $postParams -SessionVariable FGT @invokeParams
         }
@@ -169,10 +170,9 @@ function Connect-FGT {
         $headers = @{"X-CSRFTOKEN" = $cookie_csrf }
 
         $uri = $url + "logindisclaimer"
-        if($iwrResponse.Content -match '/logindisclaimer')
-        {
+        if ($iwrResponse.Content -match '/logindisclaimer') {
             try {
-                Invoke-WebRequest $uri -Method "POST" -WebSession $FGT @invokeParams -Body @{confirm = 1; ajax=1} | Out-Null
+                Invoke-WebRequest $uri -Method "POST" -WebSession $FGT -Body @{ confirm = 1 ; ajax = 1 } @invokeParams | Out-Null
             }
             catch {
                 throw "Unable to confirm disclaimer"
