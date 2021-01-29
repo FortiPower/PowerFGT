@@ -47,6 +47,41 @@ Describe "Connect to a fortigate (using HTTPS)" {
     }
 }
 
+Describe "Connect to a FortiGate (with post-login-banner enable)" {
+    BeforeAll {
+        Connect-FGT @invokeParams
+
+        #Enable post-login-banner (using FGTRestMethod because no yet  Set-FGTSystemSettings)
+        Invoke-FGTRestMethod -method "PUT" -body @{ 'post-login-banner' = 'enable' } -uri "api/v2/cmdb/system/settings"
+
+        Disconnect-FGT -confirm:$false
+    }
+
+    It "Connect to a FortiGate (with post-login-banner)" {
+        $script:fgt = Connect-FGT @invokeParams -DefaultConnection:$false
+        $fgt.session | Should -Not -BeNullOrEmpty
+        $fgt.server | Should -Be $ipaddress
+        $fgt.invokeParams | Should -Not -BeNullOrEmpty
+        $fgt.port | Should -Be $port
+        $fgt.httpOnly | Should -Be $true
+        $fgt.session | Should -Not -BeNullOrEmpty
+        $fgt.headers | Should -Not -BeNullOrEmpty
+        $fgt.version | Should -Not -BeNullOrEmpty
+
+        Disconnect-FGT -connection $fgt -confirm:$false
+    }
+
+    AfterAll {
+        Connect-FGT @invokeParams
+
+        #Disable post-login-banner (using FGTRestMethod because no yet  Set-FGTSystemSettings)
+        Invoke-FGTRestMethod -method "PUT" -body @{ 'post-login-banner' = 'disable' } -uri "api/v2/cmdb/system/settings"
+
+        Disconnect-FGT -confirm:$false
+    }
+
+}
+
 Describe "Connect to a FortiGate (using multi connection)" {
     It "Connect to a FortiGate (using HTTPS and store on fgt variable)" {
         $script:fgt = Connect-FGT $ipaddress -Username $login -password $mysecpassword -httpOnly -SkipCertificate -DefaultConnection:$false -port $port
