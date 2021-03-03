@@ -37,7 +37,7 @@ function Get-FGTLogTraffic {
         [ValidateSet('forward', 'local', 'multicast', 'sniffer', 'fortiview', 'threat', IgnoreCase = $false)]
         [string]$subtype,
         [Parameter (Mandatory = $false)]
-        [int]$rows,
+        [int]$rows=20,
         [Parameter (Mandatory = $false)]
         [Parameter (ParameterSetName = "srcip")]
         [string]$srcip,
@@ -98,9 +98,6 @@ function Get-FGTLogTraffic {
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
         }
-        if ( $PsBoundParameters.ContainsKey('rows') ) {
-            $invokeParams.add( 'rows', $rows )
-        }
 
         switch ( $PSCmdlet.ParameterSetName ) {
             "srcip" {
@@ -141,7 +138,7 @@ function Get-FGTLogTraffic {
             $invokeParams.add( 'filter_type', $filter_type )
         }
 
-        $uri = "api/v2/log/${type}/traffic/${subtype}"
+        $uri = "api/v2/log/${type}/traffic/${subtype}?rows=${rows}"
         $response = Invoke-FGTRestMethod -uri $uri -method 'GET' -connection $connection @invokeParams
         $response.results
     }
