@@ -342,7 +342,7 @@ function Add-FGTSystemInterface {
         }
 
         if ( $PsBoundParameters.ContainsKey('ip') -and $PsBoundParameters.ContainsKey('netmask')) {
-            $_interface | add-member -name "ip" -membertype NoteProperty -Value "$ip/$address_mask"
+            $_interface | add-member -name "ip" -membertype NoteProperty -Value "$ip/$netmask"
         }
 
         if ( $PsBoundParameters.ContainsKey('status') ) {
