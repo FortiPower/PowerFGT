@@ -130,7 +130,7 @@ function Set-FGTSystemInterface {
         This disables DCHP relay and clears the relay ip addresses
     #>
 
-    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium', DefaultParameterSetName = "NoIP")]
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1, ParameterSetName = "IDObject")]
         [ValidateScript( { Confirm-FGTInterface $_ })]
@@ -149,10 +149,10 @@ function Set-FGTSystemInterface {
         [Parameter (Mandatory = $false)]
         [ValidateSet('static', 'dhcp')]
         [string]$mode,
-        [Parameter (ParameterSetName = "IP", Mandatory = $true)]
+        [Parameter (Mandatory = $false)]
         [ValidateScript( { $_ -match [IPAddress]$_ })]
         [string]$ip,
-        [Parameter (ParameterSetName = "IP", Mandatory = $true)]
+        [Parameter (Mandatory = $false)]
         [string]$netmask,
         [Parameter (Mandatory = $false)]
         [ValidateSet('up', 'down')]
