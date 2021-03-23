@@ -23,6 +23,11 @@ function Get-FGTVpnIpsecPhase1Interface {
         Get VPN IPsec Phase 1 interface named myVPNIPsecPhase1interface
 
         .EXAMPLE
+        Get-FGTVpnIPsecPhase1Interface -name myVPNIPsecPhase1interface -plaintext_password
+
+        Get VPN IPsec Phase 1 interface named myVPNIPsecPhase1interface with Plain Text Password
+
+        .EXAMPLE
         Get-FGTVpnIPsecPhase1Interface -name FGT -filter_type contains
 
         Get VPN IPsec Phase 1 interface contains with *FGT*
@@ -42,6 +47,8 @@ function Get-FGTVpnIpsecPhase1Interface {
     Param(
         [Parameter (Mandatory = $false, Position = 1, ParameterSetName = "name")]
         [string]$name,
+        [Parameter (Mandatory = $false)]
+        [switch]$plaintext_password,
         [Parameter (Mandatory = $false)]
         [Parameter (ParameterSetName = "filter")]
         [string]$filter_attribute,
@@ -65,6 +72,8 @@ function Get-FGTVpnIpsecPhase1Interface {
     }
 
     Process {
+
+        $uri = 'api/v2/cmdb/vpn.ipsec/phase1-interface'
 
         $invokeParams = @{ }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
@@ -90,7 +99,13 @@ function Get-FGTVpnIpsecPhase1Interface {
             $invokeParams.add( 'filter_type', $filter_type )
         }
 
-        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/vpn.ipsec/phase1-interface' -method 'GET' -connection $connection @invokeParams
+        if ( $PsBoundParameters.ContainsKey('plaintext_password') ) {
+            if ($plaintext_password) {
+                $uri += "?plain-text-password=1"
+            }
+        }
+
+        $response = Invoke-FGTRestMethod -uri $uri -method 'GET' -connection $connection @invokeParams
         $response.results
     }
 
