@@ -62,6 +62,9 @@ function Get-FGTLogTraffic {
         [Parameter (ParameterSetName = "policyid")]
         [int]$policyid,
         [Parameter (Mandatory = $false)]
+        [Parameter (ParameterSetName = "poluuid")]
+        [guid]$poluuid,
+        [Parameter (Mandatory = $false)]
         [Parameter (ParameterSetName = "filter")]
         [string]$filter_attribute,
         [Parameter (Mandatory = $false)]
@@ -127,6 +130,10 @@ function Get-FGTLogTraffic {
             "policyid" {
                 $filter_value = $policyid
                 $filter_attribute = "policyid"
+            }
+            "poluuid" {
+                $filter_value = $poluuid
+                $filter_attribute = "poluuid"
             }
             default { }
         }
