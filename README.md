@@ -53,7 +53,7 @@ For example, you can manage Address with the following commands:
 # Requirements
 
 - Powershell 5 or 6.x/7.x (Core) (If possible get the latest version)
-- An Fortinet FortiGate Firewall and HTTPS enable (recommended)
+- A Fortinet FortiGate Firewall and HTTPS enable (recommended)
 
 # Instructions
 ### Install the module
