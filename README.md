@@ -36,7 +36,7 @@ There is some extra feature
 More functionality will be added later.
 
 Connection can use HTTPS (default) or HTTP  
-Tested with FortiGate (using 5.6.x and 6.0.x firmware but it will be also work with 5.4.x)  
+Tested with FortiGate (using 5.6.x and 6.x firmware but it will be also work with 5.4.x)  
 Add (Experimental) support of [VDOM](#vdom) is available using -vdom parameter for each cmdlet  
 Don't use support to connect using API Token from 5.6.x (and later)
 
