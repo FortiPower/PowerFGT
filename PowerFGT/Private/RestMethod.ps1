@@ -67,18 +67,14 @@ function Invoke-FGTRestMethod {
         [switch]$skip,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
-        [Parameter(Mandatory = $false)]
-        [Parameter (ParameterSetName = "filter")]
+        [Parameter(Mandatory = $false, ParameterSetName = "filter")]
         [String]$filter,
-        [Parameter(Mandatory = $false)]
-        [Parameter (ParameterSetName = "filter_build")]
+        [Parameter(Mandatory = $false, ParameterSetName = "filter_build")]
         [string]$filter_attribute,
-        [Parameter(Mandatory = $false)]
-        [ValidateSet('equal', 'contains')]
-        [Parameter (ParameterSetName = "filter_build")]
+        [Parameter(Mandatory = $false, ParameterSetName = "filter_build")]
+        [ValidateSet('equal', 'notequal', 'contains', 'notcontains', 'less', 'lessorequal', 'greater', 'greaterorequal')]
         [string]$filter_type,
-        [Parameter (Mandatory = $false)]
-        [Parameter (ParameterSetName = "filter_build")]
+        [Parameter (Mandatory = $false, ParameterSetName = "filter_build")]
         [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
         [psobject]$connection
@@ -132,8 +128,26 @@ function Invoke-FGTRestMethod {
             "equal" {
                 $filter_value = "==" + $filter_value
             }
+            "notequal" {
+                $filter_value = "!=" + $filter_value
+            }
             "contains" {
                 $filter_value = "=@" + $filter_value
+            }
+            "notcontains" {
+                $filter_value = "!@" + $filter_value
+            }
+            "less" {
+                $filter_value = "<" + $filter_value
+            }
+            "lessorequal" {
+                $filter_value = "<=" + $filter_value
+            }
+            "greater" {
+                $filter_value = ">" + $filter_value
+            }
+            "greaterorequal" {
+                $filter_value = ">=" + $filter_value
             }
             #by default set to equal..
             default {
