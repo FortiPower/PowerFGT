@@ -47,12 +47,12 @@ function Connect-FGT {
 
       .EXAMPLE
       $fw1 = Connect-FGT -Server 192.0.2.1
-      Connect to an FortiGate with IP 192.0.2.1 and store connection info to $fw1 variable
+      Connect to a FortiGate with IP 192.0.2.1 and store connection info to $fw1 variable
 
       .EXAMPLE
       $fw2 = Connect-FGT -Server 192.0.2.1 -DefaultConnection:$false
 
-      Connect to an FortiGate with IP 192.0.2.1 and store connection info to $fw2 variable
+      Connect to a FortiGate with IP 192.0.2.1 and store connection info to $fw2 variable
       and don't store connection on global ($DefaultFGTConnection) variable
 
       .EXAMPLE
