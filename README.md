@@ -229,7 +229,7 @@ or delete it `Remove-FGTFirewallAddress`.
 #You can also create other address type like fqdn or iprange
 
 # Create an address (type fqdn)
-Add-FGTFirewallAddress -Name FortiPower -fqdn fortipower.github.io
+    Add-FGTFirewallAddress -Name FortiPower -fqdn fortipower.github.io
 
     name                 : FortiPower
     q_origin_key         : FortiPower
@@ -257,7 +257,7 @@ Add-FGTFirewallAddress -Name FortiPower -fqdn fortipower.github.io
     allow-routing        : disable
 
 # Create an address (type iprange)
-Add-FGTFirewallAddress -Name MyRange -startip 192.0.2.1 -endip 192.0.2.100
+   Add-FGTFirewallAddress -Name MyRange -startip 192.0.2.1 -endip 192.0.2.100
 
     name                 : MyRange
     q_origin_key         : MyRange
