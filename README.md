@@ -489,7 +489,7 @@ or delete it `Remove-FGTFirewallVip`.
     [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): Y
 ```
 
-### Address Group
+### Virtual IP Group
 
 You can create a new VIP Group `Add-FGTFirewallVIPGroup`, retrieve its information `Get-FGTFirewallVIPGroup`,
 modify its properties `Set-FGTFirewallVIPGroup`, copy/clone its properties `Copy-FGTFirewallVIPGroup`,
