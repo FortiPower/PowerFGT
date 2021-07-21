@@ -314,15 +314,15 @@ and Filter Operators :
 For  `Invoke-FGTRestMethod` and `Get-XXX` cmdlet like `Get-FGTFirewallAddress`, it is possible to using some helper filter (`-filter_attribute`, `-filter_type`, `-filter_value`)
 
 ```powershell
-# Get NetworkDevice named myFGT
+# Get Firewall Address named myFGT
     Get-FGTFirewallAddress -name myFGT
 ...
 
-# Get NetworkDevice contains myFGT
+# Get Firewall Address contains myFGT
     Get-FGTFirewallAddress -name myFGT -filter_type contains
 ...
 
-# Get NetworkDevice where subnet equal 192.0.2.0 255.255.255.0
+# Get Firewall Address where subnet equal 192.0.2.0 255.255.255.0
     Get-FGTFirewallAddress -filter_attribute subnet -filter_type equal -filter_value 192.0.2.0 255.255.255.0
 ...
 
