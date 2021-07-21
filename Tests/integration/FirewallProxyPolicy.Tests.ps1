@@ -14,10 +14,10 @@ BeforeAll {
 Describe "Get Firewall Proxy Policy" {
 
     BeforeAll {
-        $policy = Add-FGTFirewallProxyPolicy -proxy transparent-web -dstintf port2 -srcaddr all -dstaddr all
+        $policy = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all
         $script:uuid = $policy.uuid
         $script:policyid = $policy.policyid
-        Add-FGTFirewallProxyPolicy -proxy transparent-web -dstintf port1 -srcaddr all -dstaddr all
+        Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf port2 -dstintf port1 -srcaddr all -dstaddr all
     }
 
     It "Get Policy Does not throw an error" {
