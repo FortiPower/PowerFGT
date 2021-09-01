@@ -105,7 +105,7 @@ function Connect-FGT {
         $postParams = @{username = $Credentials.username; secretkey = $Credentials.GetNetworkCredential().Password; ajax = 1 }
         $invokeParams = @{DisableKeepAlive = $false; UseBasicParsing = $true; SkipCertificateCheck = $SkipCertificateCheck; TimeoutSec = $Timeout }
 
-        if ("Desktop" -eq $PSVersionTable.PsEdition) {
+        if (("Desktop" -eq $PSVersionTable.PsEdition) -or ($null -eq $PSVersionTable.PsEdition)) {
             #Remove -SkipCertificateCheck from Invoke Parameter (not supported <= PS 5)
             $invokeParams.remove("SkipCertificateCheck")
         }
@@ -129,7 +129,7 @@ function Connect-FGT {
             }
 
             #for PowerShell (<=) 5 (Desktop), Enable TLS 1.1, 1.2 and Disable SSL chain trust (needed/recommanded by FortiGate)
-            if ("Desktop" -eq $PSVersionTable.PsEdition) {
+            if (("Desktop" -eq $PSVersionTable.PsEdition) -or ($null -eq $PSVersionTable.PsEdition)) {
                 #Enable TLS 1.1 and 1.2
                 Set-FGTCipherSSL
                 if ($SkipCertificateCheck) {
