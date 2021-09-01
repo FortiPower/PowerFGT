@@ -115,6 +115,11 @@ function Connect-FGT {
             $invokeParams.remove("UseBasicParsing")
         }
 
+        if ($null -eq $PSVersionTable.PsEdition) {
+            #Remove -UseBasicParsing from Invoke Parameter (not available on Invoke-RestMethod PS < 5)
+            $invokeParams.remove("UseBasicParsing")
+        }
+
         if ($httpOnly) {
             if (!$port) {
                 $port = 80
