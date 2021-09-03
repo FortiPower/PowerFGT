@@ -115,7 +115,7 @@ function Add-FGTRouterStatic {
         [ValidateRange(1,4294967295)]
         [int]$seq_num,
         [Parameter (Mandatory = $false)]
-        [switch]$status = $true,
+        [switch]$status,
         [Parameter (Mandatory = $true)]
         [string]$dst,
         [Parameter (Mandatory = $false)]
@@ -193,6 +193,9 @@ function Add-FGTRouterStatic {
 
         if ($status) {
             $static | add-member -name "status" -membertype NoteProperty -Value "disable"
+        }
+        else {
+            $static | add-member -name "status" -membertype NoteProperty -Value "enable"
         }
 
         $static | add-member -name "dst" -membertype NoteProperty -Value $dst
