@@ -104,18 +104,18 @@ function Add-FGTRouterStatic {
         Add a route to 198.51.100.0/24 with gateway 192.2.0.254 by the interface named internal1, with Example_PowerFGT as the description, with an administrative distance of 10
 
         .EXAMPLE
-        Add-FGTRouterStatic -seq_num 1 -status:$false -dst 198.51.100.0/24 -gateway 192.0.2.254 -device internal1 -comment "Example_PowerFGT" -distance 10
+        Add-FGTRouterStatic -seq_num 1 -status:$false -dst 198.51.100.0/24 -gateway 192.0.2.254 -device internal1
 
         Add a route with status disabled
     #>
 
 
     Param(
-        [Parameter (Mandatory = $true)]
+        [Parameter (Mandatory = $false)]
         [ValidateRange(1,4294967295)]
         [int]$seq_num,
         [Parameter (Mandatory = $false)]
-        [switch]$status = $false,
+        [switch]$status = $true,
         [Parameter (Mandatory = $true)]
         [string]$dst,
         [Parameter (Mandatory = $false)]
@@ -192,9 +192,6 @@ function Add-FGTRouterStatic {
         $static = new-Object -TypeName PSObject
 
         if ($status) {
-            $static | add-member -name "status" -membertype NoteProperty -Value "enable"
-        }
-        else {
             $static | add-member -name "status" -membertype NoteProperty -Value "disable"
         }
 
