@@ -279,6 +279,62 @@ function Add-FGTRouterStatic {
         Get-FGTRouterStatic -filter_attribute seq-num -filter_value $seq_num -connection $connection @invokeParams
 
     }
+    End {
+    }
+}
+
+    function Remove-FGTRouterStatic {
+
+    <#
+        .SYNOPSIS
+        Remove a FortiGate static route
+
+        .DESCRIPTION
+        Remove a static route on the FortiGate
+
+        .EXAMPLE
+        $MyFGTRoute = Get-FGTRouterStatic -filter_attribute gateway -filter_value 192.0.2.1
+        PS C:\>$MyFGTRoute | Remove-FGTRouterStatic
+
+        Remove static route with gateway 192.0.2.1
+
+        .EXAMPLE
+        $MyFGTRoute = Get-FGTRouterStatic -filter_attribute gateway -filter_value 192.0.2.1
+        PS C:\>$MyFGTRoute | Remove-FGTRouterStatic -confirm:$false
+
+        Remove static route with gateway 192.0.2.1 with no confirmation
+
+    #>
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'high')]
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [ValidateScript( { Confirm-FGTRouterStatic $_ })]
+        [psobject]$route,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/router/static/$($route."seq-num")"
+
+        $uri
+
+        if ($PSCmdlet.ShouldProcess($route.name, 'Remove Firewall route')) {
+            $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -connection $connection @invokeParams
+        }
+    }
 
     End {
     }
