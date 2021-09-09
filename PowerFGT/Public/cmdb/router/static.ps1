@@ -99,12 +99,12 @@ function Add-FGTRouterStatic {
         Add a FortiGate static route
 
         .EXAMPLE
-        Add-FGTRouterStatic -seq_num 1 -status -dst 198.51.100.0/24 -gateway 192.0.2.254 -device internal1 -comment "Example_PowerFGT" -distance 10
+        Add-FGTRouterStatic -status -dst 198.51.100.0/24 -gateway 192.0.2.254 -device internal1 -comment "Example_PowerFGT" -distance 10
 
         Add a route to 198.51.100.0/24 with gateway 192.2.0.254 by the interface named internal1, with Example_PowerFGT as the description, with an administrative distance of 10
 
         .EXAMPLE
-        Add-FGTRouterStatic -seq_num 1 -status:$false -dst 198.51.100.0/24 -gateway 192.0.2.254 -device internal1
+        Add-FGTRouterStatic -status:$false -dst 198.51.100.0/24 -gateway 192.0.2.254 -device internal1
 
         Add a route with status disabled
     #>
