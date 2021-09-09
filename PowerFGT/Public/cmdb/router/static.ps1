@@ -329,8 +329,6 @@ function Add-FGTRouterStatic {
 
         $uri = "api/v2/cmdb/router/static/$($route."seq-num")"
 
-        $uri
-
         if ($PSCmdlet.ShouldProcess($route.name, 'Remove Firewall route')) {
             $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -connection $connection @invokeParams
         }
