@@ -76,7 +76,7 @@ Describe "Add System Interface" {
         $interface.mode | Should -Be "static"
     }
 
-    It "Add System Interface" {
+    It "Add System Interface (All parameters...)" {
         Add-FGTSystemInterface -name $pester_int1 -type vlan -alias Alias_$pester_int1 -role lan -vlan_id $pester_vlanid1 -interface $pester_port1 -admin_access https, ping, ssh -status up -device_identification $true -mode static -ip 192.0.2.1 -netmask 255.255.255.0 -vdom_interface root
         $interface = Get-FGTSystemInterface -name $pester_int1
         $interface.name | Should -Be $pester_int1
@@ -112,19 +112,19 @@ Describe "Set System Interface" {
         $interface.role | Should -Be "dmz"
     }
 
-    It "Set System Interface ip" {
+    It "Set System Interface IP (and Netmask)" {
         Set-FGTSystemInterface -name $pester_int1 -ip 192.0.2.1 -netmask 255.255.255.0
         $interface = Get-FGTSystemInterface -name $pester_int1
         $interface.ip | Should -Be "192.0.2.1 255.255.255.0"
     }
 
-    It "Set System Interface disconnected" {
+    It "Set System Interface status (up)" {
         Set-FGTSystemInterface -name $pester_int1 -status down
         $interface = Get-FGTSystemInterface -name $pester_int1
         $interface.status | Should -Be "down"
     }
 
-    It "Set System Interface connected" {
+    It "Set System Interface status (down)" {
         Set-FGTSystemInterface -name $pester_int1 -status up
         $interface = Get-FGTSystemInterface -name $pester_int1
         $interface.status | Should -Be "up"
@@ -142,26 +142,26 @@ Describe "Set System Interface" {
         $interface."device-identification" | Should -Be "disable"
     }
 
-    It "Set System Interface mode" {
+    It "Set System Interface mode (DHCP)" {
         Set-FGTSystemInterface -name $pester_int1 -mode dhcp
         $interface = Get-FGTSystemInterface -name $pester_int1
         $interface.mode | Should -Be "dhcp"
     }
 
-    It "Set System Interface administrative access" {
+    It "Set System Interface Administrative Access (HTTPS, SSH)" {
         Set-FGTSystemInterface -name $pester_int1 -admin_access https, ssh
         $interface = Get-FGTSystemInterface -name $pester_int1
         $interface.allowaccess | Should -Be "https ssh"
     }
 
-    It "Set System Interface dhcp relay" {
+    It "Set System Interface DHCP Relay" {
         Set-FGTSystemInterface -name $pester_int1 -dhcprelayip "10.0.0.1", "10.0.0.2"
         $interface = Get-FGTSystemInterface -name $pester_int1
         $interface.'dhcp-relay-ip' | Should -Be '"10.0.0.1" "10.0.0.2" '
         $interface.'dhcp-relay-service' | Should -Be "enable"
     }
 
-    It "Set System Interface dhcp relay then remove" {
+    It "Set System Interface DHCP Relay then remove" {
         Set-FGTSystemInterface -name $pester_int1 -dhcprelayip "10.0.0.1", "10.0.0.2"
         Set-FGTSystemInterface -name $pester_int1 -dhcprelayip $null
         $interface = Get-FGTSystemInterface -name $pester_int1
