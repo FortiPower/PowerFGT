@@ -230,8 +230,8 @@ function Set-FGTSystemInterface {
 
         if ($PSCmdlet.ShouldProcess($name, 'Set interface')) {
             $uri = "api/v2/cmdb/system/interface/$name"
-            $response = Invoke-FGTRestMethod -uri $uri -method 'PUT' -body $_interface -connection $connection @invokeParams
-            $response.results
+            $null = Invoke-FGTRestMethod -uri $uri -method 'PUT' -body $_interface -connection $connection @invokeParams
+            Get-FGTSystemInterface -name $name -connection $connection @invokeParams
         }
     }
 
