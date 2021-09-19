@@ -77,7 +77,7 @@ Describe "Add System Interface" {
     }
 
     It "Add System Interface (All parameters...)" {
-        Add-FGTSystemInterface -name $pester_int1 -alias Alias_$pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -admin_access https, ping, ssh -status up -device_identification $true -mode static -ip 192.0.2.1 -netmask 255.255.255.0
+        Add-FGTSystemInterface -name $pester_int1 -alias Alias_$pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -allowaccess https, ping, ssh -status up -device_identification $true -mode static -ip 192.0.2.1 -netmask 255.255.255.0
         $interface = Get-FGTSystemInterface -name $pester_int1
         $interface.name | Should -Be $pester_int1
         $interface.type | Should -Be "vlan"
@@ -149,7 +149,7 @@ Describe "Set System Interface" {
     }
 
     It "Set System Interface Administrative Access (HTTPS, SSH)" {
-        Set-FGTSystemInterface -name $pester_int1 -admin_access https, ssh
+        Set-FGTSystemInterface -name $pester_int1 -allowaccess https, ssh
         $interface = Get-FGTSystemInterface -name $pester_int1
         $interface.allowaccess | Should -Be "https ssh"
     }

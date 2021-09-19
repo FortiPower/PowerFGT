@@ -20,7 +20,7 @@ function Add-FGTSystemInterface {
         This creates a new interface using only mandatory parameters.
 
         .EXAMPLE
-        Add-FGTSystemInterface -name PowerFGT -alias Alias_PowerFGT -role lan -vlan_id 10 -interface port10 -admin_access https,ping,ssh -status up -device_identification $true -mode static -ip 192.0.2.1 -netmask 255.255.255.0 -vdom_interface root
+        Add-FGTSystemInterface -name PowerFGT -alias Alias_PowerFGT -role lan -vlan_id 10 -interface port10 -allowaccess https,ping,ssh -status up -device_identification $true -mode static -ip 192.0.2.1 -netmask 255.255.255.0 -vdom_interface root
 
         Create an interface named PowerFGT with alias Alias_PowerFGT, role lan with vlan id 10 on interface port10. Administrative access by https and ssh, ping authorize on ip 192.0.2.1 and state connected.
     #>
@@ -39,7 +39,7 @@ function Add-FGTSystemInterface {
         [string]$interface,
         [Parameter (Mandatory = $false)]
         [ValidateSet('https', 'ping', 'fgfm', 'capwap', 'ssh', 'snmp', 'ftm', 'radius-acct', 'ftm', IgnoreCase = $false)]
-        [string[]]$admin_access,
+        [string[]]$allowaccess,
         [Parameter (Mandatory = $false)]
         [ValidateSet('up', 'down')]
         [string]$status = "up",
@@ -96,8 +96,8 @@ function Add-FGTSystemInterface {
             $_interface | add-member -name "vlanid" -membertype NoteProperty -Value $vlan_id
         }
 
-        if ( $PsBoundParameters.ContainsKey('admin_access') ) {
-            $allowaccess = $admin_access -join " "
+        if ( $PsBoundParameters.ContainsKey('allowaccess') ) {
+            $allowaccess = $allowaccess -join " "
             $_interface | add-member -name "allowaccess" -membertype NoteProperty -Value $allowaccess
         }
 
@@ -234,9 +234,9 @@ function Set-FGTSystemInterface {
         Modify the properties of an existing interface (admin acces, alias, status...)
 
         .EXAMPLE
-        Get-FGTSystemInterface -name PowerFGT | Set-FGTSystemInterface -alias ALIAS_PowerFGT -role lan -mode static -ip 192.0.2.1 -netmask 255.255.255.0 -admin_access ping,https -device_identification $false -status up
+        Get-FGTSystemInterface -name PowerFGT | Set-FGTSystemInterface -alias ALIAS_PowerFGT -role lan -mode static -ip 192.0.2.1 -netmask 255.255.255.0 -allowaccess ping,https -device_identification $false -status up
 
-        This modifies the interface named PowerFGT with an alias, the LAN role, in static mode with 192.0.2.1 as IP, with ping and https administrative access, and with device identification disable and not connected
+        This modifies the interface named PowerFGT with an alias, the LAN role, in static mode with 192.0.2.1 as IP, with ping and https allow access, and with device identification disable and not connected
 
         .EXAMPLE
         Get-FGTSystemInterface -name PowerFGT | Set-FGTSystemInterface -dhcprelayip "10.0.0.1","10.0.0.2"
@@ -264,7 +264,7 @@ function Set-FGTSystemInterface {
         [string]$role,
         [Parameter (Mandatory = $false)]
         [ValidateSet('https', 'ping', 'fgfm', 'capwap', 'ssh', 'snmp', 'ftm', 'radius-acct', 'ftm', IgnoreCase = $false)]
-        [string[]]$admin_access,
+        [string[]]$allowaccess,
         [Parameter (Mandatory = $false)]
         [ValidateSet('static', 'dhcp', IgnoreCase = $false)]
         [string]$mode,
@@ -314,8 +314,8 @@ function Set-FGTSystemInterface {
         if ( $PsBoundParameters.ContainsKey('status') ) {
             $_interface | add-member -name "status" -membertype NoteProperty -Value $status
         }
-        if ( $PsBoundParameters.ContainsKey('admin_access') ) {
-            $allowaccess = $admin_access -join " "
+        if ( $PsBoundParameters.ContainsKey('allowaccess') ) {
+            $allowaccess = $allowaccess -join " "
             $_interface | add-member -name "allowaccess" -membertype NoteProperty -Value $allowaccess
         }
 
