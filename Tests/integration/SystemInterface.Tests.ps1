@@ -327,14 +327,14 @@ Describe "Set System Interface" {
     }
 
     It "Set System Interface DHCP Relay" {
-        Set-FGTSystemInterface -name $pester_int1 -dhcprelayip "10.0.0.1", "10.0.0.2"
+        Set-FGTSystemInterface -name $pester_int1 -dhcprelayip "192.0.2.1", "192.0.2.2"
         $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.'dhcp-relay-ip' | Should -Be '"10.0.0.1" "10.0.0.2" '
+        $interface.'dhcp-relay-ip' | Should -Be '"192.0.2.2" "192.0.2.2" '
         $interface.'dhcp-relay-service' | Should -Be "enable"
     }
 
     It "Set System Interface DHCP Relay then remove" {
-        Set-FGTSystemInterface -name $pester_int1 -dhcprelayip "10.0.0.1", "10.0.0.2"
+        Set-FGTSystemInterface -name $pester_int1 -dhcprelayip "192.0.2.1", "192.0.2.2"
         Set-FGTSystemInterface -name $pester_int1 -dhcprelayip $null
         $interface = Get-FGTSystemInterface -name $pester_int1
         $interface.'dhcp-relay-service' | Should -Be "disable"
