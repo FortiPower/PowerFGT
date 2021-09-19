@@ -45,9 +45,6 @@ function Add-FGTFirewallAddress {
     #>
 
     Param(
-        [Parameter (Mandatory = $false, DontShow)]
-        [Obsolete("Use -ip or -fqdn instead")]
-        [string]$type,
         [Parameter (Mandatory = $true)]
         [string]$name,
         [Parameter (Mandatory = $false, ParameterSetName = "fqdn")]
