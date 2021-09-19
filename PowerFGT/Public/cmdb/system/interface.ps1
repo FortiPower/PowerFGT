@@ -96,7 +96,7 @@ function Add-FGTSystemInterface {
         }
 
         if ( $PsBoundParameters.ContainsKey('allowaccess') ) {
-            $allowaccess = $allowaccess -join " "
+            [string]$allowaccess = $allowaccess -join " "
             $_interface | add-member -name "allowaccess" -membertype NoteProperty -Value $allowaccess
         }
 
@@ -314,7 +314,7 @@ function Set-FGTSystemInterface {
             $_interface | add-member -name "status" -membertype NoteProperty -Value $status
         }
         if ( $PsBoundParameters.ContainsKey('allowaccess') ) {
-            $allowaccess = $allowaccess -join " "
+            [string]$allowaccess = $allowaccess -join " "
             $_interface | add-member -name "allowaccess" -membertype NoteProperty -Value $allowaccess
         }
 
