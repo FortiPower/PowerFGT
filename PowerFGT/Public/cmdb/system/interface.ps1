@@ -234,7 +234,7 @@ function Set-FGTSystemInterface {
             $name = $interface.name
         }
 
-        if ($PSCmdlet.ShouldProcess($name, 'Set interface vlan')) {
+        if ($PSCmdlet.ShouldProcess($name, 'Set interface')) {
             $uri = "api/v2/cmdb/system/interface/$name"
             $response = Invoke-FGTRestMethod -uri $uri -method 'PUT' -body $_interface -connection $connection @invokeParams
             $response.results
