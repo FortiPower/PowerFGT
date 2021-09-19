@@ -15,7 +15,7 @@ function Add-FGTSystemInterface {
         Add an interface (Type, Role, Vlan, Address IP... )
 
         .EXAMPLE
-        Add-FGTSystemInterface -name PowerFGT -role lan -mode static -vdom_interface root -interface port10 -vlan_id 10
+        Add-FGTSystemInterface -name PowerFGT -role lan -mode static -interface port10 -vlan_id 10
 
         This creates a new interface using only mandatory parameters.
 
@@ -53,8 +53,8 @@ function Add-FGTSystemInterface {
         [string]$ip,
         [Parameter (Mandatory = $false)]
         [string]$netmask,
-        [Parameter (Mandatory = $true)]
-        [string]$vdom_interface,
+        [Parameter (Mandatory = $false)]
+        [string]$vdom_interface = "root",
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
