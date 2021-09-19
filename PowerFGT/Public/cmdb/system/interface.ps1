@@ -109,17 +109,17 @@ function Set-FGTSystemInterface {
         Modify the properties of an existing interface (admin acces, alias, status...)
 
         .EXAMPLE
-        Set-FGTSystemInterface -name PowerFGT -alias ALIAS_PowerFGT -role lan -mode static -address_mask 192.0.2.1/255.255.255.0  -admin_access ping,https -device_identification $false -connected $false
+        Get-FGTSystemInterface -name PowerFGT | Set-FGTSystemInterface -alias ALIAS_PowerFGT -role lan -mode static -ip 192.0.2.1 -netmask 255.255.255.0 -admin_access ping,https -device_identification $false -status up
 
         This modifies the interface named PowerFGT with an alias, the LAN role, in static mode with 192.0.2.1 as IP, with ping and https administrative access, and with device identification disable and not connected
 
         .EXAMPLE
-        Set-FGTSystemInterface -name PowerFGT -dhcprelayip "10.0.0.1","10.0.0.2"
+        Get-FGTSystemInterface -name PowerFGT | Set-FGTSystemInterface -dhcprelayip "10.0.0.1","10.0.0.2"
 
         This enables DHCP relay and sets 2 ip addresses to relay to.
 
         .EXAMPLE
-        Set-FGTSystemInterface -name PowerFGT -dhcprelayip $null
+        Get-FGTSystemInterface -name PowerFGT | Set-FGTSystemInterface -dhcprelayip $null
 
         This disables DCHP relay and clears the relay ip addresses
     #>
