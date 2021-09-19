@@ -15,7 +15,7 @@ function Add-FGTSystemInterface {
         Add an interface (Type, Role, Vlan, Address IP... )
 
         .EXAMPLE
-        Add-FGTSystemInterface -name PowerFGT -mode static -interface port10 -vlan_id 10
+        Add-FGTSystemInterface -name PowerFGT -interface port10 -vlan_id 10
 
         This creates a new interface using only mandatory parameters.
 
@@ -45,9 +45,9 @@ function Add-FGTSystemInterface {
         [string]$status = "up",
         [Parameter (Mandatory = $false)]
         [string]$device_identification = $false,
-        [Parameter (Mandatory = $true)]
+        [Parameter (Mandatory = $false)]
         [ValidateSet('static', 'dhcp')]
-        [string]$mode,
+        [string]$mode = 'static',
         [Parameter (Mandatory = $false)]
         [ValidateScript( { $_ -match [IPAddress]$_ })]
         [string]$ip,

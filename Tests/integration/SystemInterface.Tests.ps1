@@ -14,7 +14,7 @@ BeforeAll {
 Describe "Get System Interface" {
 
     BeforeAll {
-        Add-FGTSystemInterface -name $pester_int1 -mode static -interface $pester_port1 -vlan_id $pester_vlanid1
+        Add-FGTSystemInterface -name $pester_int1 -interface $pester_port1 -vlan_id $pester_vlanid1
     }
 
     It "Get interface does not throw an error" {
@@ -66,7 +66,7 @@ Describe "Add System Interface" {
     }
 
     It "Add System Interface with only mandatory parameters" {
-        Add-FGTSystemInterface -name $pester_int1 -mode static -interface $pester_port1 -vlan_id 10
+        Add-FGTSystemInterface -name $pester_int1 -interface $pester_port1 -vlan_id 10
         $interface = Get-FGTSystemInterface -name $pester_int1
         $interface.name | Should -Be $pester_int1
         $interface.type | Should -Be "vlan"
@@ -97,7 +97,7 @@ Describe "Add System Interface" {
 Describe "Set System Interface" {
 
     BeforeAll {
-        Add-FGTSystemInterface -name $pester_int1 -mode static -interface $pester_port1 -vlan_id $pester_vlanid1
+        Add-FGTSystemInterface -name $pester_int1 -interface $pester_port1 -vlan_id $pester_vlanid1
     }
 
     It "Set System Interface alias" {
@@ -176,7 +176,7 @@ Describe "Set System Interface" {
 Describe "Remove System Interface" {
 
     BeforeEach {
-        Add-FGTSystemInterface -name $pester_int1 -mode static -interface $pester_port1 -vlan_id $pester_vlanid1
+        Add-FGTSystemInterface -name $pester_int1 -interface $pester_port1 -vlan_id $pester_vlanid1
     }
 
     It "Remove System Interface by pipeline" {
