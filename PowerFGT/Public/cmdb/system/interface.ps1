@@ -106,13 +106,7 @@ function Set-FGTSystemInterface {
         Modify an interface
 
         .DESCRIPTION
-        Modify the properties of an existing interface
-
-        .PARAMETER netmask
-        Specifies the subnet mask. Can be specified in the form '255.255.255.0' or '24'
-
-        .PARAMETER dhcprelayip
-        Enables DHCP relay on the interface with the supplied ip address(es). Specify $null to disable DHCP relay.
+        Modify the properties of an existing interface (admin acces, alias, status...)
 
         .EXAMPLE
         Set-FGTSystemInterface -name PowerFGT -alias ALIAS_PowerFGT -role lan -mode static -address_mask 192.0.2.1/255.255.255.0  -admin_access ping,https -device_identification $false -connected $false
