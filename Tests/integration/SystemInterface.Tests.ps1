@@ -10,13 +10,11 @@
 BeforeAll {
     Connect-FGT @invokeParams
 }
+
 Describe "Get System Interface" {
 
     BeforeAll {
         Add-FGTSystemInterface -name $pester_int1 -type vlan -role lan -mode static -vdom_interface root -interface $pester_port1 -vlan_id $pester_vlanid1
-    }
-    AfterAll {
-        Get-FGTSystemInterface -name $pester_int1 | Remove-FGTSystemInterface -Confirm:$false
     }
 
     It "Get interface does not throw an error" {
@@ -40,6 +38,9 @@ Describe "Get System Interface" {
         $interface.name | Should -Be $pester_port1
     }
 
+    AfterAll {
+        Get-FGTSystemInterface -name $pester_int1 | Remove-FGTSystemInterface -Confirm:$false
+    }
 }
 
 Describe "Add System Interface" {
@@ -81,9 +82,6 @@ Describe "Set System Interface" {
 
     BeforeAll {
         Add-FGTSystemInterface -name $pester_int1 -type vlan -role lan -mode static -vdom_interface root -interface $pester_port1 -vlan_id $pester_vlanid1
-    }
-    AfterAll {
-        Get-FGTSystemInterface -name $pester_int1 | Remove-FGTSystemInterface -Confirm:$false
     }
 
     It "Set System Interface alias" {
@@ -153,6 +151,10 @@ Describe "Set System Interface" {
         $interface = Get-FGTSystemInterface -name $pester_int1
         $interface.'dhcp-relay-service' | Should -Be "disable"
     }
+
+    AfterAll {
+        Get-FGTSystemInterface -name $pester_int1 | Remove-FGTSystemInterface -Confirm:$false
+    }
 }
 
 Describe "Remove System Interface" {
@@ -162,7 +164,7 @@ Describe "Remove System Interface" {
     }
 
     It "Remove System Interface by pipeline" {
-        Get-FGTSystemInterface -name $pester_int1 | Remove-FGTSystemInterface -Confirm:$false
+        Get-FGTSystemInterface -name $pester_int1 | Remove-FGTSystemInterface -confirm:$false
         $interface = Get-FGTSystemInterface -name $pester_int1
         $interface | Should -Be $NULL
     }
