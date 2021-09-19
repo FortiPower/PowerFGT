@@ -252,7 +252,7 @@ function Add-FGTSystemInterface {
         Add an interface
 
         .DESCRIPTION
-        Add an interface
+        Add an interface (Type, Role, Vlan, Address IP... )
 
         .EXAMPLE
         Add-FGTSystemInterface -name PowerFGT -type vlan -role lan -mode static -vdom_interface root -interface port10 -vlan_id 10
