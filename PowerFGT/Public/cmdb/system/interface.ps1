@@ -4,6 +4,128 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
+
+function Add-FGTSystemInterface {
+
+    <#
+        .SYNOPSIS
+        Add an interface
+
+        .DESCRIPTION
+        Add an interface (Type, Role, Vlan, Address IP... )
+
+        .EXAMPLE
+        Add-FGTSystemInterface -name PowerFGT -type vlan -role lan -mode static -vdom_interface root -interface port10 -vlan_id 10
+
+        This creates a new interface using only mandatory parameters.
+
+        .EXAMPLE
+        Add-FGTSystemInterface -name PowerFGT -type vlan -alias Alias_PowerFGT -role lan -vlan_id 10 -interface port10 -admin_access https,ping,ssh -status up -device_identification $true -mode static -ip 192.0.2.1 -netmask 255.255.255.0 -vdom_interface root
+
+        Create an interface named PowerFGT with alias Alias_PowerFGT, role lan with vlan id 10 on interface port10. Administrative access by https and ssh, ping authorize on ip 192.0.2.1 and state connected.
+    #>
+    [CmdletBinding(DefaultParameterSetName = 'NoIP')]
+    Param(
+        [Parameter (Mandatory = $true, Position = 1)]
+        [ValidateLength(1, 15)]
+        [string]$name,
+        [Parameter (Mandatory = $true)]
+        [ValidateSet("physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "hard-switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "hdlc", "switch-vlan", "emac-vlan")]
+        [string]$type,
+        [Parameter (Mandatory = $false)]
+        [string]$alias,
+        [Parameter (Mandatory = $true)]
+        [ValidateSet('lan', 'wan', 'dmz', 'undefined')]
+        [string]$role,
+        [Parameter (Mandatory = $true)]
+        [int]$vlan_id,
+        [Parameter (Mandatory = $true)]
+        [string]$interface,
+        [Parameter (Mandatory = $false)]
+        [ValidateSet('https', 'ping', 'fgfm', 'capwap', 'ssh', 'snmp', 'ftm', 'radius-acct', 'ftm')]
+        [string[]]$admin_access,
+        [Parameter (Mandatory = $false)]
+        [ValidateSet('up', 'down')]
+        [string]$status = "up",
+        [Parameter (Mandatory = $false)]
+        [string]$device_identification = $false,
+        [Parameter (Mandatory = $true)]
+        [ValidateSet('static', 'dhcp')]
+        [string]$mode,
+        [Parameter (ParameterSetName = 'IP', Mandatory = $true)]
+        [ValidateScript( { $_ -match [IPAddress]$_ })]
+        [string]$ip,
+        [Parameter (ParameterSetName = 'IP', Mandatory = $true)]
+        [string]$netmask,
+        [Parameter (Mandatory = $true)]
+        [string]$vdom_interface,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/system/interface"
+        $_interface = new-Object -TypeName PSObject
+
+        $_interface | add-member -name "name" -membertype NoteProperty -Value $name
+        $_interface | add-member -name "type" -membertype NoteProperty -Value $type
+        $_interface | add-member -name "role" -membertype NoteProperty -Value $role.ToLower()
+        $_interface | add-member -name "interface" -membertype NoteProperty -Value $interface
+        $_interface | add-member -name "mode" -membertype NoteProperty -Value $mode.ToLower()
+        $_interface | add-member -name "vdom" -membertype NoteProperty -Value $vdom_interface
+
+        if ( $PsBoundParameters.ContainsKey('alias') ) {
+            $_interface | add-member -name "alias" -membertype NoteProperty -Value $alias
+        }
+
+        if ( $PsBoundParameters.ContainsKey('vlan_id') ) {
+            $_interface | add-member -name "vlanid" -membertype NoteProperty -Value $vlan_id
+        }
+
+        if ( $PsBoundParameters.ContainsKey('admin_access') ) {
+            $allowaccess = $admin_access.ToLower() -join " "
+            $_interface | add-member -name "allowaccess" -membertype NoteProperty -Value $allowaccess
+        }
+
+        if ( $PsBoundParameters.ContainsKey('ip') -and $PsBoundParameters.ContainsKey('netmask')) {
+            $_interface | add-member -name "ip" -membertype NoteProperty -Value "$ip/$netmask"
+        }
+
+        if ( $PsBoundParameters.ContainsKey('status') ) {
+            $_interface | add-member -name "status" -membertype NoteProperty -Value $status.ToLower()
+        }
+
+        switch ($device_identification) {
+            $true {
+                $device_identification = "enable"
+            }
+            $false {
+                $device_identification = "disable"
+            }
+        }
+
+        $_interface | add-member -name "device-identification" -membertype NoteProperty -Value $device_identification
+
+        $null = Invoke-FGTRestMethod -uri $uri -method 'POST' -body $_interface -connection $connection @invokeParams
+
+        Get-FGTSystemInterface -name $name -connection $connection @invokeParams
+    }
+
+    End {
+    }
+}
+
 function Get-FGTSystemInterface {
 
     <#
@@ -233,127 +355,6 @@ function Set-FGTSystemInterface {
             $null = Invoke-FGTRestMethod -uri $uri -method 'PUT' -body $_interface -connection $connection @invokeParams
             Get-FGTSystemInterface -name $name -connection $connection @invokeParams
         }
-    }
-
-    End {
-    }
-}
-
-function Add-FGTSystemInterface {
-
-    <#
-        .SYNOPSIS
-        Add an interface
-
-        .DESCRIPTION
-        Add an interface (Type, Role, Vlan, Address IP... )
-
-        .EXAMPLE
-        Add-FGTSystemInterface -name PowerFGT -type vlan -role lan -mode static -vdom_interface root -interface port10 -vlan_id 10
-
-        This creates a new interface using only mandatory parameters.
-
-        .EXAMPLE
-        Add-FGTSystemInterface -name PowerFGT -type vlan -alias Alias_PowerFGT -role lan -vlan_id 10 -interface port10 -admin_access https,ping,ssh -status up -device_identification $true -mode static -ip 192.0.2.1 -netmask 255.255.255.0 -vdom_interface root
-
-        Create an interface named PowerFGT with alias Alias_PowerFGT, role lan with vlan id 10 on interface port10. Administrative access by https and ssh, ping authorize on ip 192.0.2.1 and state connected.
-    #>
-    [CmdletBinding(DefaultParameterSetName = 'NoIP')]
-    Param(
-        [Parameter (Mandatory = $true, Position = 1)]
-        [ValidateLength(1, 15)]
-        [string]$name,
-        [Parameter (Mandatory = $true)]
-        [ValidateSet("physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "hard-switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "hdlc", "switch-vlan", "emac-vlan")]
-        [string]$type,
-        [Parameter (Mandatory = $false)]
-        [string]$alias,
-        [Parameter (Mandatory = $true)]
-        [ValidateSet('lan', 'wan', 'dmz', 'undefined')]
-        [string]$role,
-        [Parameter (Mandatory = $true)]
-        [int]$vlan_id,
-        [Parameter (Mandatory = $true)]
-        [string]$interface,
-        [Parameter (Mandatory = $false)]
-        [ValidateSet('https', 'ping', 'fgfm', 'capwap', 'ssh', 'snmp', 'ftm', 'radius-acct', 'ftm')]
-        [string[]]$admin_access,
-        [Parameter (Mandatory = $false)]
-        [ValidateSet('up', 'down')]
-        [string]$status = "up",
-        [Parameter (Mandatory = $false)]
-        [string]$device_identification = $false,
-        [Parameter (Mandatory = $true)]
-        [ValidateSet('static', 'dhcp')]
-        [string]$mode,
-        [Parameter (ParameterSetName = 'IP', Mandatory = $true)]
-        [ValidateScript( { $_ -match [IPAddress]$_ })]
-        [string]$ip,
-        [Parameter (ParameterSetName = 'IP', Mandatory = $true)]
-        [string]$netmask,
-        [Parameter (Mandatory = $true)]
-        [string]$vdom_interface,
-        [Parameter(Mandatory = $false)]
-        [String[]]$vdom,
-        [Parameter(Mandatory = $false)]
-        [psobject]$connection = $DefaultFGTConnection
-    )
-
-    Begin {
-    }
-
-    Process {
-
-        $invokeParams = @{ }
-        if ( $PsBoundParameters.ContainsKey('vdom') ) {
-            $invokeParams.add( 'vdom', $vdom )
-        }
-
-        $uri = "api/v2/cmdb/system/interface"
-        $_interface = new-Object -TypeName PSObject
-
-        $_interface | add-member -name "name" -membertype NoteProperty -Value $name
-        $_interface | add-member -name "type" -membertype NoteProperty -Value $type
-        $_interface | add-member -name "role" -membertype NoteProperty -Value $role.ToLower()
-        $_interface | add-member -name "interface" -membertype NoteProperty -Value $interface
-        $_interface | add-member -name "mode" -membertype NoteProperty -Value $mode.ToLower()
-        $_interface | add-member -name "vdom" -membertype NoteProperty -Value $vdom_interface
-
-        if ( $PsBoundParameters.ContainsKey('alias') ) {
-            $_interface | add-member -name "alias" -membertype NoteProperty -Value $alias
-        }
-
-        if ( $PsBoundParameters.ContainsKey('vlan_id') ) {
-            $_interface | add-member -name "vlanid" -membertype NoteProperty -Value $vlan_id
-        }
-
-        if ( $PsBoundParameters.ContainsKey('admin_access') ) {
-            $allowaccess = $admin_access.ToLower() -join " "
-            $_interface | add-member -name "allowaccess" -membertype NoteProperty -Value $allowaccess
-        }
-
-        if ( $PsBoundParameters.ContainsKey('ip') -and $PsBoundParameters.ContainsKey('netmask')) {
-            $_interface | add-member -name "ip" -membertype NoteProperty -Value "$ip/$netmask"
-        }
-
-        if ( $PsBoundParameters.ContainsKey('status') ) {
-            $_interface | add-member -name "status" -membertype NoteProperty -Value $status.ToLower()
-        }
-
-        switch ($device_identification) {
-            $true {
-                $device_identification = "enable"
-            }
-            $false {
-                $device_identification = "disable"
-            }
-        }
-
-        $_interface | add-member -name "device-identification" -membertype NoteProperty -Value $device_identification
-
-        $null = Invoke-FGTRestMethod -uri $uri -method 'POST' -body $_interface -connection $connection @invokeParams
-
-        Get-FGTSystemInterface -name $name -connection $connection @invokeParams
     }
 
     End {
