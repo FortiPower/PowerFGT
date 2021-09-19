@@ -254,9 +254,6 @@ function Add-FGTSystemInterface {
         .DESCRIPTION
         Add an interface
 
-        .PARAMETER netmask
-        Specifies the subnet mask. Can be specified in the form '255.255.255.0' or '24'
-
         .EXAMPLE
         Add-FGTSystemInterface -name PowerFGT -type vlan -role lan -mode static -vdom_interface root -interface port10 -vlan_id 10
 
