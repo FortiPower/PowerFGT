@@ -66,12 +66,12 @@ Describe "Add System Interface" {
     }
 
     It "Add System Interface with only mandatory parameters" {
-        Add-FGTSystemInterface -name $pester_int1 -interface $pester_port1 -vlan_id 10
+        Add-FGTSystemInterface -name $pester_int1 -interface $pester_port1 -vlan_id $pester_vlanid1
         $interface = Get-FGTSystemInterface -name $pester_int1
         $interface.name | Should -Be $pester_int1
         $interface.type | Should -Be "vlan"
         $interface.role | Should -Be "lan"
-        $interface.vlanid | Should -Be 10
+        $interface.vlanid | Should -Be $pester_vlanid1
         $interface.interface | Should -Be $pester_port1
         $interface.mode | Should -Be "static"
     }
