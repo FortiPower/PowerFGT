@@ -105,7 +105,7 @@ function Add-FGTSystemInterface {
         }
 
         if ( $PsBoundParameters.ContainsKey('status') ) {
-            $_interface | add-member -name "status" -membertype NoteProperty -Value $status.ToLower()
+            $_interface | add-member -name "status" -membertype NoteProperty -Value $status
         }
 
         switch ($device_identification) {
