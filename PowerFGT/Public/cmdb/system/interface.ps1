@@ -357,8 +357,8 @@ function Add-FGTSystemInterface {
 
         $_interface | add-member -name "device-identification" -membertype NoteProperty -Value $device_identification
 
-        $response = Invoke-FGTRestMethod -uri $uri -method 'POST' -body $_interface -connection $connection @invokeParams
-        $response.results
+        $null = Invoke-FGTRestMethod -uri $uri -method 'POST' -body $_interface -connection $connection @invokeParams
+
         Get-FGTSystemInterface -name $name -connection $connection @invokeParams
     }
 
