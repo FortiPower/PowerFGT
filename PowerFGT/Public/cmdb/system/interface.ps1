@@ -15,29 +15,25 @@ function Add-FGTSystemInterface {
         Add an interface (Type, Role, Vlan, Address IP... )
 
         .EXAMPLE
-        Add-FGTSystemInterface -name PowerFGT -type vlan -role lan -mode static -vdom_interface root -interface port10 -vlan_id 10
+        Add-FGTSystemInterface -name PowerFGT -role lan -mode static -vdom_interface root -interface port10 -vlan_id 10
 
         This creates a new interface using only mandatory parameters.
 
         .EXAMPLE
-        Add-FGTSystemInterface -name PowerFGT -type vlan -alias Alias_PowerFGT -role lan -vlan_id 10 -interface port10 -admin_access https,ping,ssh -status up -device_identification $true -mode static -ip 192.0.2.1 -netmask 255.255.255.0 -vdom_interface root
+        Add-FGTSystemInterface -name PowerFGT -alias Alias_PowerFGT -role lan -vlan_id 10 -interface port10 -admin_access https,ping,ssh -status up -device_identification $true -mode static -ip 192.0.2.1 -netmask 255.255.255.0 -vdom_interface root
 
         Create an interface named PowerFGT with alias Alias_PowerFGT, role lan with vlan id 10 on interface port10. Administrative access by https and ssh, ping authorize on ip 192.0.2.1 and state connected.
     #>
-    [CmdletBinding(DefaultParameterSetName = 'NoIP')]
     Param(
         [Parameter (Mandatory = $true, Position = 1)]
         [ValidateLength(1, 15)]
         [string]$name,
-        [Parameter (Mandatory = $true)]
-        [ValidateSet("physical", "vlan", "aggregate", "redundant", "tunnel", "vdom-link", "loopback", "switch", "hard-switch", "vap-switch", "wl-mesh", "fext-wan", "vxlan", "hdlc", "switch-vlan", "emac-vlan")]
-        [string]$type,
         [Parameter (Mandatory = $false)]
         [string]$alias,
         [Parameter (Mandatory = $true)]
         [ValidateSet('lan', 'wan', 'dmz', 'undefined')]
         [string]$role,
-        [Parameter (Mandatory = $true)]
+        [Parameter (Mandatory = $true, ParameterSetName = "vlan")]
         [int]$vlan_id,
         [Parameter (Mandatory = $true)]
         [string]$interface,
@@ -52,10 +48,10 @@ function Add-FGTSystemInterface {
         [Parameter (Mandatory = $true)]
         [ValidateSet('static', 'dhcp')]
         [string]$mode,
-        [Parameter (ParameterSetName = 'IP', Mandatory = $true)]
+        [Parameter (Mandatory = $false)]
         [ValidateScript( { $_ -match [IPAddress]$_ })]
         [string]$ip,
-        [Parameter (ParameterSetName = 'IP', Mandatory = $true)]
+        [Parameter (Mandatory = $false)]
         [string]$netmask,
         [Parameter (Mandatory = $true)]
         [string]$vdom_interface,
@@ -79,7 +75,14 @@ function Add-FGTSystemInterface {
         $_interface = new-Object -TypeName PSObject
 
         $_interface | add-member -name "name" -membertype NoteProperty -Value $name
-        $_interface | add-member -name "type" -membertype NoteProperty -Value $type
+
+        switch ( $PSCmdlet.ParameterSetName ) {
+            "vlan" {
+                $_interface | add-member -name "type" -membertype NoteProperty -Value "vlan"
+            }
+            default { }
+        }
+
         $_interface | add-member -name "role" -membertype NoteProperty -Value $role.ToLower()
         $_interface | add-member -name "interface" -membertype NoteProperty -Value $interface
         $_interface | add-member -name "mode" -membertype NoteProperty -Value $mode.ToLower()
