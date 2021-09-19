@@ -41,6 +41,7 @@ function Get-FGTSystemDns {
     #>
 
     [CmdletBinding(DefaultParameterSetName = "default")]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "")]
     Param(
         [Parameter (Mandatory = $false)]
         [Parameter (ParameterSetName = "filter")]
