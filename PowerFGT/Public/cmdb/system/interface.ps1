@@ -31,14 +31,14 @@ function Add-FGTSystemInterface {
         [Parameter (Mandatory = $false)]
         [string]$alias,
         [Parameter (Mandatory = $false)]
-        [ValidateSet('lan', 'wan', 'dmz', 'undefined')]
+        [ValidateSet('lan', 'wan', 'dmz', 'undefined', IgnoreCase = $false)]
         [string]$role = "lan",
         [Parameter (Mandatory = $true, ParameterSetName = "vlan")]
         [int]$vlan_id,
         [Parameter (Mandatory = $true)]
         [string]$interface,
         [Parameter (Mandatory = $false)]
-        [ValidateSet('https', 'ping', 'fgfm', 'capwap', 'ssh', 'snmp', 'ftm', 'radius-acct', 'ftm')]
+        [ValidateSet('https', 'ping', 'fgfm', 'capwap', 'ssh', 'snmp', 'ftm', 'radius-acct', 'ftm', IgnoreCase = $false)]
         [string[]]$admin_access,
         [Parameter (Mandatory = $false)]
         [ValidateSet('up', 'down')]
@@ -46,7 +46,7 @@ function Add-FGTSystemInterface {
         [Parameter (Mandatory = $false)]
         [string]$device_identification = $false,
         [Parameter (Mandatory = $false)]
-        [ValidateSet('static', 'dhcp')]
+        [ValidateSet('static', 'dhcp', IgnoreCase = $false)]
         [string]$mode = 'static',
         [Parameter (Mandatory = $false)]
         [ValidateScript( { $_ -match [IPAddress]$_ })]
@@ -83,9 +83,9 @@ function Add-FGTSystemInterface {
             default { }
         }
 
-        $_interface | add-member -name "role" -membertype NoteProperty -Value $role.ToLower()
+        $_interface | add-member -name "role" -membertype NoteProperty -Value $role
         $_interface | add-member -name "interface" -membertype NoteProperty -Value $interface
-        $_interface | add-member -name "mode" -membertype NoteProperty -Value $mode.ToLower()
+        $_interface | add-member -name "mode" -membertype NoteProperty -Value $mode
         $_interface | add-member -name "vdom" -membertype NoteProperty -Value $vdom_interface
 
         if ( $PsBoundParameters.ContainsKey('alias') ) {
@@ -97,7 +97,7 @@ function Add-FGTSystemInterface {
         }
 
         if ( $PsBoundParameters.ContainsKey('admin_access') ) {
-            $allowaccess = $admin_access.ToLower() -join " "
+            $allowaccess = $admin_access -join " "
             $_interface | add-member -name "allowaccess" -membertype NoteProperty -Value $allowaccess
         }
 
@@ -260,13 +260,13 @@ function Set-FGTSystemInterface {
         [Parameter (Mandatory = $false)]
         [string]$alias,
         [Parameter (Mandatory = $false)]
-        [ValidateSet('lan', 'wan', 'dmz', 'undefined')]
+        [ValidateSet('lan', 'wan', 'dmz', 'undefined', IgnoreCase = $false)]
         [string]$role,
         [Parameter (Mandatory = $false)]
-        [ValidateSet('https', 'ping', 'fgfm', 'capwap', 'ssh', 'snmp', 'ftm', 'radius-acct', 'ftm')]
+        [ValidateSet('https', 'ping', 'fgfm', 'capwap', 'ssh', 'snmp', 'ftm', 'radius-acct', 'ftm', IgnoreCase = $false)]
         [string[]]$admin_access,
         [Parameter (Mandatory = $false)]
-        [ValidateSet('static', 'dhcp')]
+        [ValidateSet('static', 'dhcp', IgnoreCase = $false)]
         [string]$mode,
         [Parameter (Mandatory = $false)]
         [ValidateScript( { $_ -match [IPAddress]$_ })]
@@ -274,7 +274,7 @@ function Set-FGTSystemInterface {
         [Parameter (Mandatory = $false)]
         [string]$netmask,
         [Parameter (Mandatory = $false)]
-        [ValidateSet('up', 'down')]
+        [ValidateSet('up', 'down', IgnoreCase = $false)]
         [string]$status,
         [Parameter (Mandatory = $false)]
         [string]$device_identification,
@@ -300,11 +300,11 @@ function Set-FGTSystemInterface {
         $_interface = new-Object -TypeName PSObject
 
         if ( $PsBoundParameters.ContainsKey('role') ) {
-            $_interface | add-member -name "role" -membertype NoteProperty -Value $role.ToLower()
+            $_interface | add-member -name "role" -membertype NoteProperty -Value $role
         }
 
         if ( $PsBoundParameters.ContainsKey('mode') ) {
-            $_interface | add-member -name "mode" -membertype NoteProperty -Value $mode.ToLower()
+            $_interface | add-member -name "mode" -membertype NoteProperty -Value $mode
         }
 
         if ( $PsBoundParameters.ContainsKey('alias') ) {
@@ -312,10 +312,10 @@ function Set-FGTSystemInterface {
         }
 
         if ( $PsBoundParameters.ContainsKey('status') ) {
-            $_interface | add-member -name "status" -membertype NoteProperty -Value $status.ToLower()
+            $_interface | add-member -name "status" -membertype NoteProperty -Value $status
         }
         if ( $PsBoundParameters.ContainsKey('admin_access') ) {
-            $allowaccess = $admin_access.ToLower() -join " "
+            $allowaccess = $admin_access -join " "
             $_interface | add-member -name "allowaccess" -membertype NoteProperty -Value $allowaccess
         }
 
