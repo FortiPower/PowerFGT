@@ -33,14 +33,30 @@ Describe "Get System Interface" {
         $interface.count | Should -Not -Be $NULL
     }
 
-    It "Get interface pester_port1" {
-        $interface = Get-FGTSystemInterface -name $pester_port1
-        $interface.name | Should -Be $pester_port1
+    It "Get interface ($pester_int1)" {
+        $interface = Get-FGTSystemInterface -name $pester_int1
+        $interface.name | Should -Be $pester_int1
+    }
+
+    It "Get interface ($pester_int1) and confirm (via Confirm-FGTInterface)" {
+        $interface = Get-FGTSystemInterface -name $pester_int1
+        Confirm-FGTInterface $interface | Should -Be $true
+    }
+
+    Context "Search" {
+
+        It "Search interface by name ($pester_int1)" {
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            @($interface).count | Should -be 1
+            $interface.name | Should -Be $pester_int1
+        }
+
     }
 
     AfterAll {
         Get-FGTSystemInterface -name $pester_int1 | Remove-FGTSystemInterface -Confirm:$false
     }
+
 }
 
 Describe "Add System Interface" {
