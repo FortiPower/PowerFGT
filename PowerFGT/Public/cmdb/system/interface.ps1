@@ -43,7 +43,7 @@ function Add-FGTSystemInterface {
         [ValidateSet('up', 'down')]
         [string]$status = "up",
         [Parameter (Mandatory = $false)]
-        [string]$device_identification = $false,
+        [string]$device_identification,
         [Parameter (Mandatory = $false)]
         [ValidateSet('static', 'dhcp', IgnoreCase = $false)]
         [string]$mode = 'static',
@@ -108,16 +108,18 @@ function Add-FGTSystemInterface {
             $_interface | add-member -name "status" -membertype NoteProperty -Value $status
         }
 
-        switch ($device_identification) {
-            $true {
-                $device_identification = "enable"
+        if ( $PsBoundParameters.ContainsKey('device_identification') ) {
+            switch ($device_identification) {
+                $true {
+                    $device_identification = "enable"
+                }
+                $false {
+                    $device_identification = "disable"
+                }
             }
-            $false {
-                $device_identification = "disable"
-            }
-        }
 
-        $_interface | add-member -name "device-identification" -membertype NoteProperty -Value $device_identification
+            $_interface | add-member -name "device-identification" -membertype NoteProperty -Value $device_identification
+        }
 
         $null = Invoke-FGTRestMethod -uri $uri -method 'POST' -body $_interface -connection $connection @invokeParams
 
