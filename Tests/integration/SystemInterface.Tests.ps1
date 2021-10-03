@@ -273,69 +273,69 @@ Describe "Set System Interface" {
     }
 
     It "Set System Interface alias" {
-        Set-FGTSystemInterface -name $pester_int1 -alias Set_$pester_int1
+        Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -alias Set_$pester_int1
         $interface = Get-FGTSystemInterface -name $pester_int1
         $interface.alias | Should -Be "Set_$pester_int1"
     }
 
     It "Set System Interface role" {
-        Set-FGTSystemInterface -name $pester_int1 -role dmz
+        Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -role dmz
         $interface = Get-FGTSystemInterface -name $pester_int1
         $interface.role | Should -Be "dmz"
     }
 
     It "Set System Interface IP (and Netmask)" {
-        Set-FGTSystemInterface -name $pester_int1 -ip 192.0.2.1 -netmask 255.255.255.0
+        Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -ip 192.0.2.1 -netmask 255.255.255.0
         $interface = Get-FGTSystemInterface -name $pester_int1
         $interface.ip | Should -Be "192.0.2.1 255.255.255.0"
     }
 
     It "Set System Interface status (up)" {
-        Set-FGTSystemInterface -name $pester_int1 -status down
+        Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -status down
         $interface = Get-FGTSystemInterface -name $pester_int1
         $interface.status | Should -Be "down"
     }
 
     It "Set System Interface status (down)" {
-        Set-FGTSystemInterface -name $pester_int1 -status up
+        Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -status up
         $interface = Get-FGTSystemInterface -name $pester_int1
         $interface.status | Should -Be "up"
     }
 
     It "Set System Interface device-identification enabled" {
-        Set-FGTSystemInterface -name $pester_int1 -device_identification $true
+        Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -device_identification $true
         $interface = Get-FGTSystemInterface -name $pester_int1
         $interface."device-identification" | Should -Be "enable"
     }
 
     It "Set System Interface device-identification disabled" {
-        Set-FGTSystemInterface -name $pester_int1 -device_identification $false
+        Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -device_identification $false
         $interface = Get-FGTSystemInterface -name $pester_int1
         $interface."device-identification" | Should -Be "disable"
     }
 
     It "Set System Interface mode (DHCP)" {
-        Set-FGTSystemInterface -name $pester_int1 -mode dhcp
+        Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -mode dhcp
         $interface = Get-FGTSystemInterface -name $pester_int1
         $interface.mode | Should -Be "dhcp"
     }
 
     It "Set System Interface Administrative Access (HTTPS, SSH)" {
-        Set-FGTSystemInterface -name $pester_int1 -allowaccess https, ssh
+        Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -allowaccess https, ssh
         $interface = Get-FGTSystemInterface -name $pester_int1
         $interface.allowaccess | Should -Be "https ssh"
     }
 
     It "Set System Interface DHCP Relay" {
-        Set-FGTSystemInterface -name $pester_int1 -dhcprelayip "192.0.2.1", "192.0.2.2"
+        Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -dhcprelayip "192.0.2.1", "192.0.2.2"
         $interface = Get-FGTSystemInterface -name $pester_int1
         $interface.'dhcp-relay-ip' | Should -Be '"192.0.2.1" "192.0.2.2" '
         $interface.'dhcp-relay-service' | Should -Be "enable"
     }
 
     It "Set System Interface DHCP Relay then remove" {
-        Set-FGTSystemInterface -name $pester_int1 -dhcprelayip "192.0.2.1", "192.0.2.2"
-        Set-FGTSystemInterface -name $pester_int1 -dhcprelayip $null
+        Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -dhcprelayip "192.0.2.1", "192.0.2.2"
+        Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -dhcprelayip $null
         $interface = Get-FGTSystemInterface -name $pester_int1
         $interface.'dhcp-relay-service' | Should -Be "disable"
     }
