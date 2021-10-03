@@ -329,7 +329,7 @@ Describe "Set System Interface" {
     It "Set System Interface DHCP Relay" {
         Set-FGTSystemInterface -name $pester_int1 -dhcprelayip "192.0.2.1", "192.0.2.2"
         $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.'dhcp-relay-ip' | Should -Be '"192.0.2.2" "192.0.2.2" '
+        $interface.'dhcp-relay-ip' | Should -Be '"192.0.2.1" "192.0.2.2" '
         $interface.'dhcp-relay-service' | Should -Be "enable"
     }
 
