@@ -408,7 +408,7 @@ function Remove-FGTSystemInterface {
 
         $uri = "api/v2/cmdb/system/interface/$($interface.name)"
 
-        if ($PSCmdlet.ShouldProcess($interface.name, 'Remove interface vlan')) {
+        if ($PSCmdlet.ShouldProcess($interface.name, 'Remove interface')) {
             $null = Invoke-FGTRestMethod -uri $uri -method 'DELETE' -connection $connection @invokeParams
         }
     }
