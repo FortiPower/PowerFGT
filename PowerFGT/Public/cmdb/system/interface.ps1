@@ -252,12 +252,9 @@ function Set-FGTSystemInterface {
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
     Param(
-        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1, ParameterSetName = "IDObject")]
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript( { Confirm-FGTInterface $_ })]
         [psobject]$interface,
-        [Parameter (Mandatory = $true, Position = 1, ParameterSetName = "IDName")]
-        [ValidateLength(1, 15)]
-        [string]$name,
         [Parameter (Mandatory = $false)]
         [string]$alias,
         [Parameter (Mandatory = $false)]
@@ -297,6 +294,8 @@ function Set-FGTSystemInterface {
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
         }
+
+        $uri = "api/v2/cmdb/system/interface/$($interface.name)"
 
         $_interface = new-Object -TypeName PSObject
 
@@ -349,13 +348,7 @@ function Set-FGTSystemInterface {
             }
         }
 
-        # If the interface was not specified with -name an interface object must have been used
-        if ( -not $PsBoundParameters.ContainsKey('name') ) {
-            $name = $interface.name
-        }
-
-        if ($PSCmdlet.ShouldProcess($name, 'Set interface')) {
-            $uri = "api/v2/cmdb/system/interface/$name"
+        if ($PSCmdlet.ShouldProcess($interface.name, 'Set interface')) {
             $null = Invoke-FGTRestMethod -uri $uri -method 'PUT' -body $_interface -connection $connection @invokeParams
             Get-FGTSystemInterface -name $name -connection $connection @invokeParams
         }
