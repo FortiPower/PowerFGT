@@ -34,8 +34,10 @@ function Add-FGTSystemInterface {
         [string]$role = "lan",
         [Parameter (Mandatory = $true, ParameterSetName = "vlan")]
         [int]$vlan_id,
-        [Parameter (Mandatory = $true)]
+        [Parameter (Mandatory = $true, ParameterSetName = "vlan")]
         [string]$interface,
+        [Parameter (Mandatory = $true, ParameterSetName = "aggregate")]
+        [string[]]$member,
         [Parameter (Mandatory = $false)]
         [ValidateSet('https', 'ping', 'fgfm', 'capwap', 'ssh', 'snmp', 'ftm', 'radius-acct', 'ftm', IgnoreCase = $false)]
         [string[]]$allowaccess,
@@ -78,12 +80,15 @@ function Add-FGTSystemInterface {
         switch ( $PSCmdlet.ParameterSetName ) {
             "vlan" {
                 $_interface | add-member -name "type" -membertype NoteProperty -Value "vlan"
+                $_interface | add-member -name "interface" -membertype NoteProperty -Value $interface
+            }
+            "aggregate" {
+                $_interface | add-member -name "type" -membertype NoteProperty -Value "aggregate"
             }
             default { }
         }
 
         $_interface | add-member -name "role" -membertype NoteProperty -Value $role
-        $_interface | add-member -name "interface" -membertype NoteProperty -Value $interface
         $_interface | add-member -name "mode" -membertype NoteProperty -Value $mode
         $_interface | add-member -name "vdom" -membertype NoteProperty -Value $vdom_interface
 
@@ -93,6 +98,14 @@ function Add-FGTSystemInterface {
 
         if ( $PsBoundParameters.ContainsKey('vlan_id') ) {
             $_interface | add-member -name "vlanid" -membertype NoteProperty -Value $vlan_id
+        }
+
+        if ( $PsBoundParameters.ContainsKey('member') ) {
+            $members = @()
+            foreach ($m in $member) {
+                $members += @{"interface-name" = $m }
+            }
+            $_interface | add-member -name "member" -membertype NoteProperty -Value $members
         }
 
         if ( $PsBoundParameters.ContainsKey('allowaccess') ) {
