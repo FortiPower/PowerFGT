@@ -18,7 +18,7 @@ With this module (version 0.5.0) you can manage:
 - RoutePolicy (Get)
 - Service (Get)
 - Service Group (Get)
-- Static Route (Get)
+- Static Route (Add/Get/Remove)
 - System Global (Get)
 - System Settings (Get)
 - [VDOM](#vdom) (Get)
@@ -763,6 +763,74 @@ or delete it `Remove-SystemZone`.
     [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): Y
 ```
 
+### Static Route
+
+You can create a new Static Route `Add-FGTRouterStatic`, retrieve its information `Get-FGTRouterStatic`,
+or delete it `Remove-FGTRouterStatic`.
+
+```powershell
+# Get information about ALL Static Route (using Format Table)
+    Get-FGTRouterStatic | Format-Table
+    seq-num q_origin_key status dst                        src             gateway        distance weight priority device
+    ------- ------------ ------ ---                        ---             -------        -------- ------ -------- ------
+          2            2 enable 192.0.2.0 255.255.255.0    0.0.0.0 0.0.0.0 192.0.2.254          10      0        0 port1
+          3            3 enable 198.51.100.0 255.255.255.0 0.0.0.0 0.0.0.0 198.51.100.254       10      0        0 port2
+
+# Add Static Route to 192.0.2.0/24 from port1
+    Add-FGTRouterStatic -seq_num 2 -dst 192.0.2.0/24 -gateway 192.0.2.254 -device port1
+    seq-num                 : 2
+    q_origin_key            : 2
+    status                  : enable
+    dst                     : 192.0.2.0 255.255.255.0
+    src                     : 0.0.0.0 0.0.0.0
+    gateway                 : 192.0.2.254
+    distance                : 10
+    weight                  : 0
+    priority                : 0
+    device                  : port1
+    comment                 :
+    blackhole               : disable
+    dynamic-gateway         : disable
+    sdwan-zone              : {}
+    dstaddr                 :
+    internet-service        : 0
+    internet-service-custom :
+    link-monitor-exempt     : disable
+    vrf                     : 0
+    bfd                     : disable
+    [...]
+
+# Add Static Route to 198.51.100.0/24 from port2
+    Add-FGTRouterStatic -seq_num 3 -dst 198.51.100.0/24 -gateway 198.51.100.254 -device port2
+    seq-num                 : 3
+    q_origin_key            : 3
+    status                  : enable
+    dst                     : 198.51.100.0 255.255.255.0
+    src                     : 0.0.0.0 0.0.0.0
+    gateway                 : 198.51.100.254
+    distance                : 10
+    weight                  : 0
+    priority                : 0
+    device                  : port2
+    comment                 :
+    blackhole               : disable
+    dynamic-gateway         : disable
+    sdwan-zone              : {}
+    dstaddr                 :
+    internet-service        : 0
+    internet-service-custom :
+    link-monitor-exempt     : disable
+    vrf                     : 0
+    bfd                     : disable
+    [...]
+
+# Remove a Static Route
+    Get-FGTRouterStatic -filter_attribute seq-num -filter_type equal -filter_value 2 | Remove-FGTRouterStatic
+    Remove Static Route on Fortigate
+    Proceed with removal of Static Route ?
+    [Y] Yes  [N] No  [?] Help (default is "N"): y
+```
+
 ### Invoke API
 for example to get Fortigate System Global Info
 
@@ -1002,6 +1070,7 @@ Add-FGTFirewallVipGroup
 Add-FGTFirewallVipGroupMember
 Add-FGTSystemZone
 Add-FGTSystemZoneMember
+Add-FGTRouterStatic
 Confirm-FGTAddress
 Confirm-FGTAddressGroup
 Confirm-FGTFirewallPolicy
@@ -1059,6 +1128,7 @@ Remove-FGTFirewallVipGroup
 Remove-FGTFirewallVipGroupMember
 Remove-FGTSystemZone
 Remove-FGTSystemZoneMember
+Remove-FGTRouterStatic
 Set-FGTCipherSSL
 Set-FGTConnection
 Set-FGTFirewallAddress
