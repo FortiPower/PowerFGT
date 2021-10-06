@@ -64,4 +64,7 @@ $invokeParams.add('port', $port)
 #Make a connection for check info and store version (used for some test...)
 $fgt = Connect-FGT @invokeParams
 $fgt_version = $fgt.version
+
+$VersionIs64 = ($fgt_version -gt [version]"6.4.0" -and $fgt_version -lt [version]"6.5.0")
+
 Disconnect-FGT -confirm:$false

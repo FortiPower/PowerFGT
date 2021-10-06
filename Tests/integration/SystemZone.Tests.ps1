@@ -15,7 +15,7 @@ BeforeAll {
 Describe "Get zone" {
 
     BeforeAll {
-        Add-FGTSystemZone -name $pester_zone1
+        Add-FGTSystemZone -name $pester_zone1 -interfaces $pester_port1
     }
 
     It "Get Zones does not throw" {
@@ -61,18 +61,18 @@ Describe "Add zone" {
     }
 
     It "Add zone $pester_zone1 with intrazone deny" {
-        Add-FGTSystemZone -name $pester_zone1 -intrazone deny
+        Add-FGTSystemZone -name $pester_zone1 -intrazone deny -interfaces $pester_port1
         $zone = Get-FGTSystemZone -name $pester_zone1
         $zone.intrazone | Should -Be "deny"
     }
 
     It "Add zone $pester_zone1 with intrazone allow" {
-        Add-FGTSystemZone -name $pester_zone1 -intrazone allow
+        Add-FGTSystemZone -name $pester_zone1 -intrazone allow -interfaces $pester_port1
         $zone = Get-FGTSystemZone -name $pester_zone1
         $zone.intrazone | Should -Be "allow"
     }
 
-    It "Add zone $pester_zone1 with 0 interface" {
+    It "Add zone $pester_zone1 with 0 interface" -Skip:$VersionIs64 {
         Add-FGTSystemZone -name $pester_zone1
         $zone = Get-FGTSystemZone -name $pester_zone1
         $zone.interface | Should -Be $NULL
@@ -104,7 +104,7 @@ Describe "Add zone" {
 
     It "Try to add zone $pester_zone1 (but there is already an object with same name)" {
         #Add first zone
-        Add-FGTSystemZone -name $pester_zone1
+        Add-FGTSystemZone -name $pester_zone1 -interfaces $pester_port1
         #Add Second zone with same name
         { Add-FGTSystemZone -name $pester_zone1 } | Should -Throw "Already a zone using the same name"
     }
@@ -145,7 +145,7 @@ Describe "Set zone" {
         $zone.interface."interface-name" | Should -BeIn $pester_port3, $pester_port4
     }
 
-    It "Remove interfaces" {
+    It "Remove interfaces" -Skip:$VersionIs64 {
         Get-FGTSystemZone -name $pester_zone1 | Set-FGTSystemZone -interfaces none
         $zone = Get-FGTSystemZone -name $pester_zone1
         $zone.interface | Should -Be $NULL
@@ -155,7 +155,7 @@ Describe "Set zone" {
 Describe "Remove zone" {
 
     BeforeEach {
-        Add-FGTSystemZone -name $pester_zone1
+        Add-FGTSystemZone -name $pester_zone1 -interfaces $pester_port1
     }
 
     It "Remove zone $pester_zone1 by pipeline" {
@@ -188,7 +188,7 @@ Describe "Remove zone members" {
         $zone.interface.count | Should -Be 1
     }
 
-    It "Remove all zone members leaving 0 interfaces in it" {
+    It "Remove all zone members leaving 0 interfaces in it" -Skip:$VersionIs64 {
         Get-FGTSystemZone -name $pester_zone1 | Remove-FGTSystemZoneMember -interfaces $pester_port1, $pester_port2, $pester_port3, $pester_port4
         $zone = Get-FGTSystemZone -name $pester_zone1
         $zone.interface | Should -Be $NULL
