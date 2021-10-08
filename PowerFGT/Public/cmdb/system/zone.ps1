@@ -128,6 +128,8 @@ function Add-FGTSystemZone {
         [Parameter(Mandatory = $false)]
         [string[]]$interfaces,
         [Parameter(Mandatory = $false)]
+        [string]$description,
+        [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
@@ -164,6 +166,16 @@ function Add-FGTSystemZone {
 
         if ( $PsBoundParameters.ContainsKey('intrazone') ) {
             $zone | add-member -name "intrazone" -membertype NoteProperty -Value $intrazone
+        }
+
+        if ( $PsBoundParameters.ContainsKey('description') ) {
+            #before 6.2.x, there is not description file
+            if ($connection.version -lt "6.2.0") {
+                Write-Warning "-description parameter is (yet) not available"
+            }
+            else {
+                $zone | add-member -name "description" -membertype NoteProperty -Value $description
+            }
         }
 
         Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/zone' -method 'POST' -body $zone -connection $connection @invokeParams | Out-Null

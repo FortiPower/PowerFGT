@@ -72,6 +72,12 @@ Describe "Add zone" {
         $zone.intrazone | Should -Be "allow"
     }
 
+    It "Add zone $pester_zone1 with description" -skip:($fgt_version -lt "6.2.0") {
+        Add-FGTSystemZone -name $pester_zone1 -description "My Pester Zone" -interfaces $pester_port1
+        $zone = Get-FGTSystemZone -name $pester_zone1
+        $zone.description | Should -Be "My Pester Zone"
+    }
+
     It "Add zone $pester_zone1 with 0 interface" -Skip:$VersionIs64 {
         Add-FGTSystemZone -name $pester_zone1
         $zone = Get-FGTSystemZone -name $pester_zone1
