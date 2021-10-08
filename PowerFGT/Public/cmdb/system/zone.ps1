@@ -223,6 +223,8 @@ function Set-FGTSystemZone {
         [ValidateSet('allow', 'deny', IgnoreCase = $false)]
         [string]$intrazone,
         [Parameter(Mandatory = $false)]
+        [string]$description,
+        [Parameter(Mandatory = $false)]
         [string[]]$interfaces,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
@@ -267,6 +269,16 @@ function Set-FGTSystemZone {
         else {
             # kept name for get system zone after...
             $name = $zone.name
+        }
+
+        if ( $PsBoundParameters.ContainsKey('description') ) {
+            #before 6.2.x, there is not description file
+            if ($connection.version -lt "6.2.0") {
+                Write-Warning "-description parameter is (yet) not available"
+            }
+            else {
+                $zone_body | add-member -name "description" -membertype NoteProperty -Value $description
+            }
         }
 
         if ($PSCmdlet.ShouldProcess($zone.name, 'Set zone')) {

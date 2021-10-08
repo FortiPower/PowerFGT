@@ -144,6 +144,12 @@ Describe "Set zone" {
         $zone.intrazone | Should -Be "deny"
     }
 
+    It "Change description" -skip:($fgt_version -lt "6.2.0") {
+        Get-FGTSystemZone -name $pester_zone1 | Set-FGTSystemZone -description "My Pester Zone"
+        $zone = Get-FGTSystemZone -name $pester_zone1
+        $zone.description | Should -Be "My Pester Zone"
+    }
+
     It "Change interfaces" {
         Get-FGTSystemZone -name $pester_zone1 | Set-FGTSystemZone -interfaces $pester_port3, $pester_port4
         $zone = Get-FGTSystemZone -name $pester_zone1
