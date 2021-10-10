@@ -21,6 +21,9 @@ Describe  "Connect to a FortiGate (using HTTP)" {
         Disconnect-FGT -confirm:$false
         $DefaultFGTConnection | Should -Be $null
     }
+    It "Connect to a FortiGate (using HTTP) with wrong password" {
+        { Connect-FGT $ipaddress -Username $login -password $mywrongpassword -httpOnly -port $port } | Should -throw "Log in failure. Most likely an incorrect username/password combo"
+    }
     #TODO: Connect using wrong login/password
 }
 
