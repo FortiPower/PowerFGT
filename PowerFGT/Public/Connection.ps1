@@ -151,6 +151,22 @@ function Connect-FGT {
             throw "Unable to connect to FortiGate"
         }
 
+        #first byte return is a status code
+        switch ($iwrResponse.Content[0]) {
+            '0' {
+                throw "Log in failure. Most likely an incorrect username/password combo"
+            }
+            '1' {
+                #no thing, it is good ! continue
+            }
+            '2' {
+                throw "Admin is now locked out (Please retry in 60 seconds)"
+            }
+            '3' {
+                throw "Two-factor Authentication is needed (not yet supported with PowerFGT)"
+            }
+        }
+
         #Search crsf cookie and to X-CSRFTOKEN
         $cookies = $FGT.Cookies.GetCookies($uri)
         foreach ($cookie in $cookies) {
