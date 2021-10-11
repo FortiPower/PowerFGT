@@ -165,6 +165,9 @@ function Connect-FGT {
             '3' {
                 throw "Two-factor Authentication is needed (not yet supported with PowerFGT)"
             }
+            '4' {
+                throw "Need to change the password"
+            }
         }
 
         #Search crsf cookie and to X-CSRFTOKEN
