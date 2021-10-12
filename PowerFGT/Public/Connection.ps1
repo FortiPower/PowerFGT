@@ -61,6 +61,11 @@ function Connect-FGT {
       Connect to a Fortigate with IP 192.0.2.1 and timeout the operation if it takes longer
       than 15 seconds to form a connection. The Default value "0" will cause the connection to never timeout.
 
+      .EXAMPLE
+      $mynewpassword = ConvertTo-SecureString mypassword -AsPlainText -Force
+      Connect-FGT -Server 192.0.2.1 -new_password $mysecpassword
+
+      Connect to a FortiGate with IP 192.0.2.1 and change the password
   #>
 
     Param(
@@ -70,6 +75,8 @@ function Connect-FGT {
         [String]$Username,
         [Parameter(Mandatory = $false)]
         [SecureString]$Password,
+        [Parameter(Mandatory = $false)]
+        [SecureString]$New_Password,
         [Parameter(Mandatory = $false)]
         [PSCredential]$Credentials,
         [switch]$httpOnly = $false,
@@ -166,7 +173,10 @@ function Connect-FGT {
                 throw "Two-factor Authentication is needed (not yet supported with PowerFGT)"
             }
             '4' {
-                throw "Need to change the password"
+                if (-not $PsBoundParameters.ContainsKey('new_password')) {
+                    #throw if you don't have specify new_password
+                    throw "Need to change the password (use -new_password parameter)"
+                }
             }
         }
 
@@ -196,6 +206,29 @@ function Connect-FGT {
             catch {
                 throw "Unable to confirm disclaimer"
             }
+        }
+
+        if ($PsBoundParameters.ContainsKey('new_password')) {
+            $uri = $url + "loginpwd_change"
+            $new_pwd = ConvertFrom-SecureString -SecureString $new_password -AsPlainText;
+            $postParams = @{
+                CSRF_TOKEN = $cookie_csrf
+                old_pwd    = $Credentials.GetNetworkCredential().Password;
+                pwd1       = $new_pwd
+                pwd2       = $new_pwd
+                ajax       = 1;
+                confirm    = 1
+            }
+            try {
+                Invoke-WebRequest $uri -Method "POST" -WebSession $FGT -Body $postParams @invokeParams | Out-Null
+            }
+            catch {
+                throw "Unable to change password"
+            }
+
+            #Reconnect...
+            Connect-FGT -server $server -port $port -httpOnly:$httpOnly -vdom $vdom -Username $Credentials.username -Password $new_password -DefaultConnection $DefaultConnection
+            return
         }
 
         $uri = $url + "api/v2/monitor/system/firmware"
