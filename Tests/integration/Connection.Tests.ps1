@@ -48,6 +48,10 @@ Describe "Connect to a fortigate (using HTTPS)" {
     It "Connect to a FortiGate (using HTTPS) and check global variable" -Skip:("Desktop" -eq $PSEdition -Or $httpOnly) {
         { Connect-FGT $ipaddress -Username $login -password $mysecpassword } | Should throw "Unable to connect (certificate)"
     }
+
+    It "Connect to a FortiGate (using HTTPS) with wrong password" {
+        { Connect-FGT $ipaddress -Username $login -password $mywrongpassword -port $port } | Should -throw "Log in failure. Most likely an incorrect username/password combo"
+    }
 }
 
 Describe "Connect to a FortiGate (with post-login-banner enable)" {
