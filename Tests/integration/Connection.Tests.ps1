@@ -24,7 +24,7 @@ Describe  "Connect to a FortiGate (using HTTP)" {
     It "Connect to a FortiGate (using HTTP) with wrong password" {
         { Connect-FGT $ipaddress -Username $login -password $mywrongpassword -httpOnly -port $port } | Should -throw "Log in failure. Most likely an incorrect username/password combo"
     }
-    #TODO: Connect using wrong login/password
+    #TODO: Connect using MFA (token) and/or need to change password (admin expiration)
 }
 
 Describe "Connect to a fortigate (using HTTPS)" {
