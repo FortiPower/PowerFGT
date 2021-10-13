@@ -444,6 +444,75 @@ function Get-FGTFirewallPolicy {
     }
 }
 
+function Move-FGTFirewallPolicy {
+
+    <#
+        .SYNOPSIS
+        Move a FortiGate Policy
+
+        .DESCRIPTION
+        Move a Policy/Rule object (after or befofre) on the FortiGate
+
+        .EXAMPLE
+        $MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
+        PS C:\>$MyFGTPolicy | Move-FGTFirewallPolicy -after -id 12
+
+        Move Policy object $MyFGTPolicy after Policy id 12
+
+        .EXAMPLE
+        $MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
+        PS C:\>$MyFGTPolicy | Move-FGTFirewallPolicy -before -id 23
+
+        Move Policy object $MyFGTPolicy before Policy id 12
+
+    #>
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'low')]
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [ValidateScript( { Confirm-FGTFirewallPolicy $_ })]
+        [psobject]$policy,
+        [Parameter(Mandatory = $true, ParameterSetName = "after")]
+        [switch]$after,
+        [Parameter(Mandatory = $true, ParameterSetName = "before")]
+        [switch]$before,
+        [Parameter(Mandatory = $true)]
+        [psobject]$id,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/firewall/policy/$($policy.policyid)/?action=move"
+
+        switch ( $PSCmdlet.ParameterSetName ) {
+            "after" {
+                $uri += "&after=$($id)"
+            }
+            "before" {
+                $uri += "&before=$($id)"
+            }
+            default { }
+        }
+        if ($PSCmdlet.ShouldProcess($policy.name, 'Move Firewall Policy')) {
+            $null = Invoke-FGTRestMethod -method "PUT" -uri $uri -connection $connection @invokeParams
+        }
+    }
+
+    End {
+    }
+}
 function Remove-FGTFirewallPolicy {
 
     <#
