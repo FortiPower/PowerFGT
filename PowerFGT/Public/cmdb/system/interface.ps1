@@ -19,12 +19,12 @@ function Add-FGTSystemInterface {
         This creates a new interface using only mandatory parameters.
 
         .EXAMPLE
-        Add-FGTSystemInterface -name PowerFGT_lacp -atype static-member port9, port10
+        Add-FGTSystemInterface -name PowerFGT_lacp -atype static -member port9, port10
 
         This creates a new interface LACP (aggregate) with port9 and port 10
 
         .EXAMPLE
-        Add-FGTSystemInterface -name PowerFGT_static -atype static-member port9, port10
+        Add-FGTSystemInterface -name PowerFGT_static -atype static -member port9, port10
 
         This creates a new interface Redundant (static) with port9 and port 10
 
