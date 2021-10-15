@@ -61,208 +61,210 @@ Describe "Get System Interface" {
 
 Describe "Add System Interface" {
 
-    AfterEach {
-        Get-FGTSystemInterface -name $pester_int1 | Remove-FGTSystemInterface -Confirm:$false
-    }
+    Context "Interface Vlan" {
+        AfterEach {
+            Get-FGTSystemInterface -name $pester_int1 | Remove-FGTSystemInterface -Confirm:$false
+        }
 
-    It "Add System Interface with only mandatory parameters" {
-        Add-FGTSystemInterface -name $pester_int1 -interface $pester_port1 -vlan_id $pester_vlanid1
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.name | Should -Be $pester_int1
-        $interface.type | Should -Be "vlan"
-        $interface.role | Should -Be "lan"
-        $interface.vlanid | Should -Be $pester_vlanid1
-        $interface.interface | Should -Be $pester_port1
-        $interface.mode | Should -Be "static"
-    }
+        It "Add System Interface with only mandatory parameters" {
+            Add-FGTSystemInterface -name $pester_int1 -interface $pester_port1 -vlan_id $pester_vlanid1
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "vlan"
+            $interface.role | Should -Be "lan"
+            $interface.vlanid | Should -Be $pester_vlanid1
+            $interface.interface | Should -Be $pester_port1
+            $interface.mode | Should -Be "static"
+        }
 
-    It "Add System Interface (All parameters...)" {
-        Add-FGTSystemInterface -name $pester_int1 -alias Alias_$pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -allowaccess https, ping, ssh -status up -device_identification $true -mode static -ip 192.0.2.1 -netmask 255.255.255.0
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.name | Should -Be $pester_int1
-        $interface.type | Should -Be "vlan"
-        $interface.alias | Should -Be "Alias_$pester_int1"
-        $interface.role | Should -Be "lan"
-        $interface.vlanid | Should -Be $pester_vlanid1
-        $interface.interface | Should -Be $pester_port1
-        $interface.allowaccess | Should -Be "ping https ssh"
-        $interface.status | Should -Be "up"
-        $interface."device-identification" | Should -Be "enable"
-        $interface.mode | Should -Be "static"
-        $interface.ip | Should -Be "192.0.2.1 255.255.255.0"
-    }
+        It "Add System Interface (All parameters...)" {
+            Add-FGTSystemInterface -name $pester_int1 -alias Alias_$pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -allowaccess https, ping, ssh -status up -device_identification $true -mode static -ip 192.0.2.1 -netmask 255.255.255.0
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "vlan"
+            $interface.alias | Should -Be "Alias_$pester_int1"
+            $interface.role | Should -Be "lan"
+            $interface.vlanid | Should -Be $pester_vlanid1
+            $interface.interface | Should -Be $pester_port1
+            $interface.allowaccess | Should -Be "ping https ssh"
+            $interface.status | Should -Be "up"
+            $interface."device-identification" | Should -Be "enable"
+            $interface.mode | Should -Be "static"
+            $interface.ip | Should -Be "192.0.2.1 255.255.255.0"
+        }
 
-    It "Add System Interface (with alias)" {
-        Add-FGTSystemInterface -name $pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -alias Alias_$pester_int1
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.name | Should -Be $pester_int1
-        $interface.type | Should -Be "vlan"
-        $interface.role | Should -Be "lan"
-        $interface.vlanid | Should -Be $pester_vlanid1
-        $interface.interface | Should -Be $pester_port1
-        $interface.mode | Should -Be "static"
-        $interface.alias | Should -Be "Alias_$pester_int1"
-    }
+        It "Add System Interface (with alias)" {
+            Add-FGTSystemInterface -name $pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -alias Alias_$pester_int1
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "vlan"
+            $interface.role | Should -Be "lan"
+            $interface.vlanid | Should -Be $pester_vlanid1
+            $interface.interface | Should -Be $pester_port1
+            $interface.mode | Should -Be "static"
+            $interface.alias | Should -Be "Alias_$pester_int1"
+        }
 
-    It "Add System Interface (with allowaccess https)" {
-        Add-FGTSystemInterface -name $pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -allowaccess https
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.name | Should -Be $pester_int1
-        $interface.type | Should -Be "vlan"
-        $interface.role | Should -Be "lan"
-        $interface.vlanid | Should -Be $pester_vlanid1
-        $interface.interface | Should -Be $pester_port1
-        $interface.mode | Should -Be "static"
-        $interface.allowaccess | Should -Be "https"
-    }
+        It "Add System Interface (with allowaccess https)" {
+            Add-FGTSystemInterface -name $pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -allowaccess https
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "vlan"
+            $interface.role | Should -Be "lan"
+            $interface.vlanid | Should -Be $pester_vlanid1
+            $interface.interface | Should -Be $pester_port1
+            $interface.mode | Should -Be "static"
+            $interface.allowaccess | Should -Be "https"
+        }
 
-    It "Add System Interface (with allowaccess ssh)" {
-        Add-FGTSystemInterface -name $pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -allowaccess ssh
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.name | Should -Be $pester_int1
-        $interface.type | Should -Be "vlan"
-        $interface.role | Should -Be "lan"
-        $interface.vlanid | Should -Be $pester_vlanid1
-        $interface.interface | Should -Be $pester_port1
-        $interface.mode | Should -Be "static"
-        $interface.allowaccess | Should -Be "ssh"
-    }
+        It "Add System Interface (with allowaccess ssh)" {
+            Add-FGTSystemInterface -name $pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -allowaccess ssh
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "vlan"
+            $interface.role | Should -Be "lan"
+            $interface.vlanid | Should -Be $pester_vlanid1
+            $interface.interface | Should -Be $pester_port1
+            $interface.mode | Should -Be "static"
+            $interface.allowaccess | Should -Be "ssh"
+        }
 
-    It "Add System Interface (with allowaccess https ssh)" {
-        Add-FGTSystemInterface -name $pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -allowaccess https, ssh
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.name | Should -Be $pester_int1
-        $interface.type | Should -Be "vlan"
-        $interface.role | Should -Be "lan"
-        $interface.vlanid | Should -Be $pester_vlanid1
-        $interface.interface | Should -Be $pester_port1
-        $interface.mode | Should -Be "static"
-        $interface.allowaccess | Should -Be "https ssh"
-    }
+        It "Add System Interface (with allowaccess https ssh)" {
+            Add-FGTSystemInterface -name $pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -allowaccess https, ssh
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "vlan"
+            $interface.role | Should -Be "lan"
+            $interface.vlanid | Should -Be $pester_vlanid1
+            $interface.interface | Should -Be $pester_port1
+            $interface.mode | Should -Be "static"
+            $interface.allowaccess | Should -Be "https ssh"
+        }
 
-    It "Add System Interface (with status up)" {
-        Add-FGTSystemInterface -name $pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -status up
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.name | Should -Be $pester_int1
-        $interface.type | Should -Be "vlan"
-        $interface.role | Should -Be "lan"
-        $interface.vlanid | Should -Be $pester_vlanid1
-        $interface.interface | Should -Be $pester_port1
-        $interface.mode | Should -Be "static"
-        $interface.status | Should -Be "up"
-    }
+        It "Add System Interface (with status up)" {
+            Add-FGTSystemInterface -name $pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -status up
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "vlan"
+            $interface.role | Should -Be "lan"
+            $interface.vlanid | Should -Be $pester_vlanid1
+            $interface.interface | Should -Be $pester_port1
+            $interface.mode | Should -Be "static"
+            $interface.status | Should -Be "up"
+        }
 
-    It "Add System Interface (with status down)" {
-        Add-FGTSystemInterface -name $pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -status down
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.name | Should -Be $pester_int1
-        $interface.type | Should -Be "vlan"
-        $interface.role | Should -Be "lan"
-        $interface.vlanid | Should -Be $pester_vlanid1
-        $interface.interface | Should -Be $pester_port1
-        $interface.mode | Should -Be "static"
-        $interface.status | Should -Be "down"
-    }
+        It "Add System Interface (with status down)" {
+            Add-FGTSystemInterface -name $pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -status down
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "vlan"
+            $interface.role | Should -Be "lan"
+            $interface.vlanid | Should -Be $pester_vlanid1
+            $interface.interface | Should -Be $pester_port1
+            $interface.mode | Should -Be "static"
+            $interface.status | Should -Be "down"
+        }
 
-    It "Add System Interface (with role lan)" {
-        Add-FGTSystemInterface -name $pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -role lan
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.name | Should -Be $pester_int1
-        $interface.type | Should -Be "vlan"
-        $interface.vlanid | Should -Be $pester_vlanid1
-        $interface.interface | Should -Be $pester_port1
-        $interface.mode | Should -Be "static"
-        $interface.role | Should -Be "lan"
-    }
+        It "Add System Interface (with role lan)" {
+            Add-FGTSystemInterface -name $pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -role lan
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "vlan"
+            $interface.vlanid | Should -Be $pester_vlanid1
+            $interface.interface | Should -Be $pester_port1
+            $interface.mode | Should -Be "static"
+            $interface.role | Should -Be "lan"
+        }
 
-    It "Add System Interface (with role dmz)" {
-        Add-FGTSystemInterface -name $pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -role dmz
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.name | Should -Be $pester_int1
-        $interface.type | Should -Be "vlan"
-        $interface.vlanid | Should -Be $pester_vlanid1
-        $interface.interface | Should -Be $pester_port1
-        $interface.mode | Should -Be "static"
-        $interface.role | Should -Be "dmz"
-    }
+        It "Add System Interface (with role dmz)" {
+            Add-FGTSystemInterface -name $pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -role dmz
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "vlan"
+            $interface.vlanid | Should -Be $pester_vlanid1
+            $interface.interface | Should -Be $pester_port1
+            $interface.mode | Should -Be "static"
+            $interface.role | Should -Be "dmz"
+        }
 
-    It "Add System Interface (with role wan)" {
-        Add-FGTSystemInterface -name $pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -role wan
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.name | Should -Be $pester_int1
-        $interface.vlanid | Should -Be $pester_vlanid1
-        $interface.interface | Should -Be $pester_port1
-        $interface.mode | Should -Be "static"
-        $interface.role | Should -Be "wan"
-    }
+        It "Add System Interface (with role wan)" {
+            Add-FGTSystemInterface -name $pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -role wan
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.vlanid | Should -Be $pester_vlanid1
+            $interface.interface | Should -Be $pester_port1
+            $interface.mode | Should -Be "static"
+            $interface.role | Should -Be "wan"
+        }
 
-    It "Add System Interface (with role undefined)" {
-        Add-FGTSystemInterface -name $pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -role undefined
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.name | Should -Be $pester_int1
-        $interface.type | Should -Be "vlan"
-        $interface.vlanid | Should -Be $pester_vlanid1
-        $interface.interface | Should -Be $pester_port1
-        $interface.mode | Should -Be "static"
-        $interface.role | Should -Be "undefined"
-    }
+        It "Add System Interface (with role undefined)" {
+            Add-FGTSystemInterface -name $pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -role undefined
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "vlan"
+            $interface.vlanid | Should -Be $pester_vlanid1
+            $interface.interface | Should -Be $pester_port1
+            $interface.mode | Should -Be "static"
+            $interface.role | Should -Be "undefined"
+        }
 
-    It "Add System Interface (with device-identification enabled)" {
-        Add-FGTSystemInterface -name $pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -device_identification $true
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.name | Should -Be $pester_int1
-        $interface.type | Should -Be "vlan"
-        $interface.role | Should -Be "lan"
-        $interface.vlanid | Should -Be $pester_vlanid1
-        $interface.interface | Should -Be $pester_port1
-        $interface.mode | Should -Be "static"
-        $interface."device-identification" | Should -Be $true
-    }
+        It "Add System Interface (with device-identification enabled)" {
+            Add-FGTSystemInterface -name $pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -device_identification $true
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "vlan"
+            $interface.role | Should -Be "lan"
+            $interface.vlanid | Should -Be $pester_vlanid1
+            $interface.interface | Should -Be $pester_port1
+            $interface.mode | Should -Be "static"
+            $interface."device-identification" | Should -Be $true
+        }
 
-    It "Add System Interface (with device-identification disabled)" {
-        Add-FGTSystemInterface -name $pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -device_identification $false
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.name | Should -Be $pester_int1
-        $interface.type | Should -Be "vlan"
-        $interface.role | Should -Be "lan"
-        $interface.vlanid | Should -Be $pester_vlanid1
-        $interface.interface | Should -Be $pester_port1
-        $interface.mode | Should -Be "static"
-        $interface."device-identification" | Should -Be "disable"
-    }
+        It "Add System Interface (with device-identification disabled)" {
+            Add-FGTSystemInterface -name $pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -device_identification $false
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "vlan"
+            $interface.role | Should -Be "lan"
+            $interface.vlanid | Should -Be $pester_vlanid1
+            $interface.interface | Should -Be $pester_port1
+            $interface.mode | Should -Be "static"
+            $interface."device-identification" | Should -Be "disable"
+        }
 
-    It "Add System Interface (with mode static)" {
-        Add-FGTSystemInterface -name $pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -mode static
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.name | Should -Be $pester_int1
-        $interface.type | Should -Be "vlan"
-        $interface.role | Should -Be "lan"
-        $interface.vlanid | Should -Be $pester_vlanid1
-        $interface.interface | Should -Be $pester_port1
-        $interface.mode | Should -Be "static"
-    }
+        It "Add System Interface (with mode static)" {
+            Add-FGTSystemInterface -name $pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -mode static
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "vlan"
+            $interface.role | Should -Be "lan"
+            $interface.vlanid | Should -Be $pester_vlanid1
+            $interface.interface | Should -Be $pester_port1
+            $interface.mode | Should -Be "static"
+        }
 
-    It "Add System Interface (with mode dhcp)" {
-        Add-FGTSystemInterface -name $pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -mode dhcp
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.name | Should -Be $pester_int1
-        $interface.type | Should -Be "vlan"
-        $interface.role | Should -Be "lan"
-        $interface.vlanid | Should -Be $pester_vlanid1
-        $interface.interface | Should -Be $pester_port1
-        $interface.mode | Should -Be "dhcp"
-    }
+        It "Add System Interface (with mode dhcp)" {
+            Add-FGTSystemInterface -name $pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -mode dhcp
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "vlan"
+            $interface.role | Should -Be "lan"
+            $interface.vlanid | Should -Be $pester_vlanid1
+            $interface.interface | Should -Be $pester_port1
+            $interface.mode | Should -Be "dhcp"
+        }
 
-    It "Add System Interface (with IP Address and Netmask)" {
-        Add-FGTSystemInterface -name $pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -ip 192.0.2.1 -netmask 255.255.255.0
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.name | Should -Be $pester_int1
-        $interface.type | Should -Be "vlan"
-        $interface.role | Should -Be "lan"
-        $interface.vlanid | Should -Be $pester_vlanid1
-        $interface.interface | Should -Be $pester_port1
-        $interface.mode | Should -Be "static"
-        $interface.ip | Should -Be "192.0.2.1 255.255.255.0"
+        It "Add System Interface (with IP Address and Netmask)" {
+            Add-FGTSystemInterface -name $pester_int1 -vlan_id $pester_vlanid1 -interface $pester_port1 -ip 192.0.2.1 -netmask 255.255.255.0
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "vlan"
+            $interface.role | Should -Be "lan"
+            $interface.vlanid | Should -Be $pester_vlanid1
+            $interface.interface | Should -Be $pester_port1
+            $interface.mode | Should -Be "static"
+            $interface.ip | Should -Be "192.0.2.1 255.255.255.0"
+        }
     }
 }
 
