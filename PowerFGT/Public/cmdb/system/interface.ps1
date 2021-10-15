@@ -38,6 +38,9 @@ function Add-FGTSystemInterface {
         [string]$interface,
         [Parameter (Mandatory = $true, ParameterSetName = "aggregate")]
         [string[]]$member,
+        [Parameter (Mandatory = $true, ParameterSetName = "aggregate")]
+        [ValidateSet('lacp', 'static')]
+        [string]$atype,
         [Parameter (Mandatory = $false)]
         [ValidateSet('https', 'ping', 'fgfm', 'capwap', 'ssh', 'snmp', 'ftm', 'radius-acct', 'ftm', IgnoreCase = $false)]
         [string[]]$allowaccess,
@@ -83,7 +86,15 @@ function Add-FGTSystemInterface {
                 $_interface | add-member -name "interface" -membertype NoteProperty -Value $interface
             }
             "aggregate" {
-                $_interface | add-member -name "type" -membertype NoteProperty -Value "aggregate"
+                #following atype (aggregate type), you select lacp (aggregate) or static (redundant)
+                switch ( $atype ) {
+                    "lacp" {
+                        $_interface | add-member -name "type" -membertype NoteProperty -Value "aggregate"
+                    }
+                    "static" {
+                        $_interface | add-member -name "type" -membertype NoteProperty -Value "redundant"
+                    }
+                }
             }
             default { }
         }
