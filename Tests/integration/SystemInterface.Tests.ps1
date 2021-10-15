@@ -266,6 +266,196 @@ Describe "Add System Interface" {
             $interface.ip | Should -Be "192.0.2.1 255.255.255.0"
         }
     }
+
+    Context "Interface LACP (aggregate)" {
+        AfterEach {
+            Get-FGTSystemInterface -name $pester_int1 | Remove-FGTSystemInterface -Confirm:$false
+        }
+
+        It "Add System Interface with only mandatory parameters" {
+            Add-FGTSystemInterface -name $pester_int1 -atype lacp -member $pester_port1, $pester_port2
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "aggregate"
+            $interface.role | Should -Be "lan"
+            $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+            $interface.mode | Should -Be "static"
+        }
+
+        It "Add System Interface (All parameters...)" {
+            Add-FGTSystemInterface -name $pester_int1 -alias Alias_$pester_int1 -atype lacp -member $pester_port1, $pester_port2 -allowaccess https, ping, ssh -status up -device_identification $true -mode static -ip 192.0.2.1 -netmask 255.255.255.0
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "aggregate"
+            $interface.alias | Should -Be "Alias_$pester_int1"
+            $interface.role | Should -Be "lan"
+            $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+            $interface.allowaccess | Should -Be "ping https ssh"
+            $interface.status | Should -Be "up"
+            $interface."device-identification" | Should -Be "enable"
+            $interface.mode | Should -Be "static"
+            $interface.ip | Should -Be "192.0.2.1 255.255.255.0"
+        }
+
+        It "Add System Interface (with alias)" {
+            Add-FGTSystemInterface -name $pester_int1 -atype lacp -member $pester_port1, $pester_port2 -alias Alias_$pester_int1
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "aggregate"
+            $interface.role | Should -Be "lan"
+            $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+            $interface.mode | Should -Be "static"
+            $interface.alias | Should -Be "Alias_$pester_int1"
+        }
+
+        It "Add System Interface (with allowaccess https)" {
+            Add-FGTSystemInterface -name $pester_int1 -atype lacp -member $pester_port1, $pester_port2 -allowaccess https
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "aggregate"
+            $interface.role | Should -Be "lan"
+            $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+            $interface.mode | Should -Be "static"
+            $interface.allowaccess | Should -Be "https"
+        }
+
+        It "Add System Interface (with allowaccess ssh)" {
+            Add-FGTSystemInterface -name $pester_int1 -atype lacp -member $pester_port1, $pester_port2 -allowaccess ssh
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "aggregate"
+            $interface.role | Should -Be "lan"
+            $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+            $interface.mode | Should -Be "static"
+            $interface.allowaccess | Should -Be "ssh"
+        }
+
+        It "Add System Interface (with allowaccess https ssh)" {
+            Add-FGTSystemInterface -name $pester_int1 -atype lacp -member $pester_port1, $pester_port2 -allowaccess https, ssh
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "aggregate"
+            $interface.role | Should -Be "lan"
+            $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+            $interface.mode | Should -Be "static"
+            $interface.allowaccess | Should -Be "https ssh"
+        }
+
+        It "Add System Interface (with status up)" {
+            Add-FGTSystemInterface -name $pester_int1 -atype lacp -member $pester_port1, $pester_port2 -status up
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "aggregate"
+            $interface.role | Should -Be "lan"
+            $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+            $interface.mode | Should -Be "static"
+            $interface.status | Should -Be "up"
+        }
+
+        It "Add System Interface (with status down)" {
+            Add-FGTSystemInterface -name $pester_int1 -atype lacp -member $pester_port1, $pester_port2 -status down
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "aggregate"
+            $interface.role | Should -Be "lan"
+            $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+            $interface.mode | Should -Be "static"
+            $interface.status | Should -Be "down"
+        }
+
+        It "Add System Interface (with role lan)" {
+            Add-FGTSystemInterface -name $pester_int1 -atype lacp -member $pester_port1, $pester_port2 -role lan
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "aggregate"
+            $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+            $interface.mode | Should -Be "static"
+            $interface.role | Should -Be "lan"
+        }
+
+        It "Add System Interface (with role dmz)" {
+            Add-FGTSystemInterface -name $pester_int1 -atype lacp -member $pester_port1, $pester_port2 -role dmz
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "aggregate"
+            $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+            $interface.mode | Should -Be "static"
+            $interface.role | Should -Be "dmz"
+        }
+
+        It "Add System Interface (with role wan)" {
+            Add-FGTSystemInterface -name $pester_int1 -atype lacp -member $pester_port1, $pester_port2 -role wan
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "aggregate"
+            $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+            $interface.mode | Should -Be "static"
+            $interface.role | Should -Be "wan"
+        }
+
+        It "Add System Interface (with role undefined)" {
+            Add-FGTSystemInterface -name $pester_int1 -atype lacp -member $pester_port1, $pester_port2 -role undefined
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "aggregate"
+            $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+            $interface.mode | Should -Be "static"
+            $interface.role | Should -Be "undefined"
+        }
+
+        It "Add System Interface (with device-identification enabled)" {
+            Add-FGTSystemInterface -name $pester_int1 -atype lacp -member $pester_port1, $pester_port2 -device_identification $true
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "aggregate"
+            $interface.role | Should -Be "lan"
+            $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+            $interface.mode | Should -Be "static"
+            $interface."device-identification" | Should -Be $true
+        }
+
+        It "Add System Interface (with device-identification disabled)" {
+            Add-FGTSystemInterface -name $pester_int1 -atype lacp -member $pester_port1, $pester_port2 -device_identification $false
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "aggregate"
+            $interface.role | Should -Be "lan"
+            $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+            $interface.mode | Should -Be "static"
+            $interface."device-identification" | Should -Be "disable"
+        }
+
+        It "Add System Interface (with mode static)" {
+            Add-FGTSystemInterface -name $pester_int1 -atype lacp -member $pester_port1, $pester_port2 -mode static
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "aggregate"
+            $interface.role | Should -Be "lan"
+            $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+            $interface.mode | Should -Be "static"
+        }
+
+        It "Add System Interface (with mode dhcp)" {
+            Add-FGTSystemInterface -name $pester_int1 -atype lacp -member $pester_port1, $pester_port2 -mode dhcp
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "aggregate"
+            $interface.role | Should -Be "lan"
+            $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+            $interface.mode | Should -Be "dhcp"
+        }
+
+        It "Add System Interface (with IP Address and Netmask)" {
+            Add-FGTSystemInterface -name $pester_int1 -atype lacp -member $pester_port1, $pester_port2 -ip 192.0.2.1 -netmask 255.255.255.0
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "aggregate"
+            $interface.role | Should -Be "lan"
+            $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+            $interface.mode | Should -Be "static"
+            $interface.ip | Should -Be "192.0.2.1 255.255.255.0"
+        }
+    }
 }
 
 Describe "Add System Interface Member" {
