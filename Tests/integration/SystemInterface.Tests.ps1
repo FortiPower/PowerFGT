@@ -269,6 +269,7 @@ Describe "Add System Interface" {
 
     Context "Interface LACP (aggregate)" {
         AfterEach {
+            Get-FGTSystemInterface -name $pester_int2 | Remove-FGTSystemInterface -Confirm:$false
             Get-FGTSystemInterface -name $pester_int1 | Remove-FGTSystemInterface -Confirm:$false
         }
 
@@ -454,6 +455,17 @@ Describe "Add System Interface" {
             $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
             $interface.mode | Should -Be "static"
             $interface.ip | Should -Be "192.0.2.1 255.255.255.0"
+        }
+
+        It "Add Vlan System Interface (on lacp interface)" {
+            Add-FGTSystemInterface -name $pester_int1 -atype lacp -member $pester_port1, $pester_port2
+            Add-FGTSystemInterface -name $pester_int2 -vlan $pester_vlanid1 -interface $pester_int1
+            $interface = Get-FGTSystemInterface -name $pester_int2
+            $interface.name | Should -Be $pester_int2
+            $interface.type | Should -Be "vlan"
+            $interface.role | Should -Be "lan"
+            $interface.vlan_id | Should -Be $script:pester_vlanid1
+            $interface.mode | Should -Be "static"
         }
     }
 }
