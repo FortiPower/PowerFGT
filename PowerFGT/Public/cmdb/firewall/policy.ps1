@@ -451,7 +451,7 @@ function Move-FGTFirewallPolicy {
         Move a FortiGate Policy
 
         .DESCRIPTION
-        Move a Policy/Rule object (after or befofre) on the FortiGate
+        Move a Policy/Rule object (after or before) on the FortiGate
 
         .EXAMPLE
         $MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
@@ -461,9 +461,9 @@ function Move-FGTFirewallPolicy {
 
         .EXAMPLE
         $MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
-        PS C:\>$MyFGTPolicy | Move-FGTFirewallPolicy -before -id 23
+        PS C:\>$MyFGTPolicy | Move-FGTFirewallPolicy -before -id (Get-FGTFirewallPolicy -name MyFGTPolicy23)
 
-        Move Policy object $MyFGTPolicy before Policy id 12
+        Move Policy object $MyFGTPolicy before MyFGTPolicy23 (using Get-FGTFirewallPolicy)
 
     #>
 
@@ -477,6 +477,7 @@ function Move-FGTFirewallPolicy {
         [Parameter(Mandatory = $true, ParameterSetName = "before")]
         [switch]$before,
         [Parameter(Mandatory = $true)]
+        [ValidateScript( { ($_ -is [int]) -or (Confirm-FGTFirewallPolicy $_ ) })]
         [psobject]$id,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
@@ -492,6 +493,12 @@ function Move-FGTFirewallPolicy {
         $invokeParams = @{ }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        #id is a Policy Rule (from Get-FGTFirewallPolicy) ?
+        if ( $id.policyid ) {
+            #Get the policyid
+            [int]$id = $id.policyid
         }
 
         $uri = "api/v2/cmdb/firewall/policy/$($policy.policyid)/?action=move"
