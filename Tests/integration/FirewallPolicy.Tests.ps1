@@ -739,7 +739,7 @@ Describe "Move Firewall Policy" {
 
     Context "Move Policy Using id" {
 
-        It "Move Policy SSH after HTTPS (using id $policyid3)" {
+        It "Move Policy SSH after HTTPS (using id)" {
             Get-FGTFirewallPolicy -name $pester_policy1 | Move-FGTFirewallPolicy -after -id $policyid3
             $policy = Get-FGTFirewallPolicy
             $policy[0].name | Should -Be $pester_policy2
@@ -758,7 +758,7 @@ Describe "Move Firewall Policy" {
 
     Context "Move Policy Using Firewall Policy Object" {
 
-        It "Move Policy SSH after HTTPS (using Firewall Policy Object" {
+        It "Move Policy SSH after HTTPS (using Firewall Policy Object)" {
             Get-FGTFirewallPolicy -name $pester_policy1 | Move-FGTFirewallPolicy -after -id (Get-FGTFirewallPolicy -name $pester_policy3)
             $policy = Get-FGTFirewallPolicy
             $policy[0].name | Should -Be $pester_policy2
