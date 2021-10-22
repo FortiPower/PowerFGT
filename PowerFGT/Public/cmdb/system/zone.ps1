@@ -117,6 +117,11 @@ function Add-FGTSystemZone {
         Add-FGTSystemZone -name myPowerFGTZone -intrazone deny -interfaces port5,port6
 
         Add a zone named myPowerFGTZone with intra-zone traffic blocked and with port5 and port6 in this zone
+
+        .EXAMPLE
+        Add-FGTSystemZone -name myPowerFGTZone -intrazone deny -interfaces port6 -description "My Zone"
+
+        Add a zone named myPowerFGTZone with intra-zone traffic Allow and with port6 with a description (need FortiOS >= 6.2.x for this)
     #>
 
     Param(
@@ -205,6 +210,11 @@ function Set-FGTSystemZone {
         Get-FGTSystemZone -name myPowerFGTZone | Set-FGTSystemZone -interfaces port5, port6
 
         Set the zone named myPowerFGTZone with port 5 and port 6 bound to it
+
+        .EXAMPLE
+        Get-FGTSystemZone -name myPowerFGTZone | Set-FGTSystemZone -name new_myPowerFGTZone
+
+        Set the zone named myPowerFGTZone with new name new_myPowerFGTZone
 
         .EXAMPLE
         Get-FGTSystemZone -name myPowerFGTZone | Set-FGTSystemZone -name new_myPowerFGTZone
