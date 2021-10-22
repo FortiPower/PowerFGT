@@ -515,6 +515,8 @@ function Move-FGTFirewallPolicy {
         if ($PSCmdlet.ShouldProcess($policy.name, 'Move Firewall Policy')) {
             $null = Invoke-FGTRestMethod -method "PUT" -uri $uri -connection $connection @invokeParams
         }
+
+        Get-FGTFirewallPolicy -policyid $policy.policyid
     }
 
     End {
