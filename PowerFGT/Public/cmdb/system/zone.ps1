@@ -117,6 +117,11 @@ function Add-FGTSystemZone {
         Add-FGTSystemZone -name myPowerFGTZone -intrazone deny -interfaces port5,port6
 
         Add a zone named myPowerFGTZone with intra-zone traffic blocked and with port5 and port6 in this zone
+
+        .EXAMPLE
+        Add-FGTSystemZone -name myPowerFGTZone -intrazone deny -interfaces port6 -description "My Zone"
+
+        Add a zone named myPowerFGTZone with intra-zone traffic Allow and with port6 with a description (need FortiOS >= 6.2.x for this)
     #>
 
     Param(
@@ -127,6 +132,8 @@ function Add-FGTSystemZone {
         [string]$intrazone,
         [Parameter(Mandatory = $false)]
         [string[]]$interfaces,
+        [Parameter(Mandatory = $false)]
+        [string]$description,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -166,6 +173,16 @@ function Add-FGTSystemZone {
             $zone | add-member -name "intrazone" -membertype NoteProperty -Value $intrazone
         }
 
+        if ( $PsBoundParameters.ContainsKey('description') ) {
+            #before 6.2.x, there is not description file
+            if ($connection.version -lt "6.2.0") {
+                Write-Warning "-description parameter is (yet) not available"
+            }
+            else {
+                $zone | add-member -name "description" -membertype NoteProperty -Value $description
+            }
+        }
+
         Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/zone' -method 'POST' -body $zone -connection $connection @invokeParams | Out-Null
         Get-FGTSystemZone -name $name -connection $connection @invokeParams
 
@@ -198,6 +215,11 @@ function Set-FGTSystemZone {
         Get-FGTSystemZone -name myPowerFGTZone | Set-FGTSystemZone -name new_myPowerFGTZone
 
         Set the zone named myPowerFGTZone with new name new_myPowerFGTZone
+
+        .EXAMPLE
+        Get-FGTSystemZone -name myPowerFGTZone | Set-FGTSystemZone -name new_myPowerFGTZone
+
+        Set the zone named myPowerFGTZone with new name new_myPowerFGTZone
     #>
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
@@ -210,6 +232,8 @@ function Set-FGTSystemZone {
         [Parameter(Mandatory = $false)]
         [ValidateSet('allow', 'deny', IgnoreCase = $false)]
         [string]$intrazone,
+        [Parameter(Mandatory = $false)]
+        [string]$description,
         [Parameter(Mandatory = $false)]
         [string[]]$interfaces,
         [Parameter(Mandatory = $false)]
@@ -255,6 +279,16 @@ function Set-FGTSystemZone {
         else {
             # kept name for get system zone after...
             $name = $zone.name
+        }
+
+        if ( $PsBoundParameters.ContainsKey('description') ) {
+            #before 6.2.x, there is not description file
+            if ($connection.version -lt "6.2.0") {
+                Write-Warning "-description parameter is (yet) not available"
+            }
+            else {
+                $zone_body | add-member -name "description" -membertype NoteProperty -Value $description
+            }
         }
 
         if ($PSCmdlet.ShouldProcess($zone.name, 'Set zone')) {
