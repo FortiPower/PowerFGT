@@ -266,6 +266,7 @@ function Add-FGTFirewallPolicyMember {
 
     #>
 
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'low')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript( { Confirm-FGTFirewallPolicy $_ })]
@@ -316,9 +317,11 @@ function Add-FGTFirewallPolicyMember {
             $_policy | add-member -name "dstaddr" -membertype NoteProperty -Value $members
         }
 
-        Invoke-FGTRestMethod -method "PUT" -body $_policy -uri $uri -connection $connection @invokeParams | Out-Null
+        if ($PSCmdlet.ShouldProcess($policy.name, 'Add Firewall Policy Group Member')) {
+            Invoke-FGTRestMethod -method "PUT" -body $_policy -uri $uri -connection $connection @invokeParams | Out-Null
 
-        Get-FGTFirewallPolicy -connection $connection @invokeParams -name $policy.name
+            Get-FGTFirewallPolicy -connection $connection @invokeParams -name $policy.name
+        }
     }
 
     End {
