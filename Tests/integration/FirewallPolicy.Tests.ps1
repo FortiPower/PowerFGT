@@ -720,6 +720,62 @@ Describe "Add Firewall Policy Member" {
 
 }
 
+Describe "Move Firewall Policy" {
+
+    BeforeEach {
+        $p1 = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -service SSH
+        $script:policyid1 = [int]$p1.policyid
+        $p2 = Add-FGTFirewallPolicy -name $pester_policy2 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -service HTTP
+        $script:policyid2 = [int]$p2.policyid
+        $p3 = Add-FGTFirewallPolicy -name $pester_policy3 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -service HTTPS
+        $script:policyid3 = [int]$p3.policyid
+    }
+
+    AfterEach {
+        Get-FGTFirewallPolicy -name $pester_policy1 | Remove-FGTFirewallPolicy -confirm:$false
+        Get-FGTFirewallPolicy -name $pester_policy2 | Remove-FGTFirewallPolicy -confirm:$false
+        Get-FGTFirewallPolicy -name $pester_policy3 | Remove-FGTFirewallPolicy -confirm:$false
+    }
+
+    Context "Move Policy Using id" {
+
+        It "Move Policy SSH after HTTPS (using id)" {
+            Get-FGTFirewallPolicy -name $pester_policy1 | Move-FGTFirewallPolicy -after -id $policyid3
+            $policy = Get-FGTFirewallPolicy
+            $policy[0].name | Should -Be $pester_policy2
+            $policy[1].name | Should -Be $pester_policy3
+            $policy[2].name | Should -Be $pester_policy1
+        }
+
+        It "Move Policy HTTPS before SSH (using id)" {
+            Get-FGTFirewallPolicy -name $pester_policy3 | Move-FGTFirewallPolicy -before -id $policyid1
+            $policy = Get-FGTFirewallPolicy
+            $policy[0].name | Should -Be $pester_policy3
+            $policy[1].name | Should -Be $pester_policy1
+            $policy[2].name | Should -Be $pester_policy2
+        }
+    }
+
+    Context "Move Policy Using Firewall Policy Object" {
+
+        It "Move Policy SSH after HTTPS (using Firewall Policy Object)" {
+            Get-FGTFirewallPolicy -name $pester_policy1 | Move-FGTFirewallPolicy -after -id (Get-FGTFirewallPolicy -name $pester_policy3)
+            $policy = Get-FGTFirewallPolicy
+            $policy[0].name | Should -Be $pester_policy2
+            $policy[1].name | Should -Be $pester_policy3
+            $policy[2].name | Should -Be $pester_policy1
+        }
+
+        It "Move Policy HTTPS before SSH (using Firewall Policy Object)" {
+            Get-FGTFirewallPolicy -name $pester_policy3 | Move-FGTFirewallPolicy -before -id (Get-FGTFirewallPolicy -name $pester_policy1)
+            $policy = Get-FGTFirewallPolicy
+            $policy[0].name | Should -Be $pester_policy3
+            $policy[1].name | Should -Be $pester_policy1
+            $policy[2].name | Should -Be $pester_policy2
+        }
+    }
+}
+
 Describe "Remove Firewall Policy" {
 
     BeforeEach {

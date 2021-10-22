@@ -444,6 +444,84 @@ function Get-FGTFirewallPolicy {
     }
 }
 
+function Move-FGTFirewallPolicy {
+
+    <#
+        .SYNOPSIS
+        Move a FortiGate Policy
+
+        .DESCRIPTION
+        Move a Policy/Rule object (after or before) on the FortiGate
+
+        .EXAMPLE
+        $MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
+        PS C:\>$MyFGTPolicy | Move-FGTFirewallPolicy -after -id 12
+
+        Move Policy object $MyFGTPolicy after Policy id 12
+
+        .EXAMPLE
+        $MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
+        PS C:\>$MyFGTPolicy | Move-FGTFirewallPolicy -before -id (Get-FGTFirewallPolicy -name MyFGTPolicy23)
+
+        Move Policy object $MyFGTPolicy before MyFGTPolicy23 (using Get-FGTFirewallPolicy)
+
+    #>
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'low')]
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [ValidateScript( { Confirm-FGTFirewallPolicy $_ })]
+        [psobject]$policy,
+        [Parameter(Mandatory = $true, ParameterSetName = "after")]
+        [switch]$after,
+        [Parameter(Mandatory = $true, ParameterSetName = "before")]
+        [switch]$before,
+        [Parameter(Mandatory = $true)]
+        [ValidateScript( { ($_ -is [int]) -or (Confirm-FGTFirewallPolicy $_ ) })]
+        [psobject]$id,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        #id is a Policy Rule (from Get-FGTFirewallPolicy) ?
+        if ( $id.policyid ) {
+            #Get the policyid
+            [int]$id = $id.policyid
+        }
+
+        $uri = "api/v2/cmdb/firewall/policy/$($policy.policyid)/?action=move"
+
+        switch ( $PSCmdlet.ParameterSetName ) {
+            "after" {
+                $uri += "&after=$($id)"
+            }
+            "before" {
+                $uri += "&before=$($id)"
+            }
+            default { }
+        }
+        if ($PSCmdlet.ShouldProcess($policy.name, 'Move Firewall Policy')) {
+            $null = Invoke-FGTRestMethod -method "PUT" -uri $uri -connection $connection @invokeParams
+        }
+
+        Get-FGTFirewallPolicy -policyid $policy.policyid
+    }
+
+    End {
+    }
+}
 function Remove-FGTFirewallPolicy {
 
     <#
