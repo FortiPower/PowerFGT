@@ -663,6 +663,31 @@ or delete it `Remove-FGTFirewallPolicy`.
     schedule-timeout          : disable
     [...]
 
+# Move a Policy (MyFGTPolicy2 after MyFGTPolicy3)
+    Get-FGTFirewallPolicy -name MyFGTPolicy2 | Move-FGTFirewallPolicy -after (Get-FGTFirewallPolicy -name MyFGTPolicy3)
+
+    q_origin_key              : 2
+    policyid                  : 2
+    name                      : MyFGTPolicy2
+    uuid                      : d7d0fa66-3352-51ec-52cf-a215389b0ddb
+    [...]
+
+
+# Move a Policy (MyFGTPolicy3 before MyFGTPolicy2) with ask confirm
+    Get-FGTFirewallPolicy -name MyFGTPolicy3 | Move-FGTFirewallPolicy -before (Get-FGTFirewallPolicy -name MyFGTPolicy2) -confirm
+
+    Confirm
+    Are you sure you want to perform this action?
+    Performing the operation "Move Firewall Policy" on target "MyFGTPolicy3".
+    [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"):
+
+    q_origin_key              : 3
+    policyid                  : 3
+    name                      : MyFGTPolicy3
+    uuid                      : d7d0fa66-3352-51ec-52cf-a215389b0ddb
+    [...]
+
+
 # Remove a Policy
     Get-FGTFirewallPolicy -name MyFGTPolicy2 | Remove-FGTFirewallPolicy
     Remove Policy on Fortigate
