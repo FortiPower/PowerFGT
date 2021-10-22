@@ -42,6 +42,7 @@ $script:pester_zone2 = "pester_zone2"
 #TODO: Add check if no ipaddress/login/password info...
 
 $script:mysecpassword = ConvertTo-SecureString $password -AsPlainText -Force
+$script:mywrongpassword = ConvertTo-SecureString "WrongPassword" -AsPlainText -Force
 
 $script:invokeParams = @{
     Server   = $ipaddress;
