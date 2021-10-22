@@ -606,7 +606,7 @@ or delete it `Remove-FGTFirewallPolicy`.
     q_origin_key              : 2
     policyid                  : 2
     name                      : MyFGTPolicy2
-    uuid                      : dc941a9e-266e-51ea-2f5c-41da0d900d92
+    uuid                      : 6ad55b33-e514-4d60-a661-6addfe7b3ac8
     srcintf                   : {@{q_origin_key=port1; name=port1}}
     dstintf                   : {@{q_origin_key=port3; name=port3}}
     srcaddr                   : {@{q_origin_key=all; name=all}}
@@ -624,10 +624,10 @@ or delete it `Remove-FGTFirewallPolicy`.
 # Add FGT2 and FGT3 to source address (only FGT1 before)
     Get-FGTFirewallPolicy -name MyFGTPolicy3 | Add-FGTFirewallPolicyMember -srcaddr FGT1, FGT2
 
-    q_origin_key              : 2
-    policyid                  : 2
+    q_origin_key              : 3
+    policyid                  : 3
     name                      : MyFGTPolicy3
-    uuid                      : dc941a9e-266e-51ea-2f5c-41da0d900d92
+    uuid                      : d7d0fa66-3352-51ec-52cf-a215389b0ddb
     srcintf                   : {@{q_origin_key=port1; name=port1}}
     dstintf                   : {@{q_origin_key=port2; name=port2}}
     srcaddr                   : {@{q_origin_key=FGT1; name=FGT1}, @{q_origin_key=FGT2; name=FGT2}, @{q_origin_key=FGT3;name=FGT3}}
@@ -645,10 +645,10 @@ or delete it `Remove-FGTFirewallPolicy`.
 # Remove FGT3 from destination address (FGT1, FGT2, FGT3 before)
     Get-FGTFirewallPolicy -name MyFGTPolicy3 | Remove-FGTFirewallPolicyMember -srcaddr FGT3
 
-    q_origin_key              : 2
-    policyid                  : 2
-    name                      : MyFGTPolicy4
-    uuid                      : dc941a9e-266e-51ea-2f5c-41da0d900d92
+    q_origin_key              : 3
+    policyid                  : 3
+    name                      : MyFGTPolicy3
+    uuid                      : d7d0fa66-3352-51ec-52cf-a215389b0ddb
     srcintf                   : {@{q_origin_key=port1; name=port1}}
     dstintf                   : {@{q_origin_key=port2; name=port2}}
     srcaddr                   : {@{q_origin_key=all; name=all}}
@@ -669,7 +669,7 @@ or delete it `Remove-FGTFirewallPolicy`.
     q_origin_key              : 2
     policyid                  : 2
     name                      : MyFGTPolicy2
-    uuid                      : d7d0fa66-3352-51ec-52cf-a215389b0ddb
+    uuid                      : 6ad55b33-e514-4d60-a661-6addfe7b3ac8
     [...]
 
 
