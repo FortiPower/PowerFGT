@@ -130,6 +130,80 @@ function Add-FGTSystemInterface {
     }
 }
 
+function Add-FGTSystemInterfaceMember {
+
+    <#
+        .SYNOPSIS
+        Add a FortiGate Interface Member
+
+        .DESCRIPTION
+        Add a FortiGate Interface Member (allowaccess)
+
+        .EXAMPLE
+        $MyFGTInterface = Get-FGTSystemInterface -name PowerFGT
+        PS C:\>$MyFGTInterface | Add-FGTSystemInterfaceMember -allowaccess ssh
+
+        Add ssh to allowaccess for MyFGTInterface
+
+        .EXAMPLE
+        $MyFGTInterface = Get-FGTSystemInterface -name PowerFGT
+        PS C:\>$MyFGTInterface | Add-FGTSystemInterfaceMember  -allowaccess ssh, https
+
+        Add ssh and https to allowaccess for MyFGTInterface
+
+
+    #>
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'low')]
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [ValidateScript( { Confirm-FGTInterface $_ })]
+        [psobject]$interface,
+        [Parameter (Mandatory = $false)]
+        [ValidateSet('https', 'ping', 'fgfm', 'capwap', 'ssh', 'snmp', 'ftm', 'radius-acct', 'ftm', IgnoreCase = $false)]
+        [string[]]$allowaccess,
+        [Parameter(Mandatory = $false)]
+        [string[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/system/interface/$($interface.name)"
+
+        $_interface = new-Object -TypeName PSObject
+
+        if ( $PsBoundParameters.ContainsKey('allowaccess') ) {
+            #split allowacces to get array
+            $aa = @{ }
+            $aa = $interface.allowaccess -split " "
+            #Add allow acces to list
+            foreach ( $v in $allowaccess ) {
+                $aa += $v
+            }
+            $_interface | add-member -name "allowaccess" -membertype NoteProperty -Value ($aa -join " ")
+        }
+
+        if ($PSCmdlet.ShouldProcess($interface.name, 'Add System Interface Member')) {
+            Invoke-FGTRestMethod -method "PUT" -body $_interface -uri $uri -connection $connection @invokeParams | Out-Null
+
+            Get-FGTSystemInterface -connection $connection @invokeParams -name $interface.name
+        }
+    }
+
+    End {
+    }
+}
+
 function Get-FGTSystemInterface {
 
     <#
