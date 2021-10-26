@@ -266,6 +266,29 @@ Describe "Add System Interface" {
     }
 }
 
+Describe "Add System Interface Member" {
+
+    BeforeAll {
+        Add-FGTSystemInterface -name $pester_int1 -interface $pester_port1 -vlan_id $pester_vlanid1
+    }
+
+    It "Add System Interface Member (HTTPS)" {
+        Get-FGTSystemInterface -name $pester_int1 | Add-FGTSystemInterfaceMember -allowaccess https
+        $interface = Get-FGTSystemInterface -name $pester_int1
+        $interface.allowaccess | Should -Be "https"
+    }
+
+    It "Add System Interface Member (SSH) with before HTTPS" {
+        Get-FGTSystemInterface -name $pester_int1 | Add-FGTSystemInterfaceMember -allowaccess ssh
+        $interface = Get-FGTSystemInterface -name $pester_int1
+        $interface.allowaccess | Should -Be "https ssh"
+    }
+
+    AfterAll {
+        Get-FGTSystemInterface -name $pester_int1 | Remove-FGTSystemInterface -Confirm:$false
+    }
+}
+
 Describe "Set System Interface" {
 
     BeforeAll {
