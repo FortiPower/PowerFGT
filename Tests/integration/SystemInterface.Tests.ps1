@@ -268,7 +268,7 @@ Describe "Add System Interface" {
 
 Describe "Add System Interface Member" {
 
-    BeforeAll {
+    BeforeEach {
         Add-FGTSystemInterface -name $pester_int1 -interface $pester_port1 -vlan_id $pester_vlanid1
     }
 
@@ -279,12 +279,13 @@ Describe "Add System Interface Member" {
     }
 
     It "Add System Interface Member (SSH) with before HTTPS" {
+        Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -allowaccess https
         Get-FGTSystemInterface -name $pester_int1 | Add-FGTSystemInterfaceMember -allowaccess ssh
         $interface = Get-FGTSystemInterface -name $pester_int1
         $interface.allowaccess | Should -Be "https ssh"
     }
 
-    AfterAll {
+    AfterEach {
         Get-FGTSystemInterface -name $pester_int1 | Remove-FGTSystemInterface -Confirm:$false
     }
 }
