@@ -424,7 +424,7 @@ function Set-FGTSystemInterface {
 
         if ($PSCmdlet.ShouldProcess($interface.name, 'Set interface')) {
             $null = Invoke-FGTRestMethod -uri $uri -method 'PUT' -body $_interface -connection $connection @invokeParams
-            Get-FGTSystemInterface -name $name -connection $connection @invokeParams
+            Get-FGTSystemInterface -name $interface.name -connection $connection @invokeParams
         }
     }
 
