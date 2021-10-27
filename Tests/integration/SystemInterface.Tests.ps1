@@ -382,6 +382,29 @@ Describe "Remove System Interface" {
 
 }
 
+Describe "Remove System Interface Member" {
+
+    BeforeEach {
+        Add-FGTSystemInterface -name $pester_int1 -interface $pester_port1 -vlan_id $pester_vlanid1 -allowacces ssh, https
+    }
+
+    It "Remove System Interface Member (HTTPS)" {
+        Get-FGTSystemInterface -name $pester_int1 | Remove-FGTSystemInterfaceMember -allowaccess https
+        $interface = Get-FGTSystemInterface -name $pester_int1
+        $interface.allowaccess | Should -Be "ssh"
+    }
+
+    It "Remove System Interface Member (SSH and HTTPS)" {
+        Get-FGTSystemInterface -name $pester_int1 | Remove-FGTSystemInterfaceMember -allowaccess ssh, https
+        $interface = Get-FGTSystemInterface -name $pester_int1
+        $interface.allowaccess | Should -Be ""
+    }
+
+    AfterEach {
+        Get-FGTSystemInterface -name $pester_int1 | Remove-FGTSystemInterface -Confirm:$false
+    }
+}
+
 AfterAll {
     Disconnect-FGT -confirm:$false
 }
