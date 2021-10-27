@@ -483,3 +483,88 @@ function Remove-FGTSystemInterface {
     End {
     }
 }
+
+function Remove-FGTSystemInterfaceMember {
+
+    <#
+        .SYNOPSIS
+        Remove a FortiGate Interface Member
+
+        .DESCRIPTION
+        Remove a FortiGate Interface Member (allowaccess)
+
+        .EXAMPLE
+        $MyFGTInterface = Get-FGTSystemInterface -name PowerFGT
+        PS C:\>$MyFGTInterface | Remove-FGTSystemInterfaceMember -allowaccess ssh
+
+        Remove ssh to allowaccess for MyFGTInterface
+
+        .EXAMPLE
+        $MyFGTInterface = Get-FGTSystemInterface -name PowerFGT
+        PS C:\>$MyFGTInterface | Remove-FGTSystemInterfaceMember  -allowaccess ssh, https
+
+        Remove ssh and https to allowaccess for MyFGTInterface
+
+
+    #>
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'low')]
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [ValidateScript( { Confirm-FGTInterface $_ })]
+        [psobject]$interface,
+        [Parameter (Mandatory = $false)]
+        [ValidateSet('https', 'ping', 'fgfm', 'capwap', 'ssh', 'snmp', 'ftm', 'radius-acct', 'ftm', IgnoreCase = $false)]
+        [string[]]$allowaccess,
+        [Parameter(Mandatory = $false)]
+        [string[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/system/interface/$($interface.name)"
+
+        $_interface = new-Object -TypeName PSObject
+
+        if ( $PsBoundParameters.ContainsKey('allowaccess') ) {
+            #split allowaccess to get array
+            $aarray = $interface.allowaccess -split " "
+            $aa = @()
+            foreach ($a in $aarray) {
+                $aa += $a
+            }
+
+            #Remove allow access to list
+            foreach ( $v in $allowaccess ) {
+                $aa = $aa | Where-Object { $_ -ne $v }
+            }
+
+            #if there is empty/null
+            if ( $null -eq $aa ) {
+                $_interface | add-member -name "allowaccess" -membertype NoteProperty -Value $null
+            }
+            else {
+                $_interface | add-member -name "allowaccess" -membertype NoteProperty -Value ($aa -join " ")
+            }
+        }
+
+        if ($PSCmdlet.ShouldProcess($interface.name, 'Remove System Interface Member')) {
+            Invoke-FGTRestMethod -method "PUT" -body $_interface -uri $uri -connection $connection @invokeParams | Out-Null
+
+            Get-FGTSystemInterface -connection $connection @invokeParams -name $interface.name
+        }
+    }
+
+    End {
+    }
+}
