@@ -19,16 +19,6 @@ function Get-FGTSystemSettings {
         Get list of all System Settings
 
         .EXAMPLE
-        Get-FGTSystemSettings -filter_attribute opmode -filter_value nat
-
-        Get System with op mode equal nat
-
-        .EXAMPLE
-        Get-FGTSystemSettings -filter_attribute comments -filter_value Fortinet -filter_type contains
-
-        Get System with comment contains Fortinet
-
-        .EXAMPLE
         Get-FGTSystemSettings -skip
 
         Get list of all System Settings (but only relevant attributes)
