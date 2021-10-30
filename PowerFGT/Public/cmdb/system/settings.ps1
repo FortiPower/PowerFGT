@@ -99,6 +99,7 @@ function Set-FGTSystemSettings {
 
         Change ike-port settings using -data parameter (ike-port is available on parameter)
 
+        .EXAMPLE
         $data = @{ "ike-port" = 1500 ; "ike-policy-route" = "enable"}
         PS C> Set-FGTSystemSettings -data $data
 
