@@ -120,9 +120,11 @@ function Set-FGTSystemSettings {
         [Parameter (Mandatory = $false)]
         [switch]$gui_allow_unnamed_policy,
         [Parameter (Mandatory = $false)]
-        [switch]$lldp_transmission,
+        [ValidateSet('enable', 'disable', 'global', IgnoreCase = $false)]
+        [string]$lldp_transmission,
         [Parameter (Mandatory = $false)]
-        [switch]$lldp_reception,
+        [ValidateSet('enable', 'disable', 'global', IgnoreCase = $false)]
+        [string]$lldp_reception,
         [Parameter (Mandatory = $false)]
         [hashtable]$data,
         [Parameter(Mandatory = $false)]
@@ -152,6 +154,14 @@ function Set-FGTSystemSettings {
             else {
                 $_ss | Add-member -name "gui-allow-unnamed-policy" -membertype NoteProperty -Value "disable"
             }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('lldp_transmission') ) {
+            $_ss | Add-member -name "lldp-transmission" -membertype NoteProperty -Value $lldp_transmission
+        }
+
+        if ( $PsBoundParameters.ContainsKey('lldp_reception') ) {
+            $_ss | Add-member -name "lldp-reception" -membertype NoteProperty -Value $lldp_reception
         }
 
         if ( $PsBoundParameters.ContainsKey('data') ) {
