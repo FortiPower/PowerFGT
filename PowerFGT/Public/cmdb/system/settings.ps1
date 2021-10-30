@@ -103,6 +103,16 @@ function Set-FGTSystemSettings {
 
         Enable unnamed Policy
 
+        .EXAMPLE
+        $data = @{ "ike-port" = 1500 }
+        PS C> Set-FGTSystemSettings -data $data
+
+        Change ike-port settings using -data parameter (ike-port is available on parameter)
+
+        $data = @{ "ike-port" = 1500 ; "ike-policy-route" = "enable"}
+        PS C> Set-FGTSystemSettings -data $data
+
+        Change ike-port and ike-policy-route settings using -data parameter
     #>
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
@@ -115,6 +125,8 @@ function Set-FGTSystemSettings {
         [switch]$lldp_transmission,
         [Parameter (Mandatory = $false)]
         [switch]$lldp_reception,
+        [Parameter (Mandatory = $false)]
+        [hashtable]$data,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -145,6 +157,12 @@ function Set-FGTSystemSettings {
             }
             else {
                 $_ss | Add-member -name "gui-allow-unnamed-policy" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('data') ) {
+            $data.GetEnumerator() | ForEach-Object{
+                $_ss | Add-member -name $_.key -membertype NoteProperty -Value $_.value
             }
         }
 
