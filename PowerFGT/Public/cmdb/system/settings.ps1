@@ -118,8 +118,6 @@ function Set-FGTSystemSettings {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
     Param(
         [Parameter (Mandatory = $false)]
-        [string]$comments,
-        [Parameter (Mandatory = $false)]
         [switch]$gui_allow_unnamed_policy,
         [Parameter (Mandatory = $false)]
         [switch]$lldp_transmission,
@@ -146,10 +144,6 @@ function Set-FGTSystemSettings {
         $uri = "api/v2/cmdb/system/settings"
 
         $_ss = new-Object -TypeName PSObject
-
-        if ( $PsBoundParameters.ContainsKey('comments') ) {
-            $_ss | add-member -name "comments" -membertype NoteProperty -Value $comments
-        }
 
         if ( $PsBoundParameters.ContainsKey('gui_allow_unnamed_policy') ) {
             if ($gui_allow_unnamed_policy) {
