@@ -107,6 +107,7 @@ function Set-FGTSystemSettings {
     #>
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "")]
     Param(
         [Parameter (Mandatory = $false)]
         [switch]$gui_allow_unnamed_policy,
