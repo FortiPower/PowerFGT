@@ -184,11 +184,17 @@ function Set-FGTSystemSettings {
         }
 
         if ( $PsBoundParameters.ContainsKey('gui_ztna') ) {
-            if ($gui_ztna) {
-                $_ss | Add-member -name "gui-ztna" -membertype NoteProperty -Value "enable"
+            #before 7.0.x, there is not ZTNA
+            if ($connection.version -lt "7.0.0") {
+                Write-Warning "gui_ztna parameter is (yet) not available"
             }
             else {
-                $_ss | Add-member -name "gui-ztna" -membertype NoteProperty -Value "disable"
+                if ($gui_ztna) {
+                    $_ss | Add-member -name "gui-ztna" -membertype NoteProperty -Value "enable"
+                }
+                else {
+                    $_ss | Add-member -name "gui-ztna" -membertype NoteProperty -Value "disable"
+                }
             }
         }
 
