@@ -112,6 +112,14 @@ function Set-FGTSystemSettings {
         [Parameter (Mandatory = $false)]
         [switch]$gui_allow_unnamed_policy,
         [Parameter (Mandatory = $false)]
+        [switch]$gui_dns_database,
+        [Parameter (Mandatory = $false)]
+        [switch]$gui_explicit_proxy,
+        [Parameter (Mandatory = $false)]
+        [switch]$gui_sslvpn_personal_bookmarks,
+        [Parameter (Mandatory = $false)]
+        [switch]$gui_ztna,
+        [Parameter (Mandatory = $false)]
         [ValidateSet('enable', 'disable', 'global', IgnoreCase = $false)]
         [string]$lldp_transmission,
         [Parameter (Mandatory = $false)]
@@ -145,6 +153,42 @@ function Set-FGTSystemSettings {
             }
             else {
                 $_ss | Add-member -name "gui-allow-unnamed-policy" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('gui_dns_database') ) {
+            if ($gui_dns_database) {
+                $_ss | Add-member -name "gui-dns-database" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_ss | Add-member -name "gui-dns-database" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('gui_explicit_proxy') ) {
+            if ($gui_explicit_proxy) {
+                $_ss | Add-member -name "gui-explicit-proxy" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_ss | Add-member -name "gui-explicit-proxy" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('gui_sslvpn_personal_bookmarks') ) {
+            if ($gui_sslvpn_personal_bookmarks) {
+                $_ss | Add-member -name "gui-sslvpn-personal-bookmarks" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_ss | Add-member -name "gui-sslvpn-personal-bookmarks" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('gui_ztna') ) {
+            if ($gui_ztna) {
+                $_ss | Add-member -name "gui-ztna" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_ss | Add-member -name "gui-ztna" -membertype NoteProperty -Value "disable"
             }
         }
 

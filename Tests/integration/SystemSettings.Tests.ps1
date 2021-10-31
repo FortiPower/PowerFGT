@@ -43,6 +43,54 @@ Describe "Set System Settings" {
         $ss.'gui-allow-unnamed-policy' | Should -Be "disable"
     }
 
+    It "Change gui-dns-database to enable" {
+        Set-FGTSystemSettings -gui_dns_database
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-dns-database' | Should -Be "enable"
+    }
+
+    It "Change gui-dns-database to disable" {
+        Set-FGTSystemSettings -gui_dns_database:$false
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-dns-database' | Should -Be "disable"
+    }
+
+    It "Change gui-explicit-proxy to enable" {
+        Set-FGTSystemSettings -gui_explicit_proxy
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-explicit-proxy' | Should -Be "enable"
+    }
+
+    It "Change gui-explicit-proxy to disable" {
+        Set-FGTSystemSettings -gui_explicit_proxy:$false
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-explicit-proxy' | Should -Be "disable"
+    }
+
+    It "Change gui-sslvpn-personal-bookmarks to enable" {
+        Set-FGTSystemSettings -gui_sslvpn_personal_bookmarks
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-sslvpn-personal-bookmarks' | Should -Be "enable"
+    }
+
+    It "Change gui-sslvpn-personal-bookmarks to disable" {
+        Set-FGTSystemSettings -gui_sslvpn_personal_bookmarks:$false
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-sslvpn-personal-bookmarks' | Should -Be "disable"
+    }
+
+    It "Change gui-ztna to enable" {
+        Set-FGTSystemSettings -gui_ztna
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-ztna' | Should -Be "enable"
+    }
+
+    It "Change gui-ztna to disable" {
+        Set-FGTSystemSettings -gui_ztna:$false
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-ztna' | Should -Be "disable"
+    }
+
     It "Change lldp-transmission/reception to enable" {
         Set-FGTSystemSettings -lldp_transmission enable -lldp_reception enable
         $ss = Get-FGTSystemSettings
