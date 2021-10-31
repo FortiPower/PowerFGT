@@ -79,13 +79,13 @@ Describe "Set System Settings" {
         $ss.'gui-sslvpn-personal-bookmarks' | Should -Be "disable"
     }
 
-    It "Change gui-ztna to enable" {
+    It "Change gui-ztna to enable" -skip:($fgt_version -lt "7.0.0") {
         Set-FGTSystemSettings -gui_ztna
         $ss = Get-FGTSystemSettings
         $ss.'gui-ztna' | Should -Be "enable"
     }
 
-    It "Change gui-ztna to disable" {
+    It "Change gui-ztna to disable" -skip:($fgt_version -lt "7.0.0") {
         Set-FGTSystemSettings -gui_ztna:$false
         $ss = Get-FGTSystemSettings
         $ss.'gui-ztna' | Should -Be "disable"
