@@ -113,18 +113,18 @@ Describe "Set System Settings" {
     }
 
     It "Change settings via data (one field)" {
-        $data = @{ "ike-port" = 1500 }
+        $data = @{ "ecmp-max-paths" = 254 }
         Set-FGTSystemSettings -data $data
         $ss = Get-FGTSystemSettings
-        $ss.'ike-port' | Should -Be "1500"
+        $ss.'ecmp-max-paths' | Should -Be "254"
     }
 
     It "Change settings via data (two fields)" {
-        $data = @{ "ike-port" = 1501 ; "ike-policy-route" = "enable" }
+        $data = @{ "ecmp-max-paths" = 253 ; "deny-tcp-with-icmp" = "enable" }
         Set-FGTSystemSettings -data $data
         $ss = Get-FGTSystemSettings
-        $ss.'ike-port' | Should -Be "1501"
-        $ss.'ike-policy-route' | Should -Be "enable"
+        $ss.'ecmp-max-paths' | Should -Be "253"
+        $ss.'deny-tcp-with-icmp' | Should -Be "enable"
     }
 
     AfterAll {
