@@ -91,24 +91,39 @@ Describe "Set System Settings" {
         $ss.'gui-ztna' | Should -Be "disable"
     }
 
-    It "Change lldp-transmission/reception to enable" {
-        Set-FGTSystemSettings -lldp_transmission enable -lldp_reception enable
+    It "Change lldp-transmission to enable" {
+        Set-FGTSystemSettings -lldp_transmission enable
         $ss = Get-FGTSystemSettings
         $ss.'lldp-transmission' | Should -Be "enable"
+    }
+
+    It "Change lldp-transmission to disable" {
+        Set-FGTSystemSettings -lldp_transmission disable
+        $ss = Get-FGTSystemSettings
+        $ss.'lldp-transmission' | Should -Be "disable"
+    }
+
+    It "Change lldp-transmission to global" {
+        Set-FGTSystemSettings -lldp_transmission global
+        $ss = Get-FGTSystemSettings
+        $ss.'lldp-transmission' | Should -Be "global"
+    }
+
+    It "Change lldp-reception to enable" {
+        Set-FGTSystemSettings -lldp_reception enable
+        $ss = Get-FGTSystemSettings
         $ss.'lldp-reception' | Should -Be "enable"
     }
 
-    It "Change lldp-transmission/reception to disable" {
-        Set-FGTSystemSettings -lldp_transmission disable -lldp_reception disable
+    It "Change lldp-reception to disable" {
+        Set-FGTSystemSettings -lldp_reception disable
         $ss = Get-FGTSystemSettings
-        $ss.'lldp-transmission' | Should -Be "disable"
         $ss.'lldp-reception' | Should -Be "disable"
     }
 
-    It "Change lldp-transmission/reception to global" {
-        Set-FGTSystemSettings -lldp_transmission global -lldp_reception global
+    It "Change lldp-reception to global" {
+        Set-FGTSystemSettings -lldp_reception global
         $ss = Get-FGTSystemSettings
-        $ss.'lldp-transmission' | Should -Be "global"
         $ss.'lldp-reception' | Should -Be "global"
     }
 
