@@ -112,6 +112,9 @@ function Set-FGTSystemSettings {
         [Parameter (Mandatory = $false)]
         [switch]$gui_allow_unnamed_policy,
         [Parameter (Mandatory = $false)]
+        [ValidateSet('proxy', 'flow', , IgnoreCase = $false)]
+        [string]$inspection_mode,
+        [Parameter (Mandatory = $false)]
         [switch]$gui_dns_database,
         [Parameter (Mandatory = $false)]
         [switch]$gui_explicit_proxy,
@@ -146,6 +149,15 @@ function Set-FGTSystemSettings {
         $uri = "api/v2/cmdb/system/settings"
 
         $_ss = new-Object -TypeName PSObject
+
+        if ( $PsBoundParameters.ContainsKey('inspection_mode') ) {
+            #with 6.2.x, there is no longer visibility parameter
+            if ($connection.version -ge "6.2.0") {
+                Write-Warning "inspection_mode (proxy/flow) parameter is no longer available with FortiOS 6.2.x and after"
+            } else {
+                $_ss | Add-member -name "inspection-mode" -membertype NoteProperty -Value $inspection_mode
+            }
+        }
 
         if ( $PsBoundParameters.ContainsKey('gui_allow_unnamed_policy') ) {
             if ($gui_allow_unnamed_policy) {
@@ -203,7 +215,12 @@ function Set-FGTSystemSettings {
         }
 
         if ( $PsBoundParameters.ContainsKey('lldp_reception') ) {
-            $_ss | Add-member -name "lldp-reception" -membertype NoteProperty -Value $lldp_reception
+            #before 6.2.x, there is not lldp_recetion
+            if ($connection.version -lt "6.2.0") {
+                Write-Warning "lldp_reception parameter is (yet) not available"
+            }  else {
+                $_ss | Add-member -name "lldp-reception" -membertype NoteProperty -Value $lldp_reception
+            }
         }
 
         if ( $PsBoundParameters.ContainsKey('data') ) {
