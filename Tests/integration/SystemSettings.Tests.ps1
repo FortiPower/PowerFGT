@@ -109,19 +109,19 @@ Describe "Set System Settings" {
         $ss.'lldp-transmission' | Should -Be "global"
     }
 
-    It "Change lldp-reception to enable" {
+    It "Change lldp-reception to enable" -skip:($fgt_version -lt "6.2.0") {
         Set-FGTSystemSettings -lldp_reception enable
         $ss = Get-FGTSystemSettings
         $ss.'lldp-reception' | Should -Be "enable"
     }
 
-    It "Change lldp-reception to disable" {
+    It "Change lldp-reception to disable" -skip:($fgt_version -lt "6.2.0") {
         Set-FGTSystemSettings -lldp_reception disable
         $ss = Get-FGTSystemSettings
         $ss.'lldp-reception' | Should -Be "disable"
     }
 
-    It "Change lldp-reception to global" {
+    It "Change lldp-reception to global" -skip:($fgt_version -lt "6.2.0") {
         Set-FGTSystemSettings -lldp_reception global
         $ss = Get-FGTSystemSettings
         $ss.'lldp-reception' | Should -Be "global"
