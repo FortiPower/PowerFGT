@@ -31,6 +31,18 @@ Describe "Set System Settings" {
         $script:settings = Get-FGTSystemSettings
     }
 
+    It "Change inspection-mode to proxy" -skip:($fgt_version -ge "6.2.0") {
+        Set-FGTSystemSettings -inspection_mode proxy
+        $ss = Get-FGTSystemSettings
+        $ss.'inspection-mode' | Should -Be "proxy"
+    }
+
+    It "Change inspection-mode to flow" -skip:($fgt_version -ge "6.2.0") {
+        Set-FGTSystemSettings -inspection_mode flow
+        $ss = Get-FGTSystemSettings
+        $ss.'inspection-mode' | Should -Be "flow"
+    }
+
     It "Change gui-allow-unnamed-policy to enable" {
         Set-FGTSystemSettings -gui_allow_unnamed_policy
         $ss = Get-FGTSystemSettings
