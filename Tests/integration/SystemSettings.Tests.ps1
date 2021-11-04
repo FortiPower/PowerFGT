@@ -68,6 +68,10 @@ Describe "Set System Settings" {
     }
 
     It "Change gui-explicit-proxy to enable" {
+        #for FortiOS 6.0.x, you need to enable proxy inspection mode for use Explicit Proxy
+        if ($DefaultFGTConnection.version -lt "6.2.0") {
+            Set-FGTSystemSettings -inspection_mode proxy
+        }
         Set-FGTSystemSettings -gui_explicit_proxy
         $ss = Get-FGTSystemSettings
         $ss.'gui-explicit-proxy' | Should -Be "enable"
@@ -77,6 +81,10 @@ Describe "Set System Settings" {
         Set-FGTSystemSettings -gui_explicit_proxy:$false
         $ss = Get-FGTSystemSettings
         $ss.'gui-explicit-proxy' | Should -Be "disable"
+        #reenable inspection mode flow
+        if ($DefaultFGTConnection.version -lt "6.2.0") {
+            Set-FGTSystemSettings -inspection_mode flow
+        }
     }
 
     It "Change gui-sslvpn-personal-bookmarks to enable" {
