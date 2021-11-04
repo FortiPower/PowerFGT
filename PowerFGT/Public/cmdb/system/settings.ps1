@@ -112,7 +112,7 @@ function Set-FGTSystemSettings {
         [Parameter (Mandatory = $false)]
         [switch]$gui_allow_unnamed_policy,
         [Parameter (Mandatory = $false)]
-        [ValidateSet('proxy', 'flow', , IgnoreCase = $false)]
+        [ValidateSet('proxy', 'flow', IgnoreCase = $false)]
         [string]$inspection_mode,
         [Parameter (Mandatory = $false)]
         [switch]$gui_dns_database,
