@@ -24,6 +24,11 @@ function Get-FGTSystemSettings {
         Get list of all System Settings (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTSystemSettings -name "ike-port"
+
+        Get value of ike-port settings
+
+        .EXAMPLE
         Get-FGTSystemSettings -vdom vdomX
 
         Get list of all System Settings on vdomX
@@ -32,6 +37,8 @@ function Get-FGTSystemSettings {
     [CmdletBinding(DefaultParameterSetName = "default")]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "")]
     Param(
+        [Parameter (Mandatory = $false)]
+        [string]$name,
         [Parameter (Mandatory = $false)]
         [Parameter (ParameterSetName = "filter")]
         [string]$filter_attribute,
@@ -72,7 +79,13 @@ function Get-FGTSystemSettings {
         }
 
         $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/settings' -method 'GET' -connection $connection @invokeParams
-        $reponse.results
+        if ( $PsBoundParameters.ContainsKey('name') ) {
+            $reponse.results.$name
+        }
+        else {
+            $reponse.results
+        }
+
     }
 
     End {
