@@ -80,7 +80,10 @@ function Get-FGTSystemSettings {
 
         $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/settings' -method 'GET' -connection $connection @invokeParams
         if ( $PsBoundParameters.ContainsKey('name') ) {
-            $reponse.results.$name
+            $ss = new-Object -TypeName PSObject
+            #display value to PSObject (with name and value)
+            $ss | Add-member -name $name -membertype NoteProperty -Value $reponse.results.$name
+            $ss
         }
         else {
             $reponse.results
