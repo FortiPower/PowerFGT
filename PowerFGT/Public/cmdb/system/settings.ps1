@@ -249,7 +249,7 @@ function Set-FGTSystemSettings {
             Invoke-FGTRestMethod -method "PUT" -body $_ss -uri $uri -connection $connection @invokeParams
         }
 
-        Get-FGTSystemSettings
+        Get-FGTSystemSettings -connection $connection @invokeParams
     }
 
     End {
