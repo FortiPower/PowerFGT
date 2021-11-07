@@ -29,6 +29,11 @@ function Get-FGTSystemSettings {
         Get value of ike-port settings
 
         .EXAMPLE
+        Get-FGTSystemSettings -name "ike-port", "ike-policy-route"
+
+        Get value of ike-port and ike-policy-route settings
+
+        .EXAMPLE
         Get-FGTSystemSettings -vdom vdomX
 
         Get list of all System Settings on vdomX
