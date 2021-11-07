@@ -23,6 +23,28 @@ Describe "Get System Settings" {
         $ss = Get-FGTSystemSettings -skip
         @($ss).count | Should -Not -Be $NULL
     }
+
+    Context "Search" {
+
+        It "Search a setting by name (gui-allow-unnamed-policy)" {
+            $ss = Get-FGTSystemSettings -name "gui-allow-unnamed-policy"
+            $ss.'gui-allow-unnamed-policy' | Should -Be -Not $NULL
+            $ss.'gui-dns-database'  | Should -Be $NULL
+        }
+
+        It "Search 2 settings by name (gui-allow-unnamed-policy, gui-explicit-proxy)" {
+            $ss = Get-FGTSystemSettings -name "gui-allow-unnamed-policy", "gui-explicit-proxy"
+            $ss.'gui-allow-unnamed-policy' | Should -Be -Not $NULL
+            $ss.'gui-dns-database'  | Should -Be $NULL
+            $ss.'gui-explicit-proxy'  | Should -Be -Not $NULL
+        }
+
+        It "Search 1 setting by name (gui_allow_unnamed_policy)" {
+            $ss = Get-FGTSystemSettings -name "gui_allow_unnamed_policy"
+            $ss.'gui-allow-unnamed-policy' | Should -Be -Not $NULL
+            $ss.'gui-dns-database'  | Should -Be $NULL
+        }
+    }
 }
 
 Describe "Set System Settings" {
