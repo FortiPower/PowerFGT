@@ -38,7 +38,7 @@ function Get-FGTSystemSettings {
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "")]
     Param(
         [Parameter (Mandatory = $false)]
-        [string]$name,
+        [string[]]$name,
         [Parameter (Mandatory = $false)]
         [Parameter (ParameterSetName = "filter")]
         [string]$filter_attribute,
@@ -82,8 +82,10 @@ function Get-FGTSystemSettings {
         if ( $PsBoundParameters.ContainsKey('name') ) {
             $ss = new-Object -TypeName PSObject
             #display value to PSObject (with name and value)
-            if ($reponse.results.$name) {
-                $ss | Add-member -name $name -membertype NoteProperty -Value $reponse.results.$name
+            foreach ($n in $name) {
+                if ($reponse.results.$n) {
+                    $ss | Add-member -name $n -membertype NoteProperty -Value $reponse.results.$n
+                }
             }
             $ss
         }
