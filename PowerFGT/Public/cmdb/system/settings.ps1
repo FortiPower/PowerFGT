@@ -88,6 +88,7 @@ function Get-FGTSystemSettings {
             $ss = new-Object -TypeName PSObject
             #display value to PSObject (with name and value)
             foreach ($n in $name) {
+                $n = $n -replace "_", "-" # replace _ by - can be useful for search setting name
                 if ($reponse.results.$n) {
                     $ss | Add-member -name $n -membertype NoteProperty -Value $reponse.results.$n
                 }
