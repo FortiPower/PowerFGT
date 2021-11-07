@@ -82,7 +82,9 @@ function Get-FGTSystemSettings {
         if ( $PsBoundParameters.ContainsKey('name') ) {
             $ss = new-Object -TypeName PSObject
             #display value to PSObject (with name and value)
-            $ss | Add-member -name $name -membertype NoteProperty -Value $reponse.results.$name
+            if ($reponse.results.$name) {
+                $ss | Add-member -name $name -membertype NoteProperty -Value $reponse.results.$name
+            }
             $ss
         }
         else {
