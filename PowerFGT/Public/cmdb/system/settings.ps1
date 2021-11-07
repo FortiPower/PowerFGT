@@ -136,6 +136,10 @@ function Set-FGTSystemSettings {
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "")]
     Param(
         [Parameter (Mandatory = $false)]
+        [switch]$allow_subnet_overlap,
+        [Parameter (Mandatory = $false)]
+        [switch]$central_nat,
+        [Parameter (Mandatory = $false)]
         [ValidateSet('proxy', 'flow', IgnoreCase = $false)]
         [string]$inspection_mode,
         [Parameter (Mandatory = $false)]
@@ -143,9 +147,29 @@ function Set-FGTSystemSettings {
         [Parameter (Mandatory = $false)]
         [switch]$gui_dns_database,
         [Parameter (Mandatory = $false)]
+        [switch]$gui_dynamic_routing,
+        [Parameter (Mandatory = $false)]
         [switch]$gui_explicit_proxy,
         [Parameter (Mandatory = $false)]
+        [switch]$gui_ips,
+        [Parameter (Mandatory = $false)]
+        [switch]$gui_load_balance,
+        [Parameter (Mandatory = $false)]
+        [switch]$gui_local_in_policy,
+        [Parameter (Mandatory = $false)]
+        [switch]$gui_multiple_interface_policy,
+        [Parameter (Mandatory = $false)]
+        [switch]$gui_multiple_utm_profiles,
+        [Parameter (Mandatory = $false)]
+        [switch]$gui_spamfilter,
+        [Parameter (Mandatory = $false)]
         [switch]$gui_sslvpn_personal_bookmarks,
+        [Parameter (Mandatory = $false)]
+        [switch]$gui_sslvpn_realms,
+        [Parameter (Mandatory = $false)]
+        [switch]$gui_voip_profile,
+        [Parameter (Mandatory = $false)]
+        [switch]$gui_waf_profile,
         [Parameter (Mandatory = $false)]
         [switch]$gui_ztna,
         [Parameter (Mandatory = $false)]
@@ -176,6 +200,24 @@ function Set-FGTSystemSettings {
 
         $_ss = new-Object -TypeName PSObject
 
+        if ( $PsBoundParameters.ContainsKey('allow_subnet_overlap') ) {
+            if ($allow_subnet_overlap) {
+                $_ss | Add-member -name "allow-subnet-overlap" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_ss | Add-member -name "allow-subnet-overlap" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('central_nat') ) {
+            if ($central_nat) {
+                $_ss | Add-member -name "central-nat" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_ss | Add-member -name "central-nat" -membertype NoteProperty -Value "disable"
+            }
+        }
+
         if ( $PsBoundParameters.ContainsKey('inspection_mode') ) {
             #with 6.2.x, there is no longer visibility parameter
             if ($connection.version -ge "6.2.0") {
@@ -203,6 +245,15 @@ function Set-FGTSystemSettings {
             }
         }
 
+        if ( $PsBoundParameters.ContainsKey('gui_dynamic_routing') ) {
+            if ($gui_dynamic_routing) {
+                $_ss | Add-member -name "gui-dynamic-routing" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_ss | Add-member -name "gui-dynamic-routing" -membertype NoteProperty -Value "disable"
+            }
+        }
+
         if ( $PsBoundParameters.ContainsKey('gui_explicit_proxy') ) {
             if ($gui_explicit_proxy) {
                 $_ss | Add-member -name "gui-explicit-proxy" -membertype NoteProperty -Value "enable"
@@ -212,12 +263,98 @@ function Set-FGTSystemSettings {
             }
         }
 
+        if ( $PsBoundParameters.ContainsKey('gui_ips') ) {
+            if ($gui_ips) {
+                $_ss | Add-member -name "gui-ips" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_ss | Add-member -name "gui-ips" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('gui_load_balance') ) {
+            if ($gui_load_balance) {
+                $_ss | Add-member -name "gui-load-balance" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_ss | Add-member -name "gui-load-balance" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('gui_local_in_policy') ) {
+            if ($gui_local_in_policy) {
+                $_ss | Add-member -name "gui-local-in-policy" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_ss | Add-member -name "gui-local-in-policy" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('gui_multiple_interface_policy') ) {
+            if ($gui_multiple_interface_policy) {
+                $_ss | Add-member -name "gui-multiple-interface-policy" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_ss | Add-member -name "gui-multiple-interface-policy" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('gui_multiple_utm_profiles') ) {
+            #with 6.4.x, there is no longer visibility parameter
+            if ($connection.version -ge "6.4.0") {
+                Write-Warning "gui_multiple_interface_policy  parameter is no longer available with FortiOS 6.4.x and after"
+            } else {
+                if ($gui_multiple_utm_profiles) {
+                    $_ss | Add-member -name "gui-multiple-utm-profiles" -membertype NoteProperty -Value "enable"
+                }
+                else {
+                    $_ss | Add-member -name "gui-multiple-utm-profiles" -membertype NoteProperty -Value "disable"
+                }
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('gui_spamfilter') ) {
+            if ($gui_spamfilter) {
+                $_ss | Add-member -name "gui-spamfilter" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_ss | Add-member -name "gui-spamfilter" -membertype NoteProperty -Value "disable"
+            }
+        }
+
         if ( $PsBoundParameters.ContainsKey('gui_sslvpn_personal_bookmarks') ) {
             if ($gui_sslvpn_personal_bookmarks) {
                 $_ss | Add-member -name "gui-sslvpn-personal-bookmarks" -membertype NoteProperty -Value "enable"
             }
             else {
                 $_ss | Add-member -name "gui-sslvpn-personal-bookmarks" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('gui_sslvpn_realms') ) {
+            if ($gui_sslvpn_realms) {
+                $_ss | Add-member -name "gui-sslvpn-realms" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_ss | Add-member -name "gui-sslvpn-realms" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('gui_voip_profile') ) {
+            if ($gui_voip_profile) {
+                $_ss | Add-member -name "gui-voip-profile" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_ss | Add-member -name "gui-voip-profile" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('gui_waf_profile') ) {
+            if ($gui_waf_profile) {
+                $_ss | Add-member -name "gui-waf-profile" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_ss | Add-member -name "gui-waf-profile" -membertype NoteProperty -Value "disable"
             }
         }
 

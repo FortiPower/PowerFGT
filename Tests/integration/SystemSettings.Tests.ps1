@@ -53,6 +53,30 @@ Describe "Set System Settings" {
         $script:settings = Get-FGTSystemSettings
     }
 
+    It "Change allow-subnet-overlap to enable" {
+        Set-FGTSystemSettings -allow_subnet_overlap
+        $ss = Get-FGTSystemSettings
+        $ss.'allow-subnet-overlap' | Should -Be "enable"
+    }
+
+    It "Change allow-subnet-overlap to disable" {
+        Set-FGTSystemSettings -allow_subnet_overlap:$false
+        $ss = Get-FGTSystemSettings
+        $ss.'allow-subnet-overlap' | Should -Be "disable"
+    }
+
+    It "Change central-nat to enable" {
+        Set-FGTSystemSettings -central_nat
+        $ss = Get-FGTSystemSettings
+        $ss.'central-nat' | Should -Be "enable"
+    }
+
+    It "Change central-nat to disable" {
+        Set-FGTSystemSettings -central_nat:$false
+        $ss = Get-FGTSystemSettings
+        $ss.'central-nat' | Should -Be "disable"
+    }
+
     It "Change inspection-mode to proxy" -skip:($fgt_version -ge "6.2.0") {
         Set-FGTSystemSettings -inspection_mode proxy
         $ss = Get-FGTSystemSettings
@@ -89,6 +113,18 @@ Describe "Set System Settings" {
         $ss.'gui-dns-database' | Should -Be "disable"
     }
 
+    It "Change gui-dynamic-routing to enable" {
+        Set-FGTSystemSettings -gui_dynamic_routing
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-dynamic-routing' | Should -Be "enable"
+    }
+
+    It "Change gui-dynamic-routing to disable" {
+        Set-FGTSystemSettings -gui_dynamic_routing:$false
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-dynamic-routing' | Should -Be "disable"
+    }
+
     It "Change gui-explicit-proxy to enable" {
         #for FortiOS 6.0.x, you need to enable proxy inspection mode for use Explicit Proxy
         if ($DefaultFGTConnection.version -lt "6.2.0") {
@@ -109,6 +145,86 @@ Describe "Set System Settings" {
         }
     }
 
+    It "Change gui-ips to enable" {
+        Set-FGTSystemSettings -gui_ips
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-ips' | Should -Be "enable"
+    }
+
+    It "Change gui-ips to disable" {
+        Set-FGTSystemSettings -gui_ips:$false
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-ips' | Should -Be "disable"
+    }
+
+    It "Change gui-load-balance to enable" {
+        Set-FGTSystemSettings -gui_load_balance
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-load-balance' | Should -Be "enable"
+    }
+
+    It "Change gui-load-balance to disable" {
+        Set-FGTSystemSettings -gui_load_balance:$false
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-load-balance' | Should -Be "disable"
+    }
+
+    It "Change gui-local-in-policy to enable" {
+        Set-FGTSystemSettings -gui_local_in_policy
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-local-in-policy' | Should -Be "enable"
+    }
+
+    It "Change gui-local-in-policy to disable" {
+        Set-FGTSystemSettings -gui_local_in_policy:$false
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-local-in-policy' | Should -Be "disable"
+    }
+
+    It "Change gui-multiple-interface-policy to enable" {
+        Set-FGTSystemSettings -gui_multiple_interface_policy
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-multiple-interface-policy' | Should -Be "enable"
+    }
+
+    It "Change gui-multiple-interface-policy to disable" {
+        Set-FGTSystemSettings -gui_multiple_interface_policy:$false
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-multiple-interface-policy' | Should -Be "disable"
+    }
+
+    It "Change gui-multiple-utm-profiles to enable" -skip:($fgt_version -ge "6.4.0") {
+        Set-FGTSystemSettings -gui_multiple_utm_profiles
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-multiple-utm-profiles' | Should -Be "enable"
+    }
+
+    It "Change gui-multiple-utm-profiles to disable" -skip:($fgt_version -ge "6.4.0") {
+        Set-FGTSystemSettings -gui_multiple_utm_profiles:$false
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-multiple-utm-profiles' | Should -Be "disable"
+    }
+
+    It "Change gui-spamfilter to enable" {
+        #for FortiOS 6.0.x, you need to enable proxy inspection mode for use Spam Filter
+        if ($DefaultFGTConnection.version -lt "6.2.0") {
+            Set-FGTSystemSettings -inspection_mode proxy
+        }
+        Set-FGTSystemSettings -gui_spamfilter
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-spamfilter' | Should -Be "enable"
+    }
+
+    It "Change gui-spamfilter to disable" {
+        Set-FGTSystemSettings -gui_spamfilter:$false
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-spamfilter' | Should -Be "disable"
+        #reenable inspection mode flow
+        if ($DefaultFGTConnection.version -lt "6.2.0") {
+            Set-FGTSystemSettings -inspection_mode flow
+        }
+    }
+
     It "Change gui-sslvpn-personal-bookmarks to enable" {
         Set-FGTSystemSettings -gui_sslvpn_personal_bookmarks
         $ss = Get-FGTSystemSettings
@@ -119,6 +235,50 @@ Describe "Set System Settings" {
         Set-FGTSystemSettings -gui_sslvpn_personal_bookmarks:$false
         $ss = Get-FGTSystemSettings
         $ss.'gui-sslvpn-personal-bookmarks' | Should -Be "disable"
+    }
+
+    It "Change gui-sslvpn-realms to enable" {
+        Set-FGTSystemSettings -gui_sslvpn_realms
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-sslvpn-realms' | Should -Be "enable"
+    }
+
+    It "Change gui-sslvpn-realms to disable" {
+        Set-FGTSystemSettings -gui_sslvpn_realms:$false
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-sslvpn-realms' | Should -Be "disable"
+    }
+
+    It "Change gui-voip-profile to enable" {
+        Set-FGTSystemSettings -gui_voip_profile
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-voip-profile' | Should -Be "enable"
+    }
+
+    It "Change gui-voip-profile to disable" {
+        Set-FGTSystemSettings -gui_voip_profile:$false
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-voip-profile' | Should -Be "disable"
+    }
+
+    It "Change gui-waf-profile to enable" {
+        #for FortiOS 6.0.x, you need to enable proxy inspection mode for use WAF Profile
+        if ($DefaultFGTConnection.version -lt "6.2.0") {
+            Set-FGTSystemSettings -inspection_mode proxy
+        }
+        Set-FGTSystemSettings -gui_waf_profile
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-waf-profile' | Should -Be "enable"
+    }
+
+    It "Change gui-waf-profile to disable" {
+        Set-FGTSystemSettings -gui_waf_profile:$false
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-waf-profile' | Should -Be "disable"
+        #reenable inspection mode flow
+        if ($DefaultFGTConnection.version -lt "6.2.0") {
+            Set-FGTSystemSettings -inspection_mode flow
+        }
     }
 
     It "Change gui-ztna to enable" -skip:($fgt_version -lt "7.0.0") {
