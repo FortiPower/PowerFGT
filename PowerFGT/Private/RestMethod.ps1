@@ -152,9 +152,11 @@ function Invoke-FGTRestMethod {
         try {
             if ($body) {
 
-                Write-Verbose -message ($body | ConvertTo-Json)
+                #don't use pipeline to convertto-json because remove array...
+                $jbody = ConvertTo-Json $body -Depth 10
+                Write-Verbose -message ($jbody)
 
-                $response = Invoke-RestMethod $fullurl -Method $method -body ($body | ConvertTo-Json) -Headers $headers -WebSession $sessionvariable @invokeParams
+                $response = Invoke-RestMethod $fullurl -Method $method -body ($jbody) -Headers $headers -WebSession $sessionvariable @invokeParams
             }
             else {
                 $response = Invoke-RestMethod $fullurl -Method $method -Headers $headers -WebSession $sessionvariable @invokeParams
