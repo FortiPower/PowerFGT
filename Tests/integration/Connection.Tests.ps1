@@ -49,7 +49,7 @@ Describe "Connect to a fortigate (using HTTPS)" {
         { Connect-FGT $ipaddress -Username $login -password $mysecpassword } | Should throw "Unable to connect (certificate)"
     }
 
-    It "Connect to a FortiGate (using HTTPS) with wrong password" {
+    It "Connect to a FortiGate (using HTTPS) with wrong password" -Skip:($httpOnly) {
         { Connect-FGT $ipaddress -Username $login -password $mywrongpassword -port $port } | Should -throw "Log in failure. Most likely an incorrect username/password combo"
     }
 }
