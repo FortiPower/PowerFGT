@@ -62,6 +62,12 @@ function Connect-FGT {
       than 15 seconds to form a connection. The Default value "0" will cause the connection to never timeout.
 
       .EXAMPLE
+      $apiToken = Get-Content fortigate_api_token.txt
+      Connect-FGT -Server -192.0.2.1 -ApiToken $apiToken
+
+      Connect to a FortiGate with IP 192.0.2.1 and passing api token
+
+      .EXAMPLE
       $mynewpassword = ConvertTo-SecureString mypassword -AsPlainText -Force
       Connect-FGT -Server 192.0.2.1 -new_password $mysecpassword
 
@@ -75,6 +81,8 @@ function Connect-FGT {
         [String]$Username,
         [Parameter(Mandatory = $false)]
         [SecureString]$Password,
+        [Parameter(Mandatory = $false)]
+        [string]$ApiToken,
         [Parameter(Mandatory = $false)]
         [SecureString]$New_Password,
         [Parameter(Mandatory = $false)]
@@ -100,16 +108,6 @@ function Connect-FGT {
 
         $connection = @{server = ""; session = ""; httpOnly = $false; port = ""; headers = ""; invokeParams = ""; vdom = ""; version = "" }
 
-        #If there is a password (and a user), create a credentials
-        if ($Password) {
-            $Credentials = New-Object System.Management.Automation.PSCredential($Username, $Password)
-        }
-        #Not Credentials (and no password)
-        if ($null -eq $Credentials) {
-            $Credentials = Get-Credential -Message 'Please enter administrative credentials for your FortiGate'
-        }
-
-        $postParams = @{username = $Credentials.username; secretkey = $Credentials.GetNetworkCredential().Password; ajax = 1 }
         $invokeParams = @{DisableKeepAlive = $false; UseBasicParsing = $true; SkipCertificateCheck = $SkipCertificateCheck; TimeoutSec = $Timeout }
 
         if (("Desktop" -eq $PSVersionTable.PsEdition) -or ($null -eq $PSVersionTable.PsEdition)) {
@@ -153,92 +151,116 @@ function Connect-FGT {
             $url = "https://${Server}:${port}/"
         }
 
-        $uri = $url + "logincheck"
-        $iwrResponse = $null
-        try {
-            $iwrResponse = Invoke-WebRequest $uri -Method POST -Body $postParams -SessionVariable FGT @invokeParams
+        $headers = @{}
+        if ($ApiToken) {
+            $uri = $url + "logincheck"
+            try {
+                $apiLoginHeaders = @{ "Authorization" = "Bearer $ApiToken" }
+                Invoke-WebRequest $uri -Method GET -Headers $loginHeaders -SessionVariable FGT @invokeParams | Out-Null
+            }
+            catch {
+                Show-FGTException $_
+                throw "Unable to connect to FortiGate"
+            }
+            $headers.Authorization = $apiLoginHeaders.Authorization
         }
-        catch {
-            Show-FGTException $_
-            throw "Unable to connect to FortiGate"
-        }
+        else {
+            #If there is a password (and a user), create a credentials
+            if ($Password) {
+                $Credentials = New-Object System.Management.Automation.PSCredential($Username, $Password)
+            }
+            #Not Credentials (and no password)
+            if ($null -eq $Credentials) {
+                $Credentials = Get-Credential -Message 'Please enter administrative credentials for your FortiGate'
+            }
+            $postParams = @{username = $Credentials.username; secretkey = $Credentials.GetNetworkCredential().Password; ajax = 1 }
+            $uri = $url + "logincheck"
+            $iwrResponse = $null
+            try {
+                $iwrResponse = Invoke-WebRequest $uri -Method POST -Body $postParams -SessionVariable FGT @invokeParams
+            }
+            catch {
+                Show-FGTException $_
+                throw "Unable to connect to FortiGate"
+            }
 
-        #first byte return is a status code
-        switch ($iwrResponse.Content[0]) {
-            '0' {
-                throw "Log in failure. Most likely an incorrect username/password combo"
-            }
-            '1' {
-                #no thing, it is good ! continue
-            }
-            '2' {
-                throw "Admin is now locked out (Please retry in 60 seconds)"
-            }
-            '3' {
-                throw "Two-factor Authentication is needed (not yet supported with PowerFGT)"
-            }
-            '4' {
-                if (-not $PsBoundParameters.ContainsKey('new_password')) {
-                    #throw if you don't have specify new_password
-                    throw "Need to change the password (use -new_password parameter)"
+            #first byte return is a status code
+            switch ($iwrResponse.Content[0]) {
+                '0' {
+                    throw "Log in failure. Most likely an incorrect username/password combo"
+                }
+                '1' {
+                    #no thing, it is good ! continue
+                }
+                '2' {
+                    throw "Admin is now locked out (Please retry in 60 seconds)"
+                }
+                '3' {
+                    throw "Two-factor Authentication is needed (not yet supported with PowerFGT)"
+                }
+                '4' {
+                    if (-not $PsBoundParameters.ContainsKey('new_password')) {
+                        #throw if you don't have specify new_password
+                        throw "Need to change the password (use -new_password parameter)"
+                    }
                 }
             }
-        }
 
-        #Search crsf cookie and to X-CSRFTOKEN
-        $cookies = $FGT.Cookies.GetCookies($uri)
-        foreach ($cookie in $cookies) {
-            if ($cookie.name -eq "ccsrftoken") {
-                $cookie_csrf = $cookie.value
-            }
-        }
-
-        # throw if don't found csrf cookie...
-        if ($null -eq $cookie_csrf) {
-            throw "Unable to found CSRF Cookie"
-        }
-
-        #Remove extra "quote"
-        $cookie_csrf = $cookie_csrf -replace '["]', ''
-        #Add csrf cookie to header (X-CSRFTOKEN)
-        $headers = @{"X-CSRFTOKEN" = $cookie_csrf }
-
-        $uri = $url + "logindisclaimer"
-        if ($iwrResponse.Content -match '/logindisclaimer') {
-            try {
-                Invoke-WebRequest $uri -Method "POST" -WebSession $FGT -Body @{ confirm = 1 ; ajax = 1 } @invokeParams | Out-Null
-            }
-            catch {
-                throw "Unable to confirm disclaimer"
-            }
-        }
-
-        if ($PsBoundParameters.ContainsKey('new_password')) {
-            $uri = $url + "loginpwd_change"
-            $new_pwd = ConvertFrom-SecureString -SecureString $new_password -AsPlainText;
-            $postParams = @{
-                CSRF_TOKEN = $cookie_csrf
-                old_pwd    = $Credentials.GetNetworkCredential().Password;
-                pwd1       = $new_pwd
-                pwd2       = $new_pwd
-                ajax       = 1;
-                confirm    = 1
-            }
-            try {
-                Invoke-WebRequest $uri -Method "POST" -WebSession $FGT -Body $postParams @invokeParams | Out-Null
-            }
-            catch {
-                throw "Unable to change password"
+            #Search crsf cookie and to X-CSRFTOKEN
+            $cookies = $FGT.Cookies.GetCookies($uri)
+            foreach ($cookie in $cookies) {
+                if ($cookie.name -eq "ccsrftoken") {
+                    $cookie_csrf = $cookie.value
+                }
             }
 
-            #Reconnect...
-            Connect-FGT -server $server -port $port -httpOnly:$httpOnly -vdom $vdom -Username $Credentials.username -Password $new_password -DefaultConnection $DefaultConnection
-            return
+            # throw if don't found csrf cookie...
+            if ($null -eq $cookie_csrf) {
+                throw "Unable to found CSRF Cookie"
+            }
+
+            #Remove extra "quote"
+            $cookie_csrf = $cookie_csrf -replace '["]', ''
+            #Add csrf cookie to header (X-CSRFTOKEN)
+            $headers = @{"X-CSRFTOKEN" = $cookie_csrf }
+
+            $uri = $url + "logindisclaimer"
+            if ($iwrResponse.Content -match '/logindisclaimer') {
+                try {
+                    Invoke-WebRequest $uri -Method "POST" -WebSession $FGT -Body @{ confirm = 1 ; ajax = 1 } @invokeParams | Out-Null
+                }
+                catch {
+                    throw "Unable to confirm disclaimer"
+                }
+            }
+
+            if ($PsBoundParameters.ContainsKey('new_password')) {
+                $uri = $url + "loginpwd_change"
+                $new_pwd = ConvertFrom-SecureString -SecureString $new_password -AsPlainText;
+                $postParams = @{
+                    CSRF_TOKEN = $cookie_csrf
+                    old_pwd    = $Credentials.GetNetworkCredential().Password;
+                    pwd1       = $new_pwd
+                    pwd2       = $new_pwd
+                    ajax       = 1;
+                    confirm    = 1
+                }
+                try {
+                    Invoke-WebRequest $uri -Method "POST" -WebSession $FGT -Body $postParams @invokeParams | Out-Null
+                }
+                catch {
+                    throw "Unable to change password"
+                }
+
+                #Reconnect...
+                Connect-FGT -server $server -port $port -httpOnly:$httpOnly -vdom $vdom -Username $Credentials.username -Password $new_password -DefaultConnection $DefaultConnection
+                return
+            }
         }
 
         $uri = $url + "api/v2/monitor/system/firmware"
         try {
-            $version = Invoke-RestMethod $uri -Method "get" -WebSession $FGT @invokeParams
+            $version = Invoke-RestMethod $uri -Method "get" -Header $headers -WebSession $FGT @invokeParams
         }
         catch {
             throw "Unable to found FGT version"
