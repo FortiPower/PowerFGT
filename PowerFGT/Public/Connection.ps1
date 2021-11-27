@@ -73,16 +73,20 @@ function Connect-FGT {
 
       Connect to a FortiGate with IP 192.0.2.1 and change the password
   #>
-
+    [CmdletBinding(DefaultParameterSetName = 'default')]
     Param(
         [Parameter(Mandatory = $true, position = 1)]
         [String]$Server,
+        [Parameter(ParameterSetName = "default")]
         [Parameter(Mandatory = $false)]
         [String]$Username,
+        [Parameter(ParameterSetName = "default")]
         [Parameter(Mandatory = $false)]
         [SecureString]$Password,
+        [Parameter(ParameterSetName = "token")]
         [Parameter(Mandatory = $false)]
         [string]$ApiToken,
+        [Parameter(ParameterSetName = "default")]
         [Parameter(Mandatory = $false)]
         [SecureString]$New_Password,
         [Parameter(Mandatory = $false)]
