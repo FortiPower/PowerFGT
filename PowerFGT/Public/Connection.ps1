@@ -254,7 +254,13 @@ function Connect-FGT {
             $version = Invoke-RestMethod $uri -Method "get" -Header $headers -WebSession $FGT @invokeParams
         }
         catch {
-            throw "Unable to found FGT version"
+            if ($ApiToken) {
+                Show-FGTException $_
+                throw "Authentication failure. Wrong token or not a Trusted Host."
+            }
+            else {
+                throw "Unable to find FGT version"
+            }
         }
 
         $connection.server = $server
