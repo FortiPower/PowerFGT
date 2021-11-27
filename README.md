@@ -854,6 +854,38 @@ There is also cmdlet for Proxy
 For Proxy Policy, it is possible to specific explict proxy or transparent
 For FortiGate 6.0.x, you need to enable proxy mode before (and enable feature)
 
+### Connecting with api token
+
+If you have a REST API administrator account setup, you can connect with the API
+
+```powershell
+Connect-FGT 192.0.2.1 -ApiToken "yourtoken"
+```
+
+A REST API administrator account can be setup using the following FortiOS CLI commands:
+
+```
+config system accprofile
+    edit "api_powerfgt"
+        set netgrp read-write
+        set fwgrp read-write
+        set vpngrp read-write
+        set system-diagnostics disable
+    next
+end
+
+config system api-user
+    edit "myaccount_powerfgt"
+        set accprofile "api_powerfgt"
+        config trusthost
+            edit 1
+                set ipv4-trusthost 192.0.2.0 255.255.255.0
+            next
+        end
+    next
+end
+```
+
 ### MultiConnection
 
 From release 0.3.0, it is possible to connect on same times to multi FortiGate
