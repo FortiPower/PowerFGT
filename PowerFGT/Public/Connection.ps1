@@ -153,16 +153,7 @@ function Connect-FGT {
 
         $headers = @{}
         if ($ApiToken) {
-            $uri = $url + "logincheck"
-            try {
-                $apiLoginHeaders = @{ "Authorization" = "Bearer $ApiToken" }
-                Invoke-WebRequest $uri -Method GET -Headers $loginHeaders -SessionVariable FGT @invokeParams | Out-Null
-            }
-            catch {
-                Show-FGTException $_
-                throw "Unable to connect to FortiGate"
-            }
-            $headers.Authorization = $apiLoginHeaders.Authorization
+            $headers = @{ "Authorization" = "Bearer $ApiToken" }
         }
         else {
             #If there is a password (and a user), create a credentials
