@@ -89,6 +89,7 @@ function Connect-FGT {
         [Parameter(ParameterSetName = "default")]
         [Parameter(Mandatory = $false)]
         [SecureString]$New_Password,
+        [Parameter(ParameterSetName = "default")]
         [Parameter(Mandatory = $false)]
         [PSCredential]$Credentials,
         [switch]$httpOnly = $false,
