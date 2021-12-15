@@ -81,7 +81,20 @@ function Get-FGTSystemGlobal {
         }
 
         $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/global' -method 'GET' -connection $connection @invokeParams
-        $reponse.results
+        if ( $PsBoundParameters.ContainsKey('name') ) {
+            $sg = new-Object -TypeName PSObject
+            #display value to PSObject (with name and value)
+            foreach ($n in $name) {
+                $n = $n -replace "_", "-" # replace _ by - can be useful for search 'global' setting name
+                if ($reponse.results.$n) {
+                    $sg | Add-member -name $n -membertype NoteProperty -Value $reponse.results.$n
+                }
+            }
+            $sg
+        }
+        else {
+            $reponse.results
+        }
     }
 
     End {
