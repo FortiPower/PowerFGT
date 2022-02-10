@@ -131,27 +131,56 @@ function Set-FGTSystemGlobal {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
     Param(
         [Parameter (Mandatory = $false)]
-        [string]$hostname,
+        [ValidateRange("1", "480")]
+        [int]$admintimeout,
+        [Parameter (Mandatory = $false)]
+        [ValidateRange(1, 65535)]
+        [int]$admin_port,
+        [Parameter (Mandatory = $false)]
+        [ValidateRange(1, 65535)]
+        [int]$admin_sport,
+        [Parameter (Mandatory = $false)]
+        [ValidateRange(1, 65535)]
+        [int]$admin_ssh_port,
         [Parameter (Mandatory = $false)]
         [string]$alias,
         [Parameter (Mandatory = $false)]
-        [ValidateRange("00", "86")]
-        [int]$timezone,
-        [Parameter (Mandatory = $false)]
         [switch]$dst,
         [Parameter (Mandatory = $false)]
-        [ValidateRange("1", "480")]
-        [int]$admintimeout,
+        [switch]$fortiextender,
+        [Parameter (Mandatory = $false)]
+        [string]$hostname,
+        [Parameter (Mandatory = $false)]
+        [switch]$gui_certificates,
+        [Parameter (Mandatory = $false)]
+        [switch]$gui_wireless_opensecurity,
         [Parameter (Mandatory = $false)]
         [switch]$lldp_transmission,
         [Parameter (Mandatory = $false)]
         [switch]$lldp_reception,
+        [Parameter (Mandatory = $false)]
+        [switch]$switch_controller,
+        [Parameter (Mandatory = $false)]
+        [ValidateRange(00, 86)]
+        [int]$timezone,
+        [Parameter (Mandatory = $false)]
+        [switch]$wireless_controller,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
     )
 
+    <#
+    gui-certificates                         : enable
+    gui-wireless-opensecurity                : enable
+    admin-port                               : 80
+admin-sport                              : 443
+admin-ssh-port                           : 22
+wireless-controller                      : enable
+fortiextender                            : disable
+switch-controller                        : enable
+    #>
     Begin {
     }
 
@@ -184,6 +213,67 @@ function Set-FGTSystemGlobal {
             }
             else {
                 $_sg | Add-member -name "dst" -membertype NoteProperty -Value $false
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('admintimeout') ) {
+            $_sg | add-member -name "admintimeout" -membertype NoteProperty -Value $admintimeout
+        }
+
+        if ( $PsBoundParameters.ContainsKey('admin_port') ) {
+            $_sg | add-member -name "admin-port" -membertype NoteProperty -Value $admin_port
+        }
+
+        if ( $PsBoundParameters.ContainsKey('admin_sport') ) {
+            $_sg | add-member -name "admin-sport" -membertype NoteProperty -Value $admin_sport
+        }
+
+        if ( $PsBoundParameters.ContainsKey('admin_ssh_port') ) {
+            $_sg | add-member -name "admin-ssh-port" -membertype NoteProperty -Value $admin_ssh_port
+        }
+
+        if ( $PsBoundParameters.ContainsKey('gui_certificates') ) {
+            if ($gui_certificates) {
+                $_sg | Add-member -name "gui-certificates" -membertype NoteProperty -Value $true
+            }
+            else {
+                $_sg | Add-member -name "gui-certificates" -membertype NoteProperty -Value $false
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('gui_wireless_opensecurity') ) {
+            if ($gui_wireless_opensecurity) {
+                $_sg | Add-member -name "gui-wireless-opensecurity" -membertype NoteProperty -Value $true
+            }
+            else {
+                $_sg | Add-member -name "gui-wireless-opensecurity" -membertype NoteProperty -Value $false
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('fortiextender') ) {
+            if ($fortiextender) {
+                $_sg | Add-member -name "fortiextender" -membertype NoteProperty -Value $true
+            }
+            else {
+                $_sg | Add-member -name "fortiextender" -membertype NoteProperty -Value $false
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('switch_controller') ) {
+            if ($switch_controller) {
+                $_sg | Add-member -name "switch-controller" -membertype NoteProperty -Value $true
+            }
+            else {
+                $_sg | Add-member -name "switch-controller" -membertype NoteProperty -Value $false
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('wireless_controller') ) {
+            if ($wireless_controller) {
+                $_sg | Add-member -name "wireless-controller" -membertype NoteProperty -Value $true
+            }
+            else {
+                $_sg | Add-member -name "wireless-controller" -membertype NoteProperty -Value $false
             }
         }
 
