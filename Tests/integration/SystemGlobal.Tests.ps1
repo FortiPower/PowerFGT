@@ -66,6 +66,7 @@ Describe "Set System Global" {
         $sg = Get-FGTSystemGlobal
         $sg.'admin-sport' | Should -Be "8443"
     }
+
     It "Change admin_ssh_port" {
         Set-FGTSystemGlobal -admin_ssh_port 8022
         $sg = Get-FGTSystemGlobal
