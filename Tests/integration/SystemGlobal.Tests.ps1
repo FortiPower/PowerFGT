@@ -47,6 +47,33 @@ Describe "Get System Global" {
     }
 }
 
+Describe "Set System Global" {
+
+    It "Change admintimeout to 480" {
+        Set-FGTSystemGlobal -admintimeout 480
+        $sg = Get-FGTSystemGlobal
+        $sg.'admintimeout' | Should -Be "480"
+    }
+
+    It "Change admin_port (HTTP)" -Skip:($httpOnly) {
+        Set-FGTSystemGlobal -admin_port 8080
+        $sg = Get-FGTSystemGlobal
+        $sg.'admin-port' | Should -Be "8080"
+    }
+
+    It "Change admin_sport (HTTPS)" -Skip:($httpOnly -eq $false) {
+        Set-FGTSystemGlobal -admin_sport 8443
+        $sg = Get-FGTSystemGlobal
+        $sg.'admin-sport' | Should -Be "8443"
+    }
+    It "Change admin_ssh_port" {
+        Set-FGTSystemGlobal -admin_ssh_port 8022
+        $sg = Get-FGTSystemGlobal
+        $sg.'admin-ssh-port' | Should -Be "8022"
+    }
+
+}
+
 AfterAll {
     Disconnect-FGT -confirm:$false
 }
