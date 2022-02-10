@@ -25,6 +25,17 @@ Describe  "Connect to a FortiGate (using HTTP)" {
         { Connect-FGT $ipaddress -Username $login -password $mywrongpassword -httpOnly -port $port } | Should -throw "Log in failure. Most likely an incorrect username/password combo"
     }
     #TODO: Connect using MFA (token) and/or need to change password (admin expiration)
+    It "Connect to a Fortigate (using HTTP) with apiToken" -Skip:($apitoken -eq $null -and $httpOnly -eq $true) {
+        Connect-FGT -Server $ipaddress -ApiToken $apitoken -port $port -httpOnly
+        $DefaultFGTConnection | Should -Not -BeNullOrEmpty
+        $DefaultFGTConnection.server | Should -Be $ipaddress
+        $DefaultFGTConnection.invokeParams | Should -Not -BeNullOrEmpty
+        $DefaultFGTConnection.port | Should -Be $port
+        $DefaultFGTConnection.httpOnly | Should -Be $true
+        $DefaultFGTConnection.session | Should -BeNullOrEmpty
+        $DefaultFGTConnection.headers | Should -Not -BeNullOrEmpty
+        $DefaultFGTConnection.version | Should -Not -BeNullOrEmpty
+    }
 }
 
 Describe "Connect to a fortigate (using HTTPS)" {
@@ -52,7 +63,8 @@ Describe "Connect to a fortigate (using HTTPS)" {
     It "Connect to a FortiGate (using HTTPS) with wrong password" -Skip:($httpOnly) {
         { Connect-FGT $ipaddress -Username $login -password $mywrongpassword -port $port } | Should -throw "Log in failure. Most likely an incorrect username/password combo"
     }
-    It "Connect to a Fortigate (using HTTPS) with apiToken" -Skip:($httpOnly) {
+
+    It "Connect to a Fortigate (using HTTPS) with apiToken" -Skip:($apitoken -eq $null -Or $httpOnly) {
         Connect-FGT -Server $ipaddress -ApiToken $apitoken -port $port -SkipCertificateCheck
         $DefaultFGTConnection | Should -Not -BeNullOrEmpty
         $DefaultFGTConnection.server | Should -Be $ipaddress
