@@ -854,13 +854,15 @@ There is also cmdlet for Proxy
 For Proxy Policy, it is possible to specific explict proxy or transparent
 For FortiGate 6.0.x, you need to enable proxy mode before (and enable feature)
 
-### Connecting with api token
+### Connecting with API Token
 
 If you have a REST API administrator account setup, you can connect with the API
 
 ```powershell
 Connect-FGT 192.0.2.1 -ApiToken "yourtoken"
 ```
+
+You can use API Token with HTTPS (or HTTPS with FortiOS > 7.0.x but not recommended)
 
 A REST API administrator account can be setup using the following FortiOS CLI commands:
 
