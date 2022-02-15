@@ -155,9 +155,9 @@ function Set-FGTSystemGlobal {
         [Parameter (Mandatory = $false)]
         [switch]$gui_wireless_opensecurity,
         [Parameter (Mandatory = $false)]
-        [switch]$lldp_transmission,
-        [Parameter (Mandatory = $false)]
         [switch]$lldp_reception,
+        [Parameter (Mandatory = $false)]
+        [switch]$lldp_transmission,
         [Parameter (Mandatory = $false)]
         [switch]$switch_controller,
         [Parameter (Mandatory = $false)]
@@ -256,6 +256,24 @@ switch-controller                        : enable
             }
             else {
                 $_sg | Add-member -name "fortiextender" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('lldp_reception') ) {
+            if ($lldp_reception) {
+                $_sg | Add-member -name "lldp-reception" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_sg | Add-member -name "lldp-reception" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('lldp_transmission') ) {
+            if ($lldp_transmission) {
+                $_sg | Add-member -name "lldp-transmission" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_sg | Add-member -name "lldp-transmission" -membertype NoteProperty -Value "disable"
             }
         }
 
