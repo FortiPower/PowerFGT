@@ -73,6 +73,120 @@ Describe "Set System Global" {
         $sg.'admin-ssh-port' | Should -Be "8022"
     }
 
+    It "Change alias" {
+        Set-FGTSystemGlobal -alias "alias_PowerFGT"
+        $sg = Get-FGTSystemGlobal
+        $sg.'alias' | Should -Be "alias_PowerFGT"
+    }
+
+    It "Change dst to disable" {
+        Set-FGTSystemGlobal -dst:$false
+        $sg = Get-FGTSystemGlobal
+        $sg.'dst' | Should -Be "disable"
+    }
+
+    It "Change dst to enable" {
+        Set-FGTSystemGlobal -dst
+        $sg = Get-FGTSystemGlobal
+        $sg.'dst' | Should -Be "enable"
+    }
+
+    It "Change fortiextender to enable" {
+        Set-FGTSystemGlobal -fortiextender
+        $sg = Get-FGTSystemGlobal
+        $sg.'fortiextender' | Should -Be "enable"
+    }
+
+    It "Change fortiextender to disable" {
+        Set-FGTSystemGlobal -fortiextender:$false
+        $sg = Get-FGTSystemGlobal
+        $sg.'fortiextender' | Should -Be "disable"
+    }
+
+    It "Change hostname" {
+        Set-FGTSystemGlobal -hostname "hostname_PowerFGT"
+        $sg = Get-FGTSystemGlobal
+        $sg.'hostname' | Should -Be "hostname_PowerFGT"
+    }
+
+    It "Change gui-certificates to disable" {
+        Set-FGTSystemGlobal -gui_certificates:$false
+        $sg = Get-FGTSystemGlobal
+        $sg.'gui-certificates' | Should -Be "disable"
+    }
+
+    It "Change gui-certificates to enable" {
+        Set-FGTSystemGlobal -gui_certificates
+        $sg = Get-FGTSystemGlobal
+        $sg.'gui-certificates' | Should -Be "enable"
+    }
+
+    It "Change gui-wireless-opensecurity to disable" {
+        Set-FGTSystemGlobal -gui_wireless_opensecurity:$false
+        $sg = Get-FGTSystemGlobal
+        $sg.'gui-wireless-opensecurity' | Should -Be "disable"
+    }
+
+    It "Change gui-wireless-opensecurity to enable" {
+        Set-FGTSystemGlobal -gui_wireless_opensecurity
+        $sg = Get-FGTSystemGlobal
+        $sg.'gui-wireless-opensecurity' | Should -Be "enable"
+    }
+
+    It "Change lldp-reception to enable" {
+        Set-FGTSystemGlobal -lldp_reception
+        $sg = Get-FGTSystemGlobal
+        $sg.'lldp-reception' | Should -Be "enable"
+    }
+
+    It "Change lldp-reception to disable" {
+        Set-FGTSystemGlobal -lldp_reception:$false
+        $sg = Get-FGTSystemGlobal
+        $sg.'lldp-reception' | Should -Be "disable"
+    }
+
+    It "Change lldp-transmission to enable" {
+        Set-FGTSystemGlobal -lldp_transmission
+        $sg = Get-FGTSystemGlobal
+        $sg.'lldp-transmission' | Should -Be "enable"
+    }
+
+    It "Change lldp-transmission to disable" {
+        Set-FGTSystemGlobal -lldp_transmission:$false
+        $sg = Get-FGTSystemGlobal
+        $sg.'lldp-transmission' | Should -Be "disable"
+    }
+
+    It "Change switch-controller to enable" {
+        Set-FGTSystemGlobal -switch_controller
+        $sg = Get-FGTSystemGlobal
+        $sg.'switch-controller' | Should -Be "enable"
+    }
+
+    It "Change switch-controller to disable" {
+        Set-FGTSystemGlobal -switch_controller:$false
+        $sg = Get-FGTSystemGlobal
+        $sg.'switch-controller' | Should -Be "disable"
+    }
+
+    It "Change timezone" {
+        Set-FGTSystemGlobal -timezone 28
+        $sg = Get-FGTSystemGlobal
+        $sg.'timezone' | Should -Be "28"
+    }
+
+    It "Change wireless-controller to disable" {
+        Set-FGTSystemGlobal -wireless_controller:$false
+        $sg = Get-FGTSystemGlobal
+        $sg.'wireless-controller' | Should -Be "disable"
+    }
+
+    It "Change wireless-controller to enable" {
+        Set-FGTSystemGlobal -wireless_controller
+        $sg = Get-FGTSystemGlobal
+        $sg.'wireless-controller' | Should -Be "enable"
+    }
+
 }
 
 AfterAll {
