@@ -157,6 +157,7 @@ Describe "Set System Global" {
         $sg.'lldp-transmission' | Should -Be "disable"
     }
 
+    <# Disable need some other change...
     It "Change switch-controller to enable" {
         Set-FGTSystemGlobal -switch_controller
         $sg = Get-FGTSystemGlobal
@@ -168,6 +169,7 @@ Describe "Set System Global" {
         $sg = Get-FGTSystemGlobal
         $sg.'switch-controller' | Should -Be "disable"
     }
+    #>
 
     It "Change timezone" {
         Set-FGTSystemGlobal -timezone 28
@@ -175,6 +177,7 @@ Describe "Set System Global" {
         $sg.'timezone' | Should -Be "28"
     }
 
+    <# Disable need some other change...
     It "Change wireless-controller to disable" {
         Set-FGTSystemGlobal -wireless_controller:$false
         $sg = Get-FGTSystemGlobal
@@ -186,7 +189,7 @@ Describe "Set System Global" {
         $sg = Get-FGTSystemGlobal
         $sg.'wireless-controller' | Should -Be "enable"
     }
-
+    #>
 }
 
 AfterAll {
