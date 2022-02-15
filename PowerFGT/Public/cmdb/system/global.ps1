@@ -209,10 +209,10 @@ switch-controller                        : enable
 
         if ( $PsBoundParameters.ContainsKey('dst') ) {
             if ($dst) {
-                $_sg | Add-member -name "dst" -membertype NoteProperty -Value $true
+                $_sg | Add-member -name "dst" -membertype NoteProperty -Value "enable"
             }
             else {
-                $_sg | Add-member -name "dst" -membertype NoteProperty -Value $false
+                $_sg | Add-member -name "dst" -membertype NoteProperty -Value "disable"
             }
         }
 
@@ -234,46 +234,46 @@ switch-controller                        : enable
 
         if ( $PsBoundParameters.ContainsKey('gui_certificates') ) {
             if ($gui_certificates) {
-                $_sg | Add-member -name "gui-certificates" -membertype NoteProperty -Value $true
+                $_sg | Add-member -name "gui-certificates" -membertype NoteProperty -Value "enable"
             }
             else {
-                $_sg | Add-member -name "gui-certificates" -membertype NoteProperty -Value $false
+                $_sg | Add-member -name "gui-certificates" -membertype NoteProperty -Value "disable"
             }
         }
 
         if ( $PsBoundParameters.ContainsKey('gui_wireless_opensecurity') ) {
             if ($gui_wireless_opensecurity) {
-                $_sg | Add-member -name "gui-wireless-opensecurity" -membertype NoteProperty -Value $true
+                $_sg | Add-member -name "gui-wireless-opensecurity" -membertype NoteProperty -Value "enable"
             }
             else {
-                $_sg | Add-member -name "gui-wireless-opensecurity" -membertype NoteProperty -Value $false
+                $_sg | Add-member -name "gui-wireless-opensecurity" -membertype NoteProperty -Value "disable"
             }
         }
 
         if ( $PsBoundParameters.ContainsKey('fortiextender') ) {
             if ($fortiextender) {
-                $_sg | Add-member -name "fortiextender" -membertype NoteProperty -Value $true
+                $_sg | Add-member -name "fortiextender" -membertype NoteProperty -Value "enable"
             }
             else {
-                $_sg | Add-member -name "fortiextender" -membertype NoteProperty -Value $false
+                $_sg | Add-member -name "fortiextender" -membertype NoteProperty -Value "disable"
             }
         }
 
         if ( $PsBoundParameters.ContainsKey('switch_controller') ) {
             if ($switch_controller) {
-                $_sg | Add-member -name "switch-controller" -membertype NoteProperty -Value $true
+                $_sg | Add-member -name "switch-controller" -membertype NoteProperty -Value "enable"
             }
             else {
-                $_sg | Add-member -name "switch-controller" -membertype NoteProperty -Value $false
+                $_sg | Add-member -name "switch-controller" -membertype NoteProperty -Value "disable"
             }
         }
 
         if ( $PsBoundParameters.ContainsKey('wireless_controller') ) {
             if ($wireless_controller) {
-                $_sg | Add-member -name "wireless-controller" -membertype NoteProperty -Value $true
+                $_sg | Add-member -name "wireless-controller" -membertype NoteProperty -Value "enable"
             }
             else {
-                $_sg | Add-member -name "wireless-controller" -membertype NoteProperty -Value $false
+                $_sg | Add-member -name "wireless-controller" -membertype NoteProperty -Value "disable"
             }
         }
 
