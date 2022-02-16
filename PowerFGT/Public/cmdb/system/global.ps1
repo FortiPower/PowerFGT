@@ -262,11 +262,16 @@ switch-controller                        : enable
         }
 
         if ( $PsBoundParameters.ContainsKey('lldp_reception') ) {
-            if ($lldp_reception) {
-                $_sg | Add-member -name "lldp-reception" -membertype NoteProperty -Value "enable"
-            }
-            else {
-                $_sg | Add-member -name "lldp-reception" -membertype NoteProperty -Value "disable"
+            #before 6.2.x, there is not lldp_recetion
+            if ($connection.version -lt "6.2.0") {
+                Write-Warning "lldp_reception parameter is (yet) not available"
+            }  else {
+                if ($lldp_reception) {
+                    $_sg | Add-member -name "lldp-reception" -membertype NoteProperty -Value "enable"
+                }
+                else {
+                    $_sg | Add-member -name "lldp-reception" -membertype NoteProperty -Value "disable"
+                }
             }
         }
 
