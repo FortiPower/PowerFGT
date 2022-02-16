@@ -165,6 +165,8 @@ function Set-FGTSystemGlobal {
         [int]$timezone,
         [Parameter (Mandatory = $false)]
         [switch]$wireless_controller,
+        [Parameter (Mandatory = $false)]
+        [hashtable]$data,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -294,6 +296,13 @@ switch-controller                        : enable
                 $_sg | Add-member -name "wireless-controller" -membertype NoteProperty -Value "disable"
             }
         }
+
+        if ( $PsBoundParameters.ContainsKey('data') ) {
+            $data.GetEnumerator() | ForEach-Object {
+                $_sg | Add-member -name $_.key -membertype NoteProperty -Value $_.value
+            }
+        }
+
 
         if ($PSCmdlet.ShouldProcess("Global", 'Configure Settings')) {
             Invoke-FGTRestMethod -method "PUT" -body $_sg -uri $uri -connection $connection @invokeParams

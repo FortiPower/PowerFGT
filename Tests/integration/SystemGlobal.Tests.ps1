@@ -49,6 +49,10 @@ Describe "Get System Global" {
 
 Describe "Set System Global" {
 
+    BeforeAll {
+        $script:settings = Get-FGTSystemGlobal
+    }
+
     It "Change admintimeout to 480" {
         Set-FGTSystemGlobal -admintimeout 480
         $sg = Get-FGTSystemGlobal
@@ -190,6 +194,30 @@ Describe "Set System Global" {
         $sg.'wireless-controller' | Should -Be "enable"
     }
     #>
+
+    It "Change settings via data (one field)" {
+        $data = @{ "two-factor-sms-expiry" = 120 }
+        Set-FGTSystemGlobal -data $data
+        $sg = Get-FGTSystemGlobal
+        $sg.'two-factor-sms-expiry' | Should -Be "120"
+    }
+
+    It "Change settings via data (two fields)" {
+        $data = @{ "two-factor-sms-expiry" = 240 ; "two-factor-email-expiry" = 120 }
+        Set-FGTSystemGlobal -data $data
+        $sg = Get-FGTSystemGlobal
+        $sg.'two-factor-sms-expiry' | Should -Be "240"
+        $sg.'two-factor-email-expiry' | Should -Be "120"
+    }
+
+    AfterAll {
+        #convert Ps(Custom)Object to Hashtable
+        $hashtable = @{}
+        foreach ( $property in $settings.psobject.properties.name ) {
+            $hashtable[$property] = $settings.$property
+        }
+        Set-FGTSystemGlobal -data $hashtable
+    }
 }
 
 AfterAll {
