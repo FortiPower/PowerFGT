@@ -65,7 +65,7 @@ Describe "Set System Global" {
         $sg.'admin-port' | Should -Be "8080"
     }
 
-    It "Change admin_sport (HTTPS)" -Skip:($httpOnly -eq $false) {
+    It "Change admin_sport (HTTPS)" -Skip:($httpOnly -eq $false -or $fgt_version -le "7.0.0" ) {
         Set-FGTSystemGlobal -admin_sport 8443
         $sg = Get-FGTSystemGlobal
         $sg.'admin-sport' | Should -Be "8443"
