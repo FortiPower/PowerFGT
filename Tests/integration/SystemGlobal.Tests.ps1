@@ -137,13 +137,13 @@ Describe "Set System Global" {
         $sg.'gui-wireless-opensecurity' | Should -Be "enable"
     }
 
-    It "Change lldp-reception to enable" {
+    It "Change lldp-reception to enable" -skip:($fgt_version -lt "6.2.0") {
         Set-FGTSystemGlobal -lldp_reception
         $sg = Get-FGTSystemGlobal
         $sg.'lldp-reception' | Should -Be "enable"
     }
 
-    It "Change lldp-reception to disable" {
+    It "Change lldp-reception to disable" -skip:($fgt_version -lt "6.2.0") {
         Set-FGTSystemGlobal -lldp_reception:$false
         $sg = Get-FGTSystemGlobal
         $sg.'lldp-reception' | Should -Be "disable"
