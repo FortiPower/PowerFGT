@@ -10,7 +10,6 @@
 Describe "Get Router Static" {
 
     BeforeAll {
-        $existing_route = Get-FGTRouterStatic
         Add-FGTRouterStatic -seq_num 10 -dst 192.2.0.0/24 -gateway 192.2.0.1 -distance 15 -priority 5 -device port2
         Add-FGTRouterStatic -seq_num 11 -dst 192.3.0.0/24 -gateway 192.3.0.1 -distance 15 -priority 5 -device port2
     }
@@ -58,13 +57,21 @@ Describe "Get Router Static" {
 
 }
 
-Describe "Add Firewall Route" {
+Describe "Add Static Route" {
 
     AfterEach {
         Get-FGTRouterStatic -filter_attribute gateway -filter_value 192.2.0.1 | Remove-FGTRouterStatic -confirm:$false
     }
 
     It "Add route to 192.2.0.0/24" {
+        Add-FGTRouterStatic -seq_num 10 -dst 192.2.0.0/24 -gateway 192.2.0.1 -device port2
+        $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 192.2.0.1
+        $route.dst | Should -Be "192.2.0.0 255.255.255.0"
+        $route.gateway | Should -Be "192.2.0.1"
+        $route.device | Should -Be "port2"
+    }
+
+    It "Add route to 192.2.0.0/24 with multiple parameters" {
         Add-FGTRouterStatic -seq_num 10 -dst 192.2.0.0/24 -gateway 192.2.0.1 -distance 15 -priority 5 -device port2
         $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 192.2.0.1
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
@@ -76,7 +83,7 @@ Describe "Add Firewall Route" {
 
 }
 
-Describe "Remove Firewall Route" {
+Describe "Remove Static Route" {
 
     BeforeEach {
         Add-FGTRouterStatic -seq_num 10 -dst 192.2.0.0/24 -gateway 192.2.0.1 -distance 15 -priority 5 -device port2
