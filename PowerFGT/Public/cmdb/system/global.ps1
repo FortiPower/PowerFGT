@@ -173,16 +173,6 @@ function Set-FGTSystemGlobal {
         [psobject]$connection = $DefaultFGTConnection
     )
 
-    <#
-    gui-certificates                         : enable
-    gui-wireless-opensecurity                : enable
-    admin-port                               : 80
-admin-sport                              : 443
-admin-ssh-port                           : 22
-wireless-controller                      : enable
-fortiextender                            : disable
-switch-controller                        : enable
-    #>
     Begin {
     }
 
