@@ -219,7 +219,7 @@ function Set-FGTSystemSettings {
         }
 
         if ( $PsBoundParameters.ContainsKey('inspection_mode') ) {
-            #with 6.2.x, there is no longer visibility parameter
+            #with 6.2.x, there is no longer inspection-mode parameter
             if ($connection.version -ge "6.2.0") {
                 Write-Warning "inspection_mode (proxy/flow) parameter is no longer available with FortiOS 6.2.x and after"
             }
@@ -301,7 +301,7 @@ function Set-FGTSystemSettings {
         }
 
         if ( $PsBoundParameters.ContainsKey('gui_multiple_utm_profiles') ) {
-            #with 6.4.x, there is no longer visibility parameter
+            #with 6.4.x, there is no longer gui-multiple-utm-profiles parameter
             if ($connection.version -ge "6.4.0") {
                 Write-Warning "gui_multiple_interface_policy  parameter is no longer available with FortiOS 6.4.x and after"
             }
