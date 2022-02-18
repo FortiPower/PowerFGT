@@ -83,20 +83,20 @@ function Get-FGTSystemSettings {
             $invokeParams.add( 'filter_type', $filter_type )
         }
 
-        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/settings' -method 'GET' -connection $connection @invokeParams
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/settings' -method 'GET' -connection $connection @invokeParams
         if ( $PsBoundParameters.ContainsKey('name') ) {
             $ss = new-Object -TypeName PSObject
             #display value to PSObject (with name and value)
             foreach ($n in $name) {
                 $n = $n -replace "_", "-" # replace _ by - can be useful for search setting name
-                if ($reponse.results.$n) {
+                if ($response.results.$n) {
                     $ss | Add-member -name $n -membertype NoteProperty -Value $reponse.results.$n
                 }
             }
             $ss
         }
         else {
-            $reponse.results
+            $response.results
         }
 
     }
@@ -222,7 +222,8 @@ function Set-FGTSystemSettings {
             #with 6.2.x, there is no longer visibility parameter
             if ($connection.version -ge "6.2.0") {
                 Write-Warning "inspection_mode (proxy/flow) parameter is no longer available with FortiOS 6.2.x and after"
-            } else {
+            }
+            else {
                 $_ss | Add-member -name "inspection-mode" -membertype NoteProperty -Value $inspection_mode
             }
         }
@@ -303,7 +304,8 @@ function Set-FGTSystemSettings {
             #with 6.4.x, there is no longer visibility parameter
             if ($connection.version -ge "6.4.0") {
                 Write-Warning "gui_multiple_interface_policy  parameter is no longer available with FortiOS 6.4.x and after"
-            } else {
+            }
+            else {
                 if ($gui_multiple_utm_profiles) {
                     $_ss | Add-member -name "gui-multiple-utm-profiles" -membertype NoteProperty -Value "enable"
                 }
@@ -381,13 +383,14 @@ function Set-FGTSystemSettings {
             #before 6.2.x, there is not lldp_recetion
             if ($connection.version -lt "6.2.0") {
                 Write-Warning "lldp_reception parameter is (yet) not available"
-            }  else {
+            }
+            else {
                 $_ss | Add-member -name "lldp-reception" -membertype NoteProperty -Value $lldp_reception
             }
         }
 
         if ( $PsBoundParameters.ContainsKey('data') ) {
-            $data.GetEnumerator() | ForEach-Object{
+            $data.GetEnumerator() | ForEach-Object {
                 $_ss | Add-member -name $_.key -membertype NoteProperty -Value $_.value
             }
         }

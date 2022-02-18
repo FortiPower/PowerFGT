@@ -82,20 +82,20 @@ function Get-FGTSystemGlobal {
             $invokeParams.add( 'filter_type', $filter_type )
         }
 
-        $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/global' -method 'GET' -connection $connection @invokeParams
+        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/system/global' -method 'GET' -connection $connection @invokeParams
         if ( $PsBoundParameters.ContainsKey('name') ) {
             $sg = new-Object -TypeName PSObject
             #display value to PSObject (with name and value)
             foreach ($n in $name) {
                 $n = $n -replace "_", "-" # replace _ by - can be useful for search 'global' setting name
-                if ($reponse.results.$n) {
+                if ($response.results.$n) {
                     $sg | Add-member -name $n -membertype NoteProperty -Value $reponse.results.$n
                 }
             }
             $sg
         }
         else {
-            $reponse.results
+            $response.results
         }
     }
 
@@ -255,7 +255,8 @@ function Set-FGTSystemGlobal {
             #before 6.2.x, there is not lldp_recetion
             if ($connection.version -lt "6.2.0") {
                 Write-Warning "lldp_reception parameter is (yet) not available"
-            }  else {
+            }
+            else {
                 if ($lldp_reception) {
                     $_sg | Add-member -name "lldp-reception" -membertype NoteProperty -Value "enable"
                 }
