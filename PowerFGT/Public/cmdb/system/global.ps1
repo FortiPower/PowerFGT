@@ -304,7 +304,7 @@ function Set-FGTSystemGlobal {
             Invoke-FGTRestMethod -method "PUT" -body $_sg -uri $uri -connection $connection @invokeParams
         }
 
-        Get-FGTSystemGlobal
+        Get-FGTSystemGlobal -connection $connection @invokeParams
     }
 
     End {
