@@ -7,25 +7,26 @@ function Get-FGTLogTraffic {
 
     <#
         .SYNOPSIS
-        Get System Config Backup
+        Get Log Traffic
 
         .DESCRIPTION
-        Get System Config Backup
+        Get Log Traffic(disk, fortianalyzer, memory...)
 
         .EXAMPLE
-        Get-FGTMonitorSystemConfigBackup
+        Get-FGTLogTraffic -type forticloud -subtype local
 
-        Get System Config Backup
-
-        .EXAMPLE
-        Get-FGTMonitorSystemConfigBackup -skip
-
-        Get System Config Backup (but only relevant attributes)
+        Get Log Traffic from forticloud on subtype local
 
         .EXAMPLE
-        Get-FGTMonitorSystemConfigBackup -vdom vdomX
+        Get-FGTLogTraffic -type memory -subtype forward -rows 10000
 
-        Get System Config Backup on vdomX
+        Get Log Traffic from memory on subtype forward and 10 000 rows
+
+        .EXAMPLE
+        Get-FGTLogTraffic -type disk -subtype forward -rows 10000 -srcip
+
+        Get Log Traffic from memory on subtype forward and 10 000 rows
+
     #>
 
     [CmdletBinding(DefaultParameterSetName = 'default')]
