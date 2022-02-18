@@ -147,7 +147,7 @@ function Add-FGTSystemInterfaceMember {
 
         .EXAMPLE
         $MyFGTInterface = Get-FGTSystemInterface -name PowerFGT
-        PS C:\>$MyFGTInterface | Add-FGTSystemInterfaceMember  -allowaccess ssh, https
+        PS C:\>$MyFGTInterface | Add-FGTSystemInterfaceMember -allowaccess ssh, https
 
         Add ssh and https to allowaccess for MyFGTInterface
 
@@ -501,7 +501,7 @@ function Remove-FGTSystemInterfaceMember {
 
         .EXAMPLE
         $MyFGTInterface = Get-FGTSystemInterface -name PowerFGT
-        PS C:\>$MyFGTInterface | Remove-FGTSystemInterfaceMember  -allowaccess ssh, https
+        PS C:\>$MyFGTInterface | Remove-FGTSystemInterfaceMember -allowaccess ssh, https
 
         Remove ssh and https to allowaccess for MyFGTInterface
 
