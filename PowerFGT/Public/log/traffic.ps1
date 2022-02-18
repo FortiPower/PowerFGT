@@ -76,6 +76,7 @@ function Get-FGTLogTraffic {
         [Parameter (ParameterSetName = "dstport")]
         [Parameter (ParameterSetName = "action")]
         [Parameter (ParameterSetName = "policyid")]
+        [Parameter (ParameterSetName = "poluuid")]
         [Parameter (ParameterSetName = "filter")]
         [ValidateSet('equal', 'contains')]
         [string]$filter_type = "equal",
