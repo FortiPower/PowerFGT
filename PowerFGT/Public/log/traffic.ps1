@@ -37,7 +37,7 @@ function Get-FGTLogTraffic {
         [ValidateSet('forward', 'local', 'multicast', 'sniffer', 'fortiview', 'threat', IgnoreCase = $false)]
         [string]$subtype,
         [Parameter (Mandatory = $false)]
-        [int]$rows=20,
+        [int]$rows = 20,
         [Parameter (Mandatory = $false)]
         [Parameter (ParameterSetName = "srcip")]
         [string]$srcip,
@@ -51,7 +51,7 @@ function Get-FGTLogTraffic {
         [Parameter (ParameterSetName = "dstinf")]
         [string]$dstintf,
         [Parameter (Mandatory = $false)]
-        [ValidateRange(0,65535)]
+        [ValidateRange(0, 65535)]
         [Parameter (ParameterSetName = "dstport")]
         [int]$dstport,
         [Parameter (Mandatory = $false)]
