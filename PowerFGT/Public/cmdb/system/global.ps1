@@ -299,7 +299,6 @@ function Set-FGTSystemGlobal {
             }
         }
 
-
         if ($PSCmdlet.ShouldProcess("Global", 'Configure Settings')) {
             Invoke-FGTRestMethod -method "PUT" -body $_sg -uri $uri -connection $connection @invokeParams
         }
