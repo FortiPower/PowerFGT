@@ -29,20 +29,20 @@ Describe "Get System Global" {
         It "Search a System Setting by name (language)" {
             $ss = Get-FGTSystemGlobal -name "language"
             $ss.'language' | Should -Be -Not $NULL
-            $ss.'timezone'  | Should -Be $NULL
+            $ss.'timezone' | Should -Be $NULL
         }
 
         It "Search 2 System Global by name (language, timezone)" {
             $ss = Get-FGTSystemGlobal -name "language", "timezone"
             $ss.'language' | Should -Be -Not $NULL
-            $ss.'gui-dns-database'  | Should -Be $NULL
-            $ss.'timezone'  | Should -Be -Not $NULL
+            $ss.'gui-dns-database' | Should -Be $NULL
+            $ss.'timezone' | Should -Be -Not $NULL
         }
 
         It "Search 1 System Global by name (language)" {
             $ss = Get-FGTSystemGlobal -name "language"
             $ss.'language' | Should -Be -Not $NULL
-            $ss.'timezone'  | Should -Be $NULL
+            $ss.'timezone' | Should -Be $NULL
         }
     }
 }
