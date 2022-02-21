@@ -90,7 +90,7 @@ function Get-FGTSystemSettings {
             foreach ($n in $name) {
                 $n = $n -replace "_", "-" # replace _ by - can be useful for search setting name
                 if ($response.results.$n) {
-                    $ss | Add-member -name $n -membertype NoteProperty -Value $reponse.results.$n
+                    $ss | Add-member -name $n -membertype NoteProperty -Value $response.results.$n
                 }
             }
             $ss
