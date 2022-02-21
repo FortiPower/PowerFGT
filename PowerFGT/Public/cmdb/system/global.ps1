@@ -89,7 +89,7 @@ function Get-FGTSystemGlobal {
             foreach ($n in $name) {
                 $n = $n -replace "_", "-" # replace _ by - can be useful for search 'global' setting name
                 if ($response.results.$n) {
-                    $sg | Add-member -name $n -membertype NoteProperty -Value $reponse.results.$n
+                    $sg | Add-member -name $n -membertype NoteProperty -Value $response.results.$n
                 }
             }
             $sg
