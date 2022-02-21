@@ -167,7 +167,15 @@ function Invoke-FGTRestMethod {
             Show-FGTException $_
             throw "Unable to use FortiGate API"
         }
-        $response
+
+        #Fix encoding with PS 5...
+        if (("Desktop" -eq $PSVersionTable.PsEdition) -or ($null -eq $PSVersionTable.PsEdition)) {
+            $encoding = [System.Text.Encoding]::GetEncoding('ISO-8859-1')
+            (([System.Text.Encoding]::UTF8).GetString($encoding.GetBytes(($response | ConvertTo-json -Depth 10 -Compress)))) | ConvertFrom-Json
+        }
+        else {
+            $response
+        }
 
     }
 
