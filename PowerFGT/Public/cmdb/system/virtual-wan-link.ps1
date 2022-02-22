@@ -85,7 +85,7 @@ function Get-FGTSystemVirtualWANLink {
         #with 6.4.x, it is a new uri -> SD-WAN
         if ($connection.version -ge "6.4.0") {
             $uri = "api/v2/cmdb/system/sdwan"
-            Write-Warning "Please use Get-FGTSystemSDWAN, Virtual WAN Link is not longer available with FortiOS 6.4.x and after"
+            Write-Warning "Please use Get-FGTSystemSDWAN, Virtual WAN Link is no longer available with FortiOS 6.4.x and after"
         }
 
         $reponse = Invoke-FGTRestMethod -uri $uri -method 'GET' -connection $connection @invokeParams
