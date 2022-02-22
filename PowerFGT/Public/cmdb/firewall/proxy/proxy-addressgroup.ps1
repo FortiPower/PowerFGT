@@ -11,7 +11,7 @@ function Add-FGTFirewallProxyAddressGroup {
         Add a FortiGate ProxyAddress Group
 
         .DESCRIPTION
-        Add a ProxyFortiGate ProxyAddress Group
+        Add a FortiGate ProxyAddress Group
 
         .EXAMPLE
         Add-FGTFirewallProxyAddressGroup -type src -name MyAddressGroup -member MyAddress1
