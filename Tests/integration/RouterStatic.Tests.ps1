@@ -7,6 +7,11 @@
 #include common configuration
 . ../common.ps1
 
+
+BeforeAll {
+    Connect-FGT @invokeParams
+}
+
 Describe "Get Router Static" {
 
     BeforeAll {
@@ -98,5 +103,6 @@ Describe "Remove Static Route" {
 
 }
 
-Disconnect-FGT -confirm:$false
-#>
+AfterAll {
+    Disconnect-FGT -confirm:$false
+}
