@@ -18,7 +18,7 @@ With this module (version 0.5.0) you can manage:
 - RoutePolicy (Get)
 - Service (Get)
 - Service Group (Get)
-- Static Route (Add/Get/Remove)
+- [Static Route](#static-route) (Add/Get/Remove)
 - System Global (Get)
 - System Settings (Get)
 - [VDOM](#vdom) (Get)
