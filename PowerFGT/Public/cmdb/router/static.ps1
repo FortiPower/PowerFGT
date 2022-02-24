@@ -283,7 +283,7 @@ function Add-FGTRouterStatic {
     }
 }
 
-    function Remove-FGTRouterStatic {
+function Remove-FGTRouterStatic {
 
     <#
         .SYNOPSIS
