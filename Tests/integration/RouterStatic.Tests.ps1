@@ -16,7 +16,7 @@ Describe "Get Router Static" {
 
     BeforeAll {
         Add-FGTRouterStatic -seq_num 10 -dst 192.2.0.0/24 -gateway 192.2.0.1 -distance 15 -priority 5 -device port2
-        Add-FGTRouterStatic -seq_num 11 -dst 192.3.0.0/24 -gateway 192.3.0.1 -distance 15 -priority 5 -device port2
+        Add-FGTRouterStatic -seq_num 11 -dst 198.51.100.0/24 -gateway 198.51.100.1 -distance 15 -priority 5 -device port2
     }
 
     It "Get Route Does not throw an error" {
@@ -40,8 +40,8 @@ Describe "Get Router Static" {
         $route.gateway | Should -Be "192.2.0.1"
     }
 
-    It "Get Route with gateway 192.3.0.1 and confirm (via Confirm-FGTRouterStatic)" {
-        $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 192.3.0.1
+    It "Get Route with gateway 198.51.100.1 and confirm (via Confirm-FGTRouterStatic)" {
+        $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 198.51.100.1
         Confirm-FGTRouterStatic ($route) | Should -Be $true
     }
 
@@ -57,7 +57,7 @@ Describe "Get Router Static" {
 
     AfterAll {
         Get-FGTRouterStatic -filter_attribute gateway -filter_value 192.2.0.1 | Remove-FGTRouterStatic -confirm:$false
-        Get-FGTRouterStatic -filter_attribute gateway -filter_value 192.3.0.1 | Remove-FGTRouterStatic -confirm:$false
+        Get-FGTRouterStatic -filter_attribute gateway -filter_value 198.51.100.1 | Remove-FGTRouterStatic -confirm:$false
     }
 
 }
