@@ -77,6 +77,7 @@ Describe "Add Static Route" {
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
         $route.gateway | Should -Be "192.2.0.1"
         $route.distance | Should -Be 10
+        $route.weight | Should -Be 0
         $route.priority | Should -Be 0
         $route.device | Should -Be "port2"
         $route.comment | Should -Be ""
@@ -99,6 +100,7 @@ Describe "Add Static Route" {
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
         $route.gateway | Should -Be "192.2.0.1"
         $route.distance | Should -Be 15
+        $route.weight | Should -Be 0
         $route.priority | Should -Be 0
         $route.device | Should -Be "port2"
         $route.comment | Should -Be ""
@@ -121,6 +123,7 @@ Describe "Add Static Route" {
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
         $route.gateway | Should -Be "192.2.0.1"
         $route.distance | Should -Be 10
+        $route.weight | Should -Be 0
         $route.priority | Should -Be 5
         $route.device | Should -Be "port2"
         $route.comment | Should -Be ""
@@ -143,6 +146,7 @@ Describe "Add Static Route" {
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
         $route.gateway | Should -Be "192.2.0.1"
         $route.distance | Should -Be 10
+        $route.weight | Should -Be 0
         $route.priority | Should -Be 0
         $route.device | Should -Be "port2"
         $route.comment | Should -Be ""
@@ -165,6 +169,7 @@ Describe "Add Static Route" {
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
         $route.gateway | Should -Be "192.2.0.1"
         $route.distance | Should -Be 10
+        $route.weight | Should -Be 0
         $route.priority | Should -Be 0
         $route.device | Should -Be "port2"
         $route.comment | Should -Be ""
@@ -187,6 +192,7 @@ Describe "Add Static Route" {
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
         $route.gateway | Should -Be "192.2.0.1"
         $route.distance | Should -Be 10
+        $route.weight | Should -Be 0
         $route.priority | Should -Be 0
         $route.device | Should -Be "port2"
         $route.comment | Should -Be ""
