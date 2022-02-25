@@ -133,17 +133,20 @@ function Add-FGTRouterStatic {
         [ValidateRange(0,65535)]
         [int]$priority,
         [Parameter (Mandatory = $true, ParameterSetName = "dst_device")]
+        [Parameter (Mandatory = $true, ParameterSetName = "dstaddr_device")]
         [Parameter (Mandatory = $true, ParameterSetName = "isdb_device")]
         [string]$device,
         [Parameter (Mandatory = $false)]
         [ValidateLength(0, 255)]
         [string]$comment,
         [Parameter (Mandatory = $false, ParameterSetName = "dst_blackhole")]
+        [Parameter (Mandatory = $false, ParameterSetName = "dstaddr_device")]
         [Parameter (Mandatory = $false, ParameterSetName = "isdb_blackhole")]
         [switch]$blackhole,
         [Parameter (Mandatory = $false)]
         [switch]$dynamic_gateway = $false,
-        [Parameter (Mandatory = $false)]
+        [Parameter (Mandatory = $true, ParameterSetName = "dstaddr_device")]
+        [Parameter (Mandatory = $true, ParameterSetName = "dstaddr_blackhole")]
         [ValidateLength(0, 79)]
         [string]$dstaddr,
         [Parameter (Mandatory = $true, ParameterSetName = "isdb_device")]

@@ -445,6 +445,34 @@ Describe "Add Static Route" {
     }
     #>
 
+    <# Need to add allow_routing to Add-FTGFirewallAddress
+    It "Add route to $pester_address2 (dstaddr)" {
+        $r = Add-FGTRouterStatic -dstaddr $pester_address2 -gateway 192.2.0.1 -device port2
+        ($r).count | Should -Be "1"
+        $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 192.2.0.1
+        $route.'seq-num' | Should -Not -BeNullOrEmpty
+        $route.status | Should -Be "enable"
+        $route.dst | Should -Be "0.0.0.0 0.0.0.0"
+        $route.gateway | Should -Be "192.2.0.1"
+        $route.distance | Should -Be 10
+        $route.weight | Should -Be 0
+        if ($DefaultFGTConnection.version -lt "7.0.0") {
+            $route.priority | Should -Be 0
+        } else {
+            $route.priority | Should -Be 1
+        }
+        $route.device | Should -Be "port2"
+        $route.comment | Should -Be ""
+        $route.blackhole | Should -Be "disable"
+        $route.'dynamic-gateway' | Should -Be "disable"
+        $route.dstaddr| Should -Be $pester_address2
+        $route.'internet-service' | Should -Be "0"
+        $route.'internet-service-custom' | Should -Be ""
+        $route.'link-monitor-exempt' | Should -Be "disable"
+        $route.vrf | Should -Be "0"
+        $route.bfd | Should -Be "disable"
+    }
+    #>
 }
 
 Describe "Remove Static Route" {
