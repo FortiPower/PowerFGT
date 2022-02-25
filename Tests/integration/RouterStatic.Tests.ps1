@@ -72,6 +72,7 @@ Describe "Add Static Route" {
         $r = Add-FGTRouterStatic -dst 192.2.0.0/24 -gateway 192.2.0.1 -device port2
         ($r).count | Should -Be "1"
         $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 192.2.0.1
+        $route.'seq-num' | Should -Not -BeNullOrEmpty
         $route.status | Should -Be "enable"
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
         $route.gateway | Should -Be "192.2.0.1"
@@ -93,6 +94,7 @@ Describe "Add Static Route" {
         $r = Add-FGTRouterStatic -dst 192.2.0.0/24 -gateway 192.2.0.1 -device port2 -distance 15
         ($r).count | Should -Be "1"
         $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 192.2.0.1
+        $route.'seq-num' | Should -Not -BeNullOrEmpty
         $route.status | Should -Be "enable"
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
         $route.gateway | Should -Be "192.2.0.1"
@@ -114,6 +116,7 @@ Describe "Add Static Route" {
         $r = Add-FGTRouterStatic -dst 192.2.0.0/24 -gateway 192.2.0.1 -device port2 -priority 5
         ($r).count | Should -Be "1"
         $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 192.2.0.1
+        $route.'seq-num' | Should -Not -BeNullOrEmpty
         $route.status | Should -Be "enable"
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
         $route.gateway | Should -Be "192.2.0.1"
