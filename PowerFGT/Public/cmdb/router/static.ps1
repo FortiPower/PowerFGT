@@ -197,11 +197,13 @@ function Add-FGTRouterStatic {
             $static | add-member -name "seq-num" -membertype NoteProperty -Value $seq_num
         }
 
-        if ($status) {
-            $static | add-member -name "status" -membertype NoteProperty -Value "disable"
-        }
-        else {
-            $static | add-member -name "status" -membertype NoteProperty -Value "enable"
+        if ( $PsBoundParameters.ContainsKey('status') ) {
+            if ($status) {
+                $static | add-member -name "status" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $static | add-member -name "status" -membertype NoteProperty -Value "disable"
+            }
         }
 
         $static | add-member -name "dst" -membertype NoteProperty -Value $dst
