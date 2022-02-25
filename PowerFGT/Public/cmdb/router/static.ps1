@@ -179,8 +179,10 @@ function Add-FGTRouterStatic {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        if ( Get-FGTRouterStatic -filter_attribute seq-num -filter_value $seq_num ) {
-            Throw "Already a static route with this sequence number"
+        if ( $PsBoundParameters.ContainsKey('seq_num') ) {
+            if ( Get-FGTRouterStatic -filter_attribute seq-num -filter_value $seq_num ) {
+                Throw "Already a static route with this sequence number"
+            }
         }
 
         if ( -Not (Get-FGTSystemInterface  -filter_attribute name -filter_value $device) ) {
@@ -190,6 +192,10 @@ function Add-FGTRouterStatic {
         $uri = "api/v2/cmdb/router/static"
 
         $static = new-Object -TypeName PSObject
+
+        if ( $PsBoundParameters.ContainsKey('seq_num') ) {
+            $static | add-member -name "seq-num" -membertype NoteProperty -Value $seq_num
+        }
 
         if ($status) {
             $static | add-member -name "status" -membertype NoteProperty -Value "disable"
