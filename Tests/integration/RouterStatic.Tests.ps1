@@ -69,7 +69,8 @@ Describe "Add Static Route" {
     }
 
     It "Add route to 192.2.0.0/24" {
-        Add-FGTRouterStatic -seq_num 10 -dst 192.2.0.0/24 -gateway 192.2.0.1 -device port2
+        $r = Add-FGTRouterStatic -seq_num 10 -dst 192.2.0.0/24 -gateway 192.2.0.1 -device port2
+        ($r).count | Should -Be "1"
         $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 192.2.0.1
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
         $route.gateway | Should -Be "192.2.0.1"
@@ -77,7 +78,8 @@ Describe "Add Static Route" {
     }
 
     It "Add route to 192.2.0.0/24 with multiple parameters" {
-        Add-FGTRouterStatic -seq_num 10 -dst 192.2.0.0/24 -gateway 192.2.0.1 -distance 15 -priority 5 -device port2
+        $r = Add-FGTRouterStatic -seq_num 10 -dst 192.2.0.0/24 -gateway 192.2.0.1 -distance 15 -priority 5 -device port2
+        ($r).count | Should -Be "1"
         $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 192.2.0.1
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
         $route.gateway | Should -Be "192.2.0.1"
