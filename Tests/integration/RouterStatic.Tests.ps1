@@ -65,7 +65,8 @@ Describe "Get Router Static" {
 Describe "Add Static Route" {
 
     AfterEach {
-        Get-FGTRouterStatic -filter_attribute gateway -filter_value 192.2.0.1 | Remove-FGTRouterStatic -confirm:$false
+        Get-FGTRouterStatic -filter_attribute dst -filter_value "192.2.0.0 255.255.255.0" | Remove-FGTRouterStatic -confirm:$false
+        Get-FGTRouterStatic -filter_attribute gateway -filter_value "192.2.0.1" | Remove-FGTRouterStatic -confirm:$false
     }
 
     It "Add route to 192.2.0.0/24" {
@@ -251,6 +252,146 @@ Describe "Add Static Route" {
         $route.vrf | Should -Be "0"
         $route.bfd | Should -Be "disable"
     }
+
+    It "Add route to 192.2.0.0/24 with blackhole (enable)" {
+        $r = Add-FGTRouterStatic -dst 192.2.0.0/24 -blackhole
+        ($r).count | Should -Be "1"
+        $route = Get-FGTRouterStatic -filter_attribute dst -filter_value "192.2.0.0 255.255.255.0"
+        $route.'seq-num' | Should -Not -BeNullOrEmpty
+        $route.status | Should -Be "enable"
+        $route.dst | Should -Be "192.2.0.0 255.255.255.0"
+        $route.gateway | Should -Be "0.0.0.0"
+        $route.distance | Should -Be 10
+        $route.weight | Should -Be 0
+        $route.priority | Should -Be 0
+        $route.device | Should -Be ""
+        $route.comment | Should -Be ""
+        $route.blackhole | Should -Be "enable"
+        $route.'dynamic-gateway' | Should -Be "disable"
+        $route.dstaddr| Should -Be ""
+        $route.'internet-service' | Should -Be "0"
+        $route.'internet-service-custom' | Should -Be ""
+        $route.'link-monitor-exempt' | Should -Be "disable"
+        $route.vrf | Should -Be "0"
+        $route.bfd | Should -Be "disable"
+    }
+
+    It "Add route to 192.2.0.0/24 with dynamic-gateway (enable)" {
+        $r = Add-FGTRouterStatic -dst 192.2.0.0/24 -gateway 192.2.0.1 -device port2 -dynamic_gateway
+        ($r).count | Should -Be "1"
+        $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 192.2.0.1
+        $route.'seq-num' | Should -Not -BeNullOrEmpty
+        $route.status | Should -Be "enable"
+        $route.dst | Should -Be "192.2.0.0 255.255.255.0"
+        $route.gateway | Should -Be "192.2.0.1"
+        $route.distance | Should -Be 10
+        $route.weight | Should -Be 0
+        $route.priority | Should -Be 0
+        $route.device | Should -Be "port2"
+        $route.comment | Should -Be ""
+        $route.blackhole | Should -Be "disable"
+        $route.'dynamic-gateway' | Should -Be "enable"
+        $route.dstaddr| Should -Be ""
+        $route.'internet-service' | Should -Be "0"
+        $route.'internet-service-custom' | Should -Be ""
+        $route.'link-monitor-exempt' | Should -Be "disable"
+        $route.vrf | Should -Be "0"
+        $route.bfd | Should -Be "disable"
+    }
+
+    It "Add route to FortiGuard DNS with internet-service" {
+        $r = Add-FGTRouterStatic -gateway 192.2.0.1 -device port2 -internet_service 1245187
+        ($r).count | Should -Be "1"
+        $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 192.2.0.1
+        $route.'seq-num' | Should -Not -BeNullOrEmpty
+        $route.status | Should -Be "enable"
+        $route.dst | Should -Be "0.0.0.0 0.0.0.0"
+        $route.gateway | Should -Be "192.2.0.1"
+        $route.distance | Should -Be 10
+        $route.weight | Should -Be 0
+        $route.priority | Should -Be 0
+        $route.device | Should -Be "port2"
+        $route.comment | Should -Be ""
+        $route.blackhole | Should -Be "disable"
+        $route.'dynamic-gateway' | Should -Be "disable"
+        $route.dstaddr| Should -Be ""
+        $route.'internet-service' | Should -Be "1245187"
+        $route.'internet-service-custom' | Should -Be ""
+        $route.'link-monitor-exempt' | Should -Be "disable"
+        $route.vrf | Should -Be "0"
+        $route.bfd | Should -Be "disable"
+    }
+
+    It "Add route to 192.2.0.0/24 with link-monitor-exempt (enable)" {
+        $r = Add-FGTRouterStatic -dst 192.2.0.0/24 -gateway 192.2.0.1 -device port2 -link_monitor_exempt
+        ($r).count | Should -Be "1"
+        $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 192.2.0.1
+        $route.'seq-num' | Should -Not -BeNullOrEmpty
+        $route.status | Should -Be "enable"
+        $route.dst | Should -Be "192.2.0.0 255.255.255.0"
+        $route.gateway | Should -Be "192.2.0.1"
+        $route.distance | Should -Be 10
+        $route.weight | Should -Be 0
+        $route.priority | Should -Be 0
+        $route.device | Should -Be "port2"
+        $route.comment | Should -Be ""
+        $route.blackhole | Should -Be "disable"
+        $route.'dynamic-gateway' | Should -Be "disable"
+        $route.dstaddr| Should -Be ""
+        $route.'internet-service' | Should -Be "0"
+        $route.'internet-service-custom' | Should -Be ""
+        $route.'link-monitor-exempt' | Should -Be "enable"
+        $route.vrf | Should -Be "0"
+        $route.bfd | Should -Be "disable"
+    }
+
+    It "Add route to 192.2.0.0/24 with bfd (enable)" {
+        $r = Add-FGTRouterStatic -dst 192.2.0.0/24 -gateway 192.2.0.1 -device port2 -bfd
+        ($r).count | Should -Be "1"
+        $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 192.2.0.1
+        $route.'seq-num' | Should -Not -BeNullOrEmpty
+        $route.status | Should -Be "enable"
+        $route.dst | Should -Be "192.2.0.0 255.255.255.0"
+        $route.gateway | Should -Be "192.2.0.1"
+        $route.distance | Should -Be 10
+        $route.weight | Should -Be 0
+        $route.priority | Should -Be 0
+        $route.device | Should -Be "port2"
+        $route.comment | Should -Be ""
+        $route.blackhole | Should -Be "disable"
+        $route.'dynamic-gateway' | Should -Be "disable"
+        $route.dstaddr| Should -Be ""
+        $route.'internet-service' | Should -Be "0"
+        $route.'internet-service-custom' | Should -Be ""
+        $route.'link-monitor-exempt' | Should -Be "disable"
+        $route.vrf | Should -Be "0"
+        $route.bfd | Should -Be "enable"
+    }
+
+    <# Need to add vrf to Add-FTGInterfaces
+    It "Add route to 192.2.0.0/24 with vrf" {
+        $r = Add-FGTRouterStatic -dst 192.2.0.0/24 -gateway 192.2.0.1 -device port2 -vrf 1
+        ($r).count | Should -Be "1"
+        $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 192.2.0.1
+        $route.'seq-num' | Should -Not -BeNullOrEmpty
+        $route.status | Should -Be "enable"
+        $route.dst | Should -Be "192.2.0.0 255.255.255.0"
+        $route.gateway | Should -Be "192.2.0.1"
+        $route.distance | Should -Be 10
+        $route.weight | Should -Be 0
+        $route.priority | Should -Be 0
+        $route.device | Should -Be "port2"
+        $route.comment | Should -Be ""
+        $route.blackhole | Should -Be "disable"
+        $route.'dynamic-gateway' | Should -Be "disable"
+        $route.dstaddr| Should -Be ""
+        $route.'internet-service' | Should -Be "0"
+        $route.'internet-service-custom' | Should -Be ""
+        $route.'link-monitor-exempt' | Should -Be "disable"
+        $route.vrf | Should -Be "1"
+        $route.bfd | Should -Be "enable"
+    }
+    #>
 
 }
 

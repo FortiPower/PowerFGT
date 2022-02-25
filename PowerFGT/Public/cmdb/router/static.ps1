@@ -24,7 +24,7 @@ function Get-FGTRouterStatic {
 
         Get static route object with gateway equal 192.0.2.1
 
-        .EXAMPLE
+        .EXAMPL
         Get-FGTRouterStatic -filter_attribute device -filter_value port -filter_type contains
 
         Get static route object with device contains port
@@ -109,14 +109,15 @@ function Add-FGTRouterStatic {
         Add a route with status disabled
     #>
 
-
+    [CmdletBinding(DefaultParameterSetName = "default")]
     Param(
         [Parameter (Mandatory = $false)]
         [ValidateRange(1,4294967295)]
         [int]$seq_num,
         [Parameter (Mandatory = $false)]
         [switch]$status,
-        [Parameter (Mandatory = $true)]
+        [Parameter (Mandatory = $true, ParameterSetName = "dst_device")]
+        [Parameter (Mandatory = $true, ParameterSetName = "dst_blackhole")]
         [string]$dst,
         [Parameter (Mandatory = $false)]
         [string]$src,
@@ -131,13 +132,15 @@ function Add-FGTRouterStatic {
         [Parameter (Mandatory = $false)]
         [ValidateRange(0,65535)]
         [int]$priority,
-        [Parameter (Mandatory = $true)]
+        [Parameter (Mandatory = $true, ParameterSetName = "dst_device")]
+        [Parameter (Mandatory = $true, ParameterSetName = "isdb_device")]
         [string]$device,
         [Parameter (Mandatory = $false)]
         [ValidateLength(0, 255)]
         [string]$comment,
-        [Parameter (Mandatory = $false)]
-        [string]$blackhole,
+        [Parameter (Mandatory = $false, ParameterSetName = "dst_blackhole")]
+        [Parameter (Mandatory = $false, ParameterSetName = "isdb_blackhole")]
+        [switch]$blackhole,
         [Parameter (Mandatory = $false)]
         [switch]$dynamic_gateway = $false,
         [Parameter (Mandatory = $false)]
@@ -145,7 +148,8 @@ function Add-FGTRouterStatic {
         [Parameter (Mandatory = $false)]
         [ValidateLength(0, 79)]
         [string]$dstaddr,
-        [Parameter (Mandatory = $false)]
+        [Parameter (Mandatory = $true, ParameterSetName = "isdb_device")]
+        [Parameter (Mandatory = $true, ParameterSetName = "isdb_blackhole")]
         [ValidateRange(0,4294967295)]
         [int]$internet_service,
         [Parameter(Mandatory = $false)]
@@ -185,8 +189,10 @@ function Add-FGTRouterStatic {
             }
         }
 
-        if ( -Not (Get-FGTSystemInterface  -filter_attribute name -filter_value $device) ) {
-            Throw "The device interface does not exist"
+        if ( $PsBoundParameters.ContainsKey('device') ) {
+            if ( -Not (Get-FGTSystemInterface  -filter_attribute name -filter_value $device) ) {
+                Throw "The device interface does not exist"
+            }
         }
 
         $uri = "api/v2/cmdb/router/static"
@@ -206,7 +212,9 @@ function Add-FGTRouterStatic {
             }
         }
 
-        $static | add-member -name "dst" -membertype NoteProperty -Value $dst
+        if ( $PsBoundParameters.ContainsKey('dst') ) {
+            $static | add-member -name "dst" -membertype NoteProperty -Value $dst
+        }
 
         if ( $PsBoundParameters.ContainsKey('src') ) {
             $static | add-member -name "src" -membertype NoteProperty -Value $src
@@ -228,28 +236,39 @@ function Add-FGTRouterStatic {
             $static | add-member -name "priority" -membertype NoteProperty -Value $priority
         }
 
-        $static | add-member -name "device" -membertype NoteProperty -Value $device
+        if ( $PsBoundParameters.ContainsKey('device') ) {
+            $static | add-member -name "device" -membertype NoteProperty -Value $device
+        }
 
         if ( $PsBoundParameters.ContainsKey('comment') ) {
             $static | add-member -name "comment" -membertype NoteProperty -Value $comment
         }
 
         if ( $PsBoundParameters.ContainsKey('blackhole') ) {
-            $static | add-member -name "blackhole" -membertype NoteProperty -Value $blackhole
+            if ($blackhole) {
+                $static | add-member -name "blackhole" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $static | add-member -name "blackhole" -membertype NoteProperty -Value "disable"
+            }
         }
 
-        if ($dynamic_gateway) {
-            $static | add-member -name "dynamic-gateway" -membertype NoteProperty -Value "enable"
-        }
-        else {
-            $static | add-member -name "dynamic-gateway" -membertype NoteProperty -Value "disable"
+        if ( $PsBoundParameters.ContainsKey('dynamic_gateway') ) {
+            if ($dynamic_gateway) {
+                $static | add-member -name "dynamic-gateway" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $static | add-member -name "dynamic-gateway" -membertype NoteProperty -Value "disable"
+            }
         }
 
-        if ($sdwan) {
-            $static | add-member -name "sdwan" -membertype NoteProperty -Value "enable"
-        }
-        else {
-            $static | add-member -name "sdwan" -membertype NoteProperty -Value "disable"
+        if ( $PsBoundParameters.ContainsKey('sdwan') ) {
+            if ($sdwan) {
+                $static | add-member -name "sdwan" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $static | add-member -name "sdwan" -membertype NoteProperty -Value "disable"
+            }
         }
 
         if ( $PsBoundParameters.ContainsKey('dstaddr') ) {
@@ -264,22 +283,26 @@ function Add-FGTRouterStatic {
             $static | add-member -name "internet-service-custom" -membertype NoteProperty -Value $internet_service_custom
         }
 
-        if ($link_monitor_exempt) {
-            $static | add-member -name "link-monitor-exempt" -membertype NoteProperty -Value "enable"
-        }
-        else {
-            $static | add-member -name "link-monitor-exempt" -membertype NoteProperty -Value "disable"
+        if ( $PsBoundParameters.ContainsKey('link_monitor_exempt') ) {
+            if ($link_monitor_exempt) {
+                $static | add-member -name "link-monitor-exempt" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $static | add-member -name "link-monitor-exempt" -membertype NoteProperty -Value "disable"
+            }
         }
 
         if ( $PsBoundParameters.ContainsKey('vrf') ) {
             $static | add-member -name "vrf" -membertype NoteProperty -Value $vrf
         }
 
-        if ($bfd) {
-            $static | add-member -name "bfd" -membertype NoteProperty -Value "enable"
-        }
-        else {
-            $static | add-member -name "bfd" -membertype NoteProperty -Value "disable"
+        if ( $PsBoundParameters.ContainsKey('bfd') ) {
+            if ($bfd) {
+                $static | add-member -name "bfd" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $static | add-member -name "bfd" -membertype NoteProperty -Value "disable"
+            }
         }
 
         $post = Invoke-FGTRestMethod -method "POST" -body $static -uri $uri -connection $connection @invokeParams
