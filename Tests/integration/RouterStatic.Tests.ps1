@@ -79,7 +79,11 @@ Describe "Add Static Route" {
         $route.gateway | Should -Be "192.2.0.1"
         $route.distance | Should -Be 10
         $route.weight | Should -Be 0
-        $route.priority | Should -Be 0
+        if ($DefaultFGTConnection.version -lt "7.0.0") {
+            $route.priority | Should -Be 0
+        } else {
+            $route.priority | Should -Be 1
+        }
         $route.device | Should -Be "port2"
         $route.comment | Should -Be ""
         $route.blackhole | Should -Be "disable"
@@ -102,7 +106,11 @@ Describe "Add Static Route" {
         $route.gateway | Should -Be "192.2.0.1"
         $route.distance | Should -Be 15
         $route.weight | Should -Be 0
-        $route.priority | Should -Be 0
+        if ($DefaultFGTConnection.version -lt "7.0.0") {
+            $route.priority | Should -Be 0
+        } else {
+            $route.priority | Should -Be 1
+        }
         $route.device | Should -Be "port2"
         $route.comment | Should -Be ""
         $route.blackhole | Should -Be "disable"
@@ -148,7 +156,11 @@ Describe "Add Static Route" {
         $route.gateway | Should -Be "192.2.0.1"
         $route.distance | Should -Be 10
         $route.weight | Should -Be 0
-        $route.priority | Should -Be 0
+        if ($DefaultFGTConnection.version -lt "7.0.0") {
+            $route.priority | Should -Be 0
+        } else {
+            $route.priority | Should -Be 1
+        }
         $route.device | Should -Be "port2"
         $route.comment | Should -Be ""
         $route.blackhole | Should -Be "disable"
@@ -171,7 +183,11 @@ Describe "Add Static Route" {
         $route.gateway | Should -Be "192.2.0.1"
         $route.distance | Should -Be 10
         $route.weight | Should -Be 0
-        $route.priority | Should -Be 0
+        if ($DefaultFGTConnection.version -lt "7.0.0") {
+            $route.priority | Should -Be 0
+        } else {
+            $route.priority | Should -Be 1
+        }
         $route.device | Should -Be "port2"
         $route.comment | Should -Be ""
         $route.blackhole | Should -Be "disable"
@@ -194,7 +210,11 @@ Describe "Add Static Route" {
         $route.gateway | Should -Be "192.2.0.1"
         $route.distance | Should -Be 10
         $route.weight | Should -Be 0
-        $route.priority | Should -Be 0
+        if ($DefaultFGTConnection.version -lt "7.0.0") {
+            $route.priority | Should -Be 0
+        } else {
+            $route.priority | Should -Be 1
+        }
         $route.device | Should -Be "port2"
         $route.comment | Should -Be ""
         $route.blackhole | Should -Be "disable"
@@ -217,7 +237,11 @@ Describe "Add Static Route" {
         $route.gateway | Should -Be "192.2.0.1"
         $route.distance | Should -Be 10
         $route.weight | Should -Be 10
-        $route.priority | Should -Be 0
+        if ($DefaultFGTConnection.version -lt "7.0.0") {
+            $route.priority | Should -Be 0
+        } else {
+            $route.priority | Should -Be 1
+        }
         $route.device | Should -Be "port2"
         $route.comment | Should -Be ""
         $route.blackhole | Should -Be "disable"
@@ -240,7 +264,11 @@ Describe "Add Static Route" {
         $route.gateway | Should -Be "192.2.0.1"
         $route.distance | Should -Be 10
         $route.weight | Should -Be 0
-        $route.priority | Should -Be 0
+        if ($DefaultFGTConnection.version -lt "7.0.0") {
+            $route.priority | Should -Be 0
+        } else {
+            $route.priority | Should -Be 1
+        }
         $route.device | Should -Be "port2"
         $route.comment | Should -Be "Add by PowerFGT"
         $route.blackhole | Should -Be "disable"
@@ -263,7 +291,11 @@ Describe "Add Static Route" {
         $route.gateway | Should -Be "0.0.0.0"
         $route.distance | Should -Be 10
         $route.weight | Should -Be 0
-        $route.priority | Should -Be 0
+        if ($DefaultFGTConnection.version -lt "7.0.0") {
+            $route.priority | Should -Be 0
+        } else {
+            $route.priority | Should -Be 1
+        }
         $route.device | Should -Be ""
         $route.comment | Should -Be ""
         $route.blackhole | Should -Be "enable"
@@ -286,7 +318,11 @@ Describe "Add Static Route" {
         $route.gateway | Should -Be "192.2.0.1"
         $route.distance | Should -Be 10
         $route.weight | Should -Be 0
-        $route.priority | Should -Be 0
+        if ($DefaultFGTConnection.version -lt "7.0.0") {
+            $route.priority | Should -Be 0
+        } else {
+            $route.priority | Should -Be 1
+        }
         $route.device | Should -Be "port2"
         $route.comment | Should -Be ""
         $route.blackhole | Should -Be "disable"
@@ -309,7 +345,11 @@ Describe "Add Static Route" {
         $route.gateway | Should -Be "192.2.0.1"
         $route.distance | Should -Be 10
         $route.weight | Should -Be 0
-        $route.priority | Should -Be 0
+        if ($DefaultFGTConnection.version -lt "7.0.0") {
+            $route.priority | Should -Be 0
+        } else {
+            $route.priority | Should -Be 1
+        }
         $route.device | Should -Be "port2"
         $route.comment | Should -Be ""
         $route.blackhole | Should -Be "disable"
@@ -332,7 +372,11 @@ Describe "Add Static Route" {
         $route.gateway | Should -Be "192.2.0.1"
         $route.distance | Should -Be 10
         $route.weight | Should -Be 0
-        $route.priority | Should -Be 0
+        if ($DefaultFGTConnection.version -lt "7.0.0") {
+            $route.priority | Should -Be 0
+        } else {
+            $route.priority | Should -Be 1
+        }
         $route.device | Should -Be "port2"
         $route.comment | Should -Be ""
         $route.blackhole | Should -Be "disable"
@@ -355,7 +399,11 @@ Describe "Add Static Route" {
         $route.gateway | Should -Be "192.2.0.1"
         $route.distance | Should -Be 10
         $route.weight | Should -Be 0
-        $route.priority | Should -Be 0
+        if ($DefaultFGTConnection.version -lt "7.0.0") {
+            $route.priority | Should -Be 0
+        } else {
+            $route.priority | Should -Be 1
+        }
         $route.device | Should -Be "port2"
         $route.comment | Should -Be ""
         $route.blackhole | Should -Be "disable"
@@ -379,7 +427,11 @@ Describe "Add Static Route" {
         $route.gateway | Should -Be "192.2.0.1"
         $route.distance | Should -Be 10
         $route.weight | Should -Be 0
-        $route.priority | Should -Be 0
+        if ($DefaultFGTConnection.version -lt "7.0.0") {
+            $route.priority | Should -Be 0
+        } else {
+            $route.priority | Should -Be 1
+        }
         $route.device | Should -Be "port2"
         $route.comment | Should -Be ""
         $route.blackhole | Should -Be "disable"
