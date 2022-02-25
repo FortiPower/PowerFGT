@@ -144,8 +144,6 @@ function Add-FGTRouterStatic {
         [Parameter (Mandatory = $false)]
         [switch]$dynamic_gateway = $false,
         [Parameter (Mandatory = $false)]
-        [switch]$sdwan = $false,
-        [Parameter (Mandatory = $false)]
         [ValidateLength(0, 79)]
         [string]$dstaddr,
         [Parameter (Mandatory = $true, ParameterSetName = "isdb_device")]
@@ -259,15 +257,6 @@ function Add-FGTRouterStatic {
             }
             else {
                 $static | add-member -name "dynamic-gateway" -membertype NoteProperty -Value "disable"
-            }
-        }
-
-        if ( $PsBoundParameters.ContainsKey('sdwan') ) {
-            if ($sdwan) {
-                $static | add-member -name "sdwan" -membertype NoteProperty -Value "enable"
-            }
-            else {
-                $static | add-member -name "sdwan" -membertype NoteProperty -Value "disable"
             }
         }
 
