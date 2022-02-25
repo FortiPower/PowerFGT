@@ -280,8 +280,13 @@ function Add-FGTRouterStatic {
             $static | add-member -name "bfd" -membertype NoteProperty -Value "disable"
         }
 
-        Invoke-FGTRestMethod -method "POST" -body $static -uri $uri -connection $connection @invokeParams | Out-Null
+        $post = Invoke-FGTRestMethod -method "POST" -body $static -uri $uri -connection $connection @invokeParams
 
+        #if you don't have seq-num get the number with the POST
+        if ( -Not $PsBoundParameters.ContainsKey('seq_num') ) {
+            $seq_num = $post.mkey
+
+        }
         Get-FGTRouterStatic -filter_attribute seq-num -filter_value $seq_num -connection $connection @invokeParams
 
     }
