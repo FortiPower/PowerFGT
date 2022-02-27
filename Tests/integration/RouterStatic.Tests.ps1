@@ -531,6 +531,19 @@ Describe "Add Static Route" {
     }
     #>
 
+    It "Try to Add Static with duplicate seq-num" {
+        $r = Add-FGTRouterStatic -dst 192.2.0.0/24 -gateway 198.51.100.254 -device port2 -seq_num 10
+        ($r).count | Should -Be "1"
+        {
+            Add-FGTRouterStatic -dst 192.2.0.0/24 -gateway 198.51.100.254 -device port2 -seq_num 10
+        } | Should -Throw "Already a static route with this sequence number"
+    }
+
+    It "Try to Add Static with unknown device" {
+        {
+            Add-FGTRouterStatic -dst 192.2.0.0/24 -gateway 198.51.100.254 -device PowerFGT
+        } | Should -Throw "The device interface does not exist"
+    }
 }
 
 Describe "Remove Static Route" {
