@@ -159,7 +159,7 @@ function Invoke-FGTRestMethod {
                 $jbody = ConvertTo-Json $body -Depth 10
                 Write-Verbose -message ($jbody)
 
-                $response = Invoke-RestMethod $fullurl -Method $method -body ($jbody) -Headers $headers -WebSession $sessionvariable @invokeParams
+                $response = Invoke-RestMethod $fullurl -Method $method -body (ConvertTo-Json $body -Depth 10 -Compress) -Headers $headers -WebSession $sessionvariable @invokeParams
             }
             else {
                 $response = Invoke-RestMethod $fullurl -Method $method -Headers $headers -WebSession $sessionvariable @invokeParams
