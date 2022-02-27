@@ -193,7 +193,7 @@ function Add-FGTRouterStatic {
         }
 
         if ( $PsBoundParameters.ContainsKey('device') ) {
-            if ( -Not (Get-FGTSystemInterface  -filter_attribute name -filter_value $device) ) {
+            if ( -Not (Get-FGTSystemInterface -filter_attribute name -filter_value $device) ) {
                 Throw "The device interface does not exist"
             }
         }
