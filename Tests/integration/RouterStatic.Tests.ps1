@@ -16,7 +16,7 @@ Describe "Get Router Static" {
 
     BeforeAll {
         Add-FGTRouterStatic -seq_num 10 -dst 192.2.0.0/24 -gateway 198.51.100.254 -distance 15 -priority 5 -device port2
-        Add-FGTRouterStatic -seq_num 11 -dst 198.51.100.0/24 -gateway 192.2.0.254 -distance 15 -priority 5 -device port2
+        Add-FGTRouterStatic -seq_num 11 -dst 198.51.100.0/24 -gateway 192.2.0.254 -distance 15 -priority 5 -device port3
     }
 
     It "Get Route Does not throw an error" {
@@ -35,11 +35,6 @@ Describe "Get Router Static" {
         $route.count | Should -Not -Be $NULL
     }
 
-    It "Get Route with gateway 198.51.100.254" {
-        $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 198.51.100.254
-        $route.gateway | Should -Be "198.51.100.254"
-    }
-
     It "Get Route with gateway 192.2.0.254 and confirm (via Confirm-FGTRouterStatic)" {
         $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 192.2.0.254
         Confirm-FGTRouterStatic ($route) | Should -Be $true
@@ -47,12 +42,29 @@ Describe "Get Router Static" {
 
     Context "Search" {
 
-        It "Search Route by gateway" {
-            $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 198.51.100.254
+        It "Search Static Route by device" {
+            $route = Get-FGTRouterStatic -device port2
+            @($route).count | Should -be 1
+            $route.device | Should -Be port2
+        }
+
+        It "Search Static Route by dst" {
+            $route = Get-FGTRouterStatic -dst "198.51.100.0 255.255.255.0"
+            @($route).count | Should -be 1
+            $route.dst | Should -Be "198.51.100.0 255.255.255.0"
+        }
+
+        It "Search Static Route by gateway" {
+            $route = Get-FGTRouterStatic -gateway 198.51.100.254
             @($route).count | Should -be 1
             $route.gateway | Should -Be "198.51.100.254"
         }
 
+        It "Search Static Route by seq-num" {
+            $route = Get-FGTRouterStatic -seq_num 10
+            @($route).count | Should -be 1
+            $route.'seq-num' | Should -Be "10"
+        }
     }
 
     AfterAll {

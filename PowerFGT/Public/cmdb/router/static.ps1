@@ -20,11 +20,31 @@ function Get-FGTRouterStatic {
         Get list of all static route object
 
         .EXAMPLE
+        Get-FGTRouterStatic -device port2
+
+        Get static route object with device equal port2
+
+        .EXAMPLE
+        Get-FGTRouterStatic -dst "198.51.100.0 255.255.255.0"
+
+        Get static route object with dst (destination) equal 198.51.100.0 255.255.255.0
+
+        .EXAMPLE
+        Get-FGTRouterStatic -gateway 198.51.100.254
+
+        Get static route object with gateway equal198.51.100.254
+
+        .EXAMPLE
+        Get-FGTRouterStatic -seq_num 10
+
+        Get static route object with seq-num equal 10
+
+        .EXAMPLE
         Get-FGTRouterStatic -filter_attribute gateway -filter_value 192.0.2.1
 
         Get static route object with gateway equal 192.0.2.1
 
-        .EXAMPL
+        .EXAMPLE
         Get-FGTRouterStatic -filter_attribute device -filter_value port -filter_type contains
 
         Get static route object with device contains port
@@ -42,6 +62,14 @@ function Get-FGTRouterStatic {
 
     [CmdletBinding(DefaultParameterSetName = "default")]
     Param(
+        [Parameter (Mandatory = $false, ParameterSetName = "device")]
+        [string]$device,
+        [Parameter (Mandatory = $false, ParameterSetName = "dst")]
+        [string]$dst,
+        [Parameter (Mandatory = $false, ParameterSetName = "gateway")]
+        [string]$gateway,
+        [Parameter (Mandatory = $false, ParameterSetName = "seq_num")]
+        [int]$seq_num,
         [Parameter (Mandatory = $false)]
         [Parameter (ParameterSetName = "filter")]
         [string]$filter_attribute,
@@ -71,6 +99,26 @@ function Get-FGTRouterStatic {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        switch ( $PSCmdlet.ParameterSetName ) {
+            "device" {
+                $filter_value = $device
+                $filter_attribute = "device"
+            }
+            "dst" {
+                $filter_value = $dst
+                $filter_attribute = "dst"
+            }
+            "gateway" {
+                $filter_value = $gateway
+                $filter_attribute = "gateway"
+            }
+            "seq_num" {
+                $filter_value = $seq_num
+                $filter_attribute = "seq-num"
+            }
+            default { }
         }
 
         #Filtering
