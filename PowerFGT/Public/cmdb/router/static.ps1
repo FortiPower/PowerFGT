@@ -112,7 +112,7 @@ function Add-FGTRouterStatic {
     [CmdletBinding(DefaultParameterSetName = "default")]
     Param(
         [Parameter (Mandatory = $false)]
-        [ValidateRange(1,4294967295)]
+        [ValidateRange(1, 4294967295)]
         [int]$seq_num,
         [Parameter (Mandatory = $false)]
         [switch]$status,
@@ -124,13 +124,13 @@ function Add-FGTRouterStatic {
         [Parameter (Mandatory = $false)]
         [string]$gateway,
         [Parameter (Mandatory = $false)]
-        [ValidateRange(1,255)]
+        [ValidateRange(1, 255)]
         [int]$distance,
         [Parameter (Mandatory = $false)]
-        [ValidateRange(0,255)]
+        [ValidateRange(0, 255)]
         [int]$weight,
         [Parameter (Mandatory = $false)]
-        [ValidateRange(0,65535)]
+        [ValidateRange(0, 65535)]
         [int]$priority,
         [Parameter (Mandatory = $true, ParameterSetName = "dst_device")]
         [Parameter (Mandatory = $true, ParameterSetName = "dstaddr_device")]
@@ -151,7 +151,7 @@ function Add-FGTRouterStatic {
         [string]$dstaddr,
         [Parameter (Mandatory = $true, ParameterSetName = "isdb_device")]
         [Parameter (Mandatory = $true, ParameterSetName = "isdb_blackhole")]
-        [ValidateRange(0,4294967295)]
+        [ValidateRange(0, 4294967295)]
         [int]$internet_service,
         [Parameter(Mandatory = $false)]
         [ValidateLength(0, 64)]
@@ -159,7 +159,7 @@ function Add-FGTRouterStatic {
         [Parameter (Mandatory = $false)]
         [switch]$link_monitor_exempt = $false,
         [Parameter (Mandatory = $false)]
-        [ValidateRange(0,31)]
+        [ValidateRange(0, 31)]
         [int]$vrf,
         [Parameter (Mandatory = $false)]
         [switch]$bfd = $false,
