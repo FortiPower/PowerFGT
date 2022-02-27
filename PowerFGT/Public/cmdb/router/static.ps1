@@ -112,7 +112,6 @@ function Add-FGTRouterStatic {
     [CmdletBinding(DefaultParameterSetName = "default")]
     Param(
         [Parameter (Mandatory = $false)]
-        [ValidateRange(1, 4294967295)]
         [int]$seq_num,
         [Parameter (Mandatory = $false)]
         [switch]$status,
@@ -153,7 +152,6 @@ function Add-FGTRouterStatic {
         [string]$dstaddr,
         [Parameter (Mandatory = $true, ParameterSetName = "isdb_device")]
         [Parameter (Mandatory = $true, ParameterSetName = "isdb_blackhole")]
-        [ValidateRange(0, 4294967295)]
         [int]$internet_service,
         [Parameter(Mandatory = $false)]
         [ValidateLength(0, 64)]
