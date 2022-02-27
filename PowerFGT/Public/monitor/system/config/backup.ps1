@@ -18,14 +18,14 @@ function Get-FGTMonitorSystemConfigBackup {
         Get System Config Backup
 
         .EXAMPLE
-        Get-FGTSystemInterface -skip
+        Get-FGTMonitorSystemConfigBackup -skip
 
-        Get list of all interface (but only relevant attributes)
+        Get System Config Backup (but only relevant attributes)
 
         .EXAMPLE
-        Get-FGTSystemInterface -vdom vdomX
+        Get-FGTMonitorSystemConfigBackup -vdom vdomX
 
-        Get list of all interface on vdomX
+        Get System Config Backup on vdomX
     #>
 
     Param(
