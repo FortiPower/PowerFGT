@@ -773,17 +773,17 @@ or delete it `Remove-FGTRouterStatic`.
     Get-FGTRouterStatic | Format-Table
     seq-num q_origin_key status dst                        src             gateway        distance weight priority device
     ------- ------------ ------ ---                        ---             -------        -------- ------ -------- ------
-          2            2 enable 192.0.2.0 255.255.255.0    0.0.0.0 0.0.0.0 192.0.2.254          10      0        0 port1
-          3            3 enable 198.51.100.0 255.255.255.0 0.0.0.0 0.0.0.0 198.51.100.254       10      0        0 port2
+          2            2 enable 192.0.2.0 255.255.255.0    0.0.0.0 0.0.0.0 198.51.100.254       10      0        0 port1
+          3            3 enable 198.51.100.0 255.255.255.0 0.0.0.0 0.0.0.0 192.0.2.254          10      0        0 port2
 
-# Add Static Route to 192.0.2.0/24 from port1
-    Add-FGTRouterStatic -seq_num 2 -dst 192.0.2.0/24 -gateway 192.0.2.254 -device port1
+# Add Static Route to 192.0.2.0/24 via 198.51.100.254 from port1
+    Add-FGTRouterStatic -dst 192.0.2.0/24 -gateway 198.51.100.254 -device port1
     seq-num                 : 2
     q_origin_key            : 2
     status                  : enable
     dst                     : 192.0.2.0 255.255.255.0
     src                     : 0.0.0.0 0.0.0.0
-    gateway                 : 192.0.2.254
+    gateway                 : 198.51.100.254
     distance                : 10
     weight                  : 0
     priority                : 0
@@ -800,14 +800,14 @@ or delete it `Remove-FGTRouterStatic`.
     bfd                     : disable
     [...]
 
-# Add Static Route to 198.51.100.0/24 from port2
-    Add-FGTRouterStatic -seq_num 3 -dst 198.51.100.0/24 -gateway 198.51.100.254 -device port2
+# Add Static Route to 198.51.100.0/24 via 192.0.2.254 from port2
+    Add-FGTRouterStatic -dst 198.51.100.0/24 -gateway 192.0.2.254 -device port2
     seq-num                 : 3
     q_origin_key            : 3
     status                  : enable
     dst                     : 198.51.100.0 255.255.255.0
     src                     : 0.0.0.0 0.0.0.0
-    gateway                 : 198.51.100.254
+    gateway                 : 192.0.2.254
     distance                : 10
     weight                  : 0
     priority                : 0
