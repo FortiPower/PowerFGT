@@ -206,6 +206,9 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get VPN IPsec Phase 2 Interface" {
             { Get-FGTVpnIpsecPhase2Interface -connection $fgt } | Should -Not -Throw
         }
+        It "Use Multi connection for call Get Monitor System Config Backup" {
+            { Get-FGTMonitorSystemConfigBackup -connection $fgt } | Should -Not -Throw
+        }
     }
 
     It "Disconnect to a FortiGate (Multi connection)" {
