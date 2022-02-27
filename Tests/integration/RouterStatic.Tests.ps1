@@ -36,7 +36,7 @@ Describe "Get Router Static" {
     }
 
     It "Get Route with gateway 192.2.0.254 and confirm (via Confirm-FGTRouterStatic)" {
-        $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 192.2.0.254
+        $route = Get-FGTRouterStatic -gateway 192.2.0.254
         Confirm-FGTRouterStatic ($route) | Should -Be $true
     }
 
@@ -68,8 +68,8 @@ Describe "Get Router Static" {
     }
 
     AfterAll {
-        Get-FGTRouterStatic -filter_attribute gateway -filter_value 198.51.100.254 | Remove-FGTRouterStatic -confirm:$false
-        Get-FGTRouterStatic -filter_attribute gateway -filter_value 192.2.0.254 | Remove-FGTRouterStatic -confirm:$false
+        Get-FGTRouterStatic -gateway 198.51.100.254 | Remove-FGTRouterStatic -confirm:$false
+        Get-FGTRouterStatic -gateway 192.2.0.254 | Remove-FGTRouterStatic -confirm:$false
     }
 
 }
@@ -77,14 +77,14 @@ Describe "Get Router Static" {
 Describe "Add Static Route" {
 
     AfterEach {
-        Get-FGTRouterStatic -filter_attribute dst -filter_value "192.2.0.0 255.255.255.0" | Remove-FGTRouterStatic -confirm:$false
-        Get-FGTRouterStatic -filter_attribute gateway -filter_value "198.51.100.254" | Remove-FGTRouterStatic -confirm:$false
+        Get-FGTRouterStatic -dst "192.2.0.0 255.255.255.0" | Remove-FGTRouterStatic -confirm:$false
+        Get-FGTRouterStatic -gateway "198.51.100.254" | Remove-FGTRouterStatic -confirm:$false
     }
 
     It "Add route to 192.2.0.0/24" {
         $r = Add-FGTRouterStatic -dst 192.2.0.0/24 -gateway 198.51.100.254 -device port2
         ($r).count | Should -Be "1"
-        $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 198.51.100.254
+        $route = Get-FGTRouterStatic -gateway 198.51.100.254
         $route.'seq-num' | Should -Not -BeNullOrEmpty
         $route.status | Should -Be "enable"
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
@@ -113,7 +113,7 @@ Describe "Add Static Route" {
     It "Add route to 192.2.0.0/24 with distance (15)" {
         $r = Add-FGTRouterStatic -dst 192.2.0.0/24 -gateway 198.51.100.254 -device port2 -distance 15
         ($r).count | Should -Be "1"
-        $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 198.51.100.254
+        $route = Get-FGTRouterStatic -gateway 198.51.100.254
         $route.'seq-num' | Should -Not -BeNullOrEmpty
         $route.status | Should -Be "enable"
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
@@ -142,7 +142,7 @@ Describe "Add Static Route" {
     It "Add route to 192.2.0.0/24 with priority (5)" {
         $r = Add-FGTRouterStatic -dst 192.2.0.0/24 -gateway 198.51.100.254 -device port2 -priority 5
         ($r).count | Should -Be "1"
-        $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 198.51.100.254
+        $route = Get-FGTRouterStatic -gateway 198.51.100.254
         $route.'seq-num' | Should -Not -BeNullOrEmpty
         $route.status | Should -Be "enable"
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
@@ -166,7 +166,7 @@ Describe "Add Static Route" {
     It "Add route to 192.2.0.0/24 with seq-num (10)" {
         $r = Add-FGTRouterStatic -dst 192.2.0.0/24 -gateway 198.51.100.254 -device port2 -seq_num 10
         ($r).count | Should -Be "1"
-        $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 198.51.100.254
+        $route = Get-FGTRouterStatic -gateway 198.51.100.254
         $route.'seq-num' | Should -Be "10"
         $route.status | Should -Be "enable"
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
@@ -195,7 +195,7 @@ Describe "Add Static Route" {
     It "Add route to 192.2.0.0/24 with status (enable)" {
         $r = Add-FGTRouterStatic -dst 192.2.0.0/24 -gateway 198.51.100.254 -device port2 -status
         ($r).count | Should -Be "1"
-        $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 198.51.100.254
+        $route = Get-FGTRouterStatic -gateway 198.51.100.254
         $route.'seq-num' | Should -Not -BeNullOrEmpty
         $route.status | Should -Be "enable"
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
@@ -224,7 +224,7 @@ Describe "Add Static Route" {
     It "Add route to 192.2.0.0/24 with status (disable)" {
         $r = Add-FGTRouterStatic -dst 192.2.0.0/24 -gateway 198.51.100.254 -device port2 -status:$false
         ($r).count | Should -Be "1"
-        $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 198.51.100.254
+        $route = Get-FGTRouterStatic -gateway 198.51.100.254
         $route.'seq-num' | Should -Not -BeNullOrEmpty
         $route.status | Should -Be "disable"
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
@@ -253,7 +253,7 @@ Describe "Add Static Route" {
     It "Add route to 192.2.0.0/24 with weight (10)" {
         $r = Add-FGTRouterStatic -dst 192.2.0.0/24 -gateway 198.51.100.254 -device port2 -weight 10
         ($r).count | Should -Be "1"
-        $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 198.51.100.254
+        $route = Get-FGTRouterStatic -gateway 198.51.100.254
         $route.'seq-num' | Should -Not -BeNullOrEmpty
         $route.status | Should -Be "enable"
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
@@ -282,7 +282,7 @@ Describe "Add Static Route" {
     It "Add route to 192.2.0.0/24 with comment" {
         $r = Add-FGTRouterStatic -dst 192.2.0.0/24 -gateway 198.51.100.254 -device port2 -comment "Add by PowerFGT"
         ($r).count | Should -Be "1"
-        $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 198.51.100.254
+        $route = Get-FGTRouterStatic -gateway 198.51.100.254
         $route.'seq-num' | Should -Not -BeNullOrEmpty
         $route.status | Should -Be "enable"
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
@@ -311,7 +311,7 @@ Describe "Add Static Route" {
     It "Add route to 192.2.0.0/24 with blackhole (enable)" {
         $r = Add-FGTRouterStatic -dst 192.2.0.0/24 -blackhole
         ($r).count | Should -Be "1"
-        $route = Get-FGTRouterStatic -filter_attribute dst -filter_value "192.2.0.0 255.255.255.0"
+        $route = Get-FGTRouterStatic -dst "192.2.0.0 255.255.255.0"
         $route.'seq-num' | Should -Not -BeNullOrEmpty
         $route.status | Should -Be "enable"
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
@@ -340,7 +340,7 @@ Describe "Add Static Route" {
     It "Add route to 192.2.0.0/24 with dynamic-gateway (enable)" {
         $r = Add-FGTRouterStatic -dst 192.2.0.0/24 -gateway 198.51.100.254 -device port2 -dynamic_gateway
         ($r).count | Should -Be "1"
-        $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 198.51.100.254
+        $route = Get-FGTRouterStatic -gateway 198.51.100.254
         $route.'seq-num' | Should -Not -BeNullOrEmpty
         $route.status | Should -Be "enable"
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
@@ -368,7 +368,7 @@ Describe "Add Static Route" {
     It "Add route to FortiGuard DNS with internet-service" {
         $r = Add-FGTRouterStatic -gateway 198.51.100.254 -device port2 -internet_service 1245187
         ($r).count | Should -Be "1"
-        $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 198.51.100.254
+        $route = Get-FGTRouterStatic -gateway 198.51.100.254
         $route.'seq-num' | Should -Not -BeNullOrEmpty
         $route.status | Should -Be "enable"
         $route.dst | Should -Be "0.0.0.0 0.0.0.0"
@@ -397,7 +397,7 @@ Describe "Add Static Route" {
     It "Add route to 192.2.0.0/24 with link-monitor-exempt (enable)" {
         $r = Add-FGTRouterStatic -dst 192.2.0.0/24 -gateway 198.51.100.254 -device port2 -link_monitor_exempt
         ($r).count | Should -Be "1"
-        $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 198.51.100.254
+        $route = Get-FGTRouterStatic -gateway 198.51.100.254
         $route.'seq-num' | Should -Not -BeNullOrEmpty
         $route.status | Should -Be "enable"
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
@@ -426,7 +426,7 @@ Describe "Add Static Route" {
     It "Add route to 192.2.0.0/24 with bfd (enable)" {
         $r = Add-FGTRouterStatic -dst 192.2.0.0/24 -gateway 198.51.100.254 -device port2 -bfd
         ($r).count | Should -Be "1"
-        $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 198.51.100.254
+        $route = Get-FGTRouterStatic -gateway 198.51.100.254
         $route.'seq-num' | Should -Not -BeNullOrEmpty
         $route.status | Should -Be "enable"
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
@@ -456,7 +456,7 @@ Describe "Add Static Route" {
     It "Add route to 192.2.0.0/24 with vrf" {
         $r = Add-FGTRouterStatic -dst 192.2.0.0/24 -gateway 198.51.100.254 -device port2 -vrf 1
         ($r).count | Should -Be "1"
-        $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 198.51.100.254
+        $route = Get-FGTRouterStatic -gateway 198.51.100.254
         $route.'seq-num' | Should -Not -BeNullOrEmpty
         $route.status | Should -Be "enable"
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
@@ -486,7 +486,7 @@ Describe "Add Static Route" {
     It "Add route to $pester_address2 (dstaddr)" {
         $r = Add-FGTRouterStatic -dstaddr $pester_address2 -gateway 198.51.100.254 -device port2
         ($r).count | Should -Be "1"
-        $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 198.51.100.254
+        $route = Get-FGTRouterStatic -gateway 198.51.100.254
         $route.'seq-num' | Should -Not -BeNullOrEmpty
         $route.status | Should -Be "enable"
         $route.dst | Should -Be "0.0.0.0 0.0.0.0"
@@ -516,7 +516,7 @@ Describe "Add Static Route" {
     It "Add route to 192.2.0.0/24 with src (203.0.113.0/24)" {
         $r = Add-FGTRouterStatic -dst 192.2.0.0/24 -src 203.0.113.0/24 -gateway 198.51.100.254 -device port2
         ($r).count | Should -Be "1"
-        $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 198.51.100.254
+        $route = Get-FGTRouterStatic -gateway 198.51.100.254
         $route.'seq-num' | Should -Not -BeNullOrEmpty
         $route.status | Should -Be "enable"
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
@@ -565,9 +565,9 @@ Describe "Remove Static Route" {
     }
 
     It "Remove Route 192.2.0.0/24 by pipeline" {
-        $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 198.51.100.254
+        $route = Get-FGTRouterStatic -gateway 198.51.100.254
         $route | Remove-FGTRouterStatic -confirm:$false
-        $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 198.51.100.254
+        $route = Get-FGTRouterStatic -gateway 198.51.100.254
         $route | Should -Be $NULL
     }
 
