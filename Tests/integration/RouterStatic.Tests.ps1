@@ -81,14 +81,15 @@ Describe "Add Static Route" {
         $route.weight | Should -Be 0
         if ($DefaultFGTConnection.version -lt "7.0.0") {
             $route.priority | Should -Be 0
-        } else {
+        }
+        else {
             $route.priority | Should -Be 1
         }
         $route.device | Should -Be "port2"
         $route.comment | Should -Be ""
         $route.blackhole | Should -Be "disable"
         $route.'dynamic-gateway' | Should -Be "disable"
-        $route.dstaddr| Should -Be ""
+        $route.dstaddr | Should -Be ""
         $route.'internet-service' | Should -Be "0"
         $route.'internet-service-custom' | Should -Be ""
         $route.'link-monitor-exempt' | Should -Be "disable"
@@ -108,14 +109,15 @@ Describe "Add Static Route" {
         $route.weight | Should -Be 0
         if ($DefaultFGTConnection.version -lt "7.0.0") {
             $route.priority | Should -Be 0
-        } else {
+        }
+        else {
             $route.priority | Should -Be 1
         }
         $route.device | Should -Be "port2"
         $route.comment | Should -Be ""
         $route.blackhole | Should -Be "disable"
         $route.'dynamic-gateway' | Should -Be "disable"
-        $route.dstaddr| Should -Be ""
+        $route.dstaddr | Should -Be ""
         $route.'internet-service' | Should -Be "0"
         $route.'internet-service-custom' | Should -Be ""
         $route.'link-monitor-exempt' | Should -Be "disable"
@@ -138,7 +140,7 @@ Describe "Add Static Route" {
         $route.comment | Should -Be ""
         $route.blackhole | Should -Be "disable"
         $route.'dynamic-gateway' | Should -Be "disable"
-        $route.dstaddr| Should -Be ""
+        $route.dstaddr | Should -Be ""
         $route.'internet-service' | Should -Be "0"
         $route.'internet-service-custom' | Should -Be ""
         $route.'link-monitor-exempt' | Should -Be "disable"
@@ -158,14 +160,15 @@ Describe "Add Static Route" {
         $route.weight | Should -Be 0
         if ($DefaultFGTConnection.version -lt "7.0.0") {
             $route.priority | Should -Be 0
-        } else {
+        }
+        else {
             $route.priority | Should -Be 1
         }
         $route.device | Should -Be "port2"
         $route.comment | Should -Be ""
         $route.blackhole | Should -Be "disable"
         $route.'dynamic-gateway' | Should -Be "disable"
-        $route.dstaddr| Should -Be ""
+        $route.dstaddr | Should -Be ""
         $route.'internet-service' | Should -Be "0"
         $route.'internet-service-custom' | Should -Be ""
         $route.'link-monitor-exempt' | Should -Be "disable"
@@ -185,14 +188,15 @@ Describe "Add Static Route" {
         $route.weight | Should -Be 0
         if ($DefaultFGTConnection.version -lt "7.0.0") {
             $route.priority | Should -Be 0
-        } else {
+        }
+        else {
             $route.priority | Should -Be 1
         }
         $route.device | Should -Be "port2"
         $route.comment | Should -Be ""
         $route.blackhole | Should -Be "disable"
         $route.'dynamic-gateway' | Should -Be "disable"
-        $route.dstaddr| Should -Be ""
+        $route.dstaddr | Should -Be ""
         $route.'internet-service' | Should -Be "0"
         $route.'internet-service-custom' | Should -Be ""
         $route.'link-monitor-exempt' | Should -Be "disable"
@@ -212,14 +216,15 @@ Describe "Add Static Route" {
         $route.weight | Should -Be 0
         if ($DefaultFGTConnection.version -lt "7.0.0") {
             $route.priority | Should -Be 0
-        } else {
+        }
+        else {
             $route.priority | Should -Be 1
         }
         $route.device | Should -Be "port2"
         $route.comment | Should -Be ""
         $route.blackhole | Should -Be "disable"
         $route.'dynamic-gateway' | Should -Be "disable"
-        $route.dstaddr| Should -Be ""
+        $route.dstaddr | Should -Be ""
         $route.'internet-service' | Should -Be "0"
         $route.'internet-service-custom' | Should -Be ""
         $route.'link-monitor-exempt' | Should -Be "disable"
@@ -239,14 +244,15 @@ Describe "Add Static Route" {
         $route.weight | Should -Be 10
         if ($DefaultFGTConnection.version -lt "7.0.0") {
             $route.priority | Should -Be 0
-        } else {
+        }
+        else {
             $route.priority | Should -Be 1
         }
         $route.device | Should -Be "port2"
         $route.comment | Should -Be ""
         $route.blackhole | Should -Be "disable"
         $route.'dynamic-gateway' | Should -Be "disable"
-        $route.dstaddr| Should -Be ""
+        $route.dstaddr | Should -Be ""
         $route.'internet-service' | Should -Be "0"
         $route.'internet-service-custom' | Should -Be ""
         $route.'link-monitor-exempt' | Should -Be "disable"
@@ -266,14 +272,15 @@ Describe "Add Static Route" {
         $route.weight | Should -Be 0
         if ($DefaultFGTConnection.version -lt "7.0.0") {
             $route.priority | Should -Be 0
-        } else {
+        }
+        else {
             $route.priority | Should -Be 1
         }
         $route.device | Should -Be "port2"
         $route.comment | Should -Be "Add by PowerFGT"
         $route.blackhole | Should -Be "disable"
         $route.'dynamic-gateway' | Should -Be "disable"
-        $route.dstaddr| Should -Be ""
+        $route.dstaddr | Should -Be ""
         $route.'internet-service' | Should -Be "0"
         $route.'internet-service-custom' | Should -Be ""
         $route.'link-monitor-exempt' | Should -Be "disable"
@@ -293,14 +300,15 @@ Describe "Add Static Route" {
         $route.weight | Should -Be 0
         if ($DefaultFGTConnection.version -lt "7.0.0") {
             $route.priority | Should -Be 0
-        } else {
+        }
+        else {
             $route.priority | Should -Be 1
         }
         $route.device | Should -Be ""
         $route.comment | Should -Be ""
         $route.blackhole | Should -Be "enable"
         $route.'dynamic-gateway' | Should -Be "disable"
-        $route.dstaddr| Should -Be ""
+        $route.dstaddr | Should -Be ""
         $route.'internet-service' | Should -Be "0"
         $route.'internet-service-custom' | Should -Be ""
         $route.'link-monitor-exempt' | Should -Be "disable"
@@ -320,14 +328,15 @@ Describe "Add Static Route" {
         $route.weight | Should -Be 0
         if ($DefaultFGTConnection.version -lt "7.0.0") {
             $route.priority | Should -Be 0
-        } else {
+        }
+        else {
             $route.priority | Should -Be 1
         }
         $route.device | Should -Be "port2"
         $route.comment | Should -Be ""
         $route.blackhole | Should -Be "disable"
         $route.'dynamic-gateway' | Should -Be "enable"
-        $route.dstaddr| Should -Be ""
+        $route.dstaddr | Should -Be ""
         $route.'internet-service' | Should -Be "0"
         $route.'internet-service-custom' | Should -Be ""
         $route.'link-monitor-exempt' | Should -Be "disable"
@@ -347,14 +356,15 @@ Describe "Add Static Route" {
         $route.weight | Should -Be 0
         if ($DefaultFGTConnection.version -lt "7.0.0") {
             $route.priority | Should -Be 0
-        } else {
+        }
+        else {
             $route.priority | Should -Be 1
         }
         $route.device | Should -Be "port2"
         $route.comment | Should -Be ""
         $route.blackhole | Should -Be "disable"
         $route.'dynamic-gateway' | Should -Be "disable"
-        $route.dstaddr| Should -Be ""
+        $route.dstaddr | Should -Be ""
         $route.'internet-service' | Should -Be "1245187"
         $route.'internet-service-custom' | Should -Be ""
         $route.'link-monitor-exempt' | Should -Be "disable"
@@ -374,14 +384,15 @@ Describe "Add Static Route" {
         $route.weight | Should -Be 0
         if ($DefaultFGTConnection.version -lt "7.0.0") {
             $route.priority | Should -Be 0
-        } else {
+        }
+        else {
             $route.priority | Should -Be 1
         }
         $route.device | Should -Be "port2"
         $route.comment | Should -Be ""
         $route.blackhole | Should -Be "disable"
         $route.'dynamic-gateway' | Should -Be "disable"
-        $route.dstaddr| Should -Be ""
+        $route.dstaddr | Should -Be ""
         $route.'internet-service' | Should -Be "0"
         $route.'internet-service-custom' | Should -Be ""
         $route.'link-monitor-exempt' | Should -Be "enable"
@@ -401,14 +412,15 @@ Describe "Add Static Route" {
         $route.weight | Should -Be 0
         if ($DefaultFGTConnection.version -lt "7.0.0") {
             $route.priority | Should -Be 0
-        } else {
+        }
+        else {
             $route.priority | Should -Be 1
         }
         $route.device | Should -Be "port2"
         $route.comment | Should -Be ""
         $route.blackhole | Should -Be "disable"
         $route.'dynamic-gateway' | Should -Be "disable"
-        $route.dstaddr| Should -Be ""
+        $route.dstaddr | Should -Be ""
         $route.'internet-service' | Should -Be "0"
         $route.'internet-service-custom' | Should -Be ""
         $route.'link-monitor-exempt' | Should -Be "disable"
