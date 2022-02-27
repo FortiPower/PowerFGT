@@ -826,8 +826,10 @@ or delete it `Remove-FGTRouterStatic`.
 
 # Remove a Static Route
     Get-FGTRouterStatic -filter_attribute seq-num -filter_type equal -filter_value 2 | Remove-FGTRouterStatic
-    Remove Static Route on Fortigate
-    Proceed with removal of Static Route ?
+
+    Confirm
+    Are you sure you want to perform this action?
+    Performing the operation "Remove Router Static" on target "2".
     [Y] Yes  [N] No  [?] Help (default is "N"): y
 ```
 

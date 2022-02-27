@@ -355,9 +355,10 @@ function Remove-FGTRouterStatic {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $uri = "api/v2/cmdb/router/static/$($route."seq-num")"
+        $seq_num = $route."seq-num"
+        $uri = "api/v2/cmdb/router/static/$seq_num"
 
-        if ($PSCmdlet.ShouldProcess($route.name, 'Remove Firewall route')) {
+        if ($PSCmdlet.ShouldProcess($seq_num, 'Remove Router Static')) {
             $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -connection $connection @invokeParams
         }
     }
