@@ -15,8 +15,8 @@ BeforeAll {
 Describe "Get Router Static" {
 
     BeforeAll {
-        Add-FGTRouterStatic -seq_num 10 -dst 192.2.0.0/24 -gateway 198.51.100.254 -distance 15 -priority 5 -device $pester_port2
-        Add-FGTRouterStatic -seq_num 11 -dst 198.51.100.0/24 -gateway 192.2.0.254 -distance 15 -priority 5 -device $pester_port3
+        Add-FGTRouterStatic -seq_num 10 -dst 192.2.0.0/24 -gateway 198.51.100.254 -device $pester_port2
+        Add-FGTRouterStatic -seq_num 11 -dst 198.51.100.0/24 -gateway 192.2.0.254 -device $pester_port3
     }
 
     It "Get Route Does not throw an error" {
