@@ -149,6 +149,9 @@ function Invoke-FGTRestMethod {
             $fullurl += "&filter=$filter"
         }
 
+        #Display (Full)url when verbose (no longer available with PS 7.2.x...)
+        Write-Verbose $fullurl
+
         try {
             if ($body) {
 
