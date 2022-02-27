@@ -120,8 +120,10 @@ function Add-FGTRouterStatic {
         [Parameter (Mandatory = $true, ParameterSetName = "dst_blackhole")]
         [string]$dst,
         [Parameter (Mandatory = $false)]
+        <#historic settings ?
         [string]$src,
         [Parameter (Mandatory = $false)]
+        #>
         [string]$gateway,
         [Parameter (Mandatory = $false)]
         [ValidateRange(1, 255)]
@@ -217,9 +219,11 @@ function Add-FGTRouterStatic {
             $static | add-member -name "dst" -membertype NoteProperty -Value $dst
         }
 
+        <#historic settings ?
         if ( $PsBoundParameters.ContainsKey('src') ) {
             $static | add-member -name "src" -membertype NoteProperty -Value $src
         }
+        #>
 
         if ( $PsBoundParameters.ContainsKey('gateway') ) {
             $static | add-member -name "gateway" -membertype NoteProperty -Value $gateway

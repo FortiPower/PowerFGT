@@ -76,6 +76,7 @@ Describe "Add Static Route" {
         $route.'seq-num' | Should -Not -BeNullOrEmpty
         $route.status | Should -Be "enable"
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
+        $route.src | Should -Be "0.0.0.0 0.0.0.0"
         $route.gateway | Should -Be "198.51.100.254"
         $route.distance | Should -Be 10
         $route.weight | Should -Be 0
@@ -104,6 +105,7 @@ Describe "Add Static Route" {
         $route.'seq-num' | Should -Not -BeNullOrEmpty
         $route.status | Should -Be "enable"
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
+        $route.src | Should -Be "0.0.0.0 0.0.0.0"
         $route.gateway | Should -Be "198.51.100.254"
         $route.distance | Should -Be 15
         $route.weight | Should -Be 0
@@ -132,6 +134,7 @@ Describe "Add Static Route" {
         $route.'seq-num' | Should -Not -BeNullOrEmpty
         $route.status | Should -Be "enable"
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
+        $route.src | Should -Be "0.0.0.0 0.0.0.0"
         $route.gateway | Should -Be "198.51.100.254"
         $route.distance | Should -Be 10
         $route.weight | Should -Be 0
@@ -155,6 +158,7 @@ Describe "Add Static Route" {
         $route.'seq-num' | Should -Be "10"
         $route.status | Should -Be "enable"
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
+        $route.src | Should -Be "0.0.0.0 0.0.0.0"
         $route.gateway | Should -Be "198.51.100.254"
         $route.distance | Should -Be 10
         $route.weight | Should -Be 0
@@ -183,6 +187,7 @@ Describe "Add Static Route" {
         $route.'seq-num' | Should -Not -BeNullOrEmpty
         $route.status | Should -Be "enable"
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
+        $route.src | Should -Be "0.0.0.0 0.0.0.0"
         $route.gateway | Should -Be "198.51.100.254"
         $route.distance | Should -Be 10
         $route.weight | Should -Be 0
@@ -211,6 +216,7 @@ Describe "Add Static Route" {
         $route.'seq-num' | Should -Not -BeNullOrEmpty
         $route.status | Should -Be "disable"
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
+        $route.src | Should -Be "0.0.0.0 0.0.0.0"
         $route.gateway | Should -Be "198.51.100.254"
         $route.distance | Should -Be 10
         $route.weight | Should -Be 0
@@ -239,6 +245,7 @@ Describe "Add Static Route" {
         $route.'seq-num' | Should -Not -BeNullOrEmpty
         $route.status | Should -Be "enable"
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
+        $route.src | Should -Be "0.0.0.0 0.0.0.0"
         $route.gateway | Should -Be "198.51.100.254"
         $route.distance | Should -Be 10
         $route.weight | Should -Be 10
@@ -267,6 +274,7 @@ Describe "Add Static Route" {
         $route.'seq-num' | Should -Not -BeNullOrEmpty
         $route.status | Should -Be "enable"
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
+        $route.src | Should -Be "0.0.0.0 0.0.0.0"
         $route.gateway | Should -Be "198.51.100.254"
         $route.distance | Should -Be 10
         $route.weight | Should -Be 0
@@ -295,6 +303,7 @@ Describe "Add Static Route" {
         $route.'seq-num' | Should -Not -BeNullOrEmpty
         $route.status | Should -Be "enable"
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
+        $route.src | Should -Be "0.0.0.0 0.0.0.0"
         $route.gateway | Should -Be "0.0.0.0"
         $route.distance | Should -Be 10
         $route.weight | Should -Be 0
@@ -351,6 +360,7 @@ Describe "Add Static Route" {
         $route.'seq-num' | Should -Not -BeNullOrEmpty
         $route.status | Should -Be "enable"
         $route.dst | Should -Be "0.0.0.0 0.0.0.0"
+        $route.src | Should -Be "0.0.0.0 0.0.0.0"
         $route.gateway | Should -Be "198.51.100.254"
         $route.distance | Should -Be 10
         $route.weight | Should -Be 0
@@ -379,6 +389,7 @@ Describe "Add Static Route" {
         $route.'seq-num' | Should -Not -BeNullOrEmpty
         $route.status | Should -Be "enable"
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
+        $route.src | Should -Be "0.0.0.0 0.0.0.0"
         $route.gateway | Should -Be "198.51.100.254"
         $route.distance | Should -Be 10
         $route.weight | Should -Be 0
@@ -407,6 +418,7 @@ Describe "Add Static Route" {
         $route.'seq-num' | Should -Not -BeNullOrEmpty
         $route.status | Should -Be "enable"
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
+        $route.src | Should -Be "0.0.0.0 0.0.0.0"
         $route.gateway | Should -Be "198.51.100.254"
         $route.distance | Should -Be 10
         $route.weight | Should -Be 0
@@ -436,6 +448,7 @@ Describe "Add Static Route" {
         $route.'seq-num' | Should -Not -BeNullOrEmpty
         $route.status | Should -Be "enable"
         $route.dst | Should -Be "192.2.0.0 255.255.255.0"
+        $route.src | Should -Be "0.0.0.0 0.0.0.0"
         $route.gateway | Should -Be "198.51.100.254"
         $route.distance | Should -Be 10
         $route.weight | Should -Be 0
@@ -465,6 +478,7 @@ Describe "Add Static Route" {
         $route.'seq-num' | Should -Not -BeNullOrEmpty
         $route.status | Should -Be "enable"
         $route.dst | Should -Be "0.0.0.0 0.0.0.0"
+        $route.src | Should -Be "0.0.0.0 0.0.0.0"
         $route.gateway | Should -Be "198.51.100.254"
         $route.distance | Should -Be 10
         $route.weight | Should -Be 0
@@ -485,6 +499,38 @@ Describe "Add Static Route" {
         $route.bfd | Should -Be "disable"
     }
     #>
+
+    <#historic settings ? don't work...
+    It "Add route to 192.2.0.0/24 with src (203.0.113.0/24)" {
+        $r = Add-FGTRouterStatic -dst 192.2.0.0/24 -src 203.0.113.0/24 -gateway 198.51.100.254 -device port2
+        ($r).count | Should -Be "1"
+        $route = Get-FGTRouterStatic -filter_attribute gateway -filter_value 198.51.100.254
+        $route.'seq-num' | Should -Not -BeNullOrEmpty
+        $route.status | Should -Be "enable"
+        $route.dst | Should -Be "192.2.0.0 255.255.255.0"
+        $route.src | Should -Be "203.0.113.0 255.255.255.0"
+        $route.gateway | Should -Be "198.51.100.254"
+        $route.distance | Should -Be 10
+        $route.weight | Should -Be 0
+        if ($DefaultFGTConnection.version -lt "7.0.0") {
+            $route.priority | Should -Be 0
+        }
+        else {
+            $route.priority | Should -Be 1
+        }
+        $route.device | Should -Be "port2"
+        $route.comment | Should -Be ""
+        $route.blackhole | Should -Be "disable"
+        $route.'dynamic-gateway' | Should -Be "disable"
+        $route.dstaddr | Should -Be ""
+        $route.'internet-service' | Should -Be "0"
+        $route.'internet-service-custom' | Should -Be ""
+        $route.'link-monitor-exempt' | Should -Be "disable"
+        $route.vrf | Should -Be "0"
+        $route.bfd | Should -Be "disable"
+    }
+    #>
+
 }
 
 Describe "Remove Static Route" {
