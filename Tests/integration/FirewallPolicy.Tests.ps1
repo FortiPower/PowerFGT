@@ -77,6 +77,10 @@ Describe "Get Firewall Policy" {
 
 Describe "Add Firewall Policy" {
 
+    BeforeAll {
+        Add-FGTFirewallPolicy -name $pester_policy2 -srcintf port2 -dstintf port3 -srcaddr all -dstaddr all
+    }
+
     AfterEach {
         Get-FGTFirewallPolicy -name $pester_policy1 | Remove-FGTFirewallPolicy -confirm:$false
     }
@@ -562,6 +566,10 @@ Describe "Add Firewall Policy" {
             #Reverse settings for enable unnamed policy
             Set-FGTSystemSettings -gui_allow_unnamed_policy:$false
         }
+    }
+
+    AfterAll {
+        Get-FGTFirewallPolicy -name $pester_policy2 | Remove-FGTFirewallPolicy -confirm:$false
     }
 }
 
