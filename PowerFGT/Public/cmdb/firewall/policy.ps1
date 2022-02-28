@@ -233,9 +233,15 @@ function Add-FGTFirewallPolicy {
             $policy | add-member -name "poolname" -membertype NoteProperty -Value $ippool_array
         }
 
-        Invoke-FGTRestMethod -method "POST" -body $policy -uri $uri -connection $connection @invokeParams | Out-Null
+        $post = Invoke-FGTRestMethod -method "POST" -body $policy -uri $uri -connection $connection @invokeParams
 
-        Get-FGTFirewallPolicy -name $name -connection $connection @invokeParams
+        if ( $PsBoundParameters.ContainsKey('name') ) {
+            Get-FGTFirewallPolicy -name $name -connection $connection @invokeParams
+        }
+        else {
+            #if unnamed policy, get the policy via policyid (return by POST via mkey value)
+            Get-FGTFirewallPolicy -policyid $post.mkey -connection $connection @invokeParams
+        }
 
     }
 
