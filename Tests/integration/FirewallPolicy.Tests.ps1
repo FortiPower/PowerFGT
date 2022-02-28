@@ -526,6 +526,43 @@ Describe "Add Firewall Policy" {
         { Add-FGTFirewallPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all } | Should -Throw "You need to specifiy a name"
     }
 
+    Context "Unnamed Policy" {
+
+        BeforeAll {
+            #Change settings for enable unnamed policy
+            Set-FGTSystemSettings -gui_allow_unnamed_policy
+        }
+
+        AfterEach {
+            Get-FGTFirewallPolicy -policyid 23 | Remove-FGTFirewallPolicy -confirm:$false
+        }
+
+        It "Add unnamed Policy" {
+            $p = Add-FGTFirewallPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -policyid 23
+            $($p).count | Should -Be "1"
+            $policy = Get-FGTFirewallPolicy -policyid 23
+            $policy.name | Should -Be ""
+            $policy.uuid | Should -Not -BeNullOrEmpty
+            $policy.srcintf.name | Should -Be "port1"
+            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcaddr.name | Should -Be "all"
+            $policy.dstaddr.name | Should -Be "all"
+            $policy.action | Should -Be "accept"
+            $policy.status | Should -Be "enable"
+            $policy.service.name | Should -Be "all"
+            $policy.schedule | Should -Be "always"
+            $policy.nat | Should -Be "disable"
+            $policy.logtraffic | Should -Be "utm"
+            $policy.comments | Should -BeNullOrEmpty
+            $policy.ippool | Should -Be "disable"
+            $policy.comments | Should -BeNullOrEmpty
+        }
+
+        AfterAll {
+            #Reverse settings for enable unnamed policy
+            Set-FGTSystemSettings -gui_allow_unnamed_policy:$false
+        }
+    }
 }
 
 Describe "Add Firewall Policy Member" {
