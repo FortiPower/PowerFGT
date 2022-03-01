@@ -479,6 +479,7 @@ Describe "Add Firewall Policy" {
 
     It "Add Policy $pester_policy1 (with policyid)" {
         $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -policyid 23
+        $($p).count | Should -Be "1"
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
         $policy.name | Should -Be $pester_policy1
         $policy.uuid | Should -Not -BeNullOrEmpty
