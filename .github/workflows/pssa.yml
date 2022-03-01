@@ -12,3 +12,6 @@ jobs:
         with:
           settingsPath: .vscode/PSScriptAnalyzerSettings.psd1
           sendComment: false
+          failOnInfos: true
+          failOnErrors: true
+          failOnWarnings: true
