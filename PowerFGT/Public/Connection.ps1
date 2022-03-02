@@ -74,6 +74,7 @@ function Connect-FGT {
       Connect to a FortiGate with IP 192.0.2.1 and change the password
   #>
     [CmdletBinding(DefaultParameterSetName = 'default')]
+    [OutputType([System.Collections.Hashtable])]
     Param(
         [Parameter(Mandatory = $true, position = 1)]
         [String]$Server,
