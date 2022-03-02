@@ -5,39 +5,39 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-function Get-FGTUserGroups {
+function Get-FGTUserGroup {
 
     <#
         .SYNOPSIS
-        Get list of all "local groups"
+        Get list of all local groups
 
         .DESCRIPTION
-        Get list of all "local groups" (name, type, status... )
+        Get list of all local groups (name, members, type... )
 
         .EXAMPLE
-        Get-FGTUserGroups
+        Get-FGTUserGroup
 
-        Display all local users
+        Display all local groups
 
         .EXAMPLE
-        Get-FGTUserGroups -id 23
+        Get-FGTUserGroup -id 23
 
         Get local user with id 23
 
         .EXAMPLE
-        Get-FGTUserGroups -name FGT -filter_type contains
+        Get-FGTUserGroup -name FGT -filter_type contains
 
-        Get local user contains with *FGT*
-
-        .EXAMPLE
-        Get-FGTUserGroups -skip
-
-        Display all local users (but only relevant attributes)
+        Get local group contains with *FGT*
 
         .EXAMPLE
-        Get-FGTUserGroups -vdom vdomX
+        Get-FGTUserGroup -skip
 
-        Display all local users on vdomX
+        Display all local groups (but only relevant attributes)
+
+        .EXAMPLE
+        Get-FGTUserGroup -vdom vdomX
+
+        Display all local groups on vdomX
     #>
 
     [CmdletBinding(DefaultParameterSetName = "default")]
