@@ -32,7 +32,7 @@ function Get-FGTRouterStatic {
         .EXAMPLE
         Get-FGTRouterStatic -gateway 198.51.100.254
 
-        Get static route object with gateway equal198.51.100.254
+        Get static route object with gateway equal 198.51.100.254
 
         .EXAMPLE
         Get-FGTRouterStatic -seq_num 10
