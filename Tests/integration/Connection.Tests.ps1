@@ -170,6 +170,9 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Router Static" {
             { Get-FGTRouterStatic -connection $fgt } | Should -Not -Throw
         }
+        It "Use Multi connection for call Get System Admin(strator)" {
+            { Get-FGTSystemAdmin -connection $fgt } | Should -Not -Throw
+        }
         It "Use Multi connection for call Get System DNS" {
             { Get-FGTSystemDns -connection $fgt } | Should -Not -Throw
         }
@@ -197,8 +200,17 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get System Zone " {
             { Get-FGTSystemZone -connection $fgt } | Should -Not -Throw
         }
+        It "Use Multi connection for call Get User Group" {
+            { Get-FGTUserGroup -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get User LDAP" {
+            { Get-FGTUserLDAP -connection $fgt } | Should -Not -Throw
+        }
         It "Use Multi connection for call Get User Local" {
             { Get-FGTUserLocal -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get User RADIUS" {
+            { Get-FGTUserRADIUS -connection $fgt } | Should -Not -Throw
         }
         It "Use Multi connection for call Get VPN IPsec Phase 1 Interface" {
             { Get-FGTVpnIpsecPhase1Interface -connection $fgt } | Should -Not -Throw
