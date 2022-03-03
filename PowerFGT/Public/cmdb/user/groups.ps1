@@ -8,10 +8,10 @@ function Get-FGTUserGroup {
 
     <#
         .SYNOPSIS
-        Get list of all local groups
+        Get list of all local group
 
         .DESCRIPTION
-        Get list of all local groups (name, members, type... )
+        Get list of all local group (name, members, type... )
 
         .EXAMPLE
         Get-FGTUserGroup
@@ -21,7 +21,7 @@ function Get-FGTUserGroup {
         .EXAMPLE
         Get-FGTUserGroup -id 23
 
-        Get local user with id 23
+        Get local group with id 23
 
         .EXAMPLE
         Get-FGTUserGroup -name FGT -filter_type contains
@@ -31,12 +31,12 @@ function Get-FGTUserGroup {
         .EXAMPLE
         Get-FGTUserGroup -skip
 
-        Display all local groups (but only relevant attributes)
+        Display all local group (but only relevant attributes)
 
         .EXAMPLE
         Get-FGTUserGroup -vdom vdomX
 
-        Display all local groups on vdomX
+        Display all local group on vdomX
     #>
 
     [CmdletBinding(DefaultParameterSetName = "default")]
