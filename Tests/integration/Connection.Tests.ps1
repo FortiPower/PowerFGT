@@ -170,7 +170,7 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Router Static" {
             { Get-FGTRouterStatic -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get System Admin(strator)" {
+        It "Use Multi connection for call Get System Admin(istrator)" {
             { Get-FGTSystemAdmin -connection $fgt } | Should -Not -Throw
         }
         It "Use Multi connection for call Get System DNS" {
