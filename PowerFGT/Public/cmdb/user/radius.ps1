@@ -76,10 +76,6 @@ function Get-FGTUserRADIUS {
                 $filter_value = $name
                 $filter_attribute = "name"
             }
-            "id" {
-                $filter_value = $id
-                $filter_attribute = "id"
-            }
             default { }
         }
 
