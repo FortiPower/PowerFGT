@@ -29,8 +29,8 @@ function Get-FGTMonitorLicenseStatus {
 
     Process {
 
-        $uri = 'api/v2/monitor/monitor/license/status'
-        $response = Invoke-FGTRestMethod -uri $uri -method 'GET' -connection $connection @invokeParams
+        $uri = 'api/v2/monitor/license/status'
+        $response = Invoke-FGTRestMethod -uri $uri -method 'GET' -connection $connection
         $response.results
     }
 
