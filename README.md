@@ -839,7 +839,7 @@ or delete it `Remove-FGTRouterStatic`.
 
 ### Interface
 
-You can create a new Interface (Vlan, LACP...) `Add-FGTSystemInterface`, retrieve its information `Get-FGTSystemInterface`,
+You can create a new interface (Vlan ...) `Add-FGTSystemInterface`, retrieve its information `Get-FGTSystemInterface`,
 modify its properties `Set-FGTSystemInterface` or delete it `Remove-FGTSystemInterface`.
 
 ```powershell
@@ -864,7 +864,7 @@ modify its properties `Set-FGTSystemInterface` or delete it `Remove-FGTSystemInt
     port10    port10       root   0               0 disable   outbound                    static {}                    5
     ssl.root  ssl.root     root   0               0 disable   outbound                    static {}                    5
 
-# Create an address (type ipmask)
+# Create an interface (type vlan)
     Add-FGTSystemInterface -vlan_id 23 -interface port9 -name "PowerFGT_vlan23"
 
     name                                       : PowerFGT_vlan23
