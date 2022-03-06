@@ -12,6 +12,7 @@ With this module (version 0.5.0) you can manage:
 - HA (Get)
 - [Interface](#interface) (Add/Get/Set/Remove and Add/remove Member)
 - IP Pool (Get)
+- [Monitor](#monitor) (Get)
 - [Policy](#policy) (Add/Get/Remove)
 - [Proxy Address/Address Group/ Policy](#proxy) (Add/Get/Set/Remove)
 - RoutePolicy (Get)
@@ -1026,6 +1027,20 @@ You can change System Settings and System Global (settings) using `Set-FGTSystem
     [...]
 
 ```
+
+### Monitor
+
+It is possible to `monitor` FortiGate
+
+* `Get-FGTMonitorLicenseStatus` Get current license & registration status.
+* `Get-FGTMonitorSystemConfigBackup` Backup system config
+* `Get-FGTMonitorSystemFirmware` Retrieve a list of firmware images available to use for upgrade on this device
+* `Get-FGTMonitorVpnIPsec` Return active IPsec VPNs
+* `Get-FGTMonitorVpnSsl` Retrieve a list of all SSL-VPN sessions and sub-sessions and Return statistics about the SSL-VPN
+
+to get API uri, you can use `Invoke-FGTRestMethod api/v2/monitor/?action=schema` for get list of uri for monitor
+
+
 ### Invoke API
 for example to get Fortigate System Global Info
 
