@@ -2,6 +2,23 @@
 
 # PowerFGT
 
+<p align="center">
+    <a href="https://www.powershellgallery.com/packages/PowerFGT/" alt="PowerShell Gallery Version">
+        <img src="https://img.shields.io/powershellgallery/v/PowerFGT.svg" /></a>
+    <a href="https://www.powershellgallery.com/packages/PowerFGT/" alt="PS Gallery Downloads">
+        <img src="https://img.shields.io/powershellgallery/dt/PowerFGT.svg" /></a>
+    <a href="https://www.powershellgallery.com/packages/PowerFGT/" alt="PS Platform">
+        <img src="https://img.shields.io/powershellgallery/p/PowerFGT.svg" /></a>
+</p>
+<p align="center">
+    <a href="https://github.com/FortiPower/PowerFGT/graphs/commit-activity" alt="GitHub Last Commit">
+        <img src="https://img.shields.io/github/last-commit/FortiPower/PowerFGT/master.svg" /></a>
+    <a href="https://raw.githubusercontent.com/FortiPower/PowerFGT/master/LICENSE" alt="GitHub License">
+        <img src="https://img.shields.io/github/license/FortiPower/PowerFGT.svg" /></a>
+    <a href="https://github.com/FortiPower/PowerFGT/graphs/contributors" alt="GitHub Contributors">
+        <img src="https://img.shields.io/github/contributors/FortiPower/PowerFGT.svg"/></a>
+</p>
+
 This is a Powershell module for configure a FortiGate (Fortinet) Firewall.
 
 With this module (version 0.5.0) you can manage:
