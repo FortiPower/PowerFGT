@@ -7,8 +7,10 @@
         <img src="https://img.shields.io/powershellgallery/v/PowerFGT.svg" /></a>
     <a href="https://www.powershellgallery.com/packages/PowerFGT/" alt="PS Gallery Downloads">
         <img src="https://img.shields.io/powershellgallery/dt/PowerFGT.svg" /></a>
+    <!--
     <a href="https://www.powershellgallery.com/packages/PowerFGT/" alt="PS Platform">
         <img src="https://img.shields.io/powershellgallery/p/PowerFGT.svg" /></a>
+    -->
 </p>
 <p align="center">
     <a href="https://github.com/FortiPower/PowerFGT/graphs/commit-activity" alt="GitHub Last Commit">
