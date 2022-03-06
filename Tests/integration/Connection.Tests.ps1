@@ -161,7 +161,7 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Firewall Virtual IP (VIP)" {
             { Get-FGTFirewallVip -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get log Traffic" {
+        It "Use Multi connection for call Get Log Traffic" {
             { Get-FGTLogTraffic -type memory -subtype local -connection $fgt } | Should -Not -Throw
         }
         It "Use Multi connection for call Get Router Policy" {
