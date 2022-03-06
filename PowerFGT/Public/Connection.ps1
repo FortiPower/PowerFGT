@@ -275,7 +275,14 @@ function Connect-FGT {
         $connection.port = $port
         $connection.invokeParams = $invokeParams
         $connection.vdom = $vdom
-        $connection.version = [version]"$($version.results.current.major).$($version.results.current.minor).$($version.results.current.patch)"
+        if ($version.results.current.major) {
+            $connection.version = [version]"$($version.results.current.major).$($version.results.current.minor).$($version.results.current.patch)"
+        }
+        else {
+            #Old release like 5.x with no major/minor/patch
+            $connection.version = [version]"$($version.results.current.version -replace 'v','')"
+            Write-Warning "Old and no longer supported FortiOS with limited API (no filtering...)"
+        }
 
         if ( $DefaultConnection ) {
             set-variable -name DefaultFGTConnection -value $connection -scope Global
