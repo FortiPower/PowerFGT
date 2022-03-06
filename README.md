@@ -19,8 +19,8 @@ With this module (version 0.5.0) you can manage:
 - Service Group (Get)
 - [Static Route](#static-route) (Add/Get/Remove)
 - System Admin (Get)
-- System Global (Get)
-- System Settings (Get)
+- [System Global](#settings) (Get/Set)
+- [System Settings](#settings) (Get/Set)
 - User LDAP (Get)
 - User Local (Get)
 - User Group (Get)
@@ -929,6 +929,103 @@ modify its properties `Set-FGTSystemInterface` or delete it `Remove-FGTSystemInt
     [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): Y
 ```
 
+### Settings
+
+You can change System Settings and System Global (settings) using `Set-FGTSystemSettings` and `Set-FGTSystemGlobal`
+
+```powershell
+
+# Get ALL information about System Global
+    Get-FGTSystemGlobal
+
+    language                                 : english
+    gui-ipv6                                 : disable
+    gui-replacement-message-groups           : disable
+    gui-local-out                            : disable
+    gui-certificates                         : enable
+    gui-custom-language                      : disable
+    gui-wireless-opensecurity                : disable
+    gui-display-hostname                     : disable
+    gui-fortigate-cloud-sandbox              : disable
+    gui-firmware-upgrade-warning             : enable
+    gui-allow-default-hostname               : disable
+    gui-forticare-registration-setup-warning : enable
+    gui-cdn-usage                            : enable
+    admin-https-ssl-versions                 : tlsv1-2
+    [...]
+
+# Get only admintimeout and admin-sport of System Global
+
+    Get-FGTSystemGlobal -Name admintimeout, admin-sport
+
+    admintimeout admin-sport
+    ------------ -----------
+            5         443
+
+# Configure admintimeout and admin-sport of System Global
+
+    Set-FGTSystemGlobal -admintimeout 30 -admin_sport 8443
+
+    [...]
+    admintimeout                             : 30
+    [...]
+    admin-sport                              : 8443
+    [...]
+
+# for configure a setting not yet available on parameter of Set-FGTSystemGlobal, you can use
+
+    $data = @{ "two-factor-sms-expiry" = 120 }
+    Set-FGTSystemGlobal -data $data
+
+    [...]
+    two-factor-sms-expiry                    : 120
+    [...]
+
+# Get ALL information about System Settings
+    Get-FGTSystemSettings
+
+    comments                           : 
+    opmode                             : nat
+    ngfw-mode                          : profile-based
+    http-external-dest                 : fortiweb
+    firewall-session-dirty             : check-all
+    manageip                           :
+    gateway                            : 0.0.0.0
+    ip                                 : 0.0.0.0 0.0.0.0
+    manageip6                          : ::/0
+    gateway6                           : ::
+    ip6                                : ::/0
+    device                             :
+    bfd                                : disable
+    [...]
+
+# Get only gui-allow-unnamed-policy and opmode of System Settings
+
+    Get-FGTSystemSettings -Name gui-allow-unnamed-policy, opmode
+
+    gui-allow-unnamed-policy opmode
+    ------------------------ ------
+    disable                  nat
+
+
+# Configure gui-allow-unnamed-policy of System Settings
+
+    Set-FGTSystemSettings -gui_allow_unnamed_policy
+
+    [...]
+    gui-allow-unnamed-policy           : enable
+    [...]
+
+# for configure a setting not yet available on parameter of Set-FGTSystemSettings, you can use
+
+    $data = @{ "location-id" = "192.0.2.1" }
+    Set-FGTSystemSettings -data $data
+
+    [...]
+    location-id                        : 192.0.2.1
+    [...]
+
+```
 ### Invoke API
 for example to get Fortigate System Global Info
 
