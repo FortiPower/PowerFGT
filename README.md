@@ -10,7 +10,7 @@ With this module (version 0.5.0) you can manage:
 - [AddressGroup](#address-group) (Add/Get/Copy/Set/Remove and Add/Remove Member)
 - DNS (Get)
 - HA (Get)
-- Interface (Get)
+- [Interface](#interface) (Add/Get/Set/Remove and Add/remove Member)
 - IP Pool (Get)
 - [Policy](#policy) (Add/Get/Remove)
 - [Proxy Address/Address Group/ Policy](#proxy) (Add/Get/Set/Remove)
@@ -835,6 +835,98 @@ or delete it `Remove-FGTRouterStatic`.
     Are you sure you want to perform this action?
     Performing the operation "Remove Router Static" on target "2".
     [Y] Yes  [N] No  [?] Help (default is "N"): y
+```
+
+### Interface
+
+You can create a new Interface (Vlan, LACP...) `Add-FGTSystemInterface`, retrieve its information `Get-FGTSystemInterface`,
+modify its properties `Set-FGTSystemInterface` or delete it `Remove-FGTSystemInterface`.
+
+```powershell
+
+# Get information about ALL Interface (using Format Table)
+    Get-FGTSystemInterface | Format-Table
+
+    name      q_origin_key vdom vrf cli-conn-status fortilink switch-controller-source-ip mode   client-options distance
+    ----      ------------ ---- --- --------------- --------- --------------------------- ----   -------------- --------
+    fortilink fortilink    root   0               0 enable    outbound                    static {}                    5
+    l2t.root  l2t.root     root   0               0 disable   outbound                    static {}                    5
+    naf.root  naf.root     root   0               0 disable   outbound                    static {}                    5
+    port1     port1        root   0               0 disable   outbound                    static {}                    5
+    port2     port2        root   0               0 disable   outbound                    static {}                    5
+    port3     port3        root   0               0 disable   outbound                    static {}                    5
+    port4     port4        root   0               0 disable   outbound                    static {}                    5
+    port5     port5        root   0               0 disable   outbound                    static {}                    5
+    port6     port6        root   0               0 disable   outbound                    static {}                    5
+    port7     port7        root   0               0 disable   outbound                    static {}                    5
+    port8     port8        root   0               0 disable   outbound                    static {}                    5
+    port9     port9        root   0               0 disable   outbound                    static {}                    5
+    port10    port10       root   0               0 disable   outbound                    static {}                    5
+    ssl.root  ssl.root     root   0               0 disable   outbound                    static {}                    5
+
+# Create an address (type ipmask)
+    Add-FGTSystemInterface -vlan_id 23 -interface port9 -name "PowerFGT_vlan23"
+
+    name                                       : PowerFGT_vlan23
+    q_origin_key                               : PowerFGT_vlan23
+    vdom                                       : root
+    vrf                                        : 0
+    cli-conn-status                            : 0
+    fortilink                                  : disable
+    switch-controller-source-ip                : outbound
+    mode                                       : static
+    [...]
+
+# Get information an Interface (name) and display only some field (using Format-Table)
+    Get-FGTSystemInterface -name PowerFGT_vlan23 | select name, vlanid, ip
+
+    name            vlanid ip
+    ----            ------ --
+    PowerFGT_vlan23     23 0.0.0.0 0.0.0.0
+
+# Modify an interface (description, ip ...)
+    Get-FGTSystemInterface -name PowerFGT_vlan23 | Set-FGTSystemInterface -alias ALIAS_PowerFGT -role lan -mode static -ip 192.0.2.1 -netmask 255.255.255.0 -allowaccess ping,https
+
+    name                                       : PowerFGT_vlan23
+    q_origin_key                               : PowerFGT_vlan23
+    vdom                                       : root
+    [...]
+    ip                                         : 192.0.2.1 255.255.255.0
+    allowaccess                                : ping https
+    [...]
+    interface                                  : port9
+    external                                   : disable
+    vlan-protocol                              : 8021q
+    vlanid                                     : 23
+    [...]
+    description                                :
+    alias                                      : ALIAS_PowerFGT
+    [...]
+    role                                       : lan
+    [...]
+
+
+# Add (append) allowaccess with SSH
+    Get-FGTSystemInterface -name PowerFGT_vlan23 | Add-FGTSystemInterfaceMember -allowaccess ssh | select name, allowaccess
+
+    name            allowaccess
+    ----            -----------
+    PowerFGT_vlan23 ping https ssh
+
+# Remove allowaccess (https)
+    Get-FGTSystemInterface -name PowerFGT_vlan23 | Remove-FGTSystemInterfaceMember -allowaccess https | select name, allowaccess
+
+    name            allowaccess
+    ----            -----------
+    PowerFGT_vlan23 ping ssh
+
+# Remove an interface
+    Get-FGTSystemInterface -name PowerFGT_vlan23 | Remove-FGTSystemInterface
+
+    Confirm
+    Are you sure you want to perform this action?
+    Performing the operation "Remove interface" on target "PowerFGT_vlan23".
+    [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): Y
 ```
 
 ### Invoke API
