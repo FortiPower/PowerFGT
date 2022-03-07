@@ -31,6 +31,7 @@ With this module (version 0.5.0) you can manage:
 - HA (Get)
 - [Interface](#interface) (Add/Get/Set/Remove and Add/remove Member)
 - IP Pool (Get)
+- [Log Traffic](#log-traffic) (Get)
 - [Monitor](#monitor) (Get)
 - [Policy](#policy) (Add/Get/Remove)
 - [Proxy Address/Address Group/ Policy](#proxy) (Add/Get/Set/Remove)
@@ -1059,7 +1060,61 @@ It is possible to `monitor` FortiGate
 
 to get API uri, you can use `Invoke-FGTRestMethod api/v2/monitor/?action=schema` for get list of uri for monitor
 
+### Log Traffic
 
+It is possible to get `log traffic` of FortiGate.
+
+You can get the following type log
+* disk
+* fortianalyzer
+* forticloud
+* memory
+
+and subtype
+* forward
+* local
+* multicast
+* sniffer
+* fortiview
+* threat
+
+by default, it is only first 20 rows availables (use -rows parmeter )’
+/!\ you can get issue if you ask too many rows on small appliance /!\
+
+can also filter by
+* Source IP (-srcip)
+* Source Interface (-srcintf)
+* Destination IP (-dstip)
+* Destination Interface (-dstintf)
+* Destination Port (-dstport)
+* Action (-action)
+* Policy ID (-policyid)
+* Policy UUID (-poluuid)
+
+for Example
+
+```powershell
+    #Get Log Traffic from memory on subtype forward and 10 000 rows
+
+    Get-FGTLogTraffic -type memory -subtype forward -rows 10000 | Format-Table
+    date       time               eventtime tz    logid      type    subtype level   vd   srcip
+    ----       ----               --------- --    -----      ----    ------- -----   --   -----
+    2022-03-06 22:52:28 1646635948633219391 -0800 0000000013 traffic forward notice  root 103.39.247.123
+    2022-03-06 22:52:28 1646635948603208109 -0800 0000000013 traffic forward notice  root 103.39.247.123
+    2022-03-06 22:52:28 1646635948593207059 -0800 0000000013 traffic forward notice  root 103.39.247.123
+    2022-03-06 22:52:28 1646635948483209427 -0800 0000000022 traffic forward notice  root 10.88.130.131
+    2022-03-06 22:52:28 1646635948483206444 -0800 0000000022 traffic forward notice  root 10.88.102.99
+    2022-03-06 22:52:28 1646635948443205594 -0800 0000000022 traffic forward notice  root 10.88.110.122
+    2022-03-06 22:52:28 1646635948443208223 -0800 0000000022 traffic forward notice  root 10.88.2.21
+    2022-03-06 22:52:28 1646635948333207985 -0800 0000000013 traffic forward notice  root 216.251.148.178
+    2022-03-06 22:52:28 1646635948283206523 -0800 0000000022 traffic forward notice  root 10.88.130.131
+    2022-03-06 22:52:27 1646635948153206637 -0800 0001000014 traffic local   notice  root 127.0.0.1
+    2022-03-06 22:52:27 1646635948083207799 -0800 0001000014 traffic local   notice  root 127.0.0.1
+    2022-03-06 22:52:27 1646635948083211212 -0800 0001000014 traffic local   notice  root 127.0.0.1
+    2022-03-06 22:52:27 1646635948163208549 -0800 0000000022 traffic forward notice  root 10.88.110.122
+    [...]
+
+```
 ### Invoke API
 for example to get Fortigate System Global Info
 
