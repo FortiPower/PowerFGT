@@ -371,7 +371,7 @@ function Disconnect-FGT {
 
     Process {
 
-        $url = "/logout"
+        $url = "logout"
 
         if ($PSCmdlet.ShouldProcess($connection.server, 'Proceed with removal of FortiGate connection ?')) {
             $null = invoke-FGTRestMethod -method "POST" -uri $url -connection $connection
