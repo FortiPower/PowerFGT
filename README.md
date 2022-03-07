@@ -1455,9 +1455,12 @@ Show-FGTException
 - Arthur Heijnen
 - Benjamin Perrier
 - Brett Pound
+- Dave Hope
 - Cédric Moreau
 - Evan Chisholm
 - Jelmer Jaarsma
+- Kevin Shu
+- Sylvain Gomez
 
 Sort by name (*git shortlog -s*)
 
