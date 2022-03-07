@@ -1077,7 +1077,7 @@ and subtype
 * fortiview
 * threat
 
-by default, it is only first 20 rows availables (use -rows parmeter )’
+by default, it is only first 20 rows availables (use -rows parameter )’
 /!\ you can get issue if you ask too many rows on small appliance /!\
 
 can also filter by
