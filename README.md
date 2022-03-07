@@ -1471,4 +1471,4 @@ Sort by name (*git shortlog -s*)
 
 # License
 
-Copyright 2019 Alexis La Goutte and the community.
+Copyright 2019-2022 Alexis La Goutte and the community.
