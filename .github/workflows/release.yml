@@ -12,5 +12,6 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Publish
+      shell: pwsh
       run: |
-        pwsh -Command "Publish-Module -Path ./PowerFGT -NuGetApiKey ${{ secrets.PSGALLERY_API_KEY }}"
+        Publish-Module -Path ./PowerFGT -NuGetApiKey ${{ secrets.PSGALLERY_API_KEY }}
