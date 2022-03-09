@@ -14,7 +14,7 @@ jobs:
       with:
         # GitHub event payload
         # https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#release
-        tweet-message: "Test Tweet API Git Hub ACtions"
+        tweet-message: "Test Tweet API Git Hub Actions"
       env:
         # Get your tokens from https://developer.twitter.com/apps
         TWITTER_CONSUMER_API_KEY: ${{ secrets.TWITTER_CONSUMER_API_KEY }}
