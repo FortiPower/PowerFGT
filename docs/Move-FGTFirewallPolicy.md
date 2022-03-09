@@ -5,55 +5,50 @@ online version:
 schema: 2.0.0
 ---
 
-# Set-FGTSystemZone
+# Move-FGTFirewallPolicy
 
 ## SYNOPSIS
-Set a zone
+Move a FortiGate Policy
 
 ## SYNTAX
 
+### after
 ```
-Set-FGTSystemZone [-zone] <PSObject> [-name <String>] [-intrazone <String>] [-description <String>]
- [-interfaces <String[]>] [-vdom <String[]>] [-connection <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Move-FGTFirewallPolicy [-policy] <PSObject> [-after] -id <PSObject> [-vdom <String[]>] [-connection <PSObject>]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
+### before
+```
+Move-FGTFirewallPolicy [-policy] <PSObject> [-before] -id <PSObject> [-vdom <String[]>]
+ [-connection <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Configure a zone (name, intrazone, member...)
+Move a Policy/Rule object (after or before) on the FortiGate
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Get-FGTSystemZone -name myPowerFGTZone | Set-FGTSystemZone -intrazone deny
+$MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
+PS C:\>$MyFGTPolicy | Move-FGTFirewallPolicy -after -id 12
 ```
 
-Set the zone named myPowerFGTZone with intra-zone traffic deny
+Move Policy object $MyFGTPolicy after Policy id 12
 
 ### EXAMPLE 2
 ```
-Get-FGTSystemZone -name myPowerFGTZone | Set-FGTSystemZone -interfaces port5, port6
+$MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
+PS C:\>$MyFGTPolicy | Move-FGTFirewallPolicy -before -id (Get-FGTFirewallPolicy -name MyFGTPolicy23)
 ```
 
-Set the zone named myPowerFGTZone with port 5 and port 6 bound to it
-
-### EXAMPLE 3
-```
-Get-FGTSystemZone -name myPowerFGTZone | Set-FGTSystemZone -name new_myPowerFGTZone
-```
-
-Set the zone named myPowerFGTZone with new name new_myPowerFGTZone
-
-### EXAMPLE 4
-```
-Get-FGTSystemZone -name myPowerFGTZone | Set-FGTSystemZone -name new_myPowerFGTZone
-```
-
-Set the zone named myPowerFGTZone with new name new_myPowerFGTZone
+Move Policy object $MyFGTPolicy before MyFGTPolicy23 (using Get-FGTFirewallPolicy)
 
 ## PARAMETERS
 
-### -zone
-{{ Fill zone Description }}
+### -policy
+{{ Fill policy Description }}
 
 ```yaml
 Type: PSObject
@@ -67,60 +62,45 @@ Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
-### -name
-{{ Fill name Description }}
+### -after
+{{ Fill after Description }}
 
 ```yaml
-Type: String
-Parameter Sets: (All)
+Type: SwitchParameter
+Parameter Sets: after
 Aliases:
 
-Required: False
+Required: True
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -intrazone
-{{ Fill intrazone Description }}
+### -before
+{{ Fill before Description }}
 
 ```yaml
-Type: String
-Parameter Sets: (All)
+Type: SwitchParameter
+Parameter Sets: before
 Aliases:
 
-Required: False
+Required: True
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -description
-{{ Fill description Description }}
+### -id
+{{ Fill id Description }}
 
 ```yaml
-Type: String
+Type: PSObject
 Parameter Sets: (All)
 Aliases:
 
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -interfaces
-{{ Fill interfaces Description }}
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False

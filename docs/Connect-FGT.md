@@ -12,10 +12,18 @@ Connect to a FortiGate
 
 ## SYNTAX
 
+### default (Default)
 ```
-Connect-FGT [-Server] <String> [-Username <String>] [-Password <SecureString>] [-Credentials <PSCredential>]
- [-httpOnly] [-SkipCertificateCheck] [-port <Int32>] [-Timeout <Int32>] [-vdom <String[]>]
- [-DefaultConnection <Boolean>] [<CommonParameters>]
+Connect-FGT [-Server] <String> [-Username <String>] [-Password <SecureString>] [-ApiToken <String>]
+ [-New_Password <SecureString>] [-Credentials <PSCredential>] [-httpOnly] [-SkipCertificateCheck]
+ [-port <Int32>] [-Timeout <Int32>] [-vdom <String[]>] [-DefaultConnection <Boolean>] [<CommonParameters>]
+```
+
+### token
+```
+Connect-FGT [-Server] <String> [-Username <String>] [-Password <SecureString>] [-ApiToken <String>]
+ [-New_Password <SecureString>] [-Credentials <PSCredential>] [-httpOnly] [-SkipCertificateCheck]
+ [-port <Int32>] [-Timeout <Int32>] [-vdom <String[]>] [-DefaultConnection <Boolean>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -69,16 +77,16 @@ Connect to a FortiGate with IP 192.0.2.1 using Username and Password
 
 ### EXAMPLE 7
 ```
-$fw1 = Connect-ArubaFGT -Server 192.0.2.1
-Connect to an FortiGate with IP 192.0.2.1 and store connection info to $fw1 variable
+$fw1 = Connect-FGT -Server 192.0.2.1
+Connect to a FortiGate with IP 192.0.2.1 and store connection info to $fw1 variable
 ```
 
 ### EXAMPLE 8
 ```
-$fw2 = Connect-ArubaFGT -Server 192.0.2.1 -DefaultConnection:$false
+$fw2 = Connect-FGT -Server 192.0.2.1 -DefaultConnection:$false
 ```
 
-Connect to an FortiGate with IP 192.0.2.1 and store connection info to $fw2 variable
+Connect to a FortiGate with IP 192.0.2.1 and store connection info to $fw2 variable
 and don't store connection on global ($DefaultFGTConnection) variable
 
 ### EXAMPLE 9
@@ -89,6 +97,22 @@ Connect-FGT -Server 192.0.2.1 -Timeout 15
 Connect to a Fortigate with IP 192.0.2.1 and timeout the operation if it takes longer
 than 15 seconds to form a connection.
 The Default value "0" will cause the connection to never timeout.
+
+### EXAMPLE 10
+```
+$apiToken = Get-Content fortigate_api_token.txt
+Connect-FGT -Server -192.0.2.1 -ApiToken $apiToken
+```
+
+Connect to a FortiGate with IP 192.0.2.1 and passing api token
+
+### EXAMPLE 11
+```
+$mynewpassword = ConvertTo-SecureString mypassword -AsPlainText -Force
+Connect-FGT -Server 192.0.2.1 -new_password $mysecpassword
+```
+
+Connect to a FortiGate with IP 192.0.2.1 and change the password
 
 ## PARAMETERS
 
@@ -124,6 +148,36 @@ Accept wildcard characters: False
 
 ### -Password
 {{ Fill Password Description }}
+
+```yaml
+Type: SecureString
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ApiToken
+{{ Fill ApiToken Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -New_Password
+{{ Fill New_Password Description }}
 
 ```yaml
 Type: SecureString
@@ -249,6 +303,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
+### System.Collections.Hashtable
 ## NOTES
 
 ## RELATED LINKS

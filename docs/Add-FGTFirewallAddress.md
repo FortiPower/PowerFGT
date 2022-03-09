@@ -14,22 +14,20 @@ Add a FortiGate Address
 
 ### fqdn
 ```
-Add-FGTFirewallAddress [-type <String>] -name <String> [-fqdn <String>] [-interface <String>]
- [-comment <String>] [-visibility <Boolean>] [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+Add-FGTFirewallAddress -name <String> [-fqdn <String>] [-interface <String>] [-comment <String>]
+ [-visibility <Boolean>] [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
 ```
 
 ### ipmask
 ```
-Add-FGTFirewallAddress [-type <String>] -name <String> [-ip <IPAddress>] [-mask <IPAddress>]
- [-interface <String>] [-comment <String>] [-visibility <Boolean>] [-vdom <String[]>] [-connection <PSObject>]
- [<CommonParameters>]
+Add-FGTFirewallAddress -name <String> [-ip <IPAddress>] [-mask <IPAddress>] [-interface <String>]
+ [-comment <String>] [-visibility <Boolean>] [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
 ```
 
 ### iprange
 ```
-Add-FGTFirewallAddress [-type <String>] -name <String> [-startip <IPAddress>] [-endip <IPAddress>]
- [-interface <String>] [-comment <String>] [-visibility <Boolean>] [-vdom <String[]>] [-connection <PSObject>]
- [<CommonParameters>]
+Add-FGTFirewallAddress -name <String> [-startip <IPAddress>] [-endip <IPAddress>] [-interface <String>]
+ [-comment <String>] [-visibility <Boolean>] [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -80,21 +78,6 @@ Add-FGTFirewallAddress -Name FGT-Range -startip 192.0.2.1 -endip 192.0.2.100
 Add Address object type iprange with name FGT-Range with start IP 192.0.2.1 and end ip 192.0.2.100
 
 ## PARAMETERS
-
-### -type
-{{ Fill type Description }}
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
 
 ### -name
 {{ Fill name Description }}

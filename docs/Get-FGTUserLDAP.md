@@ -5,67 +5,80 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-FGTSystemVirtualWANLink
+# Get-FGTUserLDAP
 
 ## SYNOPSIS
-Get Virtual Wan Link (SD-WAN) Settings
+Get list of all LDAP servers
 
 ## SYNTAX
 
 ### default (Default)
 ```
-Get-FGTSystemVirtualWANLink [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>]
- [-skip] [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+Get-FGTUserLDAP [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
+ [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+```
+
+### name
+```
+Get-FGTUserLDAP [[-name] <String>] [-filter_attribute <String>] [-filter_type <String>]
+ [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
 ```
 
 ### filter
 ```
-Get-FGTSystemVirtualWANLink [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>]
- [-skip] [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+Get-FGTUserLDAP [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
+ [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Get Virtual Wan Link Settings (status, load balance mode, members, health-check...
-)
+Get list of all LDAP servers
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Get-FGTSystemVirtualWANLink
+Get-FGTUserLDAP
 ```
 
-Get Virtual Wan Link Settings
+Display all LDAP servers
 
 ### EXAMPLE 2
 ```
-Get-FGTSystemVirtualWANLink -filter_attribute status -filter_value enable
+Get-FGTUserLDAP -name FGT -filter_type contains
 ```
 
-Get Virtual Wan Link with mode equal standalone
+Get LDAP servers contains with *FGT*
 
 ### EXAMPLE 3
 ```
-Get-FGTSystemVirtualWANLink -filter_attribute load-balance-mode -filter_value ip -filter_type contains
+Get-FGTUserLDAP -skip
 ```
 
-Get Virtual Wan Link with load-balance-modecontains ip
+Display all LDAP servers (but only relevant attributes)
 
 ### EXAMPLE 4
 ```
-Get-FGTSystemVirtualWANLink -skip
+Get-FGTUserLDAP -vdom vdomX
 ```
 
-Get Virtual Wan Link Settings (but only relevant attributes)
-
-### EXAMPLE 5
-```
-Get-FGTSystemVirtualWANLink -vdom vdomX
-```
-
-Get Virtual Wan Link Settings on vdomX
+Display all LDAP servers on vdomX
 
 ## PARAMETERS
+
+### -name
+{{ Fill name Description }}
+
+```yaml
+Type: String
+Parameter Sets: name
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ### -filter_attribute
 {{ Fill filter_attribute Description }}

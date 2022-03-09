@@ -5,43 +5,43 @@ online version:
 schema: 2.0.0
 ---
 
-# Add-FGTFirewallPolicyMember
+# Remove-FGTRouterStatic
 
 ## SYNOPSIS
-Add a FortiGate Policy Member
+Remove a FortiGate static route
 
 ## SYNTAX
 
 ```
-Add-FGTFirewallPolicyMember [-policy] <PSObject> [-srcaddr <String[]>] [-dstaddr <String[]>] [-vdom <String[]>]
- [-connection <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Remove-FGTRouterStatic [-route] <PSObject> [-vdom <String[]>] [-connection <PSObject>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Add a FortiGate Policy Member (source or destination address)
+Remove a static route on the FortiGate
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-$MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
-PS C:\>$MyFGTPolicy | Add-FGTFirewallPolicyMember -srcaddr MyAddress1
+$MyFGTRoute = Get-FGTRouterStatic -filter_attribute gateway -filter_value 192.0.2.1
+PS C:\>$MyFGTRoute | Remove-FGTRouterStatic
 ```
 
-Add MyAddress1 member to source of MyFGTPolicy
+Remove static route with gateway 192.0.2.1
 
 ### EXAMPLE 2
 ```
-$MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
-PS C:\>$MyFGTPolicy | Add-FGTFirewallPolicyMember -dstaddr MyAddress1, MyAddress2
+$MyFGTRoute = Get-FGTRouterStatic -filter_attribute gateway -filter_value 192.0.2.1
+PS C:\>$MyFGTRoute | Remove-FGTRouterStatic -confirm:$false
 ```
 
-Add MyAddress1 and MyAddress2 member to destination of MyFGTPolicy
+Remove static route with gateway 192.0.2.1 with no confirmation
 
 ## PARAMETERS
 
-### -policy
-{{ Fill policy Description }}
+### -route
+{{ Fill route Description }}
 
 ```yaml
 Type: PSObject
@@ -52,36 +52,6 @@ Required: True
 Position: 2
 Default value: None
 Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
-
-### -srcaddr
-{{ Fill srcaddr Description }}
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -dstaddr
-{{ Fill dstaddr Description }}
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

@@ -13,8 +13,8 @@ Add a zone
 ## SYNTAX
 
 ```
-Add-FGTSystemZone [-name] <String> [-intrazone <String>] [-interfaces <String[]>] [-vdom <String[]>]
- [-connection <PSObject>] [<CommonParameters>]
+Add-FGTSystemZone [-name] <String> [-intrazone <String>] [-interfaces <String[]>] [-description <String>]
+ [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -35,6 +35,13 @@ Add-FGTSystemZone -name myPowerFGTZone -intrazone deny -interfaces port5,port6
 ```
 
 Add a zone named myPowerFGTZone with intra-zone traffic blocked and with port5 and port6 in this zone
+
+### EXAMPLE 3
+```
+Add-FGTSystemZone -name myPowerFGTZone -intrazone deny -interfaces port6 -description "My Zone"
+```
+
+Add a zone named myPowerFGTZone with intra-zone traffic Allow and with port6 with a description (need FortiOS \>= 6.2.x for this)
 
 ## PARAMETERS
 
@@ -73,6 +80,21 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -description
+{{ Fill description Description }}
+
+```yaml
+Type: String
 Parameter Sets: (All)
 Aliases:
 
