@@ -5,43 +5,41 @@ online version:
 schema: 2.0.0
 ---
 
-# Add-FGTFirewallPolicyMember
+# Remove-FGTSystemInterface
 
 ## SYNOPSIS
-Add a FortiGate Policy Member
+Remove an interface
 
 ## SYNTAX
 
 ```
-Add-FGTFirewallPolicyMember [-policy] <PSObject> [-srcaddr <String[]>] [-dstaddr <String[]>] [-vdom <String[]>]
- [-connection <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Remove-FGTSystemInterface [-interface] <PSObject> [-vdom <String[]>] [-connection <PSObject>] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Add a FortiGate Policy Member (source or destination address)
+Remove an interface
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-$MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
-PS C:\>$MyFGTPolicy | Add-FGTFirewallPolicyMember -srcaddr MyAddress1
+Get-FGTSystemInterface -name PowerFGT | Remove-FGTSystemInterface
 ```
 
-Add MyAddress1 member to source of MyFGTPolicy
+Removes the interface PowerFGT which was retrieved with Get-FGTSystemInterface
 
 ### EXAMPLE 2
 ```
-$MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
-PS C:\>$MyFGTPolicy | Add-FGTFirewallPolicyMember -dstaddr MyAddress1, MyAddress2
+Get-FGTSystemInterface -name PowerFGT | Remove-FGTSystemInterface -Confirm:$false
 ```
 
-Add MyAddress1 and MyAddress2 member to destination of MyFGTPolicy
+Removes the interface PowerFGT and suppresses the confirmation question
 
 ## PARAMETERS
 
-### -policy
-{{ Fill policy Description }}
+### -interface
+{{ Fill interface Description }}
 
 ```yaml
 Type: PSObject
@@ -52,36 +50,6 @@ Required: True
 Position: 2
 Default value: None
 Accept pipeline input: True (ByValue)
-Accept wildcard characters: False
-```
-
-### -srcaddr
-{{ Fill srcaddr Description }}
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -dstaddr
-{{ Fill dstaddr Description }}
-
-```yaml
-Type: String[]
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

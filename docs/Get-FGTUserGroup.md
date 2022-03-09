@@ -5,67 +5,109 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-FGTSystemVirtualWANLink
+# Get-FGTUserGroup
 
 ## SYNOPSIS
-Get Virtual Wan Link (SD-WAN) Settings
+Get list of all local group
 
 ## SYNTAX
 
 ### default (Default)
 ```
-Get-FGTSystemVirtualWANLink [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>]
+Get-FGTUserGroup [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
+ [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+```
+
+### name
+```
+Get-FGTUserGroup [[-name] <String>] [-filter_attribute <String>] [-filter_type <String>]
+ [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+```
+
+### id
+```
+Get-FGTUserGroup [-id <String>] [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>]
  [-skip] [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
 ```
 
 ### filter
 ```
-Get-FGTSystemVirtualWANLink [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>]
- [-skip] [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+Get-FGTUserGroup [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
+ [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Get Virtual Wan Link Settings (status, load balance mode, members, health-check...
+Get list of all local group (name, members, type...
 )
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Get-FGTSystemVirtualWANLink
+Get-FGTUserGroup
 ```
 
-Get Virtual Wan Link Settings
+Display all local groups
 
 ### EXAMPLE 2
 ```
-Get-FGTSystemVirtualWANLink -filter_attribute status -filter_value enable
+Get-FGTUserGroup -id 23
 ```
 
-Get Virtual Wan Link with mode equal standalone
+Get local group with id 23
 
 ### EXAMPLE 3
 ```
-Get-FGTSystemVirtualWANLink -filter_attribute load-balance-mode -filter_value ip -filter_type contains
+Get-FGTUserGroup -name FGT -filter_type contains
 ```
 
-Get Virtual Wan Link with load-balance-modecontains ip
+Get local group contains with *FGT*
 
 ### EXAMPLE 4
 ```
-Get-FGTSystemVirtualWANLink -skip
+Get-FGTUserGroup -skip
 ```
 
-Get Virtual Wan Link Settings (but only relevant attributes)
+Display all local group (but only relevant attributes)
 
 ### EXAMPLE 5
 ```
-Get-FGTSystemVirtualWANLink -vdom vdomX
+Get-FGTUserGroup -vdom vdomX
 ```
 
-Get Virtual Wan Link Settings on vdomX
+Display all local group on vdomX
 
 ## PARAMETERS
+
+### -name
+{{ Fill name Description }}
+
+```yaml
+Type: String
+Parameter Sets: name
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -id
+{{ Fill id Description }}
+
+```yaml
+Type: String
+Parameter Sets: id
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ### -filter_attribute
 {{ Fill filter_attribute Description }}

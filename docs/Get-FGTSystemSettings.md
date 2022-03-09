@@ -14,14 +14,14 @@ Get list of System Settings
 
 ### default (Default)
 ```
-Get-FGTSystemSettings [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
- [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+Get-FGTSystemSettings [-name <String[]>] [-filter_attribute <String>] [-filter_type <String>]
+ [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
 ```
 
 ### filter
 ```
-Get-FGTSystemSettings [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
- [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+Get-FGTSystemSettings [-name <String[]>] [-filter_attribute <String>] [-filter_type <String>]
+ [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -38,24 +38,24 @@ Get list of all System Settings
 
 ### EXAMPLE 2
 ```
-Get-FGTSystemSettings -filter_attribute opmode -filter_value nat
-```
-
-Get System with op mode equal nat
-
-### EXAMPLE 3
-```
-Get-FGTSystemSettings -filter_attribute comments -filter_value Fortinet -filter_type contains
-```
-
-Get System with comment contains Fortinet
-
-### EXAMPLE 4
-```
 Get-FGTSystemSettings -skip
 ```
 
 Get list of all System Settings (but only relevant attributes)
+
+### EXAMPLE 3
+```
+Get-FGTSystemSettings -name "ike-port"
+```
+
+Get value of ike-port settings
+
+### EXAMPLE 4
+```
+Get-FGTSystemSettings -name "ike-port", "ike-policy-route"
+```
+
+Get value of ike-port and ike-policy-route settings
 
 ### EXAMPLE 5
 ```
@@ -65,6 +65,21 @@ Get-FGTSystemSettings -vdom vdomX
 Get list of all System Settings on vdomX
 
 ## PARAMETERS
+
+### -name
+{{ Fill name Description }}
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ### -filter_attribute
 {{ Fill filter_attribute Description }}

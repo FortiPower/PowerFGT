@@ -14,20 +14,21 @@ Get list of all VPN IPsec phase 1 (ISAKMP) settings
 
 ### default (Default)
 ```
-Get-FGTVpnIpsecPhase1Interface [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>]
- [-skip] [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+Get-FGTVpnIpsecPhase1Interface [-plaintext_password] [-filter_attribute <String>] [-filter_type <String>]
+ [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
 ```
 
 ### name
 ```
-Get-FGTVpnIpsecPhase1Interface [[-name] <String>] [-filter_attribute <String>] [-filter_type <String>]
- [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+Get-FGTVpnIpsecPhase1Interface [[-name] <String>] [-plaintext_password] [-filter_attribute <String>]
+ [-filter_type <String>] [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>]
+ [<CommonParameters>]
 ```
 
 ### filter
 ```
-Get-FGTVpnIpsecPhase1Interface [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>]
- [-skip] [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+Get-FGTVpnIpsecPhase1Interface [-plaintext_password] [-filter_attribute <String>] [-filter_type <String>]
+ [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -51,19 +52,26 @@ Get VPN IPsec Phase 1 interface named myVPNIPsecPhase1interface
 
 ### EXAMPLE 3
 ```
+Get-FGTVpnIPsecPhase1Interface -name myVPNIPsecPhase1interface -plaintext_password
+```
+
+Get VPN IPsec Phase 1 interface named myVPNIPsecPhase1interface with Plain Text Password
+
+### EXAMPLE 4
+```
 Get-FGTVpnIPsecPhase1Interface -name FGT -filter_type contains
 ```
 
 Get VPN IPsec Phase 1 interface contains with *FGT*
 
-### EXAMPLE 4
+### EXAMPLE 5
 ```
 Get-FGTVpnIPsecPhase1Interface -skip
 ```
 
 Get list of all settings of VPN IPsec Phase 1 interface (but only relevant attributes)
 
-### EXAMPLE 5
+### EXAMPLE 6
 ```
 Get-FGTVpnIPsecPhase1Interface -vdom vdomX
 ```
@@ -83,6 +91,21 @@ Aliases:
 Required: False
 Position: 2
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -plaintext_password
+{{ Fill plaintext_password Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

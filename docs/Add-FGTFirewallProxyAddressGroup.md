@@ -18,7 +18,7 @@ Add-FGTFirewallProxyAddressGroup [-type] <String> [-name] <String> [-member] <St
 ```
 
 ## DESCRIPTION
-Add a ProxyFortiGate ProxyAddress Group
+Add a FortiGate ProxyAddress Group
 
 ## EXAMPLES
 

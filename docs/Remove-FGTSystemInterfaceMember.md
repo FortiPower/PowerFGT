@@ -5,55 +5,43 @@ online version:
 schema: 2.0.0
 ---
 
-# Set-FGTSystemZone
+# Remove-FGTSystemInterfaceMember
 
 ## SYNOPSIS
-Set a zone
+Remove a FortiGate Interface Member
 
 ## SYNTAX
 
 ```
-Set-FGTSystemZone [-zone] <PSObject> [-name <String>] [-intrazone <String>] [-description <String>]
- [-interfaces <String[]>] [-vdom <String[]>] [-connection <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Remove-FGTSystemInterfaceMember [-interface] <PSObject> [-allowaccess <String[]>] [-vdom <String[]>]
+ [-connection <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Configure a zone (name, intrazone, member...)
+Remove a FortiGate Interface Member (allowaccess)
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Get-FGTSystemZone -name myPowerFGTZone | Set-FGTSystemZone -intrazone deny
+$MyFGTInterface = Get-FGTSystemInterface -name PowerFGT
+PS C:\>$MyFGTInterface | Remove-FGTSystemInterfaceMember -allowaccess ssh
 ```
 
-Set the zone named myPowerFGTZone with intra-zone traffic deny
+Remove ssh to allowaccess for MyFGTInterface
 
 ### EXAMPLE 2
 ```
-Get-FGTSystemZone -name myPowerFGTZone | Set-FGTSystemZone -interfaces port5, port6
+$MyFGTInterface = Get-FGTSystemInterface -name PowerFGT
+PS C:\>$MyFGTInterface | Remove-FGTSystemInterfaceMember -allowaccess ssh, https
 ```
 
-Set the zone named myPowerFGTZone with port 5 and port 6 bound to it
-
-### EXAMPLE 3
-```
-Get-FGTSystemZone -name myPowerFGTZone | Set-FGTSystemZone -name new_myPowerFGTZone
-```
-
-Set the zone named myPowerFGTZone with new name new_myPowerFGTZone
-
-### EXAMPLE 4
-```
-Get-FGTSystemZone -name myPowerFGTZone | Set-FGTSystemZone -name new_myPowerFGTZone
-```
-
-Set the zone named myPowerFGTZone with new name new_myPowerFGTZone
+Remove ssh and https to allowaccess for MyFGTInterface
 
 ## PARAMETERS
 
-### -zone
-{{ Fill zone Description }}
+### -interface
+{{ Fill interface Description }}
 
 ```yaml
 Type: PSObject
@@ -67,53 +55,8 @@ Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
-### -name
-{{ Fill name Description }}
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -intrazone
-{{ Fill intrazone Description }}
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -description
-{{ Fill description Description }}
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -interfaces
-{{ Fill interfaces Description }}
+### -allowaccess
+{{ Fill allowaccess Description }}
 
 ```yaml
 Type: String[]

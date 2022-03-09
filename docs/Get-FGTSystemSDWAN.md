@@ -5,65 +5,65 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-FGTSystemVirtualWANLink
+# Get-FGTSystemSDWAN
 
 ## SYNOPSIS
-Get Virtual Wan Link (SD-WAN) Settings
+Get SD-WAN Settings
 
 ## SYNTAX
 
 ### default (Default)
 ```
-Get-FGTSystemVirtualWANLink [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>]
- [-skip] [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+Get-FGTSystemSDWAN [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
+ [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
 ```
 
 ### filter
 ```
-Get-FGTSystemVirtualWANLink [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>]
- [-skip] [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+Get-FGTSystemSDWAN [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
+ [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Get Virtual Wan Link Settings (status, load balance mode, members, health-check...
+Get SD-WAN (status, load balance mode, members, health-check...
 )
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Get-FGTSystemVirtualWANLink
+Get-FGTSystemSDWAN
 ```
 
-Get Virtual Wan Link Settings
+Get SD-WAN  Settings
 
 ### EXAMPLE 2
 ```
-Get-FGTSystemVirtualWANLink -filter_attribute status -filter_value enable
+Get-FGTSystemSDWAN -filter_attribute status -filter_value enable
 ```
 
-Get Virtual Wan Link with mode equal standalone
+Get SD-WAN with mode equal standalone
 
 ### EXAMPLE 3
 ```
-Get-FGTSystemVirtualWANLink -filter_attribute load-balance-mode -filter_value ip -filter_type contains
+Get-FGTSystemSDWAN -filter_attribute load-balance-mode -filter_value ip -filter_type contains
 ```
 
-Get Virtual Wan Link with load-balance-modecontains ip
+Get SD-WAN with load-balance-modecontains ip
 
 ### EXAMPLE 4
 ```
-Get-FGTSystemVirtualWANLink -skip
+Get-FGTSystemSDWAN -skip
 ```
 
-Get Virtual Wan Link Settings (but only relevant attributes)
+Get SD-WAN Settings (but only relevant attributes)
 
 ### EXAMPLE 5
 ```
-Get-FGTSystemVirtualWANLink -vdom vdomX
+Get-FGTSystemSDWAN -vdom vdomX
 ```
 
-Get Virtual Wan Link Settings on vdomX
+Get SD-WAN Settings on vdomX
 
 ## PARAMETERS
 
