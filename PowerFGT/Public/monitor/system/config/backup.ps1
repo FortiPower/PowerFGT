@@ -1,5 +1,5 @@
 ﻿#
-# Copyright 2020, Alexis La Goutte <alexis dot lagoutte at gmail dot com>
+# Copyright 2022, Alexis La Goutte <alexis dot lagoutte at gmail dot com>
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -52,7 +52,7 @@ function Get-FGTMonitorSystemConfigBackup {
 
         $uri = 'api/v2/monitor/system/config/backup?scope=global'
         $response = Invoke-FGTRestMethod -uri $uri -method 'GET' -connection $connection @invokeParams
-        $response.results
+        $response
     }
 
     End {

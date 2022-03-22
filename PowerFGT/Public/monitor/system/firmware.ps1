@@ -37,7 +37,7 @@ function Get-FGTMonitorSystemFirmware {
 
         $uri = 'api/v2/monitor/system/firmware'
         if ($upgrade_paths) {
-            $uri += "/upgrade_paths"
+            $uri += "/upgrade-paths"
         }
         $response = Invoke-FGTRestMethod -uri $uri -method 'GET' -connection $connection
         $response.results
