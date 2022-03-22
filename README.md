@@ -2,25 +2,50 @@
 
 # PowerFGT
 
+<p align="center">
+    <a href="https://www.powershellgallery.com/packages/PowerFGT/" alt="PowerShell Gallery Version">
+        <img src="https://img.shields.io/powershellgallery/v/PowerFGT.svg" /></a>
+    <a href="https://www.powershellgallery.com/packages/PowerFGT/" alt="PS Gallery Downloads">
+        <img src="https://img.shields.io/powershellgallery/dt/PowerFGT.svg" /></a>
+    <!--
+    <a href="https://www.powershellgallery.com/packages/PowerFGT/" alt="PS Platform">
+        <img src="https://img.shields.io/powershellgallery/p/PowerFGT.svg" /></a>
+    -->
+</p>
+<p align="center">
+    <a href="https://github.com/FortiPower/PowerFGT/graphs/commit-activity" alt="GitHub Last Commit">
+        <img src="https://img.shields.io/github/last-commit/FortiPower/PowerFGT/master.svg" /></a>
+    <a href="https://raw.githubusercontent.com/FortiPower/PowerFGT/master/LICENSE" alt="GitHub License">
+        <img src="https://img.shields.io/github/license/FortiPower/PowerFGT.svg" /></a>
+    <a href="https://github.com/FortiPower/PowerFGT/graphs/contributors" alt="GitHub Contributors">
+        <img src="https://img.shields.io/github/contributors/FortiPower/PowerFGT.svg"/></a>
+</p>
+
 This is a Powershell module for configure a FortiGate (Fortinet) Firewall.
 
-With this module (version 0.5.0) you can manage:
+With this module (version 0.6.0) you can manage:
 
 - [Address](#address) (Add/Get/Copy/Set/Remove object type ipmask/subnet, FQDN, iprange)
 - [AddressGroup](#address-group) (Add/Get/Copy/Set/Remove and Add/Remove Member)
 - DNS (Get)
 - HA (Get)
-- Interface (Get)
+- [Interface](#interface) (Add/Get/Set/Remove and Add/remove Member)
 - IP Pool (Get)
-- Local User (Get)
+- [Log Traffic](#log-traffic) (Get)
+- [Monitor](#monitor) (Get)
 - [Policy](#policy) (Add/Get/Remove)
 - [Proxy Address/Address Group/ Policy](#proxy) (Add/Get/Set/Remove)
 - RoutePolicy (Get)
 - Service (Get)
 - Service Group (Get)
-- Static Route (Get)
-- System Global (Get)
-- System Settings (Get)
+- [Static Route](#static-route) (Add/Get/Remove)
+- System Admin (Get)
+- [System Global](#settings) (Get/Set)
+- [System Settings](#settings) (Get/Set)
+- User LDAP (Get)
+- User Local (Get)
+- User Group (Get)
+- User RADIUS (Get)
 - [VDOM](#vdom) (Get)
 - [Virtual IP](#virtual-ip) (Add/Get/Remove object type static-nat)
 - [Virtual IP Group](#virtual-ip-group) (Add/Get/Copy/Set/Remove and Add/Remove Member)
@@ -36,9 +61,8 @@ There is some extra feature
 More functionality will be added later.
 
 Connection can use HTTPS (default) or HTTP  
-Tested with FortiGate (using 5.6.x and 6.x firmware but it will be also work with 5.4.x)  
+Tested with FortiGate (using 5.6.x, 6.x and 7.x firmware but it will be also work with 5.4.x)  
 Add (Experimental) support of [VDOM](#vdom) is available using -vdom parameter for each cmdlet  
-Don't use support to connect using API Token from 5.6.x (and later)
 
 # Usage
 
@@ -763,6 +787,333 @@ or delete it `Remove-SystemZone`.
     [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): Y
 ```
 
+### Static Route
+
+You can create a new Static Route `Add-FGTRouterStatic`, retrieve its information `Get-FGTRouterStatic`,
+or delete it `Remove-FGTRouterStatic`.
+
+```powershell
+# Get information about ALL Static Route (using Format Table)
+    Get-FGTRouterStatic | Format-Table
+    seq-num q_origin_key status dst                        src             gateway        distance weight priority device
+    ------- ------------ ------ ---                        ---             -------        -------- ------ -------- ------
+          2            2 enable 192.0.2.0 255.255.255.0    0.0.0.0 0.0.0.0 198.51.100.254       10      0        0 port1
+          3            3 enable 198.51.100.0 255.255.255.0 0.0.0.0 0.0.0.0 192.0.2.254          10      0        0 port2
+
+# Add Static Route to 192.0.2.0/24 via 198.51.100.254 from port1
+    Add-FGTRouterStatic -dst 192.0.2.0/24 -gateway 198.51.100.254 -device port1
+    seq-num                 : 2
+    q_origin_key            : 2
+    status                  : enable
+    dst                     : 192.0.2.0 255.255.255.0
+    src                     : 0.0.0.0 0.0.0.0
+    gateway                 : 198.51.100.254
+    distance                : 10
+    weight                  : 0
+    priority                : 0
+    device                  : port1
+    comment                 :
+    blackhole               : disable
+    dynamic-gateway         : disable
+    sdwan-zone              : {}
+    dstaddr                 :
+    internet-service        : 0
+    internet-service-custom :
+    link-monitor-exempt     : disable
+    vrf                     : 0
+    bfd                     : disable
+    [...]
+
+# Add Static Route to 198.51.100.0/24 via 192.0.2.254 from port2
+    Add-FGTRouterStatic -dst 198.51.100.0/24 -gateway 192.0.2.254 -device port2
+    seq-num                 : 3
+    q_origin_key            : 3
+    status                  : enable
+    dst                     : 198.51.100.0 255.255.255.0
+    src                     : 0.0.0.0 0.0.0.0
+    gateway                 : 192.0.2.254
+    distance                : 10
+    weight                  : 0
+    priority                : 0
+    device                  : port2
+    comment                 :
+    blackhole               : disable
+    dynamic-gateway         : disable
+    sdwan-zone              : {}
+    dstaddr                 :
+    internet-service        : 0
+    internet-service-custom :
+    link-monitor-exempt     : disable
+    vrf                     : 0
+    bfd                     : disable
+    [...]
+
+# Remove a Static Route
+    Get-FGTRouterStatic -filter_attribute seq-num -filter_type equal -filter_value 2 | Remove-FGTRouterStatic
+
+    Confirm
+    Are you sure you want to perform this action?
+    Performing the operation "Remove Router Static" on target "2".
+    [Y] Yes  [N] No  [?] Help (default is "N"): y
+```
+
+### Interface
+
+You can create a new interface (Vlan ...) `Add-FGTSystemInterface`, retrieve its information `Get-FGTSystemInterface`,
+modify its properties `Set-FGTSystemInterface` or delete it `Remove-FGTSystemInterface`.
+
+```powershell
+
+# Get information about ALL Interface (using Format Table)
+    Get-FGTSystemInterface | Format-Table
+
+    name      q_origin_key vdom vrf cli-conn-status fortilink switch-controller-source-ip mode   client-options distance
+    ----      ------------ ---- --- --------------- --------- --------------------------- ----   -------------- --------
+    fortilink fortilink    root   0               0 enable    outbound                    static {}                    5
+    l2t.root  l2t.root     root   0               0 disable   outbound                    static {}                    5
+    naf.root  naf.root     root   0               0 disable   outbound                    static {}                    5
+    port1     port1        root   0               0 disable   outbound                    static {}                    5
+    port2     port2        root   0               0 disable   outbound                    static {}                    5
+    port3     port3        root   0               0 disable   outbound                    static {}                    5
+    port4     port4        root   0               0 disable   outbound                    static {}                    5
+    port5     port5        root   0               0 disable   outbound                    static {}                    5
+    port6     port6        root   0               0 disable   outbound                    static {}                    5
+    port7     port7        root   0               0 disable   outbound                    static {}                    5
+    port8     port8        root   0               0 disable   outbound                    static {}                    5
+    port9     port9        root   0               0 disable   outbound                    static {}                    5
+    port10    port10       root   0               0 disable   outbound                    static {}                    5
+    ssl.root  ssl.root     root   0               0 disable   outbound                    static {}                    5
+
+# Create an interface (type vlan)
+    Add-FGTSystemInterface -vlan_id 23 -interface port9 -name "PowerFGT_vlan23"
+
+    name                                       : PowerFGT_vlan23
+    q_origin_key                               : PowerFGT_vlan23
+    vdom                                       : root
+    vrf                                        : 0
+    cli-conn-status                            : 0
+    fortilink                                  : disable
+    switch-controller-source-ip                : outbound
+    mode                                       : static
+    [...]
+
+# Get information an Interface (name) and display only some field (using Format-Table)
+    Get-FGTSystemInterface -name PowerFGT_vlan23 | select name, vlanid, ip
+
+    name            vlanid ip
+    ----            ------ --
+    PowerFGT_vlan23     23 0.0.0.0 0.0.0.0
+
+# Modify an interface (description, ip ...)
+    Get-FGTSystemInterface -name PowerFGT_vlan23 | Set-FGTSystemInterface -alias ALIAS_PowerFGT -role lan -mode static -ip 192.0.2.1 -netmask 255.255.255.0 -allowaccess ping,https
+
+    name                                       : PowerFGT_vlan23
+    q_origin_key                               : PowerFGT_vlan23
+    vdom                                       : root
+    [...]
+    ip                                         : 192.0.2.1 255.255.255.0
+    allowaccess                                : ping https
+    [...]
+    interface                                  : port9
+    external                                   : disable
+    vlan-protocol                              : 8021q
+    vlanid                                     : 23
+    [...]
+    description                                :
+    alias                                      : ALIAS_PowerFGT
+    [...]
+    role                                       : lan
+    [...]
+
+
+# Add (append) allowaccess with SSH
+    Get-FGTSystemInterface -name PowerFGT_vlan23 | Add-FGTSystemInterfaceMember -allowaccess ssh | select name, allowaccess
+
+    name            allowaccess
+    ----            -----------
+    PowerFGT_vlan23 ping https ssh
+
+# Remove allowaccess (https)
+    Get-FGTSystemInterface -name PowerFGT_vlan23 | Remove-FGTSystemInterfaceMember -allowaccess https | select name, allowaccess
+
+    name            allowaccess
+    ----            -----------
+    PowerFGT_vlan23 ping ssh
+
+# Remove an interface
+    Get-FGTSystemInterface -name PowerFGT_vlan23 | Remove-FGTSystemInterface
+
+    Confirm
+    Are you sure you want to perform this action?
+    Performing the operation "Remove interface" on target "PowerFGT_vlan23".
+    [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): Y
+```
+
+### Settings
+
+You can change System Settings and System Global (settings) using `Set-FGTSystemSettings` and `Set-FGTSystemGlobal`
+
+```powershell
+
+# Get ALL information about System Global
+    Get-FGTSystemGlobal
+
+    language                                 : english
+    gui-ipv6                                 : disable
+    gui-replacement-message-groups           : disable
+    gui-local-out                            : disable
+    gui-certificates                         : enable
+    gui-custom-language                      : disable
+    gui-wireless-opensecurity                : disable
+    gui-display-hostname                     : disable
+    gui-fortigate-cloud-sandbox              : disable
+    gui-firmware-upgrade-warning             : enable
+    gui-allow-default-hostname               : disable
+    gui-forticare-registration-setup-warning : enable
+    gui-cdn-usage                            : enable
+    admin-https-ssl-versions                 : tlsv1-2
+    [...]
+
+# Get only admintimeout and admin-sport of System Global
+
+    Get-FGTSystemGlobal -Name admintimeout, admin-sport
+
+    admintimeout admin-sport
+    ------------ -----------
+            5         443
+
+# Configure admintimeout and admin-sport of System Global
+
+    Set-FGTSystemGlobal -admintimeout 30 -admin_sport 8443
+
+    [...]
+    admintimeout                             : 30
+    [...]
+    admin-sport                              : 8443
+    [...]
+
+# for configure a setting not yet available on parameter of Set-FGTSystemGlobal, you can use
+
+    $data = @{ "two-factor-sms-expiry" = 120 }
+    Set-FGTSystemGlobal -data $data
+
+    [...]
+    two-factor-sms-expiry                    : 120
+    [...]
+
+# Get ALL information about System Settings
+    Get-FGTSystemSettings
+
+    comments                           : 
+    opmode                             : nat
+    ngfw-mode                          : profile-based
+    http-external-dest                 : fortiweb
+    firewall-session-dirty             : check-all
+    manageip                           :
+    gateway                            : 0.0.0.0
+    ip                                 : 0.0.0.0 0.0.0.0
+    manageip6                          : ::/0
+    gateway6                           : ::
+    ip6                                : ::/0
+    device                             :
+    bfd                                : disable
+    [...]
+
+# Get only gui-allow-unnamed-policy and opmode of System Settings
+
+    Get-FGTSystemSettings -Name gui-allow-unnamed-policy, opmode
+
+    gui-allow-unnamed-policy opmode
+    ------------------------ ------
+    disable                  nat
+
+
+# Configure gui-allow-unnamed-policy of System Settings
+
+    Set-FGTSystemSettings -gui_allow_unnamed_policy
+
+    [...]
+    gui-allow-unnamed-policy           : enable
+    [...]
+
+# for configure a setting not yet available on parameter of Set-FGTSystemSettings, you can use
+
+    $data = @{ "location-id" = "192.0.2.1" }
+    Set-FGTSystemSettings -data $data
+
+    [...]
+    location-id                        : 192.0.2.1
+    [...]
+
+```
+
+### Monitor
+
+It is possible to `monitor` FortiGate
+
+* `Get-FGTMonitorLicenseStatus` Get current license & registration status.
+* `Get-FGTMonitorSystemConfigBackup` Backup system config
+* `Get-FGTMonitorSystemFirmware` Retrieve a list of firmware images available to use for upgrade on this device
+* `Get-FGTMonitorVpnIPsec` Return active IPsec VPNs
+* `Get-FGTMonitorVpnSsl` Retrieve a list of all SSL-VPN sessions and sub-sessions and Return statistics about the SSL-VPN
+
+to get API uri, you can use `Invoke-FGTRestMethod api/v2/monitor/?action=schema` for get list of uri for monitor
+
+### Log Traffic
+
+It is possible to get `log traffic` of FortiGate.
+
+You can get the following type log
+* disk
+* fortianalyzer
+* forticloud
+* memory
+
+and subtype
+* forward
+* local
+* multicast
+* sniffer
+* fortiview
+* threat
+
+by default, it is only first 20 rows availables (use -rows parameter )’
+/!\ you can get issue if you ask too many rows on small appliance /!\
+
+can also filter by
+* Source IP (-srcip)
+* Source Interface (-srcintf)
+* Destination IP (-dstip)
+* Destination Interface (-dstintf)
+* Destination Port (-dstport)
+* Action (-action)
+* Policy ID (-policyid)
+* Policy UUID (-poluuid)
+
+for Example
+
+```powershell
+    #Get Log Traffic from memory on subtype forward and 10 000 rows
+
+    Get-FGTLogTraffic -type memory -subtype forward -rows 10000 | Format-Table
+    date       time               eventtime tz    logid      type    subtype level   vd   srcip
+    ----       ----               --------- --    -----      ----    ------- -----   --   -----
+    2022-03-06 22:52:28 1646635948633219391 -0800 0000000013 traffic forward notice  root 103.39.247.123
+    2022-03-06 22:52:28 1646635948603208109 -0800 0000000013 traffic forward notice  root 103.39.247.123
+    2022-03-06 22:52:28 1646635948593207059 -0800 0000000013 traffic forward notice  root 103.39.247.123
+    2022-03-06 22:52:28 1646635948483209427 -0800 0000000022 traffic forward notice  root 10.88.130.131
+    2022-03-06 22:52:28 1646635948483206444 -0800 0000000022 traffic forward notice  root 10.88.102.99
+    2022-03-06 22:52:28 1646635948443205594 -0800 0000000022 traffic forward notice  root 10.88.110.122
+    2022-03-06 22:52:28 1646635948443208223 -0800 0000000022 traffic forward notice  root 10.88.2.21
+    2022-03-06 22:52:28 1646635948333207985 -0800 0000000013 traffic forward notice  root 216.251.148.178
+    2022-03-06 22:52:28 1646635948283206523 -0800 0000000022 traffic forward notice  root 10.88.130.131
+    2022-03-06 22:52:27 1646635948153206637 -0800 0001000014 traffic local   notice  root 127.0.0.1
+    2022-03-06 22:52:27 1646635948083207799 -0800 0001000014 traffic local   notice  root 127.0.0.1
+    2022-03-06 22:52:27 1646635948083211212 -0800 0001000014 traffic local   notice  root 127.0.0.1
+    2022-03-06 22:52:27 1646635948163208549 -0800 0000000022 traffic forward notice  root 10.88.110.122
+    [...]
+
+```
 ### Invoke API
 for example to get Fortigate System Global Info
 
@@ -1000,14 +1351,19 @@ Add-FGTFirewallProxyPolicy
 Add-FGTFirewallVip
 Add-FGTFirewallVipGroup
 Add-FGTFirewallVipGroupMember
+Add-FGTRouterStatic
+Add-FGTSystemInterface
+Add-FGTSystemInterfaceMember
 Add-FGTSystemZone
 Add-FGTSystemZoneMember
 Confirm-FGTAddress
 Confirm-FGTAddressGroup
 Confirm-FGTFirewallPolicy
 Confirm-FGTFirewallProxyPolicy
+Confirm-FGTInterface
 Confirm-FGTProxyAddress
 Confirm-FGTProxyAddressGroup
+Confirm-FGTRouterStatic
 Confirm-FGTVip
 Confirm-FGTVipGroup
 Confirm-FGTZone
@@ -1030,8 +1386,15 @@ Get-FGTFirewallServiceCustom
 Get-FGTFirewallServiceGroup
 Get-FGTFirewallVip
 Get-FGTFirewallVipGroup
+Get-FGTLogTraffic
+Get-FGTMonitorLicenseStatus
+Get-FGTMonitorSystemConfigBackup
+Get-FGTMonitorSystemFirmware
+Get-FGTMonitorVpnIPsec
+Get-FGTMonitorVpnSsl
 Get-FGTRouterPolicy
 Get-FGTRouterStatic
+Get-FGTSystemAdmin
 Get-FGTSystemDns
 Get-FGTSystemGlobal
 Get-FGTSystemHA
@@ -1041,10 +1404,14 @@ Get-FGTSystemSettings
 Get-FGTSystemVdom
 Get-FGTSystemVirtualWANLink
 Get-FGTSystemZone
+Get-FGTUserGroup
+Get-FGTUserLDAP
 Get-FGTUserLocal
+Get-FGTUserRADIUS
 Get-FGTVpnIpsecPhase1Interface
 Get-FGTVpnIpsecPhase2Interface
 Invoke-FGTRestMethod
+Move-FGTFirewallPolicy
 Remove-FGTFirewallAddress
 Remove-FGTFirewallAddressGroup
 Remove-FGTFirewallAddressGroupMember
@@ -1057,6 +1424,9 @@ Remove-FGTFirewallProxyPolicy
 Remove-FGTFirewallVip
 Remove-FGTFirewallVipGroup
 Remove-FGTFirewallVipGroupMember
+Remove-FGTRouterStatic
+Remove-FGTSystemInterface
+Remove-FGTSystemInterfaceMember
 Remove-FGTSystemZone
 Remove-FGTSystemZoneMember
 Set-FGTCipherSSL
@@ -1065,6 +1435,9 @@ Set-FGTFirewallAddress
 Set-FGTFirewallAddressGroup
 Set-FGTFirewallProxyAddressGroup
 Set-FGTFirewallVipGroup
+Set-FGTSystemGlobal
+Set-FGTSystemInterface
+Set-FGTSystemSettings
 Set-FGTSystemZone
 Set-FGTUntrustedSSL
 Show-FGTException
@@ -1081,9 +1454,12 @@ Show-FGTException
 - Arthur Heijnen
 - Benjamin Perrier
 - Brett Pound
+- Dave Hope
 - Cédric Moreau
 - Evan Chisholm
 - Jelmer Jaarsma
+- Kevin Shu
+- Sylvain Gomez
 
 Sort by name (*git shortlog -s*)
 
@@ -1094,4 +1470,4 @@ Sort by name (*git shortlog -s*)
 
 # License
 
-Copyright 2019 Alexis La Goutte and the community.
+Copyright 2019-2022 Alexis La Goutte and the community.

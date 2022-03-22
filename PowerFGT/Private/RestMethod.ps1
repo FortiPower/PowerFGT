@@ -149,6 +149,9 @@ function Invoke-FGTRestMethod {
             $fullurl += "&filter=$filter"
         }
 
+        #Display (Full)url when verbose (no longer available with PS 7.2.x...)
+        Write-Verbose $fullurl
+
         try {
             if ($body) {
 
@@ -156,7 +159,7 @@ function Invoke-FGTRestMethod {
                 $jbody = ConvertTo-Json $body -Depth 10
                 Write-Verbose -message ($jbody)
 
-                $response = Invoke-RestMethod $fullurl -Method $method -body ($jbody) -Headers $headers -WebSession $sessionvariable @invokeParams
+                $response = Invoke-RestMethod $fullurl -Method $method -body (ConvertTo-Json $body -Depth 10 -Compress) -Headers $headers -WebSession $sessionvariable @invokeParams
             }
             else {
                 $response = Invoke-RestMethod $fullurl -Method $method -Headers $headers -WebSession $sessionvariable @invokeParams
@@ -167,7 +170,15 @@ function Invoke-FGTRestMethod {
             Show-FGTException $_
             throw "Unable to use FortiGate API"
         }
-        $response
+
+        #Fix encoding with PS 5...
+        if (("Desktop" -eq $PSVersionTable.PsEdition) -or ($null -eq $PSVersionTable.PsEdition)) {
+            $encoding = [System.Text.Encoding]::GetEncoding('ISO-8859-1')
+            (([System.Text.Encoding]::UTF8).GetString($encoding.GetBytes(($response | ConvertTo-json -Depth 10 -Compress)))) | ConvertFrom-Json
+        }
+        else {
+            $response
+        }
 
     }
 

@@ -396,7 +396,7 @@ function Set-FGTSystemSettings {
         }
 
         if ($PSCmdlet.ShouldProcess("System", 'Configure Settings')) {
-            Invoke-FGTRestMethod -method "PUT" -body $_ss -uri $uri -connection $connection @invokeParams
+            Invoke-FGTRestMethod -method "PUT" -body $_ss -uri $uri -connection $connection @invokeParams | Out-Null
         }
 
         Get-FGTSystemSettings -connection $connection @invokeParams

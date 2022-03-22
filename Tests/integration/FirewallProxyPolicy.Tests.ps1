@@ -323,7 +323,7 @@ Describe "Add Firewall Proxy Policy" {
             $policy.comments | Should -BeNullOrEmpty
         }
 
-        #Disabled: Only service webproxy actually and no yet cmdlet for Add/Remove Proxt Service
+        #Disabled: Only service webproxy actually and no yet cmdlet for Add/Remove Proxy Service
         It "Add Proxy Policy (with 1 service : HTTP)" -skip:$true {
             Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -service HTTP
             $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
@@ -342,7 +342,7 @@ Describe "Add Firewall Proxy Policy" {
             $policy.comments | Should -BeNullOrEmpty
         }
 
-        #Disabled: Only service webproxy actually and no yet cmdlet for Add/Remove Proxt Service
+        #Disabled: Only service webproxy actually and no yet cmdlet for Add/Remove Proxy Service
         It "Add Proxy Policy (with 2 services : HTTP, HTTPS)" -skip:$true {
             $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -service HTTP, HTTPS
             $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
@@ -657,7 +657,7 @@ Describe "Add Firewall Proxy Policy" {
             $policy.comments | Should -BeNullOrEmpty
         }
 
-        #Disabled: Only service webproxy actually and no yet cmdlet for Add/Remove Proxt Service
+        #Disabled: Only service webproxy actually and no yet cmdlet for Add/Remove Proxy Service
         It "Add Proxy Policy (with 1 service : HTTP)" -skip:$true {
             Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port2 -srcaddr all -dstaddr all -service HTTP
             $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
@@ -675,7 +675,7 @@ Describe "Add Firewall Proxy Policy" {
             $policy.comments | Should -BeNullOrEmpty
         }
 
-        #Disabled: Only service webproxy actually and no yet cmdlet for Add/Remove Proxt Service
+        #Disabled: Only service webproxy actually and no yet cmdlet for Add/Remove Proxy Service
         It "Add Proxy Policy (with 2 services : HTTP, HTTPS)" -skip:$true {
             $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port2 -srcaddr all -dstaddr all -service HTTP, HTTPS
             $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid

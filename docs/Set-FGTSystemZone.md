@@ -13,8 +13,8 @@ Set a zone
 ## SYNTAX
 
 ```
-Set-FGTSystemZone [-zone] <PSObject> [-name <String>] [-intrazone <String>] [-interfaces <String[]>]
- [-vdom <String[]>] [-connection <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Set-FGTSystemZone [-zone] <PSObject> [-name <String>] [-intrazone <String>] [-description <String>]
+ [-interfaces <String[]>] [-vdom <String[]>] [-connection <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -37,6 +37,13 @@ Get-FGTSystemZone -name myPowerFGTZone | Set-FGTSystemZone -interfaces port5, po
 Set the zone named myPowerFGTZone with port 5 and port 6 bound to it
 
 ### EXAMPLE 3
+```
+Get-FGTSystemZone -name myPowerFGTZone | Set-FGTSystemZone -name new_myPowerFGTZone
+```
+
+Set the zone named myPowerFGTZone with new name new_myPowerFGTZone
+
+### EXAMPLE 4
 ```
 Get-FGTSystemZone -name myPowerFGTZone | Set-FGTSystemZone -name new_myPowerFGTZone
 ```
@@ -77,6 +84,21 @@ Accept wildcard characters: False
 
 ### -intrazone
 {{ Fill intrazone Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -description
+{{ Fill description Description }}
 
 ```yaml
 Type: String

@@ -161,7 +161,7 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Firewall Virtual IP (VIP)" {
             { Get-FGTFirewallVip -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get log Traffic" {
+        It "Use Multi connection for call Get Log Traffic" {
             { Get-FGTLogTraffic -type memory -subtype local -connection $fgt } | Should -Not -Throw
         }
         It "Use Multi connection for call Get Router Policy" {
@@ -169,6 +169,9 @@ Describe "Connect to a FortiGate (using multi connection)" {
         }
         It "Use Multi connection for call Get Router Static" {
             { Get-FGTRouterStatic -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get System Admin(istrator)" {
+            { Get-FGTSystemAdmin -connection $fgt } | Should -Not -Throw
         }
         It "Use Multi connection for call Get System DNS" {
             { Get-FGTSystemDns -connection $fgt } | Should -Not -Throw
@@ -197,14 +200,38 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get System Zone " {
             { Get-FGTSystemZone -connection $fgt } | Should -Not -Throw
         }
+        It "Use Multi connection for call Get User Group" {
+            { Get-FGTUserGroup -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get User LDAP" {
+            { Get-FGTUserLDAP -connection $fgt } | Should -Not -Throw
+        }
         It "Use Multi connection for call Get User Local" {
             { Get-FGTUserLocal -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get User RADIUS" {
+            { Get-FGTUserRADIUS -connection $fgt } | Should -Not -Throw
         }
         It "Use Multi connection for call Get VPN IPsec Phase 1 Interface" {
             { Get-FGTVpnIpsecPhase1Interface -connection $fgt } | Should -Not -Throw
         }
         It "Use Multi connection for call Get VPN IPsec Phase 2 Interface" {
             { Get-FGTVpnIpsecPhase2Interface -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get Monitor System Config Backup" {
+            { Get-FGTMonitorSystemConfigBackup -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get Monitor System Firmware" {
+            { Get-FGTMonitorSystemFirmware -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get Monitor License Status" {
+            { Get-FGTMonitorLicenseStatus -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get Monitor VPN SSL" {
+            { Get-FGTMonitorVpnSsl -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get Monitor VPN IPsec" {
+            { Get-FGTMonitorVpnIPsec -connection $fgt } | Should -Not -Throw
         }
     }
 

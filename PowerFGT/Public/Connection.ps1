@@ -74,6 +74,7 @@ function Connect-FGT {
       Connect to a FortiGate with IP 192.0.2.1 and change the password
   #>
     [CmdletBinding(DefaultParameterSetName = 'default')]
+    [OutputType([System.Collections.Hashtable])]
     Param(
         [Parameter(Mandatory = $true, position = 1)]
         [String]$Server,
@@ -274,7 +275,14 @@ function Connect-FGT {
         $connection.port = $port
         $connection.invokeParams = $invokeParams
         $connection.vdom = $vdom
-        $connection.version = [version]"$($version.results.current.major).$($version.results.current.minor).$($version.results.current.patch)"
+        if ($version.results.current.major) {
+            $connection.version = [version]"$($version.results.current.major).$($version.results.current.minor).$($version.results.current.patch)"
+        }
+        else {
+            #Old release like 5.x with no major/minor/patch
+            $connection.version = [version]"$($version.results.current.version -replace 'v','')"
+            Write-Warning "Old and no longer supported FortiOS with limited API (no filtering...)"
+        }
 
         if ( $DefaultConnection ) {
             set-variable -name DefaultFGTConnection -value $connection -scope Global
@@ -363,7 +371,7 @@ function Disconnect-FGT {
 
     Process {
 
-        $url = "/logout"
+        $url = "logout"
 
         if ($PSCmdlet.ShouldProcess($connection.server, 'Proceed with removal of FortiGate connection ?')) {
             $null = invoke-FGTRestMethod -method "POST" -uri $url -connection $connection

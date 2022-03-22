@@ -116,6 +116,41 @@ Function Confirm-FGTProxyAddressGroup {
 
 }
 
+Function Confirm-FGTRouterStatic {
+
+    Param (
+        [Parameter (Mandatory = $true)]
+        [object]$argument
+    )
+
+    if ( -not ( $argument | get-member -name seq-num -Membertype Properties)) {
+        throw "Element specified does not contain a seq-num property."
+    }
+    if ( -not ( $argument | get-member -name status -Membertype Properties)) {
+        throw "Element specified does not contain a status property."
+    }
+    if ( -not ( $argument | get-member -name dst -Membertype Properties)) {
+        throw "Element specified does not contain a dst property."
+    }
+    if ( -not ( $argument | get-member -name src -Membertype Properties)) {
+        throw "Element specified does not contain a src property."
+    }
+    if ( -not ( $argument | get-member -name gateway -Membertype Properties)) {
+        throw "Element specified does not contain a gateway property."
+    }
+    if ( -not ( $argument | get-member -name distance -Membertype Properties)) {
+        throw "Element specified does not contain a distance property."
+    }
+    if ( -not ( $argument | get-member -name priority -Membertype Properties)) {
+        throw "Element specified does not contain a priority property."
+    }
+    if ( -not ( $argument | get-member -name device -Membertype Properties)) {
+        throw "Element specified does not contain a device property."
+    }
+
+    $true
+
+}
 Function Confirm-FGTFirewallPolicy {
 
     Param (
