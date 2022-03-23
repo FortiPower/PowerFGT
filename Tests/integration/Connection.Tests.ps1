@@ -176,6 +176,9 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get System DNS" {
             { Get-FGTSystemDns -connection $fgt } | Should -Not -Throw
         }
+        It "Use Multi connection for call Get System DNS Server" {
+            { Get-FGTSystemDnsServer -connection $fgt } | Should -Not -Throw
+        }
         It "Use Multi connection for call Get System Global" {
             { Get-FGTSystemGlobal -connection $fgt } | Should -Not -Throw
         }
