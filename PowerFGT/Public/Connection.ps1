@@ -1,5 +1,5 @@
 #
-# Copyright 2018, Alexis La Goutte <alexis dot lagoutte at gmail dot com>
+# Copyright 2022, Alexis La Goutte <alexis dot lagoutte at gmail dot com>
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -112,7 +112,7 @@ function Connect-FGT {
 
     Process {
 
-        $connection = @{server = ""; session = ""; httpOnly = $false; port = ""; headers = ""; invokeParams = ""; vdom = ""; version = "" }
+        $connection = @{server = ""; session = ""; httpOnly = $false; port = ""; headers = ""; invokeParams = ""; vdom = ""; version = ""; serial = "" }
 
         $invokeParams = @{DisableKeepAlive = $false; UseBasicParsing = $true; SkipCertificateCheck = $SkipCertificateCheck; TimeoutSec = $Timeout }
 
@@ -275,6 +275,7 @@ function Connect-FGT {
         $connection.port = $port
         $connection.invokeParams = $invokeParams
         $connection.vdom = $vdom
+        $connection.serial = $version.serial
         if ($version.results.current.major) {
             $connection.version = [version]"$($version.results.current.major).$($version.results.current.minor).$($version.results.current.patch)"
         }
