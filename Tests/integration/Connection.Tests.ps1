@@ -16,6 +16,7 @@ Describe  "Connect to a FortiGate (using HTTP)" {
         $DefaultFGTConnection.session | Should -Not -BeNullOrEmpty
         $DefaultFGTConnection.headers | Should -Not -BeNullOrEmpty
         $DefaultFGTConnection.version | Should -Not -BeNullOrEmpty
+        $DefaultFGTConnection.serial | Should -Not -BeNullOrEmpty
     }
     It "Disconnect to a FortiGate (using HTTP) and check global variable" {
         Disconnect-FGT -confirm:$false
@@ -35,6 +36,7 @@ Describe  "Connect to a FortiGate (using HTTP)" {
         $DefaultFGTConnection.session | Should -BeNullOrEmpty
         $DefaultFGTConnection.headers | Should -Not -BeNullOrEmpty
         $DefaultFGTConnection.version | Should -Not -BeNullOrEmpty
+        $DefaultFGTConnection.serial | Should -Not -BeNullOrEmpty
     }
 }
 
@@ -49,6 +51,7 @@ Describe "Connect to a fortigate (using HTTPS)" {
         $DefaultFGTConnection.session | Should -Not -BeNullOrEmpty
         $DefaultFGTConnection.headers | Should -Not -BeNullOrEmpty
         $DefaultFGTConnection.version | Should -Not -BeNullOrEmpty
+        $DefaultFGTConnection.serial | Should -Not -BeNullOrEmpty
     }
     It "Disconnect to a FortiGate (using HTTPS) and check global variable" -Skip:($httpOnly) {
         Disconnect-FGT -confirm:$false
@@ -74,6 +77,7 @@ Describe "Connect to a fortigate (using HTTPS)" {
         $DefaultFGTConnection.session | Should -BeNullOrEmpty
         $DefaultFGTConnection.headers | Should -Not -BeNullOrEmpty
         $DefaultFGTConnection.version | Should -Not -BeNullOrEmpty
+        $DefaultFGTConnection.serial | Should -Not -BeNullOrEmpty
     }
 }
 
@@ -97,6 +101,7 @@ Describe "Connect to a FortiGate (with post-login-banner enable)" {
         $fgt.session | Should -Not -BeNullOrEmpty
         $fgt.headers | Should -Not -BeNullOrEmpty
         $fgt.version | Should -Not -BeNullOrEmpty
+        $fgt.serial | Should -Not -BeNullOrEmpty
 
         Disconnect-FGT -connection $fgt -confirm:$false
     }
@@ -124,6 +129,7 @@ Describe "Connect to a FortiGate (using multi connection)" {
         $fgt.session | Should -Not -BeNullOrEmpty
         $fgt.headers | Should -Not -BeNullOrEmpty
         $fgt.version | Should -Not -BeNullOrEmpty
+        $fgt.serial | Should -Not -BeNullOrEmpty
     }
 
     It "Throw when try to use Invoke-FGTRestMethod and not connected" {
