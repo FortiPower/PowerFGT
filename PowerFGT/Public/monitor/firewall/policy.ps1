@@ -7,20 +7,20 @@ function Get-FGTMonitorFirewallPolicy {
 
     <#
         .SYNOPSIS
-        Get VPN IPsec
+        Get Monitor Firewall Policy
 
         .DESCRIPTION
-        Get Firewall Policy
+        Get Monitor Firewall Policy (policyid, bytes, packets, hit_count...)
 
         .EXAMPLE
         Get-FGTMonitorFirewallPolicy
 
-        Get Firewall Policy (policyid, bytes, packets, hit_count...)
+        Get ALL Firewall Policy monitor
 
         .EXAMPLE
         Get-FGTMonitorFirewallPolicy -policyid 23
 
-        Get Firewall Policy with id 23
+        Get Firewall Policy monitor with id 23
 
         .EXAMPLE
         Get-FGTMonitorFirewallPolicy -vdom vdomX
