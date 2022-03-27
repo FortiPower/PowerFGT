@@ -50,6 +50,7 @@ function Get-FGTMonitorRouterIPv4 {
         [Parameter (Mandatory = $false)]
         [string]$gateway,
         [Parameter (Mandatory = $false)]
+        [ValidateSet('def', 'kernel', 'connect', 'static', 'rip', 'ripng', 'ospf', 'ospf6', 'bgp', 'isis', 'ha')]
         [string]$type,
         [Parameter (Mandatory = $false)]
         [string]$interface,
