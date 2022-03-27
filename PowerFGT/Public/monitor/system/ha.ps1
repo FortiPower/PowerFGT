@@ -36,6 +36,11 @@ function Get-FGTMonitorSystemHAPeer {
             $invokeParams.add( 'skip', $skip )
         }
 
+        #before 6.2.x, it is not available...
+        if ($connection.version -lt "6.2.0") {
+            Throw "You can't check HA Peer with FortiOS < 6.2.0"
+        }
+
         $uri = 'api/v2/monitor/system/ha-peer'
 
         $response = Invoke-FGTRestMethod -uri $uri -method 'GET' -connection $connection @invokeParams
@@ -77,6 +82,11 @@ function Get-FGTMonitorSystemHAChecksum {
         $invokeParams = @{ }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
+        }
+
+        #before 6.2.x, it is not available...
+        if ($connection.version -lt "6.2.0") {
+            Throw "You can't check HA Checksum with FortiOS < 6.2.0"
         }
 
         $uri = 'api/v2/monitor/system/ha-checksums'
