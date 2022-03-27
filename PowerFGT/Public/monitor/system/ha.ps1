@@ -15,7 +15,7 @@ function Get-FGTMonitorSystemHAPeer {
         .EXAMPLE
         Get-FGTMonitorSystemHAPeer
 
-        Get VPN IPsec (name, incoming_bytes, outgoing_bytes, rgwy...)
+        Get HA Peer Monitor information (serial_no, priority, hostname...)
 
     #>
 
@@ -58,7 +58,7 @@ function Get-FGTMonitorSystemHAChecksum {
         .EXAMPLE
         Get-FGTMonitorSystemHAChecksum
 
-        Get VPN IPsec (name, incoming_bytes, outgoing_bytes, rgwy...)
+        Get HA Checksum Monitor information (checksum for global/root/all...)
 
     #>
 
