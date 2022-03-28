@@ -36,9 +36,12 @@ function Get-FGTMonitorSystemHAPeer {
             $invokeParams.add( 'skip', $skip )
         }
 
-        #before 6.2.x, it is not available...
+        #before 6.2.x, it is not available if HA is not configured
         if ($connection.version -lt "6.2.0") {
-            Throw "You can't check HA Peer with FortiOS < 6.2.0"
+            $ha = Get-FGTSystemHA -connection $connection
+            if ($ha.mode -eq "standalone") {
+                Throw "You can't check HA Peer with FortiOS < 6.2.0"
+            }
         }
 
         $uri = 'api/v2/monitor/system/ha-peer'
@@ -84,9 +87,12 @@ function Get-FGTMonitorSystemHAChecksum {
             $invokeParams.add( 'skip', $skip )
         }
 
-        #before 6.2.x, it is not available...
+        #before 6.2.x, it is not available if HA is not configured
         if ($connection.version -lt "6.2.0") {
-            Throw "You can't check HA Checksum with FortiOS < 6.2.0"
+            $ha = Get-FGTSystemHA -connection $connection
+            if ($ha.mode -eq "standalone") {
+                Throw "You can't check HA Peer with FortiOS < 6.2.0"
+            }
         }
 
         $uri = 'api/v2/monitor/system/ha-checksums'
