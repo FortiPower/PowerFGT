@@ -12,6 +12,7 @@ jobs:
     - name: Install BlueBirdPS
       shell: pwsh
       run: |
+        Set-PSRepository PSGallery -InstallationPolicy Trusted
         Install-Module BlueBirdPS
         Import-Module BlueBirdPS
     - name: Configure BlueBirdPS
