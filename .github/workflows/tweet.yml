@@ -18,9 +18,9 @@ jobs:
     - name: Configure BlueBirdPS
       shell: pwsh
       run: |
-        Set-TwitterAuthentication -ApiKey (ConvertTo-SecureString $ENV:TWITTER_CONSUMER_API_KEY -AsPlainText -Force) \
-                                  -ApiSecret (ConvertTo-SecureString $ENV:TWITTER_CONSUMER_API_SECRET -AsPlainText -Force) \
-                                  -AccessToken (ConvertTo-SecureString $ENV:TWITTER_ACCESS_TOKEN -AsPlainText -Force) \
+        Set-TwitterAuthentication -ApiKey (ConvertTo-SecureString $ENV:TWITTER_CONSUMER_API_KEY -AsPlainText -Force) `
+                                  -ApiSecret (ConvertTo-SecureString $ENV:TWITTER_CONSUMER_API_SECRET -AsPlainText -Force) `
+                                  -AccessToken (ConvertTo-SecureString $ENV:TWITTER_ACCESS_TOKEN -AsPlainText -Force) `
                                   -AccessTokenSecret (ConvertTo-SecureString $ENV:TWITTER_ACCESS_TOKEN_SECRET -AsPlainText -Force)
       env:
         # Get your tokens from https://developer.twitter.com/apps
