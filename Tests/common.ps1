@@ -69,6 +69,7 @@ $invokeParams.add('port', $port)
 $fgt = Connect-FGT @invokeParams
 $fgt_version = $fgt.version
 
+$ha_mode = (Get-FGTSystemHA).mode
 $VersionIs64 = ($fgt_version -gt [version]"6.4.0" -and $fgt_version -lt [version]"6.5.0")
 
 Disconnect-FGT -confirm:$false
