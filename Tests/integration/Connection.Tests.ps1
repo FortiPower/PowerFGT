@@ -239,16 +239,22 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Monitor System Firmware" {
             { Get-FGTMonitorSystemFirmware -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get Monitor System HA Peer (> 6.2.0)" -skip:($fgt_version -lt "6.2.0" -and $ha_mode -eq "standalone" ) {
+        It "Use Multi connection for call Get Monitor System HA Peer (> 6.2.0)" -skip:($fgt_version -lt "6.2.0") {
             { Get-FGTMonitorSystemHAPeer -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get Monitor System HA Peer (< 6.2.0)" -skip:($fgt_version -ge "6.2.0" -and $ha_mode -ne "standalone") {
+        It "Use Multi connection for call Get Monitor System HA Peer (< 6.2.0 with HA enable)" -skip:($VersionIs60WithNoHA) {
+            { Get-FGTMonitorSystemHAPeer -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get Monitor System HA Peer (< 6.2.0 with no HA)" -skip:( -Not $VersionIs60WithNoHA) {
             { Get-FGTMonitorSystemHAPeer -connection $fgt } | Should -Throw "You can't check HA Peer with FortiOS < 6.2.0"
         }
-        It "Use Multi connection for call Get Monitor System HA Checksum (> 6.2.0)" -skip:($fgt_version -lt "6.2.0" -and $ha_mode -eq "standalone") {
+        It "Use Multi connection for call Get Monitor System HA Checksum (> 6.2.0)" -skip:($fgt_version -lt "6.2.0") {
             { Get-FGTMonitorSystemHAChecksum -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get Monitor System HA Checksum ($ha_mode < 6.2.0)" -skip:($fgt_version -ge "6.2.0" -and $ha_mode -ne "standalone") {
+        It "Use Multi connection for call Get Monitor System HA Checksum (< 6.2.0 with HA enable)" -skip:( $fgt_version -ge "6.2.0" -and $VersionIs60WithNoHA) {
+            { Get-FGTMonitorSystemHAChecksum -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get Monitor System HA Checksum (< 6.2.0 with no HA)" -skip:( -Not $VersionIs60WithNoHA) {
             { Get-FGTMonitorSystemHAChecksum -connection $fgt } | Should -Throw "You can't check HA Checksum with FortiOS < 6.2.0"
         }
         It "Use Multi connection for call Get Monitor License Status" {
