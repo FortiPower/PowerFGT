@@ -1,0 +1,38 @@
+name: platyPS
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - PowerFGT/**
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install platyPS
+      shell: pwsh
+      run: |
+        Set-PSRepository PSGallery -InstallationPolicy Trusted
+        Install-Module platyPS
+        Import-Module platyPS
+
+    - name: Run platyPS
+      shell: pwsh
+      run: |
+        Import-Module ./PowerFGT/
+        New-MarkdownHelp -OutputFolder .\docs -Module PowerFGT -Force
+
+    - name: Commit doc
+      shell: pwsh
+      run: |
+        git config user.name "FortiPower GitHub Actions Bot"
+        git config user.email "<>"
+        git add docs/
+        git commit -m "Update doc via platyPS and GitHub Actions"
+        git push
