@@ -91,7 +91,7 @@ function Get-FGTMonitorSystemHAChecksum {
         if ($connection.version -lt "6.2.0") {
             $ha = Get-FGTSystemHA -connection $connection
             if ($ha.mode -eq "standalone") {
-                Throw "You can't check HA Peer with FortiOS < 6.2.0"
+                Throw "You can't check HA Checksum with FortiOS < 6.2.0"
             }
         }
 
