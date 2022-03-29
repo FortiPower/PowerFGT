@@ -1051,9 +1051,13 @@ You can change System Settings and System Global (settings) using `Set-FGTSystem
 
 It is possible to `monitor` FortiGate
 
+* `Get-FGTMonitorFirewallPolicy` List traffic statistics for firewall policies
+* `Get-FGTMonitorRouterIPv4` List all active IPv4 routing table entries
 * `Get-FGTMonitorLicenseStatus` Get current license & registration status.
 * `Get-FGTMonitorSystemConfigBackup` Backup system config
 * `Get-FGTMonitorSystemFirmware` Retrieve a list of firmware images available to use for upgrade on this device
+* `Get-FGTMonitorSystemHAChecksum` List of checksums for members of HA cluster.
+* `Get-FGTMonitorSystemHAPeer` Get configuration of peer(s) in HA cluster
 * `Get-FGTMonitorVpnIPsec` Return active IPsec VPNs
 * `Get-FGTMonitorVpnSsl` Retrieve a list of all SSL-VPN sessions and sub-sessions and Return statistics about the SSL-VPN
 
