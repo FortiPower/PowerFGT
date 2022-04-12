@@ -47,6 +47,7 @@ function Connect-FGT {
 
       .EXAMPLE
       $fw1 = Connect-FGT -Server 192.0.2.1
+
       Connect to a FortiGate with IP 192.0.2.1 and store connection info to $fw1 variable
 
       .EXAMPLE
