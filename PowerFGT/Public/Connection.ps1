@@ -35,13 +35,13 @@ function Connect-FGT {
 
       .EXAMPLE
       $cred = get-credential
-      Connect-FGT -Server 192.0.2.1 -credential $cred
+      PS > Connect-FGT -Server 192.0.2.1 -credential $cred
 
       Connect to a FortiGate with IP 192.0.2.1 and passing (Get-)credential
 
       .EXAMPLE
       $mysecpassword = ConvertTo-SecureString mypassword -AsPlainText -Force
-      Connect-FGT -Server 192.0.2.1 -Username manager -Password $mysecpassword
+      PS > Connect-FGT -Server 192.0.2.1 -Username manager -Password $mysecpassword
 
       Connect to a FortiGate with IP 192.0.2.1 using Username and Password
 
@@ -64,13 +64,13 @@ function Connect-FGT {
 
       .EXAMPLE
       $apiToken = Get-Content fortigate_api_token.txt
-      Connect-FGT -Server -192.0.2.1 -ApiToken $apiToken
+      PS > Connect-FGT -Server -192.0.2.1 -ApiToken $apiToken
 
       Connect to a FortiGate with IP 192.0.2.1 and passing api token
 
       .EXAMPLE
       $mynewpassword = ConvertTo-SecureString mypassword -AsPlainText -Force
-      Connect-FGT -Server 192.0.2.1 -new_password $mysecpassword
+      PS > Connect-FGT -Server 192.0.2.1 -new_password $mysecpassword
 
       Connect to a FortiGate with IP 192.0.2.1 and change the password
 
