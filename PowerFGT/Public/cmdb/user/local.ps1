@@ -15,34 +15,14 @@ function Add-FGTUserLocal {
         Add a FortiGate Local User (Name, Password, MFA)
 
         .EXAMPLE
-        Add-FGTUserLocal -Name FGT -ip 192.0.2.0 -mask 255.255.255.0
+        Add-FGTUserLocal -Name FGT -password MyFGT -status
 
-        Add Local User object type ipmask with name FGT and value 192.0.2.0/24
-
-        .EXAMPLE
-        Add-FGTUserLocal -Name FGT -ip 192.0.2.0 -mask 255.255.255.0 -interface port2
-
-        Add Local User object type ipmask with name FGT, value 192.0.2.0/24 and associated to interface port2
+        Add Local User object name FGT, password MyFGT and enable it
 
         .EXAMPLE
-        Add-FGTUserLocal -Name FGT -ip 192.0.2.0 -mask 255.255.255.0 -comment "My FGT Local User"
+        Add-FGTUserLocal -Name FGT -password MyFGT -status -two_factor email -two_factor_authentication email -email_to powerfgt@fgt.power
 
-        Add Local User object type ipmask with name FGT, value 192.0.2.0/24 and a comment
-
-        .EXAMPLE
-        Add-FGTUserLocal -Name FGT -ip 192.0.2.0 -mask 255.255.255.0 -visibility:$false
-
-        Add Local User object type ipmask with name FGT, value 192.0.2.0/24 and disabled visibility
-
-        .EXAMPLE
-        Add-FGTUserLocal -Name FortiPower -fqdn fortipower.github.io
-
-        Add Local User object type fqdn with name FortiPower and value fortipower.github.io
-
-        .EXAMPLE
-        Add-FGTUserLocal -Name FGT-Range -startip 192.0.2.1 -endip 192.0.2.100
-
-        Add Local User object type iprange with name FGT-Range with start IP 192.0.2.1 and end ip 192.0.2.100
+        Add Local User object name FGT, password MyFGT and enable it, with two factor authentication by email
     #>
 
     Param(
@@ -254,6 +234,61 @@ function Get-FGTUserLocal {
 
         $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/user/local' -method 'GET' -connection $connection @invokeParams
         $reponse.results
+    }
+
+    End {
+    }
+}
+
+function Remove-FGTUserLocal {
+
+    <#
+        .SYNOPSIS
+        Remove a FortiGate Local User
+
+        .DESCRIPTION
+        Remove a local user object on the FortiGate
+
+        .EXAMPLE
+        $MyFGTUserLocal = Get-FGTUserLocal -name FGT
+        PS C:\>$MyFGTUserLocal | Remove-FGTUserLocal
+
+        Remove user object $MyFGTUserLocal
+
+        .EXAMPLE
+        $MyFGTUserLocal = Get-FGTUserLocal -name MyFGTUserLocal
+        PS C:\>$MyFGTUserLocal | Remove-FGTUserLocal -confirm:$false
+
+        Remove UserLocal object $MyFGTUserLocal with no confirmation
+
+    #>
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'high')]
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        #[ValidateScript( { Confirm-FGTUserLocal $_ })]
+        [psobject]$userlocal,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/user/local/$($address.name)"
+
+        if ($PSCmdlet.ShouldProcess($userlocal.name, 'Remove User Local')) {
+            $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -connection $connection @invokeParams
+        }
     }
 
     End {
