@@ -41,7 +41,7 @@ Describe "Get User Local" {
 
     It "Get userlocal ($pester_userlocal) and confirm (via Confirm-FGTUserLocal)" {
         $userlocal = Get-FGTUserLocal -name $pester_userlocal
-        Confirm-FGTuserlocal ($userlocal) | Should -Be $true
+        Confirm-FGTUserLocal ($userlocal) | Should -Be $true
     }
 
     Context "Search" {
