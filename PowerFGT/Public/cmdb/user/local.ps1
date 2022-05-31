@@ -31,7 +31,7 @@ function Add-FGTUserLocal {
         [Parameter (Mandatory = $false)]
         [switch]$status,
         [Parameter (Mandatory = $false, ParameterSetName = "local")]
-        [string]$password,
+        [SecureString]$password,
         [Parameter (Mandatory = $false, ParameterSetName = "radius")]
         [string]$radius_server,
         [Parameter (Mandatory = $false, ParameterSetName = "tacacs")]
