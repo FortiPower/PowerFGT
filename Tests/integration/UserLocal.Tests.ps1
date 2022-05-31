@@ -117,7 +117,7 @@ Describe "Configure User Local" {
     Context "local" {
 
         BeforeAll {
-            $userlocal = Add-FGTUserLocal -Name $pester_userlocal -password $pester_userlocalpassword
+            Add-FGTUserLocal -Name $pester_userlocal -password $pester_userlocalpassword
         }
 
         It "Change status userlocal" {
