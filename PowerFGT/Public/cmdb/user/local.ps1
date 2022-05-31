@@ -100,7 +100,7 @@ function Add-FGTUserLocal {
         }
 
         if ( $PsBoundParameters.ContainsKey('two_factor') ) {
-            $Local_User | add-member -name "two-factor" -membertype NoteProperty -Value $two_factor_authentication
+            $Local_User | add-member -name "two-factor" -membertype NoteProperty -Value $two_factor
         }
 
         if ( $PsBoundParameters.ContainsKey('two_factor_authentication') ) {
@@ -240,6 +240,145 @@ function Get-FGTUserLocal {
     }
 }
 
+function Set-FGTUserLocal {
+
+    <#
+        .SYNOPSIS
+        Configure a FortiGate Local User
+
+        .DESCRIPTION
+        Change a FortiGate Local User (ip, mask, comment, associated interface... )
+
+        .EXAMPLE
+        $MyFGTUserLocal = Get-FGTUserLocal -name MyFGTUserLocal
+        PS C:\>$MyFGTUserLocal | Set-FGTUserLocal -status $false
+
+        Change MyFGTUserLocal to status disable
+
+        .EXAMPLE
+        $MyFGTUserLocal = Get-FGTUserLocal -name MyFGTUserLocal
+        PS C:\>$MyFGTUserLocal | Set-FGTUserLocal -password MyFGTUserLocalPassword
+
+        Change MyFGTUserLocal to value (Password) MyFGTUserLocalPassword
+
+        .EXAMPLE
+        $MyFGTUserLocal = Get-FGTUserLocal -name MyFGTUserLocal
+        PS C:\>$MyFGTUserLocal | Set-FGTUserLocal -email_to newpowerfgt@fgt.power
+
+        Change MyFGTUserLocal to set email to newpowerfgt@fgt.power
+
+    #>
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium', DefaultParameterSetName = 'default')]
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        #[ValidateScript( { Confirm-FGTAddress $_ })]
+        [psobject]$userlocal,
+        [Parameter (Mandatory = $true)]
+        [string]$name,
+        [Parameter (Mandatory = $false)]
+        [switch]$status,
+        [Parameter (Mandatory = $false, ParameterSetName = "local")]
+        [string]$password,
+        [Parameter (Mandatory = $false, ParameterSetName = "radius")]
+        [string]$radius_server,
+        [Parameter (Mandatory = $false, ParameterSetName = "tacacs")]
+        [string]$tacacs_server,
+        [Parameter (Mandatory = $false)]
+        [ValidateSet("fortitoken", "email", "sms", "disable", "fortitoken-cloud")]
+        [string]$two_factor,
+        [Parameter (Mandatory = $false)]
+        [ValidateSet("fortitoken", "email", "sms")]
+        [string]$two_factor_authentication,
+        [Parameter (Mandatory = $false)]
+        [string]$two_factor_notification,
+        [Parameter (Mandatory = $false)]
+        [string]$fortitoken,
+        [Parameter (Mandatory = $false)]
+        [string]$email_to,
+        [Parameter (Mandatory = $false)]
+        [string]$sms_server,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/user/local/$($userlocal.name)"
+
+        $_userlocal = new-Object -TypeName PSObject
+
+        if ( $PsBoundParameters.ContainsKey('name') ) {
+            #TODO check if there is no already a object with this name ?
+            $_userlocal | add-member -name "name" -membertype NoteProperty -Value $name
+            $userlocal.name = $name
+        }
+
+        if ( $PSCmdlet.ParameterSetName -ne "default" -and $userlocal.type -ne $PSCmdlet.ParameterSetName ) {
+            throw "Address type ($($userlocal.type)) need to be on the same type ($($PSCmdlet.ParameterSetName))"
+        }
+
+        if ($status) {
+            $_userlocal  | add-member -name "status" -membertype NoteProperty -Value "enable"
+        }
+        else {
+            $_userlocal  | add-member -name "status" -membertype NoteProperty -Value "disable"
+        }
+
+        switch ( $PSCmdlet.ParameterSetName ) {
+            "local" {
+                    $_userlocal | add-member -name "passwd" -membertype NoteProperty -Value $password
+            }
+            "radius" {
+                $_userlocal | add-member -name "radius-server" -membertype NoteProperty -Value $radius_server
+            }
+            "tacacs" {
+                $_userlocal | add-member -name "tacacs+-server" -membertype NoteProperty -Value $tacacs_server
+            }
+            default { }
+        }
+
+         if ( $PsBoundParameters.ContainsKey('two_factor') ) {
+            $_userlocal | add-member -name "two-factor" -membertype NoteProperty -Value $two_factor
+        }
+
+        if ( $PsBoundParameters.ContainsKey('two_factor_authentication') ) {
+            $_userlocal | add-member -name "two-factor-authentication" -membertype NoteProperty -Value $two_factor_authentication
+        }
+
+        if ( $PsBoundParameters.ContainsKey('fortitoken') ) {
+            $_userlocal | add-member -name "fortitoken" -membertype NoteProperty -Value $fortitoken
+        }
+
+        if ( $PsBoundParameters.ContainsKey('email_to') ) {
+            $_userlocal | add-member -name "email-to" -membertype NoteProperty -Value $email_to
+        }
+
+        if ( $PsBoundParameters.ContainsKey('sms_server') ) {
+            $_userlocal | add-member -name "sms-server" -membertype NoteProperty -Value $sms_server
+        }
+
+        if ($PSCmdlet.ShouldProcess($userlocal.name, 'Configure User Local')) {
+            Invoke-FGTRestMethod -method "PUT" -body $_userlocal -uri $uri -connection $connection @invokeParams | out-Null
+
+            Get-FGTUserLocal -connection $connection @invokeParams -name $userlocal.name
+        }
+    }
+
+    End {
+    }
+}
+
 function Remove-FGTUserLocal {
 
     <#
@@ -284,7 +423,7 @@ function Remove-FGTUserLocal {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $uri = "api/v2/cmdb/user/local/$($address.name)"
+        $uri = "api/v2/cmdb/user/local/$($userlocal.name)"
 
         if ($PSCmdlet.ShouldProcess($userlocal.name, 'Remove User Local')) {
             $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -connection $connection @invokeParams
