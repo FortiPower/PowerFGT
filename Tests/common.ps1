@@ -44,6 +44,7 @@ $script:pester_vpn1_ph2 = "pester_vpn %/*?1_ph2"
 $script:pester_vpn2_ph2 = "pester_vpn2_ph2"
 $script:pester_zone1 = "pester_zone %/*?1"
 $script:pester_zone2 = "pester_zone2"
+$script:pester_userlocal = "pester_userlocal"
 
 . ../credential.ps1
 #TODO: Add check if no ipaddress/login/password info...
