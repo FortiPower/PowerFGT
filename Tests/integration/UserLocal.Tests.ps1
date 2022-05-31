@@ -126,7 +126,7 @@ Describe "Configure User Local" {
             $userlocal.name | Should -Be $pester_userlocal
             $userlocal.status | Should -Be "enable"
             $userlocal.'email-to' | Should -BeNullOrEmpty
-            $userlocal.'two-factor' | Should -BeNullOrEmpty
+            $userlocal.'two-factor' | Should -Be "disable"
         }
 
         It "Change email to" {
@@ -135,7 +135,7 @@ Describe "Configure User Local" {
             $userlocal.name | Should -Be $pester_userlocal
             $userlocal.status | Should -Be "disable"
             $userlocal.'email-to' | Should -Be "powerfgt@power.fgt"
-            $userlocal.'two-factor' | Should -BeNullOrEmpty
+            $userlocal.'two-factor' | Should -Be "disable"
         }
 
         It "Change MFA" {
