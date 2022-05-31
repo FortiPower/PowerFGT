@@ -14,7 +14,7 @@ BeforeAll {
 Describe "Get User Local" {
 
     BeforeAll {
-        Add-FGTUserLocal -name $pester_userlocal
+        Add-FGTUserLocal -name $pester_userlocal -password $pester_userlocalpassword
         #$script:uuid = $addr.uuid
     }
 
@@ -75,7 +75,7 @@ Describe "Add User Local" {
         }
 
         It "Add userlocal $pester_userlocal enable" {
-            Add-FGTUserLocal -Name $pester_userlocal -status
+            Add-FGTUserLocal -Name $pester_userlocal -status -password $pester_userlocalpassword
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
             $userlocal.status | Should -Be "enable"
@@ -84,7 +84,7 @@ Describe "Add User Local" {
         }
 
         It "Add userlocal $pester_userlocal email to" {
-            Add-FGTUserLocal -Name $pester_userlocal -email_to "powerfgt@power.fgt"
+            Add-FGTUserLocal -Name $pester_userlocal -email_to "powerfgt@power.fgt" -password $pester_userlocalpassword
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
             $userlocal.status | Should -Be "disable"
@@ -93,7 +93,7 @@ Describe "Add User Local" {
         }
 
         It "Add userlocal $pester_userlocal MFA" {
-            Add-FGTUserLocal -Name $pester_userlocal -status -two_factor email -email_to "powerfgt@power.fgt"
+            Add-FGTUserLocal -Name $pester_userlocal -status -two_factor email -email_to "powerfgt@power.fgt" -password $pester_userlocalpassword
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
             $userlocal.status | Should -Be "disable"
@@ -103,9 +103,9 @@ Describe "Add User Local" {
 
         It "Try to Add userlocal $pester_userlocal (but there is already a object with same name)" {
             #Add first userlocal
-            Add-FGTUserLocal -Name $pester_userlocal -status
+            Add-FGTUserLocal -Name $pester_userlocal -status -password $pester_userlocalpassword
             #Add Second userlocal with same name
-            { Add-FGTUserLocal -Name $pester_userlocal -status } | Should -Throw "Already a user object using the same name"
+            { Add-FGTUserLocal -Name $pester_userlocal -status -password $pester_userlocalpassword } | Should -Throw "Already a user object using the same name"
         }
 
     }
@@ -117,7 +117,7 @@ Describe "Configure User Local" {
     Context "local" {
 
         BeforeAll {
-            $userlocal = Add-FGTUserLocal -Name $pester_userlocal
+            $userlocal = Add-FGTUserLocal -Name $pester_userlocal -password $pester_userlocalpassword
         }
 
         It "Change status userlocal" {
@@ -168,7 +168,7 @@ Describe "Remove User Local" {
     Context "local" {
 
         BeforeEach {
-            Add-FGTUserLocal -Name $pester_userlocal
+            Add-FGTUserLocal -Name $pester_userlocal -password $pester_userlocalpassword
         }
 
         It "Remove userlocal $pester_userlocal by pipeline" {
