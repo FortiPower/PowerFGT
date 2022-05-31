@@ -262,7 +262,7 @@ function Set-FGTUserLocal {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium', DefaultParameterSetName = 'default')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
-        #[ValidateScript( { Confirm-FGTAddress $_ })]
+        [ValidateScript( { Confirm-FGTAddress $_ })]
         [psobject]$userlocal,
         [Parameter (Mandatory = $false)]
         [string]$name,
@@ -395,7 +395,7 @@ function Remove-FGTUserLocal {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'high')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
-        #[ValidateScript( { Confirm-FGTUserLocal $_ })]
+        [ValidateScript( { Confirm-FGTUserLocal $_ })]
         [psobject]$userlocal,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
