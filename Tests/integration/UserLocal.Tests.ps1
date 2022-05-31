@@ -14,7 +14,7 @@ BeforeAll {
 Describe "Get User Local" {
 
     BeforeAll {
-        $userlocal = Add-FGTUserLocal -Name $pester_userlocal -name PowerFGT1
+        Add-FGTUserLocal -name $pester_userlocal
         #$script:uuid = $addr.uuid
     }
 
