@@ -432,3 +432,5 @@ Function Confirm-FGTUserLocal {
     }
 
     $true
+
+}
