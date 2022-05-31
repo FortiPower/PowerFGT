@@ -96,7 +96,7 @@ Describe "Add User Local" {
             Add-FGTUserLocal -Name $pester_userlocal -status -two_factor email -email_to "powerfgt@power.fgt" -password $pester_userlocalpassword
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
-            $userlocal.status | Should -Be "disable"
+            $userlocal.status | Should -Be "enable"
             $userlocal.'email-to' | Should -Be "powerfgt@power.fgt"
             $userlocal.'two-factor' | Should -Be "email"
             }
@@ -105,7 +105,7 @@ Describe "Add User Local" {
             #Add first userlocal
             Add-FGTUserLocal -Name $pester_userlocal -status -password $pester_userlocalpassword
             #Add Second userlocal with same name
-            { Add-FGTUserLocal -Name $pester_userlocal -status -password $pester_userlocalpassword } | Should -Throw "Already a user object using the same name"
+            { Add-FGTUserLocal -Name $pester_userlocal -status -password $pester_userlocalpassword } | Should -Throw "Already an Local User object using the same name"
         }
 
     }

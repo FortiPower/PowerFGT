@@ -274,7 +274,7 @@ function Set-FGTUserLocal {
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         #[ValidateScript( { Confirm-FGTAddress $_ })]
         [psobject]$userlocal,
-        [Parameter (Mandatory = $true)]
+        [Parameter (Mandatory = $false)]
         [string]$name,
         [Parameter (Mandatory = $false)]
         [switch]$status,
