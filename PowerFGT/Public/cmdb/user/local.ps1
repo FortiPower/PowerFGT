@@ -72,54 +72,54 @@ function Add-FGTUserLocal {
 
         $uri = "api/v2/cmdb/user/local"
 
-        $Local_User = new-Object -TypeName PSObject
+        $local = New-Object -TypeName PSObject
 
-        $Local_User | add-member -name "name" -membertype NoteProperty -Value $name
+        $local | add-member -name "name" -membertype NoteProperty -Value $name
 
         if ($status) {
-            $Local_User | add-member -name "status" -membertype NoteProperty -Value "enable"
+            $local | add-member -name "status" -membertype NoteProperty -Value "enable"
         }
         else {
-            $Local_User | add-member -name "status" -membertype NoteProperty -Value "disable"
+            $local | add-member -name "status" -membertype NoteProperty -Value "disable"
         }
 
         switch ( $PSCmdlet.ParameterSetName ) {
             "local" {
-                $Local_User | add-member -name "type" -membertype NoteProperty -Value "password"
-                $Local_User | add-member -name "passwd" -membertype NoteProperty -Value $password
+                $local | add-member -name "type" -membertype NoteProperty -Value "password"
+                $local | add-member -name "passwd" -membertype NoteProperty -Value $password
             }
             "radius" {
-                $Local_User | add-member -name "type" -membertype NoteProperty -Value "radius"
-                $Local_User | add-member -name "radius-server" -membertype NoteProperty -Value $radius_server
+                $local | add-member -name "type" -membertype NoteProperty -Value "radius"
+                $local | add-member -name "radius-server" -membertype NoteProperty -Value $radius_server
             }
             "tacacs" {
-                $Local_User | add-member -name "type" -membertype NoteProperty -Value "tacacs"
-                $Local_User | add-member -name "tacacs+-server" -membertype NoteProperty -Value $tacacs_server
+                $local | add-member -name "type" -membertype NoteProperty -Value "tacacs"
+                $local | add-member -name "tacacs+-server" -membertype NoteProperty -Value $tacacs_server
             }
             default { }
         }
 
         if ( $PsBoundParameters.ContainsKey('two_factor') ) {
-            $Local_User | add-member -name "two-factor" -membertype NoteProperty -Value $two_factor
+            $local | add-member -name "two-factor" -membertype NoteProperty -Value $two_factor
         }
 
         if ( $PsBoundParameters.ContainsKey('two_factor_authentication') ) {
-            $Local_User | add-member -name "two-factor-authentication" -membertype NoteProperty -Value $two_factor_authentication
+            $local | add-member -name "two-factor-authentication" -membertype NoteProperty -Value $two_factor_authentication
         }
 
         if ( $PsBoundParameters.ContainsKey('fortitoken') ) {
-            $Local_User | add-member -name "fortitoken" -membertype NoteProperty -Value $fortitoken
+            $local | add-member -name "fortitoken" -membertype NoteProperty -Value $fortitoken
         }
 
         if ( $PsBoundParameters.ContainsKey('email_to') ) {
-            $Local_User | add-member -name "email-to" -membertype NoteProperty -Value $email_to
+            $local | add-member -name "email-to" -membertype NoteProperty -Value $email_to
         }
 
         if ( $PsBoundParameters.ContainsKey('sms_server') ) {
-            $Local_User | add-member -name "sms-server" -membertype NoteProperty -Value $sms_server
+            $local | add-member -name "sms-server" -membertype NoteProperty -Value $sms_server
         }
 
-        Invoke-FGTRestMethod -method "POST" -body $Local_User -uri $uri -connection $connection @invokeParams | out-Null
+        Invoke-FGTRestMethod -method "POST" -body $local -uri $uri -connection $connection @invokeParams | out-Null
 
         Get-FGTUserLocal -connection $connection @invokeParams -name $name
     }
@@ -247,7 +247,7 @@ function Set-FGTUserLocal {
         Configure a FortiGate Local User
 
         .DESCRIPTION
-        Change a FortiGate Local User (ip, mask, comment, associated interface... )
+        Change a FortiGate Local User
 
         .EXAMPLE
         $MyFGTUserLocal = Get-FGTUserLocal -name MyFGTUserLocal
@@ -272,7 +272,7 @@ function Set-FGTUserLocal {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium', DefaultParameterSetName = 'default')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
-        [ValidateScript( { Confirm-FGTAddress $_ })]
+        [ValidateScript( { Confirm-FGTUserLocal $_ })]
         [psobject]$userlocal,
         [Parameter (Mandatory = $false)]
         [string]$name,
@@ -316,60 +316,60 @@ function Set-FGTUserLocal {
 
         $uri = "api/v2/cmdb/user/local/$($userlocal.name)"
 
-        $_userlocal = new-Object -TypeName PSObject
+        $_local = New-Object -TypeName PSObject
 
         if ( $PsBoundParameters.ContainsKey('name') ) {
-            #TODO check if there is no already a object with this name ?
-            $_userlocal | add-member -name "name" -membertype NoteProperty -Value $name
+            #TODO check if there is no already an object with this name ?
+            $_local | add-member -name "name" -membertype NoteProperty -Value $name
             $userlocal.name = $name
         }
 
         if ( $PSCmdlet.ParameterSetName -ne "default" -and $userlocal.type -ne $PSCmdlet.ParameterSetName ) {
-            throw "Address type ($($userlocal.type)) need to be on the same type ($($PSCmdlet.ParameterSetName))"
+            throw "User type ($($userlocal.type)) need to be on the same type ($($PSCmdlet.ParameterSetName))"
         }
 
         if ($status) {
-            $_userlocal  | add-member -name "status" -membertype NoteProperty -Value "enable"
+            $_local  | add-member -name "status" -membertype NoteProperty -Value "enable"
         }
         else {
-            $_userlocal  | add-member -name "status" -membertype NoteProperty -Value "disable"
+            $_local  | add-member -name "status" -membertype NoteProperty -Value "disable"
         }
 
         switch ( $PSCmdlet.ParameterSetName ) {
             "local" {
-                    $_userlocal | add-member -name "passwd" -membertype NoteProperty -Value $password
+                    $_local | add-member -name "passwd" -membertype NoteProperty -Value $password
             }
             "radius" {
-                $_userlocal | add-member -name "radius-server" -membertype NoteProperty -Value $radius_server
+                $_local | add-member -name "radius-server" -membertype NoteProperty -Value $radius_server
             }
             "tacacs" {
-                $_userlocal | add-member -name "tacacs+-server" -membertype NoteProperty -Value $tacacs_server
+                $_local | add-member -name "tacacs+-server" -membertype NoteProperty -Value $tacacs_server
             }
             default { }
         }
 
          if ( $PsBoundParameters.ContainsKey('two_factor') ) {
-            $_userlocal | add-member -name "two-factor" -membertype NoteProperty -Value $two_factor
+            $_local | add-member -name "two-factor" -membertype NoteProperty -Value $two_factor
         }
 
         if ( $PsBoundParameters.ContainsKey('two_factor_authentication') ) {
-            $_userlocal | add-member -name "two-factor-authentication" -membertype NoteProperty -Value $two_factor_authentication
+            $_local | add-member -name "two-factor-authentication" -membertype NoteProperty -Value $two_factor_authentication
         }
 
         if ( $PsBoundParameters.ContainsKey('fortitoken') ) {
-            $_userlocal | add-member -name "fortitoken" -membertype NoteProperty -Value $fortitoken
+            $_local | add-member -name "fortitoken" -membertype NoteProperty -Value $fortitoken
         }
 
         if ( $PsBoundParameters.ContainsKey('email_to') ) {
-            $_userlocal | add-member -name "email-to" -membertype NoteProperty -Value $email_to
+            $_local | add-member -name "email-to" -membertype NoteProperty -Value $email_to
         }
 
         if ( $PsBoundParameters.ContainsKey('sms_server') ) {
-            $_userlocal | add-member -name "sms-server" -membertype NoteProperty -Value $sms_server
+            $_local | add-member -name "sms-server" -membertype NoteProperty -Value $sms_server
         }
 
         if ($PSCmdlet.ShouldProcess($userlocal.name, 'Configure User Local')) {
-            Invoke-FGTRestMethod -method "PUT" -body $_userlocal -uri $uri -connection $connection @invokeParams | out-Null
+            Invoke-FGTRestMethod -method "PUT" -body $_local -uri $uri -connection $connection @invokeParams | out-Null
 
             Get-FGTUserLocal -connection $connection @invokeParams -name $userlocal.name
         }
