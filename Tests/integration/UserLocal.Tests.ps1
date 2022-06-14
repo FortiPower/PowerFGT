@@ -24,39 +24,33 @@ Describe "Get User Local" {
         } | Should -Not -Throw
     }
 
-    It "Get ALL userlocal" {
+    It "Get ALL User Local" {
         $userlocal = Get-FGTUserLocal
         $userlocal.count | Should -Not -Be $NULL
     }
 
-    It "Get ALL userlocal with -skip" {
+    It "Get ALL User Local with -skip" {
         $userlocal = Get-FGTUserLocal -skip
         $userlocal.count | Should -Not -Be $NULL
     }
 
-    It "Get userlocal ($pester_userlocal)" {
+    It "Get User Local ($pester_userlocal)" {
         $userlocal = Get-FGTUserLocal -name $pester_userlocal
         $userlocal.name | Should -Be $pester_userlocal
     }
 
-    It "Get userlocal ($pester_userlocal) and confirm (via Confirm-FGTUserLocal)" {
+    It "Get User Local ($pester_userlocal) and confirm (via Confirm-FGTUserLocal)" {
         $userlocal = Get-FGTUserLocal -name $pester_userlocal
         Confirm-FGTUserLocal ($userlocal) | Should -Be $true
     }
 
     Context "Search" {
 
-        It "Search userlocal by name ($pester_userlocal)" {
+        It "Search User Local by name ($pester_userlocal)" {
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             @($userlocal).count | Should -be 1
             $userlocal.name | Should -Be $pester_userlocal
         }
-
-        <#It "Search userlocal by uuid ($script:uuid)" {
-            $userlocal = Get-FGTUserLocal -uuid $script:uuid
-            @($userlocal).count | Should -be 1
-            $userlocal.name | Should -Be $pester_userlocal
-        }#>
 
     }
 
@@ -68,13 +62,13 @@ Describe "Get User Local" {
 
 Describe "Add User Local" {
 
-    Context "local" {
+    Context "Local User (Email, MFA, etc" {
 
         AfterEach {
             Get-FGTUserLocal -name $pester_userlocal | Remove-FGTUserLocal -confirm:$false
         }
 
-        It "Add userlocal $pester_userlocal enable" {
+        It "Add User Local $pester_userlocal enable" {
             Add-FGTUserLocal -Name $pester_userlocal -status -password $pester_userlocalpassword
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
@@ -83,7 +77,7 @@ Describe "Add User Local" {
             $userlocal.'two-factor' | Should -Be "disable"
         }
 
-        It "Add userlocal $pester_userlocal email to" {
+        It "Add User Local $pester_userlocal email to" {
             Add-FGTUserLocal -Name $pester_userlocal -email_to "powerfgt@power.fgt" -password $pester_userlocalpassword
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
@@ -92,7 +86,7 @@ Describe "Add User Local" {
             $userlocal.'two-factor' | Should -Be "disable"
         }
 
-        It "Add userlocal $pester_userlocal MFA" {
+        It "Add User Local $pester_userlocal MFA by email" {
             Add-FGTUserLocal -Name $pester_userlocal -status -two_factor email -email_to "powerfgt@power.fgt" -password $pester_userlocalpassword
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
@@ -101,7 +95,7 @@ Describe "Add User Local" {
             $userlocal.'two-factor' | Should -Be "email"
             }
 
-        It "Try to Add userlocal $pester_userlocal (but there is already a object with same name)" {
+        It "Try to Add User Local $pester_userlocal (but there is already a object with same name)" {
             #Add first userlocal
             Add-FGTUserLocal -Name $pester_userlocal -status -password $pester_userlocalpassword
             #Add Second userlocal with same name
@@ -114,13 +108,13 @@ Describe "Add User Local" {
 
 Describe "Configure User Local" {
 
-    Context "local" {
+    Context "Change name, email, MFA, etc" {
 
         BeforeAll {
             Add-FGTUserLocal -Name $pester_userlocal -password $pester_userlocalpassword
         }
 
-        It "Change status userlocal" {
+        It "Change status User Local" {
             Get-FGTUserLocal -name $pester_userlocal | Set-FGTUserLocal -status
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
@@ -138,7 +132,7 @@ Describe "Configure User Local" {
             $userlocal.'two-factor' | Should -Be "disable"
         }
 
-        It "Change MFA" {
+        It "Enable MFA by email" {
             Get-FGTUserLocal -name $pester_userlocal | Set-FGTUserLocal -two_factor email
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
@@ -156,7 +150,7 @@ Describe "Configure User Local" {
             $userlocal.'two-factor' | Should -Be "email"
         }
 
-        AfterAll {
+        AfterEach {
             Get-FGTUserLocal -name "pester_userlocal_change" | Remove-FGTUserLocal -confirm:$false
         }
 
@@ -171,7 +165,7 @@ Describe "Remove User Local" {
             Add-FGTUserLocal -Name $pester_userlocal -password $pester_userlocalpassword
         }
 
-        It "Remove userlocal $pester_userlocal by pipeline" {
+        It "Remove User Local $pester_userlocal by pipeline" {
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal | Remove-FGTUserLocal -confirm:$false
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
