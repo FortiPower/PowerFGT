@@ -425,7 +425,7 @@ Function Confirm-FGTUserLocal {
         throw "Element specified does not contain a fortitoken property."
     }
     if ( -not ( $argument | get-member -name email-to -Membertype Properties)) {
-        throw "Element specified does not contain a email-to property."
+        throw "Element specified does not contain an email-to property."
     }
     if ( -not ( $argument | get-member -name sms-server -Membertype Properties)) {
         throw "Element specified does not contain a sms-server property."
