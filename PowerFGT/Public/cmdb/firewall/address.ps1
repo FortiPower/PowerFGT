@@ -42,6 +42,12 @@ function Add-FGTFirewallAddress {
         Add-FGTFirewallAddress -Name FGT-Range -startip 192.0.2.1 -endip 192.0.2.100
 
         Add Address object type iprange with name FGT-Range with start IP 192.0.2.1 and end ip 192.0.2.100
+
+        .EXAMPLE
+        Add-FGTFirewallAddress -Name FGT-Country-FR -country FR
+
+        Add Address object type geo (country) with name FGT-Country-FR and value FR (France)
+
     #>
 
     Param(
@@ -57,6 +63,8 @@ function Add-FGTFirewallAddress {
         [ipaddress]$startip,
         [Parameter (Mandatory = $false, ParameterSetName = "iprange")]
         [ipaddress]$endip,
+        [Parameter (Mandatory = $false, ParameterSetName = "geo")]
+        [string]$country,
         [Parameter (Mandatory = $false)]
         [string]$interface,
         [Parameter (Mandatory = $false)]
@@ -106,6 +114,10 @@ function Add-FGTFirewallAddress {
             "fqdn" {
                 $address | add-member -name "type" -membertype NoteProperty -Value "fqdn"
                 $address | add-member -name "fqdn" -membertype NoteProperty -Value $fqdn
+            }
+            "geo" {
+                $address | add-member -name "type" -membertype NoteProperty -Value "geography"
+                $address | add-member -name "country" -membertype NoteProperty -Value $country
             }
             default { }
         }
