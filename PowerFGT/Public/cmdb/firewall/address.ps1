@@ -63,7 +63,7 @@ function Add-FGTFirewallAddress {
         [ipaddress]$startip,
         [Parameter (Mandatory = $false, ParameterSetName = "iprange")]
         [ipaddress]$endip,
-        [Parameter (Mandatory = $false, ParameterSetName = "geo")]
+        [Parameter (Mandatory = $false, ParameterSetName = "geography")]
         [string]$country,
         [Parameter (Mandatory = $false)]
         [string]$interface,
@@ -115,7 +115,7 @@ function Add-FGTFirewallAddress {
                 $address | add-member -name "type" -membertype NoteProperty -Value "fqdn"
                 $address | add-member -name "fqdn" -membertype NoteProperty -Value $fqdn
             }
-            "geo" {
+            "geography" {
                 $address | add-member -name "type" -membertype NoteProperty -Value "geography"
                 $address | add-member -name "country" -membertype NoteProperty -Value $country
             }
@@ -391,7 +391,7 @@ function Set-FGTFirewallAddress {
         [ipaddress]$startip,
         [Parameter (Mandatory = $false, ParameterSetName = "iprange")]
         [ipaddress]$endip,
-        [Parameter (Mandatory = $false, ParameterSetName = "geo")]
+        [Parameter (Mandatory = $false, ParameterSetName = "geography")]
         [string]$country,
         [Parameter (Mandatory = $false)]
         [string]$interface,
@@ -466,7 +466,7 @@ function Set-FGTFirewallAddress {
                     $_address | add-member -name "fqdn" -membertype NoteProperty -Value $fqdn
                 }
             }
-            "geo" {
+            "geography" {
                 if ( $PsBoundParameters.ContainsKey('country') ) {
                     $_address | add-member -name "country" -membertype NoteProperty -Value $country
                 }
