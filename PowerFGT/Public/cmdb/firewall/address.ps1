@@ -366,6 +366,12 @@ function Set-FGTFirewallAddress {
 
         Change MyFGTAddress to set a new endip (iprange) 192.0.2.200
 
+        .EXAMPLE
+        $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
+        PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -country FR
+
+        Change MyFGTAddress to set a new country (geo) FR (France)
+
     #>
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium', DefaultParameterSetName = 'default')]
@@ -385,6 +391,8 @@ function Set-FGTFirewallAddress {
         [ipaddress]$startip,
         [Parameter (Mandatory = $false, ParameterSetName = "iprange")]
         [ipaddress]$endip,
+        [Parameter (Mandatory = $false, ParameterSetName = "geo")]
+        [string]$country,
         [Parameter (Mandatory = $false)]
         [string]$interface,
         [Parameter (Mandatory = $false)]
@@ -456,6 +464,11 @@ function Set-FGTFirewallAddress {
             "fqdn" {
                 if ( $PsBoundParameters.ContainsKey('fqdn') ) {
                     $_address | add-member -name "fqdn" -membertype NoteProperty -Value $fqdn
+                }
+            }
+            "geo" {
+                if ( $PsBoundParameters.ContainsKey('country') ) {
+                    $_address | add-member -name "country" -membertype NoteProperty -Value $country
                 }
             }
             default { }
