@@ -250,7 +250,7 @@ or delete it `Remove-FGTFirewallAddress`.
     Performing the operation "Remove Firewall Address" on target "MyNetwork".
     [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"):Y
 
-#You can also create other address type like fqdn or iprange
+#You can also create other address type like fqdn, iprange or geography
 
 # Create an address (type fqdn)
     Add-FGTFirewallAddress -Name FortiPower -fqdn fortipower.github.io
@@ -305,6 +305,26 @@ or delete it `Remove-FGTFirewallAddress`.
     filter               : 
     sdn-addr-type        : private
     obj-id               : 
+    list                 : {}
+    tagging              : {}
+    allow-routing        : disable
+
+# Create an address (type geography)
+    Add-FGTFirewallAddress -name MyCountry -country FR
+
+    name                 : MyCountry
+    q_origin_key         : MyCountry
+    uuid                 : 7cca6b06-f8ab-51ec-8db4-a82384435e50
+    type                 : geography
+    country              : FR
+    cache-ttl            : 0
+    sdn                  :
+    comment              :
+    visibility           : enable
+    associated-interface :
+    color                : 0
+    filter               :
+    obj-id               :
     list                 : {}
     tagging              : {}
     allow-routing        : disable
