@@ -1217,7 +1217,7 @@ If you have a REST API administrator account setup, you can connect with the API
 Connect-FGT 192.0.2.1 -ApiToken "yourtoken"
 ```
 
-You can use API Token with HTTPS (or HTTPS with FortiOS > 7.0.x but not recommended)
+You can use API Token with HTTPS (or HTTP with FortiOS > 7.0.x but not recommended)
 
 A REST API administrator account can be setup using the following FortiOS CLI commands:
 
