@@ -15,5 +15,14 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      Get-Module -ListAvailable
+      cd Tests
+      Copy-Item credential.ci.ps1 credential.ps1
+      cd integration
+      Write-Warning $env:LOGIN
+      Write-Warning "test"
+      Invoke-Pester *
     pwsh: true
+  env:
+    LOGIN: $(LOGIN)
+    IPADDRESS: $(IPADDRESS)
+    PASSWORD: $(PASSWORD)
