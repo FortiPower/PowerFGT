@@ -59,13 +59,13 @@ Describe "Set System Global" {
         $sg.'admintimeout' | Should -Be "480"
     }
 
-    It "Change admin_port (HTTP)" -Skip:($httpOnly) {
+    It "Change admin_port (HTTP)" -Skip:($httpOnly -or $ci) {
         Set-FGTSystemGlobal -admin_port 8080
         $sg = Get-FGTSystemGlobal
         $sg.'admin-port' | Should -Be "8080"
     }
 
-    It "Change admin_sport (HTTPS)" -Skip:($httpOnly -eq $false -or $fgt_version -le "7.0.0" ) {
+    It "Change admin_sport (HTTPS)" -Skip:($httpOnly -eq $false -or $fgt_version -le "7.0.0" -or $ci) {
         Set-FGTSystemGlobal -admin_sport 8443
         $sg = Get-FGTSystemGlobal
         $sg.'admin-sport' | Should -Be "8443"
