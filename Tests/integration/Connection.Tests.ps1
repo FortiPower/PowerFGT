@@ -60,7 +60,7 @@ Describe "Connect to a fortigate (using HTTPS)" {
     #This test only work with PowerShell 6 / Core (-SkipCertificateCheck don't change global variable but only Invoke-WebRequest/RestMethod)
     #This test will be fail, if there is valid certificate...
     It "Connect to a FortiGate (using HTTPS) and check global variable" -Skip:("Desktop" -eq $PSEdition -Or $httpOnly) {
-        { Connect-FGT $ipaddress -Username $login -password $mysecpassword } | Should throw "Unable to connect (certificate)"
+        { Connect-FGT $ipaddress -Username $login -password $mysecpassword } | Should -throw "Unable to connect (certificate)"
     }
 
     It "Connect to a FortiGate (using HTTPS) with wrong password" -Skip:($httpOnly) {
