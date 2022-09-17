@@ -55,14 +55,14 @@ if ($httpOnly) {
     if ($null -eq $port) {
         $script:port = '80'
     }
-    $invokeParams.add('httpOnly', $true)
 }
 else {
     if ($null -eq $port) {
         $script:port = '443'
     }
-    $invokeParams.add('SkipCertificateCheck', $true)
 }
+$invokeParams.add('SkipCertificateCheck', $SkipCertificateCheck)
+$invokeParams.add('httpOnly', $httpOnly)
 $invokeParams.add('port', $port)
 
 #Make a connection for check info and store version (used for some test...)

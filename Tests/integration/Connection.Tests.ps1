@@ -64,7 +64,7 @@ Describe "Connect to a fortigate (using HTTPS)" {
     }
 
     It "Connect to a FortiGate (using HTTPS) with wrong password" -Skip:($httpOnly) {
-        { Connect-FGT $ipaddress -Username $login -password $mywrongpassword -port $port } | Should -throw "Log in failure. Most likely an incorrect username/password combo"
+        { Connect-FGT $ipaddress -Username $login -password $mywrongpassword -port $port -SkipCertificateCheck:$SkipCertificateCheck } | Should -throw "Log in failure. Most likely an incorrect username/password combo"
     }
 
     It "Connect to a Fortigate (using HTTPS) with apiToken" -Skip:($apitoken -eq $null -Or $httpOnly) {
@@ -96,8 +96,9 @@ Describe "Connect to a FortiGate (with post-login-banner enable)" {
         $fgt.session | Should -Not -BeNullOrEmpty
         $fgt.server | Should -Be $ipaddress
         $fgt.invokeParams | Should -Not -BeNullOrEmpty
+        $fgt.invokeParams.SkipCertificateCheck | Should -Be $invokeParams.SkipCertificateCheck
         $fgt.port | Should -Be $port
-        $fgt.httpOnly | Should -Be $true
+        $fgt.httpOnly | Should -Be $invokeParams.httpOnly
         $fgt.session | Should -Not -BeNullOrEmpty
         $fgt.headers | Should -Not -BeNullOrEmpty
         $fgt.version | Should -Not -BeNullOrEmpty
@@ -119,13 +120,14 @@ Describe "Connect to a FortiGate (with post-login-banner enable)" {
 
 Describe "Connect to a FortiGate (using multi connection)" {
     It "Connect to a FortiGate (using HTTPS and store on fgt variable)" {
-        $script:fgt = Connect-FGT $ipaddress -Username $login -password $mysecpassword -httpOnly -SkipCertificate -DefaultConnection:$false -port $port
+        $script:fgt = Connect-FGT @invokeParams -DefaultConnection:$false
         $DefaultFGTConnection | Should -BeNullOrEmpty
         $fgt.session | Should -Not -BeNullOrEmpty
         $fgt.server | Should -Be $ipaddress
         $fgt.invokeParams | Should -Not -BeNullOrEmpty
+        $fgt.invokeParams.SkipCertificateCheck | Should -Be $invokeParams.SkipCertificateCheck
         $fgt.port | Should -Be $port
-        $fgt.httpOnly | Should -Be $true
+        $fgt.httpOnly | Should -Be $invokeParams.httpOnly
         $fgt.session | Should -Not -BeNullOrEmpty
         $fgt.headers | Should -Not -BeNullOrEmpty
         $fgt.version | Should -Not -BeNullOrEmpty
