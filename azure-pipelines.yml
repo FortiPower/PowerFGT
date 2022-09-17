@@ -15,6 +15,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
+      import-module ./PowerFGT
       cd Tests
       Copy-Item credential.ci.ps1 credential.ps1
       cd integration
