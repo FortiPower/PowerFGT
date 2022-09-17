@@ -10,6 +10,7 @@ $script:ipaddress = $env:IPADDRESS
 $script:login = $env:LOGIN
 $script:password = $env:PASSWORD
 $script:httpOnly = $false
+$script:SkipCertificateCheck = $true
 $script:ci = $true
 #$script:port = "80"
 #$script:apitoken = "yourtoken"
