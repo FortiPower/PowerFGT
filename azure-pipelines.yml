@@ -19,11 +19,16 @@ steps:
       cd Tests
       Copy-Item credential.ci.ps1 credential.ps1
       cd integration
-      Write-Warning $env:LOGIN
-      Write-Warning "test"
-      Invoke-Pester *
+      Invoke-Pester * -CI
     pwsh: true
   env:
     LOGIN: $(LOGIN)
     IPADDRESS: $(IPADDRESS)
     PASSWORD: $(PASSWORD)
+  displayname: "Test PowerShell Core FortiOS 7.2"
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'NUnit'
+    testResultsFiles: 'Tests/integration/*.xml'
+    failTaskOnFailedTests: true
