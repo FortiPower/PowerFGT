@@ -6,7 +6,7 @@
 . ../common.ps1
 
 Describe  "Connect to a FortiGate (using HTTP)" {
-    It "Connect to a FortiGate (using HTTP) and check global variable" {
+    It "Connect to a FortiGate (using HTTP) and check global variable" -Skip:( -not $httpOnly ) {
         Connect-FGT $ipaddress -Username $login -password $mysecpassword -httpOnly -port $port
         $DefaultFGTConnection | Should -Not -BeNullOrEmpty
         $DefaultFGTConnection.server | Should -Be $ipaddress
@@ -18,11 +18,11 @@ Describe  "Connect to a FortiGate (using HTTP)" {
         $DefaultFGTConnection.version | Should -Not -BeNullOrEmpty
         $DefaultFGTConnection.serial | Should -Not -BeNullOrEmpty
     }
-    It "Disconnect to a FortiGate (using HTTP) and check global variable" {
+    It "Disconnect to a FortiGate (using HTTP) and check global variable" -Skip:( -not $httpOnly ){
         Disconnect-FGT -confirm:$false
         $DefaultFGTConnection | Should -Be $null
     }
-    It "Connect to a FortiGate (using HTTP) with wrong password" {
+    It "Connect to a FortiGate (using HTTP) with wrong password" -Skip:( -not $httpOnly ) {
         { Connect-FGT $ipaddress -Username $login -password $mywrongpassword -httpOnly -port $port } | Should -throw "Log in failure. Most likely an incorrect username/password combo"
     }
     #TODO: Connect using MFA (token) and/or need to change password (admin expiration)
