@@ -83,6 +83,23 @@ stages:
   - job:
     pool:
       vmImage: 'ubuntu-latest'
+    strategy:
+      matrix:
+        FortiOS60:
+           name: "FortiOS 6.0"
+           IPADDRESS: $(IPADDRESS_60)
+        FortiOS62:
+           name: "FortiOS 6.2"
+           IPADDRESS: $(IPADDRESS_62)
+        FortiOS64:
+           name: "FortiOS 6.4"
+           IPADDRESS: $(IPADDRESS_64)
+        FortiOS70:
+           name: "FortiOS 7.0"
+           IPADDRESS: $(IPADDRESS_70)
+        FortiOS72:
+           name: "FortiOS 7.2"
+           IPADDRESS: $(IPADDRESS_72)
     steps:
     - task: PowerShell@2
       displayName: "Test PowerShell Core FortiOS 7.2"
