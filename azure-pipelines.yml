@@ -7,54 +7,116 @@
 trigger:
 - main
 
-pool:
-  vmImage: 'windows-latest'
+stages:
+- stage: Windows
+  jobs:
+  - job:
+    pool:
+      vmImage: 'windows-latest'
+    strategy:
+      matrix:
+        FortiOS70:
+           name: "FortiOS 7.0"
+           IPADDRESS: $(IPADDRESS_70)
+        FortiOS72:
+           name: "FortiOS 7.2"
+           IPADDRESS: $(IPADDRESS_72)
+    steps:
+    - task: PowerShell@2
+      displayName: "Test PowerShell Core $(name)"
+      inputs:
+        targetType: 'inline'
+        script: |
+          import-module ./PowerFGT
+          $PesterConfig = New-PesterConfiguration
+          $PesterConfig.TestResult.OutputFormat = "NUnitXml"
+          $PesterConfig.TestResult.OutputPath = "Test-pwsh-Forti72.xml"
+          $PesterConfig.TestResult.Enabled = $True
+          $PesterConfig.Output.Verbosity = "Detailed"
+          cd Tests
+          Copy-Item credential.ci.ps1 credential.ps1
+          cd integration
+          Invoke-Pester -Configuration $PesterConfig
+        pwsh: true
+      env:
+        LOGIN: $(LOGIN)
+        IPADDRESS: $(IPADDRESS)
+        PASSWORD: $(PASSWORD)
+    - task: PowerShell@2
+      displayName: "Test PowerShell 5 $(name"
+      inputs:
+        targetType: 'inline'
+        script: |
+          import-module ./PowerFGT
+          $PesterConfig = New-PesterConfiguration
+          $PesterConfig.TestResult.OutputFormat = "NUnitXml"
+          $PesterConfig.TestResult.OutputPath = "Test-powershell-Forti72.xml"
+          $PesterConfig.TestResult.Enabled = $True
+          $PesterConfig.Output.Verbosity = "Detailed"
+          cd Tests
+          Copy-Item credential.ci.ps1 credential.ps1
+          cd integration
+          Invoke-Pester -Configuration $PesterConfig
+        pwsh: false
+      env:
+        LOGIN: $(LOGIN)
+        IPADDRESS: $(IPADDRESS)
+        PASSWORD: $(PASSWORD)
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'NUnit'
+        testResultsFiles: 'Tests/integration/*.xml'
+        failTaskOnFailedTests: true
 
-steps:
-- task: PowerShell@2
-  inputs:
-    targetType: 'inline'
-    script: |
-      import-module ./PowerFGT
-      $PesterConfig = New-PesterConfiguration
-      $PesterConfig.TestResult.OutputFormat = "NUnitXml"
-      $PesterConfig.TestResult.OutputPath = "Test-pwsh-Forti72.xml"
-      $PesterConfig.TestResult.Enabled = $True
-      $PesterConfig.Output.Verbosity = "Detailed"
-      cd Tests
-      Copy-Item credential.ci.ps1 credential.ps1
-      cd integration
-      Invoke-Pester -Configuration $PesterConfig
-    pwsh: true
-  env:
-    LOGIN: $(LOGIN)
-    IPADDRESS: $(IPADDRESS)
-    PASSWORD: $(PASSWORD)
-  displayName: "Test PowerShell Core FortiOS 7.2"
-
-- task: PowerShell@2
-  inputs:
-    targetType: 'inline'
-    script: |
-      import-module ./PowerFGT
-      $PesterConfig = New-PesterConfiguration
-      $PesterConfig.TestResult.OutputFormat = "NUnitXml"
-      $PesterConfig.TestResult.OutputPath = "Test-Forti72.xml"
-      $PesterConfig.TestResult.Enabled = $True
-      $PesterConfig.Output.Verbosity = "Detailed"
-      cd Tests
-      Copy-Item credential.ci.ps1 credential.ps1
-      cd integration
-      Invoke-Pester -Configuration $PesterConfig
-    pwsh: false
-  env:
-    LOGIN: $(LOGIN)
-    IPADDRESS: $(IPADDRESS)
-    PASSWORD: $(PASSWORD)
-  displayName: "Test PowerShell Core FortiOS 7.2"
-
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'NUnit'
-    testResultsFiles: 'Tests/integration/*.xml'
-    failTaskOnFailedTests: true
+- stage: Ubuntu
+  dependsOn: Windows
+  jobs:
+  - job:
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: PowerShell@2
+      displayName: "Test PowerShell Core FortiOS 7.2"
+      inputs:
+        targetType: 'inline'
+        script: |
+          import-module ./PowerFGT
+          $PesterConfig = New-PesterConfiguration
+          $PesterConfig.TestResult.OutputFormat = "NUnitXml"
+          $PesterConfig.TestResult.OutputPath = "Test-pwsh-Forti72.xml"
+          $PesterConfig.TestResult.Enabled = $True
+          $PesterConfig.Output.Verbosity = "Detailed"
+          cd Tests
+          Copy-Item credential.ci.ps1 credential.ps1
+          cd integration
+          Invoke-Pester -Configuration $PesterConfig
+        pwsh: true
+      env:
+        LOGIN: $(LOGIN)
+        IPADDRESS: $(IPADDRESS)
+        PASSWORD: $(PASSWORD)
+    - task: PowerShell@2
+      displayName: "Test PowerShell 5 FortiOS 7.2"
+      inputs:
+        targetType: 'inline'
+        script: |
+          import-module ./PowerFGT
+          $PesterConfig = New-PesterConfiguration
+          $PesterConfig.TestResult.OutputFormat = "NUnitXml"
+          $PesterConfig.TestResult.OutputPath = "Test-powershell-Forti72.xml"
+          $PesterConfig.TestResult.Enabled = $True
+          $PesterConfig.Output.Verbosity = "Detailed"
+          cd Tests
+          Copy-Item credential.ci.ps1 credential.ps1
+          cd integration
+          Invoke-Pester -Configuration $PesterConfig
+        pwsh: true
+      env:
+        LOGIN: $(LOGIN)
+        IPADDRESS: $(IPADDRESS)
+        PASSWORD: $(PASSWORD)
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'NUnit'
+        testResultsFiles: 'Tests/integration/*.xml'
+        failTaskOnFailedTests: true
