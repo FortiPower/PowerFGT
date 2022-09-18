@@ -24,7 +24,7 @@ steps:
       cd Tests
       Copy-Item credential.ci.ps1 credential.ps1
       cd integration
-      Invoke-Pester -Configuration $PesterConfig -CI *
+      Invoke-Pester -Configuration $PesterConfig
     pwsh: true
   env:
     LOGIN: $(LOGIN)
