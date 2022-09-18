@@ -96,7 +96,7 @@ Describe "Connect to a FortiGate (with post-login-banner enable)" {
         $fgt.session | Should -Not -BeNullOrEmpty
         $fgt.server | Should -Be $ipaddress
         $fgt.invokeParams | Should -Not -BeNullOrEmpty
-        $fgt.invokeParams.SkipCertificateCheck | Should -Be $invokeParams.SkipCertificateCheck
+        #$fgt.invokeParams.SkipCertificateCheck | Should -Be $invokeParams.SkipCertificateCheck
         $fgt.port | Should -Be $port
         $fgt.httpOnly | Should -Be $invokeParams.httpOnly
         $fgt.session | Should -Not -BeNullOrEmpty
@@ -125,7 +125,7 @@ Describe "Connect to a FortiGate (using multi connection)" {
         $fgt.session | Should -Not -BeNullOrEmpty
         $fgt.server | Should -Be $ipaddress
         $fgt.invokeParams | Should -Not -BeNullOrEmpty
-        $fgt.invokeParams.SkipCertificateCheck | Should -Be $invokeParams.SkipCertificateCheck
+        #$fgt.invokeParams.SkipCertificateCheck | Should -Be $invokeParams.SkipCertificateCheck
         $fgt.port | Should -Be $port
         $fgt.httpOnly | Should -Be $invokeParams.httpOnly
         $fgt.session | Should -Not -BeNullOrEmpty
