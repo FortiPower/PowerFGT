@@ -102,7 +102,7 @@ stages:
            IPADDRESS: $(IPADDRESS_72)
     steps:
     - task: PowerShell@2
-      displayName: "Test PowerShell Core FortiOS 7.2"
+      displayName: "Test PowerShell Core $(name)"
       inputs:
         targetType: 'inline'
         script: |
