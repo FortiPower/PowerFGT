@@ -39,7 +39,7 @@ stages:
           import-module ./PowerFGT
           $PesterConfig = New-PesterConfiguration
           $PesterConfig.TestResult.OutputFormat = "NUnitXml"
-          $PesterConfig.TestResult.OutputPath = "Test-pwsh-Forti72.xml"
+          $PesterConfig.TestResult.OutputPath = "Test-pwsh.xml"
           $PesterConfig.TestResult.Enabled = $True
           $PesterConfig.Output.Verbosity = "Detailed"
           cd Tests
@@ -59,7 +59,7 @@ stages:
           import-module ./PowerFGT
           $PesterConfig = New-PesterConfiguration
           $PesterConfig.TestResult.OutputFormat = "NUnitXml"
-          $PesterConfig.TestResult.OutputPath = "Test-powershell-Forti72.xml"
+          $PesterConfig.TestResult.OutputPath = "Test-powershell.xml"
           $PesterConfig.TestResult.Enabled = $True
           $PesterConfig.Output.Verbosity = "Detailed"
           cd Tests
@@ -109,7 +109,7 @@ stages:
           import-module ./PowerFGT
           $PesterConfig = New-PesterConfiguration
           $PesterConfig.TestResult.OutputFormat = "NUnitXml"
-          $PesterConfig.TestResult.OutputPath = "Test-pwsh-Forti72.xml"
+          $PesterConfig.TestResult.OutputPath = "Test-pwsh.xml"
           $PesterConfig.TestResult.Enabled = $True
           $PesterConfig.Output.Verbosity = "Detailed"
           cd Tests
