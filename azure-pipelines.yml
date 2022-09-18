@@ -43,7 +43,7 @@ stages:
         IPADDRESS: $(IPADDRESS)
         PASSWORD: $(PASSWORD)
     - task: PowerShell@2
-      displayName: "Test PowerShell 5 $(name"
+      displayName: "Test PowerShell 5 $(name)"
       inputs:
         targetType: 'inline'
         script: |
@@ -110,7 +110,7 @@ stages:
           Copy-Item credential.ci.ps1 credential.ps1
           cd integration
           Invoke-Pester -Configuration $PesterConfig
-        pwsh: true
+        pwsh: false
       env:
         LOGIN: $(LOGIN)
         IPADDRESS: $(IPADDRESS)
