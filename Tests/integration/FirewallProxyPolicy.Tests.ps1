@@ -456,6 +456,10 @@ Describe "Add Firewall Proxy Policy" {
     Context "explicit-web" {
 
         BeforeAll {
+            #Enable Proxy inspection mode (< 6.2.0)
+            if ($fgt_version -lt "6.2.0") {
+                Set-FGTSystemSettings -inspection_mode proxy
+            }
             #Enable Explicit Proxy
             Invoke-FGTRestMethod api/v2/cmdb/web-proxy/explicit -method PUT -body @{ 'status' = 'enable' }
         }
@@ -782,6 +786,10 @@ Describe "Add Firewall Proxy Policy" {
         AfterAll {
             #Disable Explicit Proxy
             Invoke-FGTRestMethod api/v2/cmdb/web-proxy/explicit -method PUT -body @{ 'status' = 'disable' }
+            #Disable Proxy inspection mode (< 6.2.0)
+            if ($fgt_version -lt "6.2.0") {
+                Set-FGTSystemSettings -inspection_mode flow
+            }
         }
 
     }
@@ -809,6 +817,10 @@ Describe "Remove Firewall Proxy Policy" {
     Context "explicit-web" {
 
         BeforeAll {
+            #Enable Proxy inspection mode (< 6.2.0)
+            if ($fgt_version -lt "6.2.0") {
+                Set-FGTSystemSettings -inspection_mode proxy
+            }
             #Enable Explicit Proxy
             Invoke-FGTRestMethod api/v2/cmdb/web-proxy/explicit -method PUT -body @{ 'status' = 'enable' }
         }
@@ -828,6 +840,10 @@ Describe "Remove Firewall Proxy Policy" {
         AfterAll {
             #Disable Explicit Proxy
             Invoke-FGTRestMethod api/v2/cmdb/web-proxy/explicit -method PUT -body @{ 'status' = 'disable' }
+            #Disable Proxy inspection mode (< 6.2.0)
+            if ($fgt_version -lt "6.2.0") {
+                Set-FGTSystemSettings -inspection_mode flow
+            }
         }
 
     }
