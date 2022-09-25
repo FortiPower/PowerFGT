@@ -5,7 +5,7 @@
 # https://aka.ms/yaml
 
 trigger:
-- main
+- master
 
 - stage: Ubuntu
   jobs:
