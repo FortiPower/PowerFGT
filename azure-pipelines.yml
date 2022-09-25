@@ -7,6 +7,55 @@
 trigger:
 - main
 
+- stage: Ubuntu
+  jobs:
+  - job:
+    pool:
+      vmImage: 'ubuntu-latest'
+    strategy:
+      matrix:
+        FortiOS60:
+           name: "FortiOS 6.0"
+           IPADDRESS: $(IPADDRESS_60)
+        FortiOS62:
+           name: "FortiOS 6.2"
+           IPADDRESS: $(IPADDRESS_62)
+        FortiOS64:
+           name: "FortiOS 6.4"
+           IPADDRESS: $(IPADDRESS_64)
+        FortiOS70:
+           name: "FortiOS 7.0"
+           IPADDRESS: $(IPADDRESS_70)
+        FortiOS72:
+           name: "FortiOS 7.2"
+           IPADDRESS: $(IPADDRESS_72)
+    steps:
+    - task: PowerShell@2
+      displayName: "Test PowerShell Core $(name)"
+      inputs:
+        targetType: 'inline'
+        script: |
+          import-module ./PowerFGT
+          $PesterConfig = New-PesterConfiguration
+          $PesterConfig.TestResult.OutputFormat = "NUnitXml"
+          $PesterConfig.TestResult.OutputPath = "Test-pwsh.xml"
+          $PesterConfig.TestResult.Enabled = $True
+          $PesterConfig.Output.Verbosity = "Detailed"
+          cd Tests
+          Copy-Item credential.ci.ps1 credential.ps1
+          cd integration
+          Invoke-Pester -Configuration $PesterConfig
+        pwsh: true
+      env:
+        LOGIN: $(LOGIN)
+        IPADDRESS: $(IPADDRESS)
+        PASSWORD: $(PASSWORD)
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'NUnit'
+        testResultsFiles: 'Tests/integration/*.xml'
+        failTaskOnFailedTests: true
+
 stages:
 - stage: Windows
   dependsOn: Ubuntu
@@ -68,55 +117,6 @@ stages:
           cd integration
           Invoke-Pester -Configuration $PesterConfig
         pwsh: false
-      env:
-        LOGIN: $(LOGIN)
-        IPADDRESS: $(IPADDRESS)
-        PASSWORD: $(PASSWORD)
-    - task: PublishTestResults@2
-      inputs:
-        testResultsFormat: 'NUnit'
-        testResultsFiles: 'Tests/integration/*.xml'
-        failTaskOnFailedTests: true
-
-- stage: Ubuntu
-  jobs:
-  - job:
-    pool:
-      vmImage: 'ubuntu-latest'
-    strategy:
-      matrix:
-        FortiOS60:
-           name: "FortiOS 6.0"
-           IPADDRESS: $(IPADDRESS_60)
-        FortiOS62:
-           name: "FortiOS 6.2"
-           IPADDRESS: $(IPADDRESS_62)
-        FortiOS64:
-           name: "FortiOS 6.4"
-           IPADDRESS: $(IPADDRESS_64)
-        FortiOS70:
-           name: "FortiOS 7.0"
-           IPADDRESS: $(IPADDRESS_70)
-        FortiOS72:
-           name: "FortiOS 7.2"
-           IPADDRESS: $(IPADDRESS_72)
-    steps:
-    - task: PowerShell@2
-      displayName: "Test PowerShell Core $(name)"
-      inputs:
-        targetType: 'inline'
-        script: |
-          import-module ./PowerFGT
-          $PesterConfig = New-PesterConfiguration
-          $PesterConfig.TestResult.OutputFormat = "NUnitXml"
-          $PesterConfig.TestResult.OutputPath = "Test-pwsh.xml"
-          $PesterConfig.TestResult.Enabled = $True
-          $PesterConfig.Output.Verbosity = "Detailed"
-          cd Tests
-          Copy-Item credential.ci.ps1 credential.ps1
-          cd integration
-          Invoke-Pester -Configuration $PesterConfig
-        pwsh: true
       env:
         LOGIN: $(LOGIN)
         IPADDRESS: $(IPADDRESS)
