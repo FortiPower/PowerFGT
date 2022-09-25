@@ -9,6 +9,7 @@ trigger:
 
 stages:
 - stage: Windows
+  dependsOn: Ubuntu
   jobs:
   - job:
     pool:
@@ -78,7 +79,6 @@ stages:
         failTaskOnFailedTests: true
 
 - stage: Ubuntu
-  dependsOn: Windows
   jobs:
   - job:
     pool:
@@ -128,7 +128,7 @@ stages:
         failTaskOnFailedTests: true
 
 # - stage: macOS
-#   dependsOn: Ubuntu
+#   dependsOn: Windows
 #   jobs:
 #   - job:
 #     pool:
