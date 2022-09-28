@@ -480,143 +480,204 @@ Describe "Add System Interface" {
 
 }
 
-Describe "Add System Interface Member" {
+$type = @(
+    @{ "type" = "vlan" }
+    @{ "type" = "aggregate_lacp" }
+    @{ "type" = "aggregate_static" }
+)
 
-    BeforeEach {
-        Add-FGTSystemInterface -name $pester_int1 -interface $pester_port1 -vlan_id $pester_vlanid1
-    }
+Describe "Add System Interface Member" -ForEach $type {
 
-    It "Add System Interface Member (HTTPS)" {
-        Get-FGTSystemInterface -name $pester_int1 | Add-FGTSystemInterfaceMember -allowaccess https
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.allowaccess | Should -Be "https"
-    }
+    Context "Add System Interface $($_.type) Member" {
 
-    It "Add System Interface Member (SSH) with before HTTPS" {
-        Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -allowaccess https
-        Get-FGTSystemInterface -name $pester_int1 | Add-FGTSystemInterfaceMember -allowaccess ssh
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.allowaccess | Should -Be "https ssh"
-    }
+        BeforeEach {
+            switch ($_.type) {
+                "vlan" {
+                    Add-FGTSystemInterface -name $pester_int1 -interface $pester_port1 -vlan_id $pester_vlanid1
+                }
+                "aggregate_lacp" {
+                    Add-FGTSystemInterface -name $pester_int1 -atype lacp -member $pester_port1, $pester_port2
+                }
+                "aggregate_static" {
+                    Add-FGTSystemInterface -name $pester_int1 -atype static -member $pester_port1, $pester_port2
+                }
+            }
+        }
 
-    AfterEach {
-        Get-FGTSystemInterface -name $pester_int1 | Remove-FGTSystemInterface -Confirm:$false
-    }
-}
+        It "Add System Interface Member (HTTPS)" -TestCases $_ {
+            Get-FGTSystemInterface -name $pester_int1 | Add-FGTSystemInterfaceMember -allowaccess https
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.allowaccess | Should -Be "https"
+        }
 
-Describe "Set System Interface" {
+        It "Add System Interface Member (SSH) with before HTTPS" -TestCases $_ {
+            Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -allowaccess https
+            Get-FGTSystemInterface -name $pester_int1 | Add-FGTSystemInterfaceMember -allowaccess ssh
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.allowaccess | Should -Be "https ssh"
+        }
 
-    BeforeAll {
-        Add-FGTSystemInterface -name $pester_int1 -interface $pester_port1 -vlan_id $pester_vlanid1
-    }
-
-    It "Set System Interface alias" {
-        Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -alias Set_$pester_int1
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.alias | Should -Be "Set_$pester_int1"
-    }
-
-    It "Set System Interface role" {
-        Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -role dmz
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.role | Should -Be "dmz"
-    }
-
-    It "Set System Interface IP (and Netmask)" {
-        Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -ip 192.0.2.1 -netmask 255.255.255.0
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.ip | Should -Be "192.0.2.1 255.255.255.0"
-    }
-
-    It "Set System Interface status (up)" {
-        Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -status down
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.status | Should -Be "down"
-    }
-
-    It "Set System Interface status (down)" {
-        Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -status up
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.status | Should -Be "up"
-    }
-
-    It "Set System Interface device-identification enabled" {
-        Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -device_identification $true
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface."device-identification" | Should -Be "enable"
-    }
-
-    It "Set System Interface device-identification disabled" {
-        Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -device_identification $false
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface."device-identification" | Should -Be "disable"
-    }
-
-    It "Set System Interface mode (DHCP)" {
-        Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -mode dhcp
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.mode | Should -Be "dhcp"
-    }
-
-    It "Set System Interface Administrative Access (HTTPS, SSH)" {
-        Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -allowaccess https, ssh
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.allowaccess | Should -Be "https ssh"
-    }
-
-    It "Set System Interface DHCP Relay" {
-        Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -dhcprelayip "192.0.2.1", "192.0.2.2"
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.'dhcp-relay-ip' | Should -Be '"192.0.2.1" "192.0.2.2" '
-        $interface.'dhcp-relay-service' | Should -Be "enable"
-    }
-
-    It "Set System Interface DHCP Relay then remove" {
-        Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -dhcprelayip "192.0.2.1", "192.0.2.2"
-        Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -dhcprelayip $null
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.'dhcp-relay-service' | Should -Be "disable"
-    }
-
-    AfterAll {
-        Get-FGTSystemInterface -name $pester_int1 | Remove-FGTSystemInterface -Confirm:$false
-    }
-}
-
-Describe "Remove System Interface" {
-
-    BeforeEach {
-        Add-FGTSystemInterface -name $pester_int1 -interface $pester_port1 -vlan_id $pester_vlanid1
-    }
-
-    It "Remove System Interface by pipeline" {
-        Get-FGTSystemInterface -name $pester_int1 | Remove-FGTSystemInterface -confirm:$false
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface | Should -Be $NULL
+        AfterEach {
+            Get-FGTSystemInterface -name $pester_int1 | Remove-FGTSystemInterface -Confirm:$false
+        }
     }
 
 }
 
-Describe "Remove System Interface Member" {
 
-    BeforeEach {
-        Add-FGTSystemInterface -name $pester_int1 -interface $pester_port1 -vlan_id $pester_vlanid1 -allowacces ssh, https
+Describe "Set System Interface" -ForEach $type {
+
+    Context "Set System Interface $($_.type)" {
+
+        BeforeAll {
+            switch ($_.type) {
+                "vlan" {
+                    Add-FGTSystemInterface -name $pester_int1 -interface $pester_port1 -vlan_id $pester_vlanid1
+                }
+                "aggregate_lacp" {
+                    Add-FGTSystemInterface -name $pester_int1 -atype lacp -member $pester_port1, $pester_port2
+                }
+                "aggregate_static" {
+                    Add-FGTSystemInterface -name $pester_int1 -atype static -member $pester_port1, $pester_port2
+                }
+            }
+        }
+
+        It "Set System Interface alias" {
+            Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -alias Set_$pester_int1
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.alias | Should -Be "Set_$pester_int1"
+        }
+
+        It "Set System Interface role" {
+            Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -role dmz
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.role | Should -Be "dmz"
+        }
+
+        It "Set System Interface IP (and Netmask)" {
+            Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -ip 192.0.2.1 -netmask 255.255.255.0
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.ip | Should -Be "192.0.2.1 255.255.255.0"
+        }
+
+        It "Set System Interface status (up)" {
+            Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -status down
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.status | Should -Be "down"
+        }
+
+        It "Set System Interface status (down)" {
+            Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -status up
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.status | Should -Be "up"
+        }
+
+        It "Set System Interface device-identification enabled" {
+            Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -device_identification $true
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface."device-identification" | Should -Be "enable"
+        }
+
+        It "Set System Interface device-identification disabled" {
+            Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -device_identification $false
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface."device-identification" | Should -Be "disable"
+        }
+
+        It "Set System Interface mode (DHCP)" {
+            Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -mode dhcp
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.mode | Should -Be "dhcp"
+        }
+
+        It "Set System Interface Administrative Access (HTTPS, SSH)" {
+            Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -allowaccess https, ssh
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.allowaccess | Should -Be "https ssh"
+        }
+
+        It "Set System Interface DHCP Relay" {
+            Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -dhcprelayip "192.0.2.1", "192.0.2.2"
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.'dhcp-relay-ip' | Should -Be '"192.0.2.1" "192.0.2.2" '
+            $interface.'dhcp-relay-service' | Should -Be "enable"
+        }
+
+        It "Set System Interface DHCP Relay then remove" {
+            Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -dhcprelayip "192.0.2.1", "192.0.2.2"
+            Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -dhcprelayip $null
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.'dhcp-relay-service' | Should -Be "disable"
+        }
+
+        AfterAll {
+            Get-FGTSystemInterface -name $pester_int1 | Remove-FGTSystemInterface -Confirm:$false
+        }
+
     }
+}
 
-    It "Remove System Interface Member (HTTPS)" {
-        Get-FGTSystemInterface -name $pester_int1 | Remove-FGTSystemInterfaceMember -allowaccess https
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.allowaccess | Should -Be "ssh"
+Describe "Remove System Interface" -ForEach $type {
+
+    Context "Remove System Interface $($_.type)" {
+
+        BeforeEach {
+            switch ($_.type) {
+                "vlan" {
+                    Add-FGTSystemInterface -name $pester_int1 -interface $pester_port1 -vlan_id $pester_vlanid1
+                }
+                "aggregate_lacp" {
+                    Add-FGTSystemInterface -name $pester_int1 -atype lacp -member $pester_port1, $pester_port2
+                }
+                "aggregate_static" {
+                    Add-FGTSystemInterface -name $pester_int1 -atype static -member $pester_port1, $pester_port2
+                }
+            }
+        }
+
+        It "Remove System Interface by pipeline" {
+            Get-FGTSystemInterface -name $pester_int1 | Remove-FGTSystemInterface -confirm:$false
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface | Should -Be $NULL
+        }
+
     }
+}
 
-    It "Remove System Interface Member (SSH and HTTPS)" {
-        Get-FGTSystemInterface -name $pester_int1 | Remove-FGTSystemInterfaceMember -allowaccess ssh, https
-        $interface = Get-FGTSystemInterface -name $pester_int1
-        $interface.allowaccess | Should -Be ""
-    }
+Describe "Remove System Interface Member" -ForEach $type {
 
-    AfterEach {
-        Get-FGTSystemInterface -name $pester_int1 | Remove-FGTSystemInterface -Confirm:$false
+    Context "Remove System Interface $($_.type) Member" {
+
+        BeforeEach {
+            switch ($_.type) {
+                "vlan" {
+                    Add-FGTSystemInterface -name $pester_int1 -interface $pester_port1 -vlan_id $pester_vlanid1 -allowacces ssh, https
+                }
+                "aggregate_lacp" {
+                    Add-FGTSystemInterface -name $pester_int1 -atype lacp -member $pester_port1, $pester_port2 -allowacces ssh, https
+                }
+                "aggregate_static" {
+                    Add-FGTSystemInterface -name $pester_int1 -atype static -member $pester_port1, $pester_port2 -allowacces ssh, https
+                }
+            }
+        }
+
+        It "Remove System Interface Member (HTTPS)" {
+            Get-FGTSystemInterface -name $pester_int1 | Remove-FGTSystemInterfaceMember -allowaccess https
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.allowaccess | Should -Be "ssh"
+        }
+
+        It "Remove System Interface Member (SSH and HTTPS)" {
+            Get-FGTSystemInterface -name $pester_int1 | Remove-FGTSystemInterfaceMember -allowaccess ssh, https
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.allowaccess | Should -Be ""
+        }
+
+        AfterEach {
+            Get-FGTSystemInterface -name $pester_int1 | Remove-FGTSystemInterface -Confirm:$false
+        }
     }
 }
 
