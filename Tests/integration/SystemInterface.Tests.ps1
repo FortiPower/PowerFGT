@@ -462,7 +462,7 @@ Describe "Add System Interface" {
             $interface.ip | Should -Be "192.0.2.1 255.255.255.0"
         }
 
-        It "Add Vlan System Interface (on lacp interface)" -TestCases $_ {
+        It "Add Vlan System Interface (on aggregate $($_.atype) interface)" -TestCases $_ {
             Add-FGTSystemInterface -name $pester_int1 -atype $_.atype -member $pester_port1, $pester_port2
             Add-FGTSystemInterface -name $pester_int2 -vlan $pester_vlanid1 -interface $pester_int1
             $interface = Get-FGTSystemInterface -name $pester_int2
