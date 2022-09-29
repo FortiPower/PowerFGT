@@ -68,7 +68,7 @@ $invokeParams.add('port', $port)
 
 #Make a connection for check info and store version (used for some test...)
 $fgt = Connect-FGT @invokeParams
-$fgt_version = $fgt.version
+$script:fgt_version = $fgt.version
 
 $VersionIs60WithNoHA = $false
 if ($fgt_version -lt [version]"6.2.0") {
