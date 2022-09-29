@@ -282,7 +282,12 @@ Describe "Add System Interface" {
             Add-FGTSystemInterface -name $pester_int1 -atype $_.atype -member $pester_port1, $pester_port2
             $interface = Get-FGTSystemInterface -name $pester_int1
             $interface.name | Should -Be $pester_int1
-            $interface.type | Should -Be "aggregate"
+            if (($fgt_version -ge "6.2.0") -and ($_.atype -eq "static")) {
+                $interface.type | Should -Be "redundant"
+            }
+            else {
+                $interface.type | Should -Be "aggregate"
+            }
             $interface.role | Should -Be "lan"
             $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
             $interface.mode | Should -Be "static"
@@ -292,7 +297,12 @@ Describe "Add System Interface" {
             Add-FGTSystemInterface -name $pester_int1 -alias Alias_$pester_int1 -atype $_.atype -member $pester_port1, $pester_port2 -allowaccess https, ping, ssh -status up -device_identification $true -mode static -ip 192.0.2.1 -netmask 255.255.255.0
             $interface = Get-FGTSystemInterface -name $pester_int1
             $interface.name | Should -Be $pester_int1
-            $interface.type | Should -Be "aggregate"
+            if ($fgt_version -ge "6.2.0" -and $_.atype -eq "static") {
+                $interface.type | Should -Be "redundant"
+            }
+            else {
+                $interface.type | Should -Be "aggregate"
+            }
             $interface.alias | Should -Be "Alias_$pester_int1"
             $interface.role | Should -Be "lan"
             $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
@@ -307,7 +317,12 @@ Describe "Add System Interface" {
             Add-FGTSystemInterface -name $pester_int1 -atype $_.atype -member $pester_port1, $pester_port2 -alias Alias_$pester_int1
             $interface = Get-FGTSystemInterface -name $pester_int1
             $interface.name | Should -Be $pester_int1
-            $interface.type | Should -Be "aggregate"
+            if ($fgt_version -ge "6.2.0" -and $_.atype -eq "static") {
+                $interface.type | Should -Be "redundant"
+            }
+            else {
+                $interface.type | Should -Be "aggregate"
+            }
             $interface.role | Should -Be "lan"
             $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
             $interface.mode | Should -Be "static"
@@ -318,7 +333,12 @@ Describe "Add System Interface" {
             Add-FGTSystemInterface -name $pester_int1 -atype $_.atype -member $pester_port1, $pester_port2 -allowaccess https
             $interface = Get-FGTSystemInterface -name $pester_int1
             $interface.name | Should -Be $pester_int1
-            $interface.type | Should -Be "aggregate"
+            if ($fgt_version -ge "6.2.0" -and $_.atype -eq "static") {
+                $interface.type | Should -Be "redundant"
+            }
+            else {
+                $interface.type | Should -Be "aggregate"
+            }
             $interface.role | Should -Be "lan"
             $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
             $interface.mode | Should -Be "static"
@@ -329,7 +349,12 @@ Describe "Add System Interface" {
             Add-FGTSystemInterface -name $pester_int1 -atype $_.atype -member $pester_port1, $pester_port2 -allowaccess ssh
             $interface = Get-FGTSystemInterface -name $pester_int1
             $interface.name | Should -Be $pester_int1
-            $interface.type | Should -Be "aggregate"
+            if ($fgt_version -ge "6.2.0" -and $_.atype -eq "static") {
+                $interface.type | Should -Be "redundant"
+            }
+            else {
+                $interface.type | Should -Be "aggregate"
+            }
             $interface.role | Should -Be "lan"
             $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
             $interface.mode | Should -Be "static"
@@ -340,7 +365,12 @@ Describe "Add System Interface" {
             Add-FGTSystemInterface -name $pester_int1 -atype $_.atype -member $pester_port1, $pester_port2 -allowaccess https, ssh
             $interface = Get-FGTSystemInterface -name $pester_int1
             $interface.name | Should -Be $pester_int1
-            $interface.type | Should -Be "aggregate"
+            if ($fgt_version -ge "6.2.0" -and $_.atype -eq "static") {
+                $interface.type | Should -Be "redundant"
+            }
+            else {
+                $interface.type | Should -Be "aggregate"
+            }
             $interface.role | Should -Be "lan"
             $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
             $interface.mode | Should -Be "static"
@@ -351,7 +381,12 @@ Describe "Add System Interface" {
             Add-FGTSystemInterface -name $pester_int1 -atype $_.atype -member $pester_port1, $pester_port2 -status up
             $interface = Get-FGTSystemInterface -name $pester_int1
             $interface.name | Should -Be $pester_int1
-            $interface.type | Should -Be "aggregate"
+            if ($fgt_version -ge "6.2.0" -and $_.atype -eq "static") {
+                $interface.type | Should -Be "redundant"
+            }
+            else {
+                $interface.type | Should -Be "aggregate"
+            }
             $interface.role | Should -Be "lan"
             $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
             $interface.mode | Should -Be "static"
@@ -362,7 +397,12 @@ Describe "Add System Interface" {
             Add-FGTSystemInterface -name $pester_int1 -atype $_.atype -member $pester_port1, $pester_port2 -status down
             $interface = Get-FGTSystemInterface -name $pester_int1
             $interface.name | Should -Be $pester_int1
-            $interface.type | Should -Be "aggregate"
+            if ($fgt_version -ge "6.2.0" -and $_.atype -eq "static") {
+                $interface.type | Should -Be "redundant"
+            }
+            else {
+                $interface.type | Should -Be "aggregate"
+            }
             $interface.role | Should -Be "lan"
             $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
             $interface.mode | Should -Be "static"
@@ -373,7 +413,12 @@ Describe "Add System Interface" {
             Add-FGTSystemInterface -name $pester_int1 -atype $_.atype -member $pester_port1, $pester_port2 -role lan
             $interface = Get-FGTSystemInterface -name $pester_int1
             $interface.name | Should -Be $pester_int1
-            $interface.type | Should -Be "aggregate"
+            if ($fgt_version -ge "6.2.0" -and $_.atype -eq "static") {
+                $interface.type | Should -Be "redundant"
+            }
+            else {
+                $interface.type | Should -Be "aggregate"
+            }
             $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
             $interface.mode | Should -Be "static"
             $interface.role | Should -Be "lan"
@@ -383,7 +428,12 @@ Describe "Add System Interface" {
             Add-FGTSystemInterface -name $pester_int1 -atype $_.atype -member $pester_port1, $pester_port2 -role dmz
             $interface = Get-FGTSystemInterface -name $pester_int1
             $interface.name | Should -Be $pester_int1
-            $interface.type | Should -Be "aggregate"
+            if ($fgt_version -ge "6.2.0" -and $_.atype -eq "static") {
+                $interface.type | Should -Be "redundant"
+            }
+            else {
+                $interface.type | Should -Be "aggregate"
+            }
             $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
             $interface.mode | Should -Be "static"
             $interface.role | Should -Be "dmz"
@@ -393,7 +443,12 @@ Describe "Add System Interface" {
             Add-FGTSystemInterface -name $pester_int1 -atype $_.atype -member $pester_port1, $pester_port2 -role wan
             $interface = Get-FGTSystemInterface -name $pester_int1
             $interface.name | Should -Be $pester_int1
-            $interface.type | Should -Be "aggregate"
+            if ($fgt_version -ge "6.2.0" -and $_.atype -eq "static") {
+                $interface.type | Should -Be "redundant"
+            }
+            else {
+                $interface.type | Should -Be "aggregate"
+            }
             $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
             $interface.mode | Should -Be "static"
             $interface.role | Should -Be "wan"
@@ -403,7 +458,12 @@ Describe "Add System Interface" {
             Add-FGTSystemInterface -name $pester_int1 -atype $_.atype -member $pester_port1, $pester_port2 -role undefined
             $interface = Get-FGTSystemInterface -name $pester_int1
             $interface.name | Should -Be $pester_int1
-            $interface.type | Should -Be "aggregate"
+            if ($fgt_version -ge "6.2.0" -and $_.atype -eq "static") {
+                $interface.type | Should -Be "redundant"
+            }
+            else {
+                $interface.type | Should -Be "aggregate"
+            }
             $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
             $interface.mode | Should -Be "static"
             $interface.role | Should -Be "undefined"
@@ -413,7 +473,12 @@ Describe "Add System Interface" {
             Add-FGTSystemInterface -name $pester_int1 -atype $_.atype -member $pester_port1, $pester_port2 -device_identification $true
             $interface = Get-FGTSystemInterface -name $pester_int1
             $interface.name | Should -Be $pester_int1
-            $interface.type | Should -Be "aggregate"
+            if ($fgt_version -ge "6.2.0" -and $_.atype -eq "static") {
+                $interface.type | Should -Be "redundant"
+            }
+            else {
+                $interface.type | Should -Be "aggregate"
+            }
             $interface.role | Should -Be "lan"
             $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
             $interface.mode | Should -Be "static"
@@ -424,7 +489,12 @@ Describe "Add System Interface" {
             Add-FGTSystemInterface -name $pester_int1 -atype $_.atype -member $pester_port1, $pester_port2 -device_identification $false
             $interface = Get-FGTSystemInterface -name $pester_int1
             $interface.name | Should -Be $pester_int1
-            $interface.type | Should -Be "aggregate"
+            if ($fgt_version -ge "6.2.0" -and $_.atype -eq "static") {
+                $interface.type | Should -Be "redundant"
+            }
+            else {
+                $interface.type | Should -Be "aggregate"
+            }
             $interface.role | Should -Be "lan"
             $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
             $interface.mode | Should -Be "static"
@@ -435,7 +505,12 @@ Describe "Add System Interface" {
             Add-FGTSystemInterface -name $pester_int1 -atype $_.atype -member $pester_port1, $pester_port2 -mode static
             $interface = Get-FGTSystemInterface -name $pester_int1
             $interface.name | Should -Be $pester_int1
-            $interface.type | Should -Be "aggregate"
+            if ($fgt_version -ge "6.2.0" -and $_.atype -eq "static") {
+                $interface.type | Should -Be "redundant"
+            }
+            else {
+                $interface.type | Should -Be "aggregate"
+            }
             $interface.role | Should -Be "lan"
             $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
             $interface.mode | Should -Be "static"
@@ -445,7 +520,12 @@ Describe "Add System Interface" {
             Add-FGTSystemInterface -name $pester_int1 -atype $_.atype -member $pester_port1, $pester_port2 -mode dhcp
             $interface = Get-FGTSystemInterface -name $pester_int1
             $interface.name | Should -Be $pester_int1
-            $interface.type | Should -Be "aggregate"
+            if ($fgt_version -ge "6.2.0" -and $_.atype -eq "static") {
+                $interface.type | Should -Be "redundant"
+            }
+            else {
+                $interface.type | Should -Be "aggregate"
+            }
             $interface.role | Should -Be "lan"
             $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
             $interface.mode | Should -Be "dhcp"
@@ -455,7 +535,12 @@ Describe "Add System Interface" {
             Add-FGTSystemInterface -name $pester_int1 -atype $_.atype -member $pester_port1, $pester_port2 -ip 192.0.2.1 -netmask 255.255.255.0
             $interface = Get-FGTSystemInterface -name $pester_int1
             $interface.name | Should -Be $pester_int1
-            $interface.type | Should -Be "aggregate"
+            if ($fgt_version -ge "6.2.0" -and $_.atype -eq "static") {
+                $interface.type | Should -Be "redundant"
+            }
+            else {
+                $interface.type | Should -Be "aggregate"
+            }
             $interface.role | Should -Be "lan"
             $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
             $interface.mode | Should -Be "static"
