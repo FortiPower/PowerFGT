@@ -249,10 +249,10 @@ function Add-FGTSystemInterfaceMember {
         $_interface = new-Object -TypeName PSObject
 
         if ( $PsBoundParameters.ContainsKey('allowaccess') ) {
-            #split allowacces to get array
+            #split allowaccess to get array
             $aa = @{ }
             $aa = $interface.allowaccess -split " "
-            #Add allow acces to list
+            #Add allow access to list
             foreach ( $v in $allowaccess ) {
                 $aa += $v
             }
