@@ -739,6 +739,7 @@ $type = @(
     @{ "type" = "vlan" }
     @{ "type" = "aggregate_lacp" }
     @{ "type" = "aggregate_static" }
+    @{ "type" = "loopback" }
 )
 
 Describe "Add System Interface Member" -ForEach $type {
@@ -755,6 +756,9 @@ Describe "Add System Interface Member" -ForEach $type {
                 }
                 "aggregate_static" {
                     Add-FGTSystemInterface -name $pester_int1 -atype static -member $pester_port1, $pester_port2
+                }
+                "loopback" {
+                    Add-FGTSystemInterface -name $pester_int1 -loopback
                 }
             }
         }
@@ -795,6 +799,9 @@ Describe "Set System Interface" -ForEach $type {
                 "aggregate_static" {
                     Add-FGTSystemInterface -name $pester_int1 -atype static -member $pester_port1, $pester_port2
                 }
+                "loopback" {
+                    Add-FGTSystemInterface -name $pester_int1 -loopback
+                }
             }
         }
 
@@ -828,19 +835,19 @@ Describe "Set System Interface" -ForEach $type {
             $interface.status | Should -Be "up"
         }
 
-        It "Set System Interface device-identification enabled" {
+        It "Set System Interface device-identification enabled" -Skip:($_.type -eq "loopback") {
             Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -device_identification $true
             $interface = Get-FGTSystemInterface -name $pester_int1
             $interface."device-identification" | Should -Be "enable"
         }
 
-        It "Set System Interface device-identification disabled" {
+        It "Set System Interface device-identification disabled" -Skip:($_.type -eq "loopback") {
             Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -device_identification $false
             $interface = Get-FGTSystemInterface -name $pester_int1
             $interface."device-identification" | Should -Be "disable"
         }
 
-        It "Set System Interface mode (DHCP)" {
+        It "Set System Interface mode (DHCP)" -Skip:($_.type -eq "loopback") {
             Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -mode dhcp
             $interface = Get-FGTSystemInterface -name $pester_int1
             $interface.mode | Should -Be "dhcp"
@@ -852,7 +859,7 @@ Describe "Set System Interface" -ForEach $type {
             $interface.allowaccess | Should -Be "https ssh"
         }
 
-        It "Set System Interface DHCP Relay" {
+        It "Set System Interface DHCP Relay" -Skip:($_.type -eq "loopback") {
             Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -dhcprelayip "192.0.2.1", "192.0.2.2"
             $interface = Get-FGTSystemInterface -name $pester_int1
             $interface.'dhcp-relay-ip' | Should -Be '"192.0.2.1" "192.0.2.2" '
@@ -888,6 +895,9 @@ Describe "Remove System Interface" -ForEach $type {
                 "aggregate_static" {
                     Add-FGTSystemInterface -name $pester_int1 -atype static -member $pester_port1, $pester_port2
                 }
+                "loopback" {
+                    Add-FGTSystemInterface -name $pester_int1 -loopback
+                }
             }
         }
 
@@ -914,6 +924,9 @@ Describe "Remove System Interface Member" -ForEach $type {
                 }
                 "aggregate_static" {
                     Add-FGTSystemInterface -name $pester_int1 -atype static -member $pester_port1, $pester_port2 -allowacces ssh, https
+                }
+                "loopback" {
+                    Add-FGTSystemInterface -name $pester_int1 -loopback -allowacces ssh, https
                 }
             }
         }
