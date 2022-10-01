@@ -51,6 +51,8 @@ function Add-FGTSystemInterface {
         [Parameter (Mandatory = $true, ParameterSetName = "aggregate")]
         [ValidateSet('lacp', 'static')]
         [string]$atype,
+        [Parameter (Mandatory = $true, ParameterSetName = "loopback")]
+        [switch]$loopback,
         [Parameter (Mandatory = $false)]
         [ValidateSet('https', 'ping', 'fgfm', 'capwap', 'ssh', 'snmp', 'ftm', 'radius-acct', 'ftm', IgnoreCase = $false)]
         [string[]]$allowaccess,
@@ -91,6 +93,9 @@ function Add-FGTSystemInterface {
         $_interface | add-member -name "name" -membertype NoteProperty -Value $name
 
         switch ( $PSCmdlet.ParameterSetName ) {
+            "loopback" {
+                $_interface | add-member -name "type" -membertype NoteProperty -Value "loopback"
+            }
             "vlan" {
                 $_interface | add-member -name "type" -membertype NoteProperty -Value "vlan"
                 $_interface | add-member -name "interface" -membertype NoteProperty -Value $interface
