@@ -267,6 +267,179 @@ Describe "Add System Interface" {
         }
     }
 
+    Context "Interface loopback" {
+        AfterEach {
+            Get-FGTSystemInterface -name $pester_int1 | Remove-FGTSystemInterface -Confirm:$false
+        }
+
+        It "Add System Interface with only mandatory parameters" {
+            Add-FGTSystemInterface -name $pester_int1 -loopback
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "loopback"
+            $interface.role | Should -Be "lan"
+            $interface.mode | Should -Be "static"
+        }
+
+        It "Add System Interface (All parameters...)" {
+            Add-FGTSystemInterface -name $pester_int1 -alias Alias_$pester_int1 -loopback -allowaccess https, ping, ssh -status up -device_identification $true -mode static -ip 192.0.2.1 -netmask 255.255.255.0
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "loopback"
+            $interface.alias | Should -Be "Alias_$pester_int1"
+            $interface.role | Should -Be "lan"
+            $interface.allowaccess | Should -Be "ping https ssh"
+            $interface.status | Should -Be "up"
+            $interface."device-identification" | Should -Be "enable"
+            $interface.mode | Should -Be "static"
+            $interface.ip | Should -Be "192.0.2.1 255.255.255.0"
+        }
+
+        It "Add System Interface (with alias)" {
+            Add-FGTSystemInterface -name $pester_int1 -loopback -alias Alias_$pester_int1
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "loopback"
+            $interface.role | Should -Be "lan"
+            $interface.mode | Should -Be "static"
+            $interface.alias | Should -Be "Alias_$pester_int1"
+        }
+
+        It "Add System Interface (with allowaccess https)" {
+            Add-FGTSystemInterface -name $pester_int1 -loopback -allowaccess https
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "loopback"
+            $interface.role | Should -Be "lan"
+            $interface.mode | Should -Be "static"
+            $interface.allowaccess | Should -Be "https"
+        }
+
+        It "Add System Interface (with allowaccess ssh)" {
+            Add-FGTSystemInterface -name $pester_int1 -loopback -allowaccess ssh
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "loopback"
+            $interface.role | Should -Be "lan"
+            $interface.mode | Should -Be "static"
+            $interface.allowaccess | Should -Be "ssh"
+        }
+
+        It "Add System Interface (with allowaccess https ssh)" {
+            Add-FGTSystemInterface -name $pester_int1 -loopback -allowaccess https, ssh
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "loopback"
+            $interface.role | Should -Be "lan"
+            $interface.mode | Should -Be "static"
+            $interface.allowaccess | Should -Be "https ssh"
+        }
+
+        It "Add System Interface (with status up)" {
+            Add-FGTSystemInterface -name $pester_int1 -loopback -status up
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "loopback"
+            $interface.role | Should -Be "lan"
+            $interface.mode | Should -Be "static"
+            $interface.status | Should -Be "up"
+        }
+
+        It "Add System Interface (with status down)" {
+            Add-FGTSystemInterface -name $pester_int1 -loopback -status down
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "loopback"
+            $interface.role | Should -Be "lan"
+            $interface.mode | Should -Be "static"
+            $interface.status | Should -Be "down"
+        }
+
+        It "Add System Interface (with role lan)" {
+            Add-FGTSystemInterface -name $pester_int1 -loopback -role lan
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "loopback"
+            $interface.mode | Should -Be "static"
+            $interface.role | Should -Be "lan"
+        }
+
+        It "Add System Interface (with role dmz)" {
+            Add-FGTSystemInterface -name $pester_int1 -loopback -role dmz
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "loopback"
+            $interface.mode | Should -Be "static"
+            $interface.role | Should -Be "dmz"
+        }
+
+        It "Add System Interface (with role wan)" {
+            Add-FGTSystemInterface -name $pester_int1 -loopback -role wan
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.mode | Should -Be "static"
+            $interface.role | Should -Be "wan"
+        }
+
+        It "Add System Interface (with role undefined)" {
+            Add-FGTSystemInterface -name $pester_int1 -loopback -role undefined
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "loopback"
+            $interface.mode | Should -Be "static"
+            $interface.role | Should -Be "undefined"
+        }
+
+        It "Add System Interface (with device-identification enabled)" {
+            Add-FGTSystemInterface -name $pester_int1 -loopback -device_identification $true
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "loopback"
+            $interface.role | Should -Be "lan"
+            $interface.mode | Should -Be "static"
+            $interface."device-identification" | Should -Be $true
+        }
+
+        It "Add System Interface (with device-identification disabled)" {
+            Add-FGTSystemInterface -name $pester_int1 -loopback -device_identification $false
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "loopback"
+            $interface.role | Should -Be "lan"
+            $interface.mode | Should -Be "static"
+            $interface."device-identification" | Should -Be "disable"
+        }
+
+        It "Add System Interface (with mode static)" {
+            Add-FGTSystemInterface -name $pester_int1 -loopback -mode static
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "loopback"
+            $interface.role | Should -Be "lan"
+            $interface.mode | Should -Be "static"
+        }
+        <# Disable mode dhcp, it is not possible with a loopback...
+        It "Add System Interface (with mode dhcp)" {
+            Add-FGTSystemInterface -name $pester_int1 -loopback -mode dhcp
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "loopback"
+            $interface.role | Should -Be "lan"
+            $interface.mode | Should -Be "dhcp"
+        }
+#>
+        It "Add System Interface (with IP Address and Netmask)" {
+            Add-FGTSystemInterface -name $pester_int1 -loopback -ip 192.0.2.1 -netmask 255.255.255.0
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            $interface.type | Should -Be "loopback"
+            $interface.role | Should -Be "lan"
+            $interface.mode | Should -Be "static"
+            $interface.ip | Should -Be "192.0.2.1 255.255.255.0"
+        }
+
+    }
+
     $atype = @(
         @{ "atype" = "lacp" }
         @{ "atype" = "static" }
