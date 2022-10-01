@@ -70,6 +70,7 @@ Describe "Add System Interface" -ForEach $type {
 
     Context "Interface $($_.type)" {
         AfterEach {
+            Get-FGTSystemInterface -name $pester_int2 | Remove-FGTSystemInterface -Confirm:$false
             Get-FGTSystemInterface -name $pester_int1 | Remove-FGTSystemInterface -Confirm:$false
         }
 
@@ -629,6 +630,18 @@ Describe "Add System Interface" -ForEach $type {
             $interface.role | Should -Be "lan"
             $interface.mode | Should -Be "static"
             $interface.ip | Should -Be "192.0.2.1 255.255.255.0"
+        }
+
+        It "Add Vlan System Interface (on aggregate $($_.type) interface)" -Skip:($_.type -eq "loopback" -or $_.type -eq "vlan") {
+            $p = $_.param
+            Add-FGTSystemInterface -name $pester_int1 @p
+            Add-FGTSystemInterface -name $pester_int2 -vlan $pester_vlanid1 -interface $pester_int1
+            $interface = Get-FGTSystemInterface -name $pester_int2
+            $interface.name | Should -Be $pester_int2
+            $interface.type | Should -Be "vlan"
+            $interface.role | Should -Be "lan"
+            $interface.vlan_id | Should -Be $script:pester_vlanid1
+            $interface.mode | Should -Be "static"
         }
 
     }
