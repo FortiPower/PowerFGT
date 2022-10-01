@@ -59,6 +59,581 @@ Describe "Get System Interface" {
 
 }
 
+$type = @(
+    @{ "type" = "vlan"; "param" = @{ "vlan_id" = $pester_vlanid1; "interface" = $pester_port1 } }
+    @{ "type" = "aggregate_lacp"; "param" = @{ "atype" = "lacp"; "member" = $pester_port1, $pester_port2 } }
+    @{ "type" = "aggregate_static"; "param" = @{ "atype" = "static"; "member" = $pester_port1, $pester_port2 } }
+    @{ "type" = "loopback"; "param" = @{ "loopback" = $true } }
+)
+
+Describe "Add System Interface" -ForEach $type {
+
+    Context "Interface $($_.type)" {
+        AfterEach {
+            Get-FGTSystemInterface -name $pester_int1 | Remove-FGTSystemInterface -Confirm:$false
+        }
+
+        It "Add System Interface with only mandatory parameters" {
+            $p = $_.param
+            Add-FGTSystemInterface -name $pester_int1 @p
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            switch ($_.type) {
+                "vlan" {
+                    $interface.type | Should -Be "vlan"
+                    $interface.vlanid | Should -Be $pester_vlanid1
+                    $interface.interface | Should -Be $pester_port1
+                }
+                "aggregate_lacp" {
+                    $interface.type | Should -Be "aggregate"
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "aggregate_static" {
+                    if (($fgt_version -ge "6.2.0")) {
+                        $interface.type | Should -Be "redundant"
+                    }
+                    else {
+                        $interface.type | Should -Be "aggregate"
+                    }
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "loopback" {
+                    $interface.type | Should -Be "loopback"
+                }
+            }
+            $interface.role | Should -Be "lan"
+            $interface.mode | Should -Be "static"
+        }
+
+        It "Add System Interface (All parameters...)" {
+            $p = $_.param
+            Add-FGTSystemInterface -name $pester_int1 @p -alias Alias_$pester_int1 -allowaccess https, ping, ssh -status up -device_identification $true -mode static -ip 192.0.2.1 -netmask 255.255.255.0
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            switch ($_.type) {
+                "vlan" {
+                    $interface.type | Should -Be "vlan"
+                    $interface.vlanid | Should -Be $pester_vlanid1
+                    $interface.interface | Should -Be $pester_port1
+                }
+                "aggregate_lacp" {
+                    $interface.type | Should -Be "aggregate"
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "aggregate_static" {
+                    if (($fgt_version -ge "6.2.0")) {
+                        $interface.type | Should -Be "redundant"
+                    }
+                    else {
+                        $interface.type | Should -Be "aggregate"
+                    }
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "loopback" {
+                    $interface.type | Should -Be "loopback"
+                }
+            }
+            $interface.alias | Should -Be "Alias_$pester_int1"
+            $interface.role | Should -Be "lan"
+            $interface.allowaccess | Should -Be "ping https ssh"
+            $interface.status | Should -Be "up"
+            $interface."device-identification" | Should -Be "enable"
+            $interface.mode | Should -Be "static"
+            $interface.ip | Should -Be "192.0.2.1 255.255.255.0"
+        }
+
+        It "Add System Interface (with alias)" {
+            $p = $_.param
+            Add-FGTSystemInterface -name $pester_int1 @p -alias Alias_$pester_int1
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            switch ($_.type) {
+                "vlan" {
+                    $interface.type | Should -Be "vlan"
+                    $interface.vlanid | Should -Be $pester_vlanid1
+                    $interface.interface | Should -Be $pester_port1
+                }
+                "aggregate_lacp" {
+                    $interface.type | Should -Be "aggregate"
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "aggregate_static" {
+                    if (($fgt_version -ge "6.2.0")) {
+                        $interface.type | Should -Be "redundant"
+                    }
+                    else {
+                        $interface.type | Should -Be "aggregate"
+                    }
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "loopback" {
+                    $interface.type | Should -Be "loopback"
+                }
+            }
+            $interface.role | Should -Be "lan"
+            $interface.mode | Should -Be "static"
+            $interface.alias | Should -Be "Alias_$pester_int1"
+        }
+
+        It "Add System Interface (with allowaccess https)" {
+            $p = $_.param
+            Add-FGTSystemInterface -name $pester_int1 @p -allowaccess https
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            switch ($_.type) {
+                "vlan" {
+                    $interface.type | Should -Be "vlan"
+                    $interface.vlanid | Should -Be $pester_vlanid1
+                    $interface.interface | Should -Be $pester_port1
+                }
+                "aggregate_lacp" {
+                    $interface.type | Should -Be "aggregate"
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "aggregate_static" {
+                    if (($fgt_version -ge "6.2.0")) {
+                        $interface.type | Should -Be "redundant"
+                    }
+                    else {
+                        $interface.type | Should -Be "aggregate"
+                    }
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "loopback" {
+                    $interface.type | Should -Be "loopback"
+                }
+            }
+            $interface.role | Should -Be "lan"
+            $interface.mode | Should -Be "static"
+            $interface.allowaccess | Should -Be "https"
+        }
+
+        It "Add System Interface (with allowaccess ssh)" {
+            $p = $_.param
+            Add-FGTSystemInterface -name $pester_int1 @p -allowaccess ssh
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            switch ($_.type) {
+                "vlan" {
+                    $interface.type | Should -Be "vlan"
+                    $interface.vlanid | Should -Be $pester_vlanid1
+                    $interface.interface | Should -Be $pester_port1
+                }
+                "aggregate_lacp" {
+                    $interface.type | Should -Be "aggregate"
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "aggregate_static" {
+                    if (($fgt_version -ge "6.2.0")) {
+                        $interface.type | Should -Be "redundant"
+                    }
+                    else {
+                        $interface.type | Should -Be "aggregate"
+                    }
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "loopback" {
+                    $interface.type | Should -Be "loopback"
+                }
+            }
+            $interface.role | Should -Be "lan"
+            $interface.mode | Should -Be "static"
+            $interface.allowaccess | Should -Be "ssh"
+        }
+
+        It "Add System Interface (with allowaccess https ssh)" {
+            $p = $_.param
+            Add-FGTSystemInterface -name $pester_int1 @p -allowaccess https, ssh
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            switch ($_.type) {
+                "vlan" {
+                    $interface.type | Should -Be "vlan"
+                    $interface.vlanid | Should -Be $pester_vlanid1
+                    $interface.interface | Should -Be $pester_port1
+                }
+                "aggregate_lacp" {
+                    $interface.type | Should -Be "aggregate"
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "aggregate_static" {
+                    if (($fgt_version -ge "6.2.0")) {
+                        $interface.type | Should -Be "redundant"
+                    }
+                    else {
+                        $interface.type | Should -Be "aggregate"
+                    }
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "loopback" {
+                    $interface.type | Should -Be "loopback"
+                }
+            }
+            $interface.role | Should -Be "lan"
+            $interface.mode | Should -Be "static"
+            $interface.allowaccess | Should -Be "https ssh"
+        }
+
+        It "Add System Interface (with status up)" {
+            $p = $_.param
+            Add-FGTSystemInterface -name $pester_int1 @p -status up
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            switch ($_.type) {
+                "vlan" {
+                    $interface.type | Should -Be "vlan"
+                    $interface.vlanid | Should -Be $pester_vlanid1
+                    $interface.interface | Should -Be $pester_port1
+                }
+                "aggregate_lacp" {
+                    $interface.type | Should -Be "aggregate"
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "aggregate_static" {
+                    if (($fgt_version -ge "6.2.0")) {
+                        $interface.type | Should -Be "redundant"
+                    }
+                    else {
+                        $interface.type | Should -Be "aggregate"
+                    }
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "loopback" {
+                    $interface.type | Should -Be "loopback"
+                }
+            }
+            $interface.role | Should -Be "lan"
+            $interface.mode | Should -Be "static"
+            $interface.status | Should -Be "up"
+        }
+
+        It "Add System Interface (with status down)" {
+            $p = $_.param
+            Add-FGTSystemInterface -name $pester_int1 @p -status down
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            switch ($_.type) {
+                "vlan" {
+                    $interface.type | Should -Be "vlan"
+                    $interface.vlanid | Should -Be $pester_vlanid1
+                    $interface.interface | Should -Be $pester_port1
+                }
+                "aggregate_lacp" {
+                    $interface.type | Should -Be "aggregate"
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "aggregate_static" {
+                    if (($fgt_version -ge "6.2.0")) {
+                        $interface.type | Should -Be "redundant"
+                    }
+                    else {
+                        $interface.type | Should -Be "aggregate"
+                    }
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "loopback" {
+                    $interface.type | Should -Be "loopback"
+                }
+            }
+            $interface.role | Should -Be "lan"
+            $interface.mode | Should -Be "static"
+            $interface.status | Should -Be "down"
+        }
+
+        It "Add System Interface (with role lan)" {
+            $p = $_.param
+            Add-FGTSystemInterface -name $pester_int1 @p -role lan
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            switch ($_.type) {
+                "vlan" {
+                    $interface.type | Should -Be "vlan"
+                    $interface.vlanid | Should -Be $pester_vlanid1
+                    $interface.interface | Should -Be $pester_port1
+                }
+                "aggregate_lacp" {
+                    $interface.type | Should -Be "aggregate"
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "aggregate_static" {
+                    if (($fgt_version -ge "6.2.0")) {
+                        $interface.type | Should -Be "redundant"
+                    }
+                    else {
+                        $interface.type | Should -Be "aggregate"
+                    }
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "loopback" {
+                    $interface.type | Should -Be "loopback"
+                }
+            }
+            $interface.mode | Should -Be "static"
+            $interface.role | Should -Be "lan"
+        }
+
+        It "Add System Interface (with role dmz)" {
+            $p = $_.param
+            Add-FGTSystemInterface -name $pester_int1 @p -role dmz
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            switch ($_.type) {
+                "vlan" {
+                    $interface.type | Should -Be "vlan"
+                    $interface.vlanid | Should -Be $pester_vlanid1
+                    $interface.interface | Should -Be $pester_port1
+                }
+                "aggregate_lacp" {
+                    $interface.type | Should -Be "aggregate"
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "aggregate_static" {
+                    if (($fgt_version -ge "6.2.0")) {
+                        $interface.type | Should -Be "redundant"
+                    }
+                    else {
+                        $interface.type | Should -Be "aggregate"
+                    }
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "loopback" {
+                    $interface.type | Should -Be "loopback"
+                }
+            }
+            $interface.mode | Should -Be "static"
+            $interface.role | Should -Be "dmz"
+        }
+
+        It "Add System Interface (with role wan)" {
+            $p = $_.param
+            Add-FGTSystemInterface -name $pester_int1 @p -role wan
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            switch ($_.type) {
+                "vlan" {
+                    $interface.type | Should -Be "vlan"
+                    $interface.vlanid | Should -Be $pester_vlanid1
+                    $interface.interface | Should -Be $pester_port1
+                }
+                "aggregate_lacp" {
+                    $interface.type | Should -Be "aggregate"
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "aggregate_static" {
+                    if (($fgt_version -ge "6.2.0")) {
+                        $interface.type | Should -Be "redundant"
+                    }
+                    else {
+                        $interface.type | Should -Be "aggregate"
+                    }
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "loopback" {
+                    $interface.type | Should -Be "loopback"
+                }
+            }
+            $interface.mode | Should -Be "static"
+            $interface.role | Should -Be "wan"
+        }
+
+        It "Add System Interface (with role undefined)" {
+            $p = $_.param
+            Add-FGTSystemInterface -name $pester_int1 @p -role undefined
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            switch ($_.type) {
+                "vlan" {
+                    $interface.type | Should -Be "vlan"
+                    $interface.vlanid | Should -Be $pester_vlanid1
+                    $interface.interface | Should -Be $pester_port1
+                }
+                "aggregate_lacp" {
+                    $interface.type | Should -Be "aggregate"
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "aggregate_static" {
+                    if (($fgt_version -ge "6.2.0")) {
+                        $interface.type | Should -Be "redundant"
+                    }
+                    else {
+                        $interface.type | Should -Be "aggregate"
+                    }
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "loopback" {
+                    $interface.type | Should -Be "loopback"
+                }
+            }
+            $interface.mode | Should -Be "static"
+            $interface.role | Should -Be "undefined"
+        }
+
+        It "Add System Interface (with device-identification enabled)" {
+            $p = $_.param
+            Add-FGTSystemInterface -name $pester_int1 @p -device_identification $true
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            switch ($_.type) {
+                "vlan" {
+                    $interface.type | Should -Be "vlan"
+                    $interface.vlanid | Should -Be $pester_vlanid1
+                    $interface.interface | Should -Be $pester_port1
+                }
+                "aggregate_lacp" {
+                    $interface.type | Should -Be "aggregate"
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "aggregate_static" {
+                    if (($fgt_version -ge "6.2.0")) {
+                        $interface.type | Should -Be "redundant"
+                    }
+                    else {
+                        $interface.type | Should -Be "aggregate"
+                    }
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "loopback" {
+                    $interface.type | Should -Be "loopback"
+                }
+            }
+            $interface.role | Should -Be "lan"
+            $interface.mode | Should -Be "static"
+            $interface."device-identification" | Should -Be $true
+        }
+
+        It "Add System Interface (with device-identification disabled)" {
+            $p = $_.param
+            Add-FGTSystemInterface -name $pester_int1 @p -device_identification $false
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            switch ($_.type) {
+                "vlan" {
+                    $interface.type | Should -Be "vlan"
+                    $interface.vlanid | Should -Be $pester_vlanid1
+                    $interface.interface | Should -Be $pester_port1
+                }
+                "aggregate_lacp" {
+                    $interface.type | Should -Be "aggregate"
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "aggregate_static" {
+                    if (($fgt_version -ge "6.2.0")) {
+                        $interface.type | Should -Be "redundant"
+                    }
+                    else {
+                        $interface.type | Should -Be "aggregate"
+                    }
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "loopback" {
+                    $interface.type | Should -Be "loopback"
+                }
+            }
+            $interface.role | Should -Be "lan"
+            $interface.mode | Should -Be "static"
+            $interface."device-identification" | Should -Be "disable"
+        }
+
+        It "Add System Interface (with mode static)" {
+            $p = $_.param
+            Add-FGTSystemInterface -name $pester_int1 @p -mode static
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            switch ($_.type) {
+                "vlan" {
+                    $interface.type | Should -Be "vlan"
+                    $interface.vlanid | Should -Be $pester_vlanid1
+                    $interface.interface | Should -Be $pester_port1
+                }
+                "aggregate_lacp" {
+                    $interface.type | Should -Be "aggregate"
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "aggregate_static" {
+                    if (($fgt_version -ge "6.2.0")) {
+                        $interface.type | Should -Be "redundant"
+                    }
+                    else {
+                        $interface.type | Should -Be "aggregate"
+                    }
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "loopback" {
+                    $interface.type | Should -Be "loopback"
+                }
+            }
+            $interface.role | Should -Be "lan"
+            $interface.mode | Should -Be "static"
+        }
+
+        It "Add System Interface (with mode dhcp)" -Skip:($_.type -eq "loopback") {
+            $p = $_.param
+            Add-FGTSystemInterface -name $pester_int1 @p -mode dhcp
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            switch ($_.type) {
+                "vlan" {
+                    $interface.type | Should -Be "vlan"
+                    $interface.vlanid | Should -Be $pester_vlanid1
+                    $interface.interface | Should -Be $pester_port1
+                }
+                "aggregate_lacp" {
+                    $interface.type | Should -Be "aggregate"
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "aggregate_static" {
+                    if (($fgt_version -ge "6.2.0")) {
+                        $interface.type | Should -Be "redundant"
+                    }
+                    else {
+                        $interface.type | Should -Be "aggregate"
+                    }
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "loopback" {
+                    $interface.type | Should -Be "loopback"
+                }
+            }
+            $interface.role | Should -Be "lan"
+            $interface.mode | Should -Be "dhcp"
+        }
+
+        It "Add System Interface (with IP Address and Netmask)" {
+            $p = $_.param
+            Add-FGTSystemInterface -name $pester_int1 @p -ip 192.0.2.1 -netmask 255.255.255.0
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            switch ($_.type) {
+                "vlan" {
+                    $interface.type | Should -Be "vlan"
+                    $interface.vlanid | Should -Be $pester_vlanid1
+                    $interface.interface | Should -Be $pester_port1
+                }
+                "aggregate_lacp" {
+                    $interface.type | Should -Be "aggregate"
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "aggregate_static" {
+                    if (($fgt_version -ge "6.2.0")) {
+                        $interface.type | Should -Be "redundant"
+                    }
+                    else {
+                        $interface.type | Should -Be "aggregate"
+                    }
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "loopback" {
+                    $interface.type | Should -Be "loopback"
+                }
+            }
+            $interface.role | Should -Be "lan"
+            $interface.mode | Should -Be "static"
+            $interface.ip | Should -Be "192.0.2.1 255.255.255.0"
+        }
+
+    }
+
+}
 Describe "Add System Interface" {
 
     Context "Interface Vlan" {
