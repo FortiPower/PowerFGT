@@ -336,3 +336,28 @@ Function Confirm-FGTInterface {
 
     $true
 }
+
+Function Confirm-FGTVpnIpsecPhase1Interface {
+
+    Param (
+        [Parameter (Mandatory = $true)]
+        [object]$argument
+    )
+
+    #Check if it looks like a VPN IPsec Phase 1 Interface  element
+
+    if ( -not ( $argument | get-member -name name -Membertype Properties)) {
+        throw "Element specified does not contain a name property."
+    }
+    if ( -not ( $argument | get-member -name type -Membertype Properties)) {
+        throw "Element specified does not contain a type property."
+    }
+    if ( -not ( $argument | get-member -name interface -Membertype Properties)) {
+        throw "Element specified does not contain an interface property."
+    }
+    if ( -not ( $argument | get-member -name proposal -Membertype Properties)) {
+        throw "Element specified does not contain a proposal property."
+    }
+
+    $true
+}
