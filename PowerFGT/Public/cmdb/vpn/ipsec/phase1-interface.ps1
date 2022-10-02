@@ -276,3 +276,55 @@ function Get-FGTVpnIpsecPhase1Interface {
     End {
     }
 }
+
+function Remove-FGTVpnIpsecPhase1Interface {
+
+    <#
+        .SYNOPSIS
+        Remove a Vpn IPsec Phase 1 Interface
+
+        .DESCRIPTION
+        Remove a Vpn IPsec Phase 1 Interface
+
+        .EXAMPLE
+        Get-FGTVpnIpsecPhase1Interface -name PowerFGT_VPN | Remove-FGTVpnIpsecPhase1Interface
+
+        Removes the Vpn IPsec Phase 1 Interface PowerFGT_VPN which was retrieved with Get-FGTVpnIpsecPhase1Interface
+
+        .EXAMPLE
+        Get-FGTVpnIpsecPhase1Interfacee -name PowerFGT_VPN | Remove-FGTVpnIpsecPhase1Interfacee -Confirm:$false
+
+        Removes the Vpn IPsec Phase 1 Interface PowerFGT_VPN and suppresses the confirmation question
+    #>
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [ValidateScript( { Confirm-FGTVpnIpsecPhase1Interface $_ })]
+        [psobject]$interface,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/vpn.ipsec/phase1-interface/$($interface.name)"
+
+        if ($PSCmdlet.ShouldProcess($interface.name, 'Remove Vpn IPsec Phase 1 Interface')) {
+            $null = Invoke-FGTRestMethod -uri $uri -method 'DELETE' -connection $connection @invokeParams
+        }
+    }
+
+    End {
+    }
+}
