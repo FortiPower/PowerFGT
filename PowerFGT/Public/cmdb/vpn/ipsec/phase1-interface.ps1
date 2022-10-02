@@ -3,6 +3,170 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
+
+function Add-FGTVpnIpsecPhase1Interface {
+
+    <#
+        .SYNOPSIS
+        Add a Vpn IPsec Phase 1 Interface
+
+        .DESCRIPTION
+        Add an Vpn IPsec Phase 1 Interface (Version, type, interface, proposal, psksecret... )
+
+        .EXAMPLE
+        Add-FGTVpnIpsecPhase1Interface -name PowerFGT_VPN -type static -interface port2 -proposal aes256-sha256 -psksecret MySecret -remotegw 192.0.2.1
+
+        Create a static VPN IPsec Phase 1 Interface named PowerFGT_VPN with interface port2, proposal aes256-sha256 with Remote Gateway 192.0.2.1
+
+        .EXAMPLE
+        Add-FGTVpnIpsecPhase1Interface -name PowerFGT_VPN -type dynamic -interface port2 -proposal aes256-sha256, aes256-sha512 -dhgrp 14,15 -psksecret MySecret
+
+        Create a dynamic VPN IPsec Phase 1 Interface named PowerFGT_VPN with interface port2, multiple proposal aes256-sha256, aes256-sha512 and DH Group 14 & 15
+
+    #>
+    Param(
+        [Parameter (Mandatory = $true, Position = 1)]
+        [ValidateLength(1, 15)]
+        [string]$name,
+        [Parameter (Mandatory = $true)]
+        [ValidateSet('static', 'dynamic', IgnoreCase = $false)]
+        [string]$type,
+        [Parameter (Mandatory = $true)]
+        [string]$interface,
+        [Parameter (Mandatory = $false)]
+        [ValidateSet('1', '2')]
+        [string]$ikeversion,
+        [Parameter (Mandatory = $true)]
+        [string[]]$proposal,
+        [Parameter (Mandatory = $false)]
+        [int[]]$dhgrp,
+        [ValidateSet(1, 2, 5, 14, 15, 16, 17, 18, 19, 20, 21, 27, 28, 29, 30, 31, 32)]
+        [Parameter (Mandatory = $true)]
+        [string]$psksecret,
+        [Parameter (Mandatory = $false)]
+        [string]$remotegw,
+        [Parameter (Mandatory = $false)]
+        [ValidateSet('any', 'one', 'dialup', 'peer', 'peergrp', IgnoreCase = $false)]
+        [string]$peertype,
+        [Parameter (Mandatory = $false)]
+        [switch]$netdevice,
+        [Parameter (Mandatory = $false)]
+        [switch]$addroute,
+        [Parameter (Mandatory = $false)]
+        [switch]$autodiscoverysender,
+        [Parameter (Mandatory = $false)]
+        [switch]$autodiscoveryreceiver,
+        [Parameter (Mandatory = $false)]
+        [switch]$exchangeinterfaceip,
+        [Parameter (Mandatory = $false)]
+        [int]$networkid,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/vpn.ipsec/phase1-interface"
+        $_interface = new-Object -TypeName PSObject
+
+        $_interface | add-member -name "name" -membertype NoteProperty -Value $name
+
+        $_interface | add-member -name "type" -membertype NoteProperty -Value $type
+        $_interface | add-member -name "interface" -membertype NoteProperty -Value $interface
+        $_interface | add-member -name "proposal" -membertype NoteProperty -Value $proposal
+        $_interface | add-member -name "psksecret" -membertype NoteProperty -Value $psksecret
+
+        if ( $PsBoundParameters.ContainsKey('ikeversion') ) {
+            $_interface | add-member -name "ikeversion" -membertype NoteProperty -Value $ikeversion
+        }
+
+        if ( $type -eq "static" -and $PsBoundParameters.ContainsKey('remotegw') ) {
+            $_interface | add-member -name "remote-gw" -membertype NoteProperty -Value $remotegw
+        }
+        else {
+            throw "You need to specify the remote-gw when use type static"
+        }
+
+        if ( $PsBoundParameters.ContainsKey('peertype') ) {
+            $_interface | add-member -name "peertype" -membertype NoteProperty -Value $peertype
+        }
+
+        if ( $PsBoundParameters.ContainsKey('dhgrp') ) {
+            $_interface | add-member -name "dhgrp" -membertype NoteProperty -Value $dhgrp
+        }
+
+        if ( $PsBoundParameters.ContainsKey('netdevice') ) {
+            if ($netdevice) {
+                $_interface | Add-member -name "net-device" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_interface | Add-member -name "net-device" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('addroute') ) {
+            if ($addroute) {
+                $_interface | Add-member -name "add-route" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_interface | Add-member -name "add-route" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('autodiscoverysender') ) {
+            if ($autodiscoverysender) {
+                $_interface | Add-member -name "auto-discovery-sender" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_interface | Add-member -name "auto-discovery-sender" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('autodiscoveryreceiver') ) {
+            if ($autodiscoveryreceiver) {
+                $_interface | Add-member -name "auto-discovery-receiver" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_interface | Add-member -name "auto-discovery-receiver" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('exchangeinterfaceip') ) {
+            if ($exchangeinterfaceip) {
+                $_interface | Add-member -name "exchange-interface-ip" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_interface | Add-member -name "exchange-interface-ip" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $ikeversion -eq "2" -and $PsBoundParameters.ContainsKey('networkid') ) {
+            $_interface | Add-member -name "network-overlay" -membertype NoteProperty -Value "enable"
+            $_interface | Add-member -name "network-id" -membertype NoteProperty -Value $networkid
+        }
+        else {
+            Throw "Need to set ikeversion 2 to use networkid"
+        }
+
+        $null = Invoke-FGTRestMethod -uri $uri -method 'POST' -body $_interface -connection $connection @invokeParams
+
+        Get-FGTVpnIpsecPhase1Interface -name $name -connection $connection @invokeParams
+    }
+
+    End {
+    }
+}
+
 function Get-FGTVpnIpsecPhase1Interface {
 
     <#
