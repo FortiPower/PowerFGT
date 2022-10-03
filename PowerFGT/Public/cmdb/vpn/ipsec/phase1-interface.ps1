@@ -39,8 +39,8 @@ function Add-FGTVpnIpsecPhase1Interface {
         [Parameter (Mandatory = $true)]
         [string[]]$proposal,
         [Parameter (Mandatory = $false)]
-        [int[]]$dhgrp,
         [ValidateSet(1, 2, 5, 14, 15, 16, 17, 18, 19, 20, 21, 27, 28, 29, 30, 31, 32)]
+        [int[]]$dhgrp,
         [Parameter (Mandatory = $true)]
         [string]$psksecret,
         [Parameter (Mandatory = $false)]
@@ -90,13 +90,14 @@ function Add-FGTVpnIpsecPhase1Interface {
             $_interface | add-member -name "ikeversion" -membertype NoteProperty -Value $ikeversion
         }
 
-        if ( $type -eq "static" -and $PsBoundParameters.ContainsKey('remotegw') ) {
-            $_interface | add-member -name "remote-gw" -membertype NoteProperty -Value $remotegw
+        if ( $type -eq "static" ) {
+            if ($PsBoundParameters.ContainsKey('remotegw')) {
+                $_interface | add-member -name "remote-gw" -membertype NoteProperty -Value $remotegw
+            }
+            else {
+                throw "You need to specify the remote-gw when use type static"
+            }
         }
-        else {
-            throw "You need to specify the remote-gw when use type static"
-        }
-
         if ( $PsBoundParameters.ContainsKey('peertype') ) {
             $_interface | add-member -name "peertype" -membertype NoteProperty -Value $peertype
         }
@@ -150,12 +151,15 @@ function Add-FGTVpnIpsecPhase1Interface {
             }
         }
 
-        if ( $ikeversion -eq "2" -and $PsBoundParameters.ContainsKey('networkid') ) {
-            $_interface | Add-member -name "network-overlay" -membertype NoteProperty -Value "enable"
-            $_interface | Add-member -name "network-id" -membertype NoteProperty -Value $networkid
-        }
-        else {
-            Throw "Need to set ikeversion 2 to use networkid"
+        if ( $PsBoundParameters.ContainsKey('networkid') ) {
+            if ($ikeversion -eq "2") {
+
+                $_interface | Add-member -name "network-overlay" -membertype NoteProperty -Value "enable"
+                $_interface | Add-member -name "network-id" -membertype NoteProperty -Value $networkid
+            }
+            else {
+                Throw "Need to set ikeversion 2 to use networkid"
+            }
         }
 
         $null = Invoke-FGTRestMethod -uri $uri -method 'POST' -body $_interface -connection $connection @invokeParams
