@@ -14,9 +14,9 @@ function Add-FGTVpnIpsecPhase1Interface {
         Add an Vpn IPsec Phase 1 Interface (Version, type, interface, proposal, psksecret... )
 
         .EXAMPLE
-        Add-FGTVpnIpsecPhase1Interface -name PowerFGT_VPN -type static -interface port2 -proposal aes256-sha256 -psksecret MySecret -remotegw 192.0.2.1
+        Add-FGTVpnIpsecPhase1Interface -name PowerFGT_VPN -type static -interface port2 -psksecret MySecret -remotegw 192.0.2.1
 
-        Create a static VPN IPsec Phase 1 Interface named PowerFGT_VPN with interface port2, proposal aes256-sha256 with Remote Gateway 192.0.2.1
+        Create a static VPN IPsec Phase 1 Interface named PowerFGT_VPN with interface port2 with Remote Gateway 192.0.2.1
 
         .EXAMPLE
         Add-FGTVpnIpsecPhase1Interface -name PowerFGT_VPN -type dynamic -interface port2 -proposal aes256-sha256, aes256-sha512 -dhgrp 14,15 -psksecret MySecret
@@ -36,7 +36,7 @@ function Add-FGTVpnIpsecPhase1Interface {
         [Parameter (Mandatory = $false)]
         [ValidateSet('1', '2')]
         [string]$ikeversion,
-        [Parameter (Mandatory = $true)]
+        [Parameter (Mandatory = $false)]
         [string[]]$proposal,
         [Parameter (Mandatory = $false)]
         [ValidateSet(1, 2, 5, 14, 15, 16, 17, 18, 19, 20, 21, 27, 28, 29, 30, 31, 32)]
@@ -83,11 +83,14 @@ function Add-FGTVpnIpsecPhase1Interface {
 
         $_interface | add-member -name "type" -membertype NoteProperty -Value $type
         $_interface | add-member -name "interface" -membertype NoteProperty -Value $interface
-        $_interface | add-member -name "proposal" -membertype NoteProperty -Value ($proposal -join " ")
         $_interface | add-member -name "psksecret" -membertype NoteProperty -Value $psksecret
 
         if ( $PsBoundParameters.ContainsKey('ikeversion') ) {
             $_interface | add-member -name "ikeversion" -membertype NoteProperty -Value $ikeversion
+        }
+
+        if ( $PsBoundParameters.ContainsKey('proposal') ) {
+            $_interface | add-member -name "proposal" -membertype NoteProperty -Value ($proposal -join " ")
         }
 
         if ( $type -eq "static" ) {
