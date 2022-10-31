@@ -83,7 +83,7 @@ function Add-FGTVpnIpsecPhase1Interface {
 
         $_interface | add-member -name "type" -membertype NoteProperty -Value $type
         $_interface | add-member -name "interface" -membertype NoteProperty -Value $interface
-        $_interface | add-member -name "proposal" -membertype NoteProperty -Value $proposal
+        $_interface | add-member -name "proposal" -membertype NoteProperty -Value ($proposal -join " ")
         $_interface | add-member -name "psksecret" -membertype NoteProperty -Value $psksecret
 
         if ( $PsBoundParameters.ContainsKey('ikeversion') ) {
