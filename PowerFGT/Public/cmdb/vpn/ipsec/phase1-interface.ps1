@@ -106,7 +106,7 @@ function Add-FGTVpnIpsecPhase1Interface {
         }
 
         if ( $PsBoundParameters.ContainsKey('dhgrp') ) {
-            $_interface | add-member -name "dhgrp" -membertype NoteProperty -Value $dhgrp
+            $_interface | add-member -name "dhgrp" -membertype NoteProperty -Value ($dhgrp -join " ")
         }
 
         if ( $PsBoundParameters.ContainsKey('netdevice') ) {
