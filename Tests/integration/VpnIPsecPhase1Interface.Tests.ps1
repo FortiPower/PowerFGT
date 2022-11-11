@@ -145,6 +145,62 @@ Describe "Add VPN Ipsec Phase 1 Interface" {
         $vpn.'remote-gw' | Should -Be "192.0.2.1"
         $vpn.dhgrp | Should -Be "1 2"
     }
+
+    It "Add VPN Ipsec Phase 1 Interface with net-device enabled" {
+        Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -interface $pester_port1 -type static -psksecret MySecret -remotegw 192.0.2.1 -netdevice
+        $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
+        $vpn.name | Should -Be $pester_vpn1
+        $vpn.type | Should -Be "static"
+        $vpn.proposal | Should -Not -BeNullOrEmpty
+        $vpn.psksecret | Should -Not -BeNullOrEmpty
+        $vpn.'remote-gw' | Should -Be "192.0.2.1"
+        $vpn.'net-device' | Should -Be "enable"
+    }
+
+    It "Add VPN Ipsec Phase 1 Interface with add-route disabled" {
+        Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -interface $pester_port1 -type static -psksecret MySecret -remotegw 192.0.2.1 -addroute:$false
+        $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
+        $vpn.name | Should -Be $pester_vpn1
+        $vpn.type | Should -Be "static"
+        $vpn.proposal | Should -Not -BeNullOrEmpty
+        $vpn.psksecret | Should -Not -BeNullOrEmpty
+        $vpn.'remote-gw' | Should -Be "192.0.2.1"
+        $vpn.'add-route' | Should -Be "disable"
+    }
+
+    It "Add VPN Ipsec Phase 1 Interface with auto-discovery-sender enabled" {
+        Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -interface $pester_port1 -type static -psksecret MySecret -remotegw 192.0.2.1 -autodiscoverysender
+        $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
+        $vpn.name | Should -Be $pester_vpn1
+        $vpn.type | Should -Be "static"
+        $vpn.proposal | Should -Not -BeNullOrEmpty
+        $vpn.psksecret | Should -Not -BeNullOrEmpty
+        $vpn.'remote-gw' | Should -Be "192.0.2.1"
+        $vpn.'auto-discovery-sender' | Should -Be "enable"
+    }
+
+    It "Add VPN Ipsec Phase 1 Interface with auto-discovery-receiver enabled" {
+        Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -interface $pester_port1 -type static -psksecret MySecret -remotegw 192.0.2.1 -autodiscoveryreceiver
+        $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
+        $vpn.name | Should -Be $pester_vpn1
+        $vpn.type | Should -Be "static"
+        $vpn.proposal | Should -Not -BeNullOrEmpty
+        $vpn.psksecret | Should -Not -BeNullOrEmpty
+        $vpn.'remote-gw' | Should -Be "192.0.2.1"
+        $vpn.'auto-discovery-receiver' | Should -Be "enable"
+    }
+
+    It "Add VPN Ipsec Phase 1 Interface with exchange-interface-ip enabled" {
+        Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -interface $pester_port1 -type static -psksecret MySecret -remotegw 192.0.2.1 -exchangeinterfaceip
+        $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
+        $vpn.name | Should -Be $pester_vpn1
+        $vpn.type | Should -Be "static"
+        $vpn.proposal | Should -Not -BeNullOrEmpty
+        $vpn.psksecret | Should -Not -BeNullOrEmpty
+        $vpn.'remote-gw' | Should -Be "192.0.2.1"
+        $vpn.'exchange-interface-ip' | Should -Be "enable"
+    }
+
 }
 
 Describe "Remove VPN Ipsec Phase 1 Interface" {
