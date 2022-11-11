@@ -119,11 +119,16 @@ function Add-FGTVpnIpsecPhase1Interface {
         }
 
         if ( $PsBoundParameters.ContainsKey('addroute') ) {
-            if ($addroute) {
-                $_interface | Add-member -name "add-route" -membertype NoteProperty -Value "enable"
+            if ( $type -eq "static" ) {
+                throw "You can't specify addroute when use type static"
             }
             else {
-                $_interface | Add-member -name "add-route" -membertype NoteProperty -Value "disable"
+                if ($addroute) {
+                    $_interface | Add-member -name "add-route" -membertype NoteProperty -Value "enable"
+                }
+                else {
+                    $_interface | Add-member -name "add-route" -membertype NoteProperty -Value "disable"
+                }
             }
         }
 
