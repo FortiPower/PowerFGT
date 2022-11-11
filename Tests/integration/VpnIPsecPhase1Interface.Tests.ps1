@@ -302,18 +302,21 @@ Describe "Add VPN Ipsec Phase 1 Interface" -ForEach $type {
 
 }
 
-Describe "Remove VPN Ipsec Phase 1 Interface" {
+Describe "Add VPN Ipsec Phase 1 Interface" -ForEach $type {
 
-    BeforeEach {
-        Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -interface $pester_port1 -type static -psksecret MySecret -remotegw 192.0.2.1
+    Context "Interface $($_.type)" {
+
+        BeforeEach {
+            $p = $_.param
+            Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -interface $pester_port1 -psksecret MySecret @p
+        }
+
+        It "Remove System Interface by pipeline" {
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Remove-FGTVpnIpsecPhase1Interface -Confirm:$false
+            $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
+            $vpn | Should -Be $NULL
+        }
     }
-
-    It "Remove System Interface by pipeline" {
-        Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Remove-FGTVpnIpsecPhase1Interface -Confirm:$false
-        $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
-        $vpn | Should -Be $NULL
-    }
-
 }
 
 AfterAll {
