@@ -98,6 +98,7 @@ Describe "Add VPN Ipsec Phase 1 Interface" -ForEach $type {
             $vpn.'exchange-interface-ip' | Should -Be "disable"
             $vpn.'network-overlay' | Should -Be "disable"
             $vpn.'network-id' | Should -Be "0"
+            $vpn.'dpd' | Should -Be "on-demand"
         }
 
         It "Add VPN Ipsec Phase 1 Interface with 1 proposal (des-md5)" {
@@ -323,7 +324,61 @@ Describe "Add VPN Ipsec Phase 1 Interface" -ForEach $type {
                 $vpn.'network-overlay' | Should -Be "enable"
                 $vpn.'network-id' | Should -Be "23"
             }
+        }
 
+        It "Add VPN Ipsec Phase 1 Interface with dpd disable" {
+            $p = $_.param
+            Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -interface $pester_port1 -psksecret MySecret @p -dpd disable
+            $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
+            $vpn.name | Should -Be $pester_vpn1
+            $vpn.'ike-version' | Should -Be $_.param.ikeversion
+            $vpn.type | Should -Be $_.param.type
+            $vpn.proposal | Should -Not -BeNullOrEmpty
+            $vpn.psksecret | Should -Not -BeNullOrEmpty
+            if ($_.param.type -eq "static") {
+                $vpn.'remote-gw' | Should -Be "192.0.2.1"
+            }
+            else {
+                $vpn.'remote-gw' | Should -Be "0.0.0.0"
+            }
+            $vpn.'dpd' | Should -Be "disable"
+        }
+
+        It "Add VPN Ipsec Phase 1 Interface with dpd on-idle" {
+            $p = $_.param
+            Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -interface $pester_port1 -psksecret MySecret @p -dpd 'on-idle'
+            $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
+            $vpn.name | Should -Be $pester_vpn1
+            $vpn.'ike-version' | Should -Be $_.param.ikeversion
+            $vpn.type | Should -Be $_.param.type
+            $vpn.proposal | Should -Not -BeNullOrEmpty
+            $vpn.psksecret | Should -Not -BeNullOrEmpty
+            if ($_.param.type -eq "static") {
+                $vpn.'remote-gw' | Should -Be "192.0.2.1"
+            }
+            else {
+                $vpn.'remote-gw' | Should -Be "0.0.0.0"
+            }
+            $vpn.'dpd' | Should -Be "on-idle"
+        }
+
+
+        It "Add VPN Ipsec Phase 1 Interface with dpd on-idle" {
+            $p = $_.param
+            Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -interface $pester_port1 -psksecret MySecret @p -dpd 'on-idle'
+            $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
+            $vpn.name | Should -Be $pester_vpn1
+            $vpn.'ike-version' | Should -Be $_.param.ikeversion
+            $vpn.type | Should -Be $_.param.type
+            $vpn.proposal | Should -Not -BeNullOrEmpty
+            $vpn.psksecret | Should -Not -BeNullOrEmpty
+            if ($_.param.type -eq "static") {
+                $vpn.'remote-gw' | Should -Be "192.0.2.1"
+            }
+            else {
+                $vpn.'remote-gw' | Should -Be "0.0.0.0"
+            }
+            $vpn.'dpd' | Should -Be "on-idle"
         }
 
     }
