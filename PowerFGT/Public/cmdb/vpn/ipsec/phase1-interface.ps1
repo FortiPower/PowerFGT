@@ -61,6 +61,14 @@ function Add-FGTVpnIpsecPhase1Interface {
         [Parameter (Mandatory = $false)]
         [int]$networkid,
         [Parameter(Mandatory = $false)]
+        [ValidateSet('disable', 'on-idle', 'on-demand', IgnoreCase = $false)]
+        [string]$dpd,
+        [Parameter(Mandatory = $false)]
+        [ValidateRange(0, 10)]
+        [int]$dpdretrycount,
+        [Parameter(Mandatory = $false)]
+        [int]$dpdretryinterval,
+        [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
@@ -168,6 +176,18 @@ function Add-FGTVpnIpsecPhase1Interface {
             else {
                 Throw "Need to set ikeversion 2 to use networkid"
             }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('dpd') ) {
+            $_interface | Add-member -name "dpd" -membertype NoteProperty -Value $dpd
+        }
+
+        if ( $PsBoundParameters.ContainsKey('$dpdretrycount') ) {
+            $_interface | Add-member -name "dpd-retrycount" -membertype NoteProperty -Value $dpdretrycount
+        }
+
+        if ( $PsBoundParameters.ContainsKey('dpdretryinterval') ) {
+            $_interface | Add-member -name "dpd-retryinterval" -membertype NoteProperty -Value $dpdretryinterval
         }
 
         $null = Invoke-FGTRestMethod -uri $uri -method 'POST' -body $_interface -connection $connection @invokeParams
