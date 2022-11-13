@@ -182,7 +182,7 @@ function Add-FGTVpnIpsecPhase1Interface {
             $_interface | Add-member -name "dpd" -membertype NoteProperty -Value $dpd
         }
 
-        if ( $PsBoundParameters.ContainsKey('$dpdretrycount') ) {
+        if ( $PsBoundParameters.ContainsKey('dpdretrycount') ) {
             $_interface | Add-member -name "dpd-retrycount" -membertype NoteProperty -Value $dpdretrycount
         }
 
