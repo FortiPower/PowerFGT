@@ -68,6 +68,8 @@ function Add-FGTVpnIpsecPhase1Interface {
         [int]$dpdretrycount,
         [Parameter(Mandatory = $false)]
         [int]$dpdretryinterval,
+        [Parameter (Mandatory = $false)]
+        [switch]$idletimeout,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -188,6 +190,15 @@ function Add-FGTVpnIpsecPhase1Interface {
 
         if ( $PsBoundParameters.ContainsKey('dpdretryinterval') ) {
             $_interface | Add-member -name "dpd-retryinterval" -membertype NoteProperty -Value $dpdretryinterval
+        }
+
+        if ( $PsBoundParameters.ContainsKey('idletimeout') ) {
+            if ($idletimeout) {
+                $_interface | Add-member -name "idle-timeout" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_interface | Add-member -name "idle-timeout" -membertype NoteProperty -Value "disable"
+            }
         }
 
         $null = Invoke-FGTRestMethod -uri $uri -method 'POST' -body $_interface -connection $connection @invokeParams
