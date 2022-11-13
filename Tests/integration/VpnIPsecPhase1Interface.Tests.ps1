@@ -366,7 +366,6 @@ Describe "Add VPN Ipsec Phase 1 Interface" -ForEach $type {
             $vpn.'dpd' | Should -Be "on-idle"
         }
 
-
         It "Add VPN Ipsec Phase 1 Interface with dpd on-idle" {
             $p = $_.param
             Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -interface $pester_port1 -psksecret MySecret @p -dpd 'on-idle'
@@ -387,6 +386,45 @@ Describe "Add VPN Ipsec Phase 1 Interface" -ForEach $type {
             $vpn.'dpd-retryinterval' | Should -Be 20
         }
 
+        It "Add VPN Ipsec Phase 1 Interface with dpd retrycount (1)" {
+            $p = $_.param
+            Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -interface $pester_port1 -psksecret MySecret @p -dpdretrycount 1
+            $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
+            $vpn.name | Should -Be $pester_vpn1
+            $vpn.'ike-version' | Should -Be $_.param.ikeversion
+            $vpn.type | Should -Be $_.param.type
+            $vpn.proposal | Should -Not -BeNullOrEmpty
+            $vpn.psksecret | Should -Not -BeNullOrEmpty
+            if ($_.param.type -eq "static") {
+                $vpn.'remote-gw' | Should -Be "192.0.2.1"
+            }
+            else {
+                $vpn.'remote-gw' | Should -Be "0.0.0.0"
+            }
+            $vpn.'dpd' | Should -Be "on-demand"
+            $vpn.'dpd-retrycount' | Should -Be 1
+            $vpn.'dpd-retryinterval' | Should -Be 20
+        }
+
+        It "Add VPN Ipsec Phase 1 Interface with dpd retryinterval (10)" {
+            $p = $_.param
+            Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -interface $pester_port1 -psksecret MySecret @p -dpdretryinterval 10
+            $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
+            $vpn.name | Should -Be $pester_vpn1
+            $vpn.'ike-version' | Should -Be $_.param.ikeversion
+            $vpn.type | Should -Be $_.param.type
+            $vpn.proposal | Should -Not -BeNullOrEmpty
+            $vpn.psksecret | Should -Not -BeNullOrEmpty
+            if ($_.param.type -eq "static") {
+                $vpn.'remote-gw' | Should -Be "192.0.2.1"
+            }
+            else {
+                $vpn.'remote-gw' | Should -Be "0.0.0.0"
+            }
+            $vpn.'dpd' | Should -Be "on-demand"
+            $vpn.'dpd-retrycount' | Should -Be 3
+            $vpn.'dpd-retryinterval' | Should -Be 10
+        }
     }
 
 }
