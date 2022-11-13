@@ -99,6 +99,8 @@ Describe "Add VPN Ipsec Phase 1 Interface" -ForEach $type {
             $vpn.'network-overlay' | Should -Be "disable"
             $vpn.'network-id' | Should -Be "0"
             $vpn.'dpd' | Should -Be "on-demand"
+            $vpn.'dpd-retrycount' | Should -Be 3
+            $vpn.'dpd-retryinterval' | Should -Be 20
         }
 
         It "Add VPN Ipsec Phase 1 Interface with 1 proposal (des-md5)" {
@@ -342,6 +344,8 @@ Describe "Add VPN Ipsec Phase 1 Interface" -ForEach $type {
                 $vpn.'remote-gw' | Should -Be "0.0.0.0"
             }
             $vpn.'dpd' | Should -Be "disable"
+            $vpn.'dpd-retrycount' | Should -Be 3
+            $vpn.'dpd-retryinterval' | Should -Be 20
         }
 
         It "Add VPN Ipsec Phase 1 Interface with dpd on-idle" {
@@ -379,6 +383,8 @@ Describe "Add VPN Ipsec Phase 1 Interface" -ForEach $type {
                 $vpn.'remote-gw' | Should -Be "0.0.0.0"
             }
             $vpn.'dpd' | Should -Be "on-idle"
+            $vpn.'dpd-retrycount' | Should -Be 3
+            $vpn.'dpd-retryinterval' | Should -Be 20
         }
 
     }
