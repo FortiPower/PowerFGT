@@ -173,9 +173,6 @@ function Connect-FGT {
                 $Credentials = Get-Credential -Message 'Please enter administrative credentials for your FortiGate'
             }
             $postParams = @{username = $Credentials.username; secretkey = $Credentials.GetNetworkCredential().Password; ajax = 1 }
-            if ( $PsBoundParameters.ContainsKey('token_code') ) {
-                $postParams += @{token_code = $token_code }
-            }
             $uri = $url + "logincheck"
             $iwrResponse = $null
             Write-Verbose ($postParams | Convertto-json)
@@ -199,7 +196,21 @@ function Connect-FGT {
                     throw "Admin is now locked out (Please retry in 60 seconds)"
                 }
                 '3' {
-                    throw "Two-factor Authentication is needed (not yet supported with PowerFGT)"
+                    if ( $PsBoundParameters.ContainsKey('token_code') ) {
+                        $postParams += @{token_code = $token_code }
+                        Write-Verbose ($postParams | Convertto-json)
+                        try {
+                            $iwrResponse = Invoke-WebRequest $uri -Method POST -Body $postParams -WebSession $FGT @invokeParams
+                        }
+                        catch {
+                            Show-FGTException $_
+                            throw "Unable to connect to FortiGate"
+                        }
+                    }
+                    else {
+                        throw "Two-factor Authentication is needed (not yet supported with PowerFGT)"
+                    }
+
                 }
                 '4' {
                     if (-not $PsBoundParameters.ContainsKey('new_password')) {
