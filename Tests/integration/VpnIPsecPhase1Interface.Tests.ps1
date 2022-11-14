@@ -101,7 +101,8 @@ Describe "Add VPN Ipsec Phase 1 Interface" -ForEach $type {
             $vpn.'dpd' | Should -Be "on-demand"
             $vpn.'dpd-retrycount' | Should -Be 3
             $vpn.'dpd-retryinterval' | Should -Be 20
-            $vpn.'idle-timeout' | Should -Be "disable"
+            $vpn.'fragmentation' | Should -Be "enable"
+            $vpn.'npu-offload' | Should -Be "enable"
         }
 
         It "Add VPN Ipsec Phase 1 Interface with 1 proposal (des-md5)" {
@@ -443,6 +444,45 @@ Describe "Add VPN Ipsec Phase 1 Interface" -ForEach $type {
                 $vpn.'remote-gw' | Should -Be "0.0.0.0"
             }
             $vpn.'idle-timeout' | Should -Be "enable"
+        }
+
+        It "Add VPN Ipsec Phase 1 Interface with data (one field)" {
+            $data = @{ "fragmentation" = "disable" }
+            $p = $_.param
+            Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -interface $pester_port1 -psksecret MySecret @p -data $data
+            $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
+            $vpn.name | Should -Be $pester_vpn1
+            $vpn.'ike-version' | Should -Be $_.param.ikeversion
+            $vpn.type | Should -Be $_.param.type
+            $vpn.proposal | Should -Not -BeNullOrEmpty
+            $vpn.psksecret | Should -Not -BeNullOrEmpty
+            if ($_.param.type -eq "static") {
+                $vpn.'remote-gw' | Should -Be "192.0.2.1"
+            }
+            else {
+                $vpn.'remote-gw' | Should -Be "0.0.0.0"
+            }
+            $vpn.fragmentation | Should -Be "disable"
+        }
+
+        It "Add VPN Ipsec Phase 1 Interface with data (two fields)" {
+            $data = @{ "fragmentation" = "disable" ; "npu-offload" = "disable" }
+            $p = $_.param
+            Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -interface $pester_port1 -psksecret MySecret @p -data $data
+            $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
+            $vpn.name | Should -Be $pester_vpn1
+            $vpn.'ike-version' | Should -Be $_.param.ikeversion
+            $vpn.type | Should -Be $_.param.type
+            $vpn.proposal | Should -Not -BeNullOrEmpty
+            $vpn.psksecret | Should -Not -BeNullOrEmpty
+            if ($_.param.type -eq "static") {
+                $vpn.'remote-gw' | Should -Be "192.0.2.1"
+            }
+            else {
+                $vpn.'remote-gw' | Should -Be "0.0.0.0"
+            }
+            $vpn.fragmentation | Should -Be "disable"
+            $vpn.'npu-offload' | Should -Be "disable"
         }
 
     }
