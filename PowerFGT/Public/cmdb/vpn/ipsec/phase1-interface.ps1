@@ -23,6 +23,12 @@ function Add-FGTVpnIpsecPhase1Interface {
 
         Create a dynamic VPN IPsec Phase 1 Interface named PowerFGT_VPN with interface port2, multiple proposal aes256-sha256, aes256-sha512 and DH Group 14 & 15
 
+        .EXAMPLE
+        $data = @{ "fragmentation" = "disable" ; "npu-offload" = "disable" }
+        PS C> Add-FGTVpnIpsecPhase1Interface -name PowerFGT_VPN -type static -interface port2 -psksecret MySecret -remotegw 192.0.2.1 -data $data
+
+        reate a dynamic VPN IPsec Phase 1 Interface named PowerFGT_VPN  with fragmentation and npu-offload using -data parameter
+
     #>
     Param(
         [Parameter (Mandatory = $true, Position = 1)]
@@ -70,6 +76,8 @@ function Add-FGTVpnIpsecPhase1Interface {
         [int]$dpdretryinterval,
         [Parameter (Mandatory = $false)]
         [switch]$idletimeout,
+        [Parameter (Mandatory = $false)]
+        [hashtable]$data,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -198,6 +206,12 @@ function Add-FGTVpnIpsecPhase1Interface {
             }
             else {
                 $_interface | Add-member -name "idle-timeout" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('data') ) {
+            $data.GetEnumerator() | ForEach-Object {
+                $_interface | Add-member -name $_.key -membertype NoteProperty -Value $_.value
             }
         }
 
