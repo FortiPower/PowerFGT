@@ -241,49 +241,31 @@ function Set-FGTWebfilterUrlfilter {
         Configure a FortiGate URL Filter
 
         .DESCRIPTION
-        Change a FortiGate Address (ip, mask, comment, associated interface... )
+        Change a FortiGate URL Filter (comment, action, status... )
 
         .EXAMPLE
-        $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
-        PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -ip 192.0.2.0 -mask 255.255.255.0
+        $MyFGTUrl = Get-FGTWebfilterUrlfilter -name MyFGTUrl
+        PS C:\>$MyFGTUrl | Set-FGTWebfilterUrlfilter -url_id 10 -action block
 
-        Change MyFGTAddress to value (ip and mask) 192.0.2.0/24
-
-        .EXAMPLE
-        $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
-        PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -ip 192.0.2.1
-
-        Change MyFGTAddress to value (ip) 192.0.2.1
+        Change MyFGTUrl URL ID 10 to value (action) block
 
         .EXAMPLE
-        $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
-        PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -interface port1
+        $MyFGTUrl = Get-FGTWebfilterUrlfilter -name MyFGTUrl
+        PS C:\>$MyFGTUrl | Set-FGTWebfilterUrlfilter -url_id 10 -status disable
 
-        Change MyFGTAddress to set associated interface to port 1
-
-        .EXAMPLE
-        $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
-        PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -comment "My FGT Address" -visibility:$false
-
-        Change MyFGTAddress to set a new comment and disabled visibility
+        Change MyFGTUrl URL ID 10 to value (status) disable
 
         .EXAMPLE
-        $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
-        PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -fqdn fortipower.github.io
+        $MyFGTUrl = Get-FGTWebfilterUrlfilter -name MyFGTUrl
+        PS C:\>$MyFGTUrl | Set-FGTWebfilterUrlfilter -comment 'Changed by PowerFGT"
 
-        Change MyFGTAddress to set a new fqdn fortipower.github.io
-
-        .EXAMPLE
-        $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
-        PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -startip 192.0.2.100
-
-        Change MyFGTAddress to set a new startip (iprange) 192.0.2.100
+        Change MyFGTUrl to set comment to "Changed by PowerFGT"
 
         .EXAMPLE
-        $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
-        PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -endip 192.0.2.200
+        $MyFGTUrl = Get-FGTWebfilterUrlfilter -name MyFGTUrl
+        PS C:\>$MyFGTUrl | Set-FGTWebfilterUrlfilter -url_id 15 -url_type simple -url powerfgt.com -action allow -status enable
 
-        Change MyFGTAddress to set a new endip (iprange) 192.0.2.200
+        Add a new URL to the MyFGTUrl profil for the url powerfgt.com
 
     #>
 
@@ -396,7 +378,7 @@ function Set-FGTWebfilterUrlfilter {
         if ($PSCmdlet.ShouldProcess($urlfilter.name, 'Configure URL FIlter entry')) {
             Invoke-FGTRestMethod -method "PUT" -body $_urlfilter -uri $uri -connection $connection @invokeParams | out-Null
 
-            Get-FGTFirewallAddress -connection $connection @invokeParams -name $urlfilter.name
+            Get-FGTWebfilterUrlfilter -connection $connection @invokeParams -name $urlfilter.name
         }
     }
 
