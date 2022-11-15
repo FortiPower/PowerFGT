@@ -45,7 +45,7 @@ function Add-FGTWebfilterUrlfilter {
         [Parameter (Mandatory = $false)]
         [string]$action,
         [Parameter (Mandatory = $false)]
-        [switch]$status,
+        [string]$status,
         [Parameter (Mandatory = $false)]
         [string]$exempt,
         [Parameter (Mandatory = $false)]
@@ -111,7 +111,10 @@ function Add-FGTWebfilterUrlfilter {
             $_entry | add-member -name "exempt" -membertype NoteProperty -Value $exempt
         }
 
-        $urlfilter | add-member -name "entries" -membertype NoteProperty -Value $_entry
+        $_entries = @()
+        $_entries += $_entry
+
+        $urlfilter | add-member -name "entries" -membertype NoteProperty -Value $_entries
 
         Invoke-FGTRestMethod -method "POST" -body $urlfilter -uri $uri -connection $connection @invokeParams | Out-Null
 
@@ -207,7 +210,7 @@ function Get-FGTWebfilterUrlfilter {
                 $filter_value = $name
                 $filter_attribute = "name"
             }
-            "id" {
+            "uiid" {
                 $filter_value = $id
                 $filter_attribute = "id"
             }
@@ -375,6 +378,61 @@ function Set-FGTWebfilterUrlfilter {
             Invoke-FGTRestMethod -method "PUT" -body $_urlfilter -uri $uri -connection $connection @invokeParams | out-Null
 
             Get-FGTWebfilterUrlfilter -connection $connection @invokeParams -name $urlfilter.name
+        }
+    }
+
+    End {
+    }
+}
+
+function Remove-FGTWebfilterUrlfilter {
+
+    <#
+        .SYNOPSIS
+        Remove a FortiGate Webfilter URLFilter
+
+        .DESCRIPTION
+        Remove a FortiGate Webfilter URLFilter object on the FortiGate
+
+        .EXAMPLE
+        $MyFGTURL = Get-FGTWebfilterUrlfilter -name MyFGTURL
+        PS C:\>$MyFGTURL | Remove-FGTWebfilterUrlfilter
+
+        Remove Webfilter URLFilter object $MyFGTURL
+
+        .EXAMPLE
+        $MyFGTURL = Get-FGTWebfilterUrlfilter -name MyFGTURL
+        PS C:\>$MyFGTURL | Remove-FGTWebfilterUrlfilter -confirm:$false
+
+        Remove Webfilter URLFilter object $MyFGTURL with no confirmation
+
+    #>
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'high')]
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        #[ValidateScript({ Confirm-FGTWebfilterUrlfilter $_ })]
+        [psobject]$url,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/webfilter/urlfilter/$($url.id)"
+
+        if ($PSCmdlet.ShouldProcess($url.name, 'Remove WebFilter UrlFilter')) {
+            $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -connection $connection @invokeParams
         }
     }
 
