@@ -184,6 +184,21 @@ function Connect-FGT {
                 throw "Unable to connect to FortiGate"
             }
 
+            #check if need token...
+            if ( $iwrResponse.Content[0] -eq "3") {
+                if ( $PsBoundParameters.ContainsKey('token_code') ) {
+                    $postParams += @{token_code = $token_code }
+                    Write-Verbose ($postParams | Convertto-json)
+                    try {
+                        $iwrResponse = Invoke-WebRequest $uri -Method POST -Body $postParams -WebSession $FGT @invokeParams
+                    }
+                    catch {
+                        Show-FGTException $_
+                        throw "Unable to connect to FortiGate"
+                    }
+                }
+            }
+
             #first byte return is a status code
             switch ($iwrResponse.Content[0]) {
                 '0' {
@@ -196,21 +211,7 @@ function Connect-FGT {
                     throw "Admin is now locked out (Please retry in 60 seconds)"
                 }
                 '3' {
-                    if ( $PsBoundParameters.ContainsKey('token_code') ) {
-                        $postParams += @{token_code = $token_code }
-                        Write-Verbose ($postParams | Convertto-json)
-                        try {
-                            $iwrResponse = Invoke-WebRequest $uri -Method POST -Body $postParams -WebSession $FGT @invokeParams
-                        }
-                        catch {
-                            Show-FGTException $_
-                            throw "Unable to connect to FortiGate"
-                        }
-                    }
-                    else {
-                        throw "Two-factor Authentication is needed (not yet supported with PowerFGT)"
-                    }
-
+                    throw "Two-factor Authentication is needed (not yet supported with PowerFGT)"
                 }
                 '4' {
                     if (-not $PsBoundParameters.ContainsKey('new_password')) {
