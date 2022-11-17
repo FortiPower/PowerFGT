@@ -104,6 +104,8 @@ function Connect-FGT {
         [Parameter(Mandatory = $false)]
         [string]$token_code,
         [Parameter(Mandatory = $false)]
+        [switch]$token_prompt,
+        [Parameter(Mandatory = $false)]
         [string[]]$vdom,
         [Parameter(Mandatory = $false)]
         [boolean]$DefaultConnection = $true
@@ -186,7 +188,10 @@ function Connect-FGT {
 
             #check if need token...
             if ( $iwrResponse.Content[0] -eq "3") {
-                if ( $PsBoundParameters.ContainsKey('token_code') ) {
+                if ( $PsBoundParameters.ContainsKey('token_code') -or $PsBoundParameters.ContainsKey('token_prompt') ) {
+                    if ( $PsBoundParameters.ContainsKey('token_prompt')) {
+                        $token_code = Read-Host "Token"
+                    }
                     $postParams += @{token_code = $token_code }
                     Write-Verbose ($postParams | Convertto-json)
                     try {
