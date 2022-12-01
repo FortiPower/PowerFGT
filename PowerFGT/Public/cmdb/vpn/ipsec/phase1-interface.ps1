@@ -334,6 +334,239 @@ function Get-FGTVpnIpsecPhase1Interface {
     }
 }
 
+function Set-FGTVpnIpsecPhase1Interface {
+
+    <#
+        .SYNOPSIS
+        Configure a Vpn IPsec Phase 1 Interface
+
+        .DESCRIPTION
+        Configure an Vpn IPsec Phase 1 Interface (Version, type, interface, proposal, psksecret... )
+
+        .EXAMPLE
+        Get-FGTVpnIpsecPhase1Interface PowerFGT_VPN | Set-FGTVpnIpsecPhase1Interface -interface port2 -psksecret MySecret -remotegw 192.0.2.1
+
+        Create a static VPN IPsec Phase 1 Interface named PowerFGT_VPN with interface port2 with Remote Gateway 192.0.2.1
+
+        .EXAMPLE
+        Add-FGTVpnIpsecPhase1Interface -name PowerFGT_VPN -type dynamic -interface port2 -proposal aes256-sha256, aes256-sha512 -dhgrp 14,15 -psksecret MySecret
+
+        Create a dynamic VPN IPsec Phase 1 Interface named PowerFGT_VPN with interface port2, multiple proposal aes256-sha256, aes256-sha512 and DH Group 14 & 15
+
+        .EXAMPLE
+        $data = @{ "fragmentation" = "disable" ; "npu-offload" = "disable" }
+        PS C> Add-FGTVpnIpsecPhase1Interface -name PowerFGT_VPN -type static -interface port2 -psksecret MySecret -remotegw 192.0.2.1 -data $data
+
+        reate a dynamic VPN IPsec Phase 1 Interface named PowerFGT_VPN  with fragmentation and npu-offload using -data parameter
+
+    #>
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [ValidateScript( { Confirm-FGTVpnIpsecPhase1Interface $_ })]
+        [psobject]$vpn,
+        [Parameter (Mandatory = $false, Position = 1)]
+        [ValidateLength(1, 15)]
+        [string]$name,
+        [Parameter (Mandatory = $false)]
+        [ValidateSet('static', 'dynamic', IgnoreCase = $false)]
+        [string]$type,
+        [Parameter (Mandatory = $false)]
+        [ValidateSet('1', '2')]
+        [string]$ikeversion,
+        [Parameter (Mandatory = $false)]
+        [string[]]$proposal,
+        [Parameter (Mandatory = $false)]
+        [ValidateSet(1, 2, 5, 14, 15, 16, 17, 18, 19, 20, 21, 27, 28, 29, 30, 31, 32)]
+        [int[]]$dhgrp,
+        [Parameter (Mandatory = $false)]
+        [string]$psksecret,
+        [Parameter (Mandatory = $false)]
+        [string]$remotegw,
+        [Parameter (Mandatory = $false)]
+        [ValidateSet('any', 'one', 'dialup', 'peer', 'peergrp', IgnoreCase = $false)]
+        [string]$peertype,
+        [Parameter (Mandatory = $false)]
+        [switch]$netdevice,
+        [Parameter (Mandatory = $false)]
+        [switch]$addroute,
+        [Parameter (Mandatory = $false)]
+        [switch]$autodiscoverysender,
+        [Parameter (Mandatory = $false)]
+        [switch]$autodiscoveryreceiver,
+        [Parameter (Mandatory = $false)]
+        [switch]$exchangeinterfaceip,
+        [Parameter (Mandatory = $false)]
+        [int]$networkid,
+        [Parameter(Mandatory = $false)]
+        [ValidateSet('disable', 'on-idle', 'on-demand', IgnoreCase = $false)]
+        [string]$dpd,
+        [Parameter(Mandatory = $false)]
+        [ValidateRange(0, 10)]
+        [int]$dpdretrycount,
+        [Parameter(Mandatory = $false)]
+        [int]$dpdretryinterval,
+        [Parameter (Mandatory = $false)]
+        [switch]$idletimeout,
+        [Parameter (Mandatory = $false)]
+        [hashtable]$data,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/vpn.ipsec/phase1-interface/$($vpn.name)"
+
+        $_interface = new-Object -TypeName PSObject
+
+        if ( $PsBoundParameters.ContainsKey('name') ) {
+
+            $_interface | add-member -name "name" -membertype NoteProperty -Value $name
+        }
+        if ( $PsBoundParameters.ContainsKey('interface') ) {
+
+            $_interface | add-member -name "interface" -membertype NoteProperty -Value $interface
+        }
+
+        if ( $PsBoundParameters.ContainsKey('psksecret') ) {
+            $_interface | add-member -name "psksecret" -membertype NoteProperty -Value $psksecret
+        }
+
+        if ( $PsBoundParameters.ContainsKey('ikeversion') ) {
+            $_interface | add-member -name "ike-version" -membertype NoteProperty -Value $ikeversion
+        }
+
+        if ( $PsBoundParameters.ContainsKey('proposal') ) {
+            $_interface | add-member -name "proposal" -membertype NoteProperty -Value ($proposal -join " ")
+        }
+
+        if ($PsBoundParameters.ContainsKey('remotegw')) {
+            if ( $vpn.type -eq "static" ) {
+                $_interface | add-member -name "remote-gw" -membertype NoteProperty -Value $remotegw
+            }
+            else {
+                throw "You can't set a remotegw when it is not static"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('peertype') ) {
+            $_interface | add-member -name "peertype" -membertype NoteProperty -Value $peertype
+        }
+
+        if ( $PsBoundParameters.ContainsKey('dhgrp') ) {
+            $_interface | add-member -name "dhgrp" -membertype NoteProperty -Value ($dhgrp -join " ")
+        }
+
+        if ( $PsBoundParameters.ContainsKey('netdevice') ) {
+            if ($netdevice) {
+                $_interface | Add-member -name "net-device" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_interface | Add-member -name "net-device" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('addroute') ) {
+            if ( $vpn.type -eq "static" ) {
+                throw "You can't specify addroute when use type static"
+            }
+            else {
+                if ($addroute) {
+                    $_interface | Add-member -name "add-route" -membertype NoteProperty -Value "enable"
+                }
+                else {
+                    $_interface | Add-member -name "add-route" -membertype NoteProperty -Value "disable"
+                }
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('autodiscoverysender') ) {
+            if ($autodiscoverysender) {
+                $_interface | Add-member -name "auto-discovery-sender" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_interface | Add-member -name "auto-discovery-sender" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('autodiscoveryreceiver') ) {
+            if ($autodiscoveryreceiver) {
+                $_interface | Add-member -name "auto-discovery-receiver" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_interface | Add-member -name "auto-discovery-receiver" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('exchangeinterfaceip') ) {
+            if ($exchangeinterfaceip) {
+                $_interface | Add-member -name "exchange-interface-ip" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_interface | Add-member -name "exchange-interface-ip" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('networkid') ) {
+            if ($vpn.'ike-version' -eq "2") {
+                $_interface | Add-member -name "network-overlay" -membertype NoteProperty -Value "enable"
+                $_interface | Add-member -name "network-id" -membertype NoteProperty -Value $networkid
+            }
+            else {
+                Throw "Need to set ikeversion 2 to use networkid"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('dpd') ) {
+            $_interface | Add-member -name "dpd" -membertype NoteProperty -Value $dpd
+        }
+
+        if ( $PsBoundParameters.ContainsKey('dpdretrycount') ) {
+            $_interface | Add-member -name "dpd-retrycount" -membertype NoteProperty -Value $dpdretrycount
+        }
+
+        if ( $PsBoundParameters.ContainsKey('dpdretryinterval') ) {
+            $_interface | Add-member -name "dpd-retryinterval" -membertype NoteProperty -Value $dpdretryinterval
+        }
+
+        if ( $PsBoundParameters.ContainsKey('idletimeout') ) {
+            if ($idletimeout) {
+                $_interface | Add-member -name "idle-timeout" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_interface | Add-member -name "idle-timeout" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('data') ) {
+            $data.GetEnumerator() | ForEach-Object {
+                $_interface | Add-member -name $_.key -membertype NoteProperty -Value $_.value
+            }
+        }
+
+        if ($PSCmdlet.ShouldProcess($vpn.name, 'Vpn IPsec Phase 1 Interface')) {
+            $null = Invoke-FGTRestMethod -uri $uri -method 'PUT' -body $_interface -connection $connection @invokeParams
+            Get-FGTSystemInterface -name $vpn.name -connection $connection @invokeParams
+        }
+
+    }
+
+    End {
+    }
+}
+
 function Remove-FGTVpnIpsecPhase1Interface {
 
     <#
