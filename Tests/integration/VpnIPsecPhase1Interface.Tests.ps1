@@ -652,6 +652,24 @@ Describe "Configure VPN Ipsec Phase 1 Interface" -ForEach $type {
             $vpn.'auto-discovery-sender' | Should -Be "enable"
         }
 
+        It "Set VPN Ipsec Phase 1 Interface with auto-discovery-sender disabled" {
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Set-FGTVpnIpsecPhase1Interface -autodiscoverysender:$false
+            $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
+            $vpn.name | Should -Be $pester_vpn1
+            $vpn.'ike-version' | Should -Be $_.param.ikeversion
+            $vpn.type | Should -Be $_.param.type
+            $vpn.proposal | Should -Not -BeNullOrEmpty
+            $vpn.psksecret | Should -Not -BeNullOrEmpty
+            if ($_.param.type -eq "static") {
+                $vpn.'remote-gw' | Should -Be "192.0.2.1"
+            }
+            else {
+                $vpn.'remote-gw' | Should -Be "0.0.0.0"
+            }
+            $vpn.'auto-discovery-sender' | Should -Be "disable"
+        }
+
+
         It "Set VPN Ipsec Phase 1 Interface with auto-discovery-receiver enabled" {
             Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Set-FGTVpnIpsecPhase1Interface -autodiscoveryreceiver
             $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
@@ -669,8 +687,25 @@ Describe "Configure VPN Ipsec Phase 1 Interface" -ForEach $type {
             $vpn.'auto-discovery-receiver' | Should -Be "enable"
         }
 
+        It "Set VPN Ipsec Phase 1 Interface with auto-discovery-receiver disabled" {
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Set-FGTVpnIpsecPhase1Interface -autodiscoveryreceiver:$false
+            $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
+            $vpn.name | Should -Be $pester_vpn1
+            $vpn.'ike-version' | Should -Be $_.param.ikeversion
+            $vpn.type | Should -Be $_.param.type
+            $vpn.proposal | Should -Not -BeNullOrEmpty
+            $vpn.psksecret | Should -Not -BeNullOrEmpty
+            if ($_.param.type -eq "static") {
+                $vpn.'remote-gw' | Should -Be "192.0.2.1"
+            }
+            else {
+                $vpn.'remote-gw' | Should -Be "0.0.0.0"
+            }
+            $vpn.'auto-discovery-receiver' | Should -Be "disable"
+        }
+
         It "Set VPN Ipsec Phase 1 Interface with exchange-interface-ip enabled" {
-            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Set-FGTVpnIpsecPhase1Interface -exchangeinterfaceip -verbose
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Set-FGTVpnIpsecPhase1Interface -exchangeinterfaceip
             $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
             $vpn.name | Should -Be $pester_vpn1
             $vpn.'ike-version' | Should -Be $_.param.ikeversion
@@ -684,6 +719,23 @@ Describe "Configure VPN Ipsec Phase 1 Interface" -ForEach $type {
                 $vpn.'remote-gw' | Should -Be "0.0.0.0"
             }
             $vpn.'exchange-interface-ip' | Should -Be "enable"
+        }
+
+        It "Set VPN Ipsec Phase 1 Interface with exchange-interface-ip disabled" {
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Set-FGTVpnIpsecPhase1Interface -exchangeinterfaceip:$false
+            $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
+            $vpn.name | Should -Be $pester_vpn1
+            $vpn.'ike-version' | Should -Be $_.param.ikeversion
+            $vpn.type | Should -Be $_.param.type
+            $vpn.proposal | Should -Not -BeNullOrEmpty
+            $vpn.psksecret | Should -Not -BeNullOrEmpty
+            if ($_.param.type -eq "static") {
+                $vpn.'remote-gw' | Should -Be "192.0.2.1"
+            }
+            else {
+                $vpn.'remote-gw' | Should -Be "0.0.0.0"
+            }
+            $vpn.'exchange-interface-ip' | Should -Be "disable"
         }
 
         It "Set VPN Ipsec Phase 1 Interface with network (Overlay) id (23)" {
