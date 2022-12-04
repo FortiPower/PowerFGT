@@ -100,9 +100,16 @@ Describe "Add VPN Ipsec Phase 1 Interface" -ForEach $type {
                 $vpn.'network-overlay' | Should -Be "disable"
                 $vpn.'network-id' | Should -Be "0"
             }
-            $vpn.'dpd' | Should -Be "on-demand"
-            $vpn.'dpd-retrycount' | Should -Be 3
-            $vpn.'dpd-retryinterval' | Should -Be 20
+            if ($fgt_version -lt "6.2.0" -and $_.param.type -eq "dynamic") {
+                $vpn.'dpd' | Should -Be "on-idle"
+                $vpn.'dpd-retrycount' | Should -Be 3
+                $vpn.'dpd-retryinterval' | Should -Be 60
+            }
+            else {
+                $vpn.'dpd' | Should -Be "on-demand"
+                $vpn.'dpd-retrycount' | Should -Be 3
+                $vpn.'dpd-retryinterval' | Should -Be 20
+            }
             $vpn.'fragmentation' | Should -Be "enable"
             $vpn.'keepalive' |  Should -Be 10
         }
@@ -212,7 +219,7 @@ Describe "Add VPN Ipsec Phase 1 Interface" -ForEach $type {
             $vpn.dhgrp | Should -Be "1 2"
         }
 
-        It "Add VPN Ipsec Phase 1 Interface with net-device enabled" {
+        It "Add VPN Ipsec Phase 1 Interface with net-device enabled" -skip:($fgt_version -lt "6.2.0" -and $_.param.type -eq "static") {
             $p = $_.param
             Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -interface $pester_port1 -psksecret MySecret @p -netdevice
             $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
@@ -349,7 +356,12 @@ Describe "Add VPN Ipsec Phase 1 Interface" -ForEach $type {
             }
             $vpn.'dpd' | Should -Be "disable"
             $vpn.'dpd-retrycount' | Should -Be 3
-            $vpn.'dpd-retryinterval' | Should -Be 20
+            if ($fgt_version -lt "6.2.0" -and $_.param.type -eq "dynamic") {
+                $vpn.'dpd-retryinterval' | Should -Be 60
+            }
+            else {
+                $vpn.'dpd-retryinterval' | Should -Be 20
+            }
         }
 
         It "Add VPN Ipsec Phase 1 Interface with dpd on-idle" {
@@ -387,7 +399,12 @@ Describe "Add VPN Ipsec Phase 1 Interface" -ForEach $type {
             }
             $vpn.'dpd' | Should -Be "on-idle"
             $vpn.'dpd-retrycount' | Should -Be 3
-            $vpn.'dpd-retryinterval' | Should -Be 20
+            if ($fgt_version -lt "6.2.0" -and $_.param.type -eq "dynamic") {
+                $vpn.'dpd-retryinterval' | Should -Be 60
+            }
+            else {
+                $vpn.'dpd-retryinterval' | Should -Be 20
+            }
         }
 
         It "Add VPN Ipsec Phase 1 Interface with dpd retrycount (1)" {
@@ -405,9 +422,17 @@ Describe "Add VPN Ipsec Phase 1 Interface" -ForEach $type {
             else {
                 $vpn.'remote-gw' | Should -Be "0.0.0.0"
             }
-            $vpn.'dpd' | Should -Be "on-demand"
-            $vpn.'dpd-retrycount' | Should -Be 1
-            $vpn.'dpd-retryinterval' | Should -Be 20
+            if ($fgt_version -lt "6.2.0" -and $_.param.type -eq "dynamic") {
+                $vpn.'dpd' | Should -Be "on-idle"
+                $vpn.'dpd-retrycount' | Should -Be 1
+                $vpn.'dpd-retryinterval' | Should -Be 60
+            }
+            else {
+                $vpn.'dpd' | Should -Be "on-demand"
+                $vpn.'dpd-retrycount' | Should -Be 1
+                $vpn.'dpd-retryinterval' | Should -Be 20
+            }
+
         }
 
         It "Add VPN Ipsec Phase 1 Interface with dpd retryinterval (10)" {
@@ -425,7 +450,12 @@ Describe "Add VPN Ipsec Phase 1 Interface" -ForEach $type {
             else {
                 $vpn.'remote-gw' | Should -Be "0.0.0.0"
             }
-            $vpn.'dpd' | Should -Be "on-demand"
+            if ($fgt_version -lt "6.2.0" -and $_.param.type -eq "dynamic") {
+                $vpn.'dpd' | Should -Be "on-idle"
+            }
+            else {
+                $vpn.'dpd' | Should -Be "on-demand"
+            }
             $vpn.'dpd-retrycount' | Should -Be 3
             $vpn.'dpd-retryinterval' | Should -Be 10
         }
@@ -598,7 +628,7 @@ Describe "Configure VPN Ipsec Phase 1 Interface" -ForEach $type {
             $vpn.dhgrp | Should -Be "1 2"
         }
 
-        It "Set VPN Ipsec Phase 1 Interface with net-device enabled" {
+        It "Set VPN Ipsec Phase 1 Interface with net-device enabled" -skip:($fgt_version -lt "6.2.0" -and $_.param.type -eq "static") {
             Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Set-FGTVpnIpsecPhase1Interface -netdevice
             $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
             $vpn.name | Should -Be $pester_vpn1
@@ -780,7 +810,12 @@ Describe "Configure VPN Ipsec Phase 1 Interface" -ForEach $type {
             }
             $vpn.'dpd' | Should -Be "disable"
             $vpn.'dpd-retrycount' | Should -Be 3
-            $vpn.'dpd-retryinterval' | Should -Be 20
+            if ($fgt_version -lt "6.2.0" -and $_.param.type -eq "dynamic") {
+                $vpn.'dpd-retryinterval' | Should -Be 60
+            }
+            else {
+                $vpn.'dpd-retryinterval' | Should -Be 20
+            }
         }
 
         It "Set VPN Ipsec Phase 1 Interface with dpd on-idle" {
@@ -816,7 +851,12 @@ Describe "Configure VPN Ipsec Phase 1 Interface" -ForEach $type {
             }
             $vpn.'dpd' | Should -Be "on-demand"
             $vpn.'dpd-retrycount' | Should -Be 3
-            $vpn.'dpd-retryinterval' | Should -Be 20
+            if ($fgt_version -lt "6.2.0" -and $_.param.type -eq "dynamic") {
+                $vpn.'dpd-retryinterval' | Should -Be 60
+            }
+            else {
+                $vpn.'dpd-retryinterval' | Should -Be 20
+            }
         }
 
         It "Set VPN Ipsec Phase 1 Interface with dpd retrycount (1)" {
@@ -835,7 +875,12 @@ Describe "Configure VPN Ipsec Phase 1 Interface" -ForEach $type {
             }
             $vpn.'dpd' | Should -Be "on-demand"
             $vpn.'dpd-retrycount' | Should -Be 1
-            $vpn.'dpd-retryinterval' | Should -Be 20
+            if ($fgt_version -lt "6.2.0" -and $_.param.type -eq "dynamic") {
+                $vpn.'dpd-retryinterval' | Should -Be 60
+            }
+            else {
+                $vpn.'dpd-retryinterval' | Should -Be 20
+            }
         }
 
         It "Set VPN Ipsec Phase 1 Interface with dpd retryinterval (10)" {
