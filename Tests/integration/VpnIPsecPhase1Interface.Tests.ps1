@@ -102,7 +102,7 @@ Describe "Add VPN Ipsec Phase 1 Interface" -ForEach $type {
             $vpn.'dpd-retrycount' | Should -Be 3
             $vpn.'dpd-retryinterval' | Should -Be 20
             $vpn.'fragmentation' | Should -Be "enable"
-            $vpn.'npu-offload' | Should -Be "enable"
+            $vpn.'keepalive' |  Should -Be 10
         }
 
         It "Add VPN Ipsec Phase 1 Interface with 1 proposal (des-md5)" {
@@ -466,7 +466,7 @@ Describe "Add VPN Ipsec Phase 1 Interface" -ForEach $type {
         }
 
         It "Add VPN Ipsec Phase 1 Interface with data (two fields)" {
-            $data = @{ "fragmentation" = "disable" ; "npu-offload" = "disable" }
+            $data = @{ "fragmentation" = "disable" ; "keepalive" = 30 }
             $p = $_.param
             Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -interface $pester_port1 -psksecret MySecret @p -data $data
             $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
@@ -482,7 +482,7 @@ Describe "Add VPN Ipsec Phase 1 Interface" -ForEach $type {
                 $vpn.'remote-gw' | Should -Be "0.0.0.0"
             }
             $vpn.fragmentation | Should -Be "disable"
-            $vpn.'npu-offload' | Should -Be "disable"
+            $vpn.keepalive | Should -Be 30
         }
 
     }
@@ -891,7 +891,7 @@ Describe "Configure VPN Ipsec Phase 1 Interface" -ForEach $type {
         }
 
         It "Set VPN Ipsec Phase 1 Interface with data (two fields)" {
-            $data = @{ "fragmentation" = "disable" ; "npu-offload" = "disable" }
+            $data = @{ "fragmentation" = "disable" ; "keepalive" = 30 }
             Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Set-FGTVpnIpsecPhase1Interface -data $data
             $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
             $vpn.name | Should -Be $pester_vpn1
@@ -906,7 +906,7 @@ Describe "Configure VPN Ipsec Phase 1 Interface" -ForEach $type {
                 $vpn.'remote-gw' | Should -Be "0.0.0.0"
             }
             $vpn.fragmentation | Should -Be "disable"
-            $vpn.'npu-offload' | Should -Be "disable"
+            $vpn.keepalive | Should -Be 30
         }
 
         AfterAll {
