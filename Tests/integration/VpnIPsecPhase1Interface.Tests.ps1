@@ -96,8 +96,10 @@ Describe "Add VPN Ipsec Phase 1 Interface" -ForEach $type {
             $vpn.'auto-discovery-sender' | Should -Be "disable"
             $vpn.'auto-discovery-receiver' | Should -Be "disable"
             $vpn.'exchange-interface-ip' | Should -Be "disable"
-            $vpn.'network-overlay' | Should -Be "disable"
-            $vpn.'network-id' | Should -Be "0"
+            if (($fgt_version -ge "6.2.0")) {
+                $vpn.'network-overlay' | Should -Be "disable"
+                $vpn.'network-id' | Should -Be "0"
+            }
             $vpn.'dpd' | Should -Be "on-demand"
             $vpn.'dpd-retrycount' | Should -Be 3
             $vpn.'dpd-retryinterval' | Should -Be 20
@@ -305,7 +307,7 @@ Describe "Add VPN Ipsec Phase 1 Interface" -ForEach $type {
             $vpn.'exchange-interface-ip' | Should -Be "enable"
         }
 
-        It "Add VPN Ipsec Phase 1 Interface with network (Overlay) id (23)" {
+        It "Add VPN Ipsec Phase 1 Interface with network (Overlay) id (23)" -Skip:($fgt_version -lt "6.2.0") {
             $p = $_.param
             if ($_.param.ikeversion -eq "1") {
                 { Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -interface $pester_port1 -psksecret MySecret @p -networkid 23 } | Should -Throw "Need to set ikeversion 2 to use networkid"
@@ -738,7 +740,7 @@ Describe "Configure VPN Ipsec Phase 1 Interface" -ForEach $type {
             $vpn.'exchange-interface-ip' | Should -Be "disable"
         }
 
-        It "Set VPN Ipsec Phase 1 Interface with network (Overlay) id (23)" {
+        It "Set VPN Ipsec Phase 1 Interface with network (Overlay) id (23)" -Skip:($fgt_version -lt "6.2.0") {
             if ($_.param.ikeversion -eq "1") {
                 { Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Set-FGTVpnIpsecPhase1Interface -networkid 23 } | Should -Throw "Need to set ikeversion 2 to use networkid"
             }
