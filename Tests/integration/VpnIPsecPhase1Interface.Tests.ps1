@@ -150,7 +150,7 @@ Describe "Add VPN Ipsec Phase 1 Interface" -ForEach $type {
 
         It "Add VPN Ipsec Phase 1 Interface with 2 proposals (des-md5, des-sha1)" {
             $p = $_.param
-            Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -interface $pester_port1 -psksecret MySecret -remotegw 192.0.2.1 @p -proposal des-md5, des-sha1
+            Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -interface $pester_port1 -psksecret MySecret @p -proposal des-md5, des-sha1
             $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
             $vpn.name | Should -Be $pester_vpn1
             $vpn.'ike-version' | Should -Be $_.param.ikeversion
