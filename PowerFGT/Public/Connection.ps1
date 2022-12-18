@@ -177,7 +177,6 @@ function Connect-FGT {
             $postParams = @{username = $Credentials.username; secretkey = $Credentials.GetNetworkCredential().Password; ajax = 1 }
             $uri = $url + "logincheck"
             $iwrResponse = $null
-            Write-Verbose ($postParams | Convertto-json)
             try {
                 $iwrResponse = Invoke-WebRequest $uri -Method POST -Body $postParams -SessionVariable FGT @invokeParams
             }
@@ -193,7 +192,6 @@ function Connect-FGT {
                         $token_code = Read-Host "Token"
                     }
                     $postParams += @{token_code = $token_code }
-                    Write-Verbose ($postParams | Convertto-json)
                     try {
                         $iwrResponse = Invoke-WebRequest $uri -Method POST -Body $postParams -WebSession $FGT @invokeParams
                     }
