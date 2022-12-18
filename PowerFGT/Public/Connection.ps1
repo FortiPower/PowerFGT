@@ -197,7 +197,7 @@ function Connect-FGT {
                     }
                     catch {
                         Show-FGTException $_
-                        throw "Unable to connect to FortiGate"
+                        throw "Unable to connect to FortiGate with a token"
                     }
                 }
             }
@@ -214,7 +214,7 @@ function Connect-FGT {
                     throw "Admin is now locked out (Please retry in 60 seconds)"
                 }
                 '3' {
-                    throw "Two-factor Authentication is needed (not yet supported with PowerFGT)"
+                    throw "Two-factor Authentication is needed (use -token_code XXXXXX or -token_prompt)"
                 }
                 '4' {
                     if (-not $PsBoundParameters.ContainsKey('new_password')) {
