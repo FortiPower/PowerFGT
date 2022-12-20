@@ -223,8 +223,11 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get User RADIUS" {
             { Get-FGTUserRADIUS -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get User SAML" {
+        It "Use Multi connection for call Get User SAML (> 6.2.0)" -skip:($fgt_version -lt "6.2.0") {
             { Get-FGTUserSAML -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get User SAML (< 6.2.0)" -skip:($fgt_version -ge "6.2.0") {
+            { Get-FGTUserSAML -connection $fgt } | Should -Throw "You can't get User SAML with FortiOS < 6.2.0"
         }
         It "Use Multi connection for call Get VPN IPsec Phase 1 Interface" {
             { Get-FGTVpnIpsecPhase1Interface -connection $fgt } | Should -Not -Throw

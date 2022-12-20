@@ -98,6 +98,11 @@ function Get-FGTUserSAML {
             $invokeParams.add( 'filter_type', $filter_type )
         }
 
+        #before 6.2.x, it is not User SAML
+        if ($connection.version -lt "6.2.0") {
+            Throw "You can't get User SAML with FortiOS < 6.2.0"
+        }
+
         $reponse = Invoke-FGTRestMethod -uri 'api/v2/cmdb/user/saml' -method 'GET' -connection $connection @invokeParams
         $reponse.results
     }
