@@ -223,6 +223,9 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get User RADIUS" {
             { Get-FGTUserRADIUS -connection $fgt } | Should -Not -Throw
         }
+        It "Use Multi connection for call Get User SAML" {
+            { Get-FGTUserSAML -connection $fgt } | Should -Not -Throw
+        }
         It "Use Multi connection for call Get VPN IPsec Phase 1 Interface" {
             { Get-FGTVpnIpsecPhase1Interface -connection $fgt } | Should -Not -Throw
         }
