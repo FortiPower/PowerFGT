@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-function Get-FGTUserSaml {
+function Get-FGTUserSAML {
 
     <#
         .SYNOPSIS
@@ -14,27 +14,27 @@ function Get-FGTUserSaml {
         Get list of all "SAML users" (name, type, status... )
 
         .EXAMPLE
-        Get-FGTUserSaml
+        Get-FGTUserSAML
 
         Display all SAML users
 
         .EXAMPLE
-        Get-FGTUserSaml -id 23
+        Get-FGTUserSAML -id 23
 
         Get SAML user with id 23
 
         .EXAMPLE
-        Get-FGTUserSaml -name FGT -filter_type contains
+        Get-FGTUserSAML -name FGT -filter_type contains
 
         Get SAML user contains with *FGT*
 
         .EXAMPLE
-        Get-FGTUserSaml -skip
+        Get-FGTUserSAML -skip
 
         Display all SAML users (but only relevant attributes)
 
         .EXAMPLE
-        Get-FGTUserSaml -vdom vdomX
+        Get-FGTUserSAML -vdom vdomX
 
         Display all SAML users on vdomX
     #>
