@@ -555,7 +555,7 @@ function Set-FGTVpnIpsecPhase1Interface {
 
         if ($PSCmdlet.ShouldProcess($vpn.name, 'Vpn IPsec Phase 1 Interface')) {
             $null = Invoke-FGTRestMethod -uri $uri -method 'PUT' -body $_interface -connection $connection @invokeParams
-            Get-FGTSystemInterface -name $vpn.name -connection $connection @invokeParams
+            Get-FGTVpnIpsecPhase1Interface -name $vpn.name -connection $connection @invokeParams
         }
 
     }
