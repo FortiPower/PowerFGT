@@ -702,7 +702,7 @@ Describe "Configure VPN Ipsec Phase 1 Interface" -ForEach $type {
                 else {
                     $vpn.'remote-gw' | Should -Be "0.0.0.0"
                 }
-                $vpn.'add-route' | Should -Be "ea"ble
+                $vpn.'add-route' | Should -Be "enable"
             }
         }
 
