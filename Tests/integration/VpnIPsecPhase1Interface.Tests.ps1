@@ -996,7 +996,6 @@ Describe "Configure VPN Ipsec Phase 1 Interface" -ForEach $type {
         }
 
         It "Set VPN Ipsec Phase 1 Interface with change ike-version (1 -> 2 or 2 -> 1)" {
-            $data = @{ "fragmentation" = "disable" ; "keepalive" = 30 }
             if ($_.param.ikeversion -eq "1") {
                 $ikeversion = 2
             }
