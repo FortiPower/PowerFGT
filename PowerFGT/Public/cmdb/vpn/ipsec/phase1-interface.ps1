@@ -27,7 +27,7 @@ function Add-FGTVpnIpsecPhase1Interface {
         $data = @{ "fragmentation" = "disable" ; "npu-offload" = "disable" }
         PS C> Add-FGTVpnIpsecPhase1Interface -name PowerFGT_VPN -type static -interface port2 -psksecret MySecret -remotegw 192.0.2.1 -data $data
 
-        reate a dynamic VPN IPsec Phase 1 Interface named PowerFGT_VPN  with fragmentation and npu-offload using -data parameter
+        Create a dynamic VPN IPsec Phase 1 Interface named PowerFGT_VPN with fragmentation and npu-offload using -data parameter
 
     #>
     Param(
@@ -179,7 +179,6 @@ function Add-FGTVpnIpsecPhase1Interface {
 
         if ( $PsBoundParameters.ContainsKey('networkid') ) {
             if ($ikeversion -eq "2") {
-
                 $_interface | Add-member -name "network-overlay" -membertype NoteProperty -Value "enable"
                 $_interface | Add-member -name "network-id" -membertype NoteProperty -Value $networkid
             }
@@ -432,11 +431,9 @@ function Set-FGTVpnIpsecPhase1Interface {
         $_interface = new-Object -TypeName PSObject
 
         if ( $PsBoundParameters.ContainsKey('name') ) {
-
             $_interface | add-member -name "name" -membertype NoteProperty -Value $name
         }
         if ( $PsBoundParameters.ContainsKey('interface') ) {
-
             $_interface | add-member -name "interface" -membertype NoteProperty -Value $interface
         }
 

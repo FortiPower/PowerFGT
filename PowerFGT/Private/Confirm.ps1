@@ -344,7 +344,7 @@ Function Confirm-FGTVpnIpsecPhase1Interface {
         [object]$argument
     )
 
-    #Check if it looks like a VPN IPsec Phase 1 Interface  element
+    #Check if it looks like a VPN IPsec Phase 1 Interface element
 
     if ( -not ( $argument | get-member -name name -Membertype Properties)) {
         throw "Element specified does not contain a name property."
