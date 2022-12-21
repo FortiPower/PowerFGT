@@ -995,6 +995,31 @@ Describe "Configure VPN Ipsec Phase 1 Interface" -ForEach $type {
             $vpn.keepalive | Should -Be 30
         }
 
+        It "Set VPN Ipsec Phase 1 Interface with change ike-version (1 -> 2 or 2 -> 1)" {
+            $data = @{ "fragmentation" = "disable" ; "keepalive" = 30 }
+            if ($_.param.ikeversion -eq "1") {
+                $ikeversion = 2
+            }
+            else {
+                $ikeversion = 1
+            }
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Set-FGTVpnIpsecPhase1Interface -ikeversion $ikeversion
+            $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
+            $vpn.name | Should -Be $pester_vpn1
+            $vpn.'ike-version' | Should -Be $ikeversion
+            $vpn.type | Should -Be $_.param.type
+            $vpn.proposal | Should -Not -BeNullOrEmpty
+            $vpn.psksecret | Should -Not -BeNullOrEmpty
+            if ($_.param.type -eq "static") {
+                $vpn.'remote-gw' | Should -Be "192.0.2.1"
+            }
+            else {
+                $vpn.'remote-gw' | Should -Be "0.0.0.0"
+            }
+            $vpn.fragmentation | Should -Be "disable"
+            $vpn.keepalive | Should -Be 30
+        }
+
         AfterAll {
             Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Remove-FGTVpnIpsecPhase1Interface -Confirm:$false
         }
