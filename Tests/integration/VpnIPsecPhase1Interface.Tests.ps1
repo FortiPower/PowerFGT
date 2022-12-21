@@ -382,9 +382,9 @@ Describe "Add VPN Ipsec Phase 1 Interface" -ForEach $type {
             $vpn.'dpd' | Should -Be "on-idle"
         }
 
-        It "Add VPN Ipsec Phase 1 Interface with dpd on-idle" {
+        It "Add VPN Ipsec Phase 1 Interface with dpd on-demand" {
             $p = $_.param
-            Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -interface $pester_port1 -psksecret MySecret @p -dpd 'on-idle'
+            Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -interface $pester_port1 -psksecret MySecret @p -dpd 'on-demand'
             $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
             $vpn.name | Should -Be $pester_vpn1
             $vpn.'ike-version' | Should -Be $_.param.ikeversion
@@ -397,7 +397,7 @@ Describe "Add VPN Ipsec Phase 1 Interface" -ForEach $type {
             else {
                 $vpn.'remote-gw' | Should -Be "0.0.0.0"
             }
-            $vpn.'dpd' | Should -Be "on-idle"
+            $vpn.'dpd' | Should -Be "on-demand"
             $vpn.'dpd-retrycount' | Should -Be 3
             if ($fgt_version -lt "6.2.0" -and $_.param.type -eq "dynamic") {
                 $vpn.'dpd-retryinterval' | Should -Be 60
