@@ -24,12 +24,12 @@ Describe "Get VPN Ipsec Phase 1 Interface" {
         } | Should -Not -Throw
     }
 
-    It "Get ALL VPN Ipsec Phase 1 interfaces" {
+    It "Get ALL VPN Ipsec Phase 1 interface(s)" {
         $interface = Get-FGTVpnIpsecPhase1Interface
         $interface.count | Should -Not -Be $NULL
     }
 
-    It "Get ALL VPN Ipsec Phase 1 interface with -skip" {
+    It "Get ALL VPN Ipsec Phase 1 interface(s) with -skip" {
         $interface = Get-FGTVpnIpsecPhase1Interface -skip
         $interface.count | Should -Not -Be $NULL
     }
