@@ -343,20 +343,20 @@ function Set-FGTVpnIpsecPhase1Interface {
         Configure an Vpn IPsec Phase 1 Interface (Version, type, interface, proposal, psksecret... )
 
         .EXAMPLE
-        Get-FGTVpnIpsecPhase1Interface PowerFGT_VPN | Set-FGTVpnIpsecPhase1Interface -interface port2 -psksecret MySecret -remotegw 192.0.2.1
+        Get-FGTVpnIpsecPhase1Interface PowerFGT_VPN | Set-FGTVpnIpsecPhase1Interface -psksecret MySecret
 
-        Create a static VPN IPsec Phase 1 Interface named PowerFGT_VPN with interface port2 with Remote Gateway 192.0.2.1
+        Change psksecret of VPN IPsec Phase1 Interface PowerFGT_VPN
 
         .EXAMPLE
-        Add-FGTVpnIpsecPhase1Interface -name PowerFGT_VPN -type dynamic -interface port2 -proposal aes256-sha256, aes256-sha512 -dhgrp 14,15 -psksecret MySecret
+        Get-FGTVpnIpsecPhase1Interface PowerFGT_VPN | Set-FGTVpnIpsecPhase1Interface -proposal aes256-sha256, aes256-sha512 -dhgrp 14,1
 
-        Create a dynamic VPN IPsec Phase 1 Interface named PowerFGT_VPN with interface port2, multiple proposal aes256-sha256, aes256-sha512 and DH Group 14 & 15
+        Change proposal and dhgrp (multiple value) of VPN IPsec Phase1 Interface PowerFGT_VP
 
         .EXAMPLE
         $data = @{ "fragmentation" = "disable" ; "npu-offload" = "disable" }
-        PS C> Add-FGTVpnIpsecPhase1Interface -name PowerFGT_VPN -type static -interface port2 -psksecret MySecret -remotegw 192.0.2.1 -data $data
+        PS C> Get-FGTVpnIpsecPhase1Interface PowerFGT_VPN | Set-FGTVpnIpsecPhase1Interface -data $data
 
-        reate a dynamic VPN IPsec Phase 1 Interface named PowerFGT_VPN  with fragmentation and npu-offload using -data parameter
+        Change  fragmentation and npu-offload using of VPN IPsec Phase1 Interface PowerFGT_VPN using -data parameter
 
     #>
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
