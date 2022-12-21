@@ -645,6 +645,23 @@ Describe "Configure VPN Ipsec Phase 1 Interface" -ForEach $type {
             $vpn.'net-device' | Should -Be "enable"
         }
 
+        It "Set VPN Ipsec Phase 1 Interface with net-device disable" -skip:($fgt_version -lt "6.2.0" -and $_.param.type -eq "static") {
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Set-FGTVpnIpsecPhase1Interface -netdevice:$false
+            $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
+            $vpn.name | Should -Be $pester_vpn1
+            $vpn.'ike-version' | Should -Be $_.param.ikeversion
+            $vpn.type | Should -Be $_.param.type
+            $vpn.proposal | Should -Not -BeNullOrEmpty
+            $vpn.psksecret | Should -Not -BeNullOrEmpty
+            if ($_.param.type -eq "static") {
+                $vpn.'remote-gw' | Should -Be "192.0.2.1"
+            }
+            else {
+                $vpn.'remote-gw' | Should -Be "0.0.0.0"
+            }
+            $vpn.'net-device' | Should -Be "disable"
+        }
+
         It "Set VPN Ipsec Phase 1 Interface with add-route disabled" {
             if ($_.param.type -eq "static") {
                 { Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Set-FGTVpnIpsecPhase1Interface -addroute:$false } | Should -Throw "You can't specify addroute when use type static"
@@ -664,6 +681,28 @@ Describe "Configure VPN Ipsec Phase 1 Interface" -ForEach $type {
                     $vpn.'remote-gw' | Should -Be "0.0.0.0"
                 }
                 $vpn.'add-route' | Should -Be "disable"
+            }
+        }
+
+        It "Set VPN Ipsec Phase 1 Interface with add-route enable" {
+            if ($_.param.type -eq "static") {
+                { Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Set-FGTVpnIpsecPhase1Interface -addroute:$false } | Should -Throw "You can't specify addroute when use type static"
+            }
+            else {
+                Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Set-FGTVpnIpsecPhase1Interface -addroute
+                $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
+                $vpn.name | Should -Be $pester_vpn1
+                $vpn.'ike-version' | Should -Be $_.param.ikeversion
+                $vpn.type | Should -Be $_.param.type
+                $vpn.proposal | Should -Not -BeNullOrEmpty
+                $vpn.psksecret | Should -Not -BeNullOrEmpty
+                if ($_.param.type -eq "static") {
+                    $vpn.'remote-gw' | Should -Be "192.0.2.1"
+                }
+                else {
+                    $vpn.'remote-gw' | Should -Be "0.0.0.0"
+                }
+                $vpn.'add-route' | Should -Be "ea"ble
             }
         }
 
