@@ -154,7 +154,7 @@ function Get-FGTLogTraffic {
             }
             $uri = "api/v2/log/${type}/traffic/${subtype}?rows=${rows}"
             #Add Serial Number Info
-            $uri += "&serial_no=$($DefaultFGTConnection.serial)"
+            $uri += "&serial_no=$($connection.serial)"
             $results = @()
             $i = 0
             $response = Invoke-FGTRestMethod -uri $uri -method 'GET' -connection $connection @invokeParams -verbose
