@@ -157,15 +157,15 @@ function Get-FGTLogTraffic {
             $uri += "&serial_no=$($connection.serial)"
             $results = @()
             $i = 0
-            $response = Invoke-FGTRestMethod -uri $uri -method 'GET' -connection $connection @invokeParams -verbose
+            $response = Invoke-FGTRestMethod -uri $uri -method 'GET' -connection $connection @invokeParams
             $uri += "&session_id=$($response.session_id)"
             while ($i -lt $r) {
                 $uri2 = $uri + "&start=$($i)"
-                $response = Invoke-FGTRestMethod -uri $uri2 -method 'GET' -connection $connection @invokeParams -verbose
+                $response = Invoke-FGTRestMethod -uri $uri2 -method 'GET' -connection $connection @invokeParams
                 while ($response.completed -ne "100") {
                     #Wait 1s to result
                     Start-Sleep 1
-                    $response = Invoke-FGTRestMethod -uri $uri2 -method 'GET' -connection $connection @invokeParams -verbose
+                    $response = Invoke-FGTRestMethod -uri $uri2 -method 'GET' -connection $connection @invokeParams
                 }
 
                 $i += 1024
@@ -176,7 +176,7 @@ function Get-FGTLogTraffic {
         }
         else {
             $uri = "api/v2/log/${type}/traffic/${subtype}?rows=${rows}"
-            $response = Invoke-FGTRestMethod -uri $uri -method 'GET' -connection $connection @invokeParams -verbose
+            $response = Invoke-FGTRestMethod -uri $uri -method 'GET' -connection $connection @invokeParams
             $response.results
         }
     }
