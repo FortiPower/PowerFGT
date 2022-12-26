@@ -147,9 +147,35 @@ function Get-FGTLogTraffic {
             $invokeParams.add( 'filter_type', $filter_type )
         }
 
-        $uri = "api/v2/log/${type}/traffic/${subtype}?rows=${rows}"
-        $response = Invoke-FGTRestMethod -uri $uri -method 'GET' -connection $connection @invokeParams
-        $response.results
+        if ($type -eq "fortianalyzer") {
+            $r = $rows
+            if ($rows -gt 1024) {
+                $rows = 1024
+            }
+            $uri = "api/v2/log/${type}/traffic/${subtype}?rows=${rows}"
+            #Add Serial Number Info
+            $uri += "&serial_no=$($DefaultFGTConnection.serial)"
+            $results = @()
+            $i = 0
+            $response = Invoke-FGTRestMethod -uri $uri -method 'GET' -connection $connection @invokeParams -verbose
+            $uri += "&session_id=$($response.session_id)"
+            while ($i -lt $r) {
+                $uri2 = $uri + "&start=$($i)"
+                $response = Invoke-FGTRestMethod -uri $uri2 -method 'GET' -connection $connection @invokeParams -verbose
+                #Wait 5000 ms to result
+                Start-Sleep 5
+                $response = Invoke-FGTRestMethod -uri $uri2 -method 'GET' -connection $connection @invokeParams -verbose
+                $i += 1024
+                $results += $response.results
+            }
+            $results
+
+        }
+        else {
+            $uri = "api/v2/log/${type}/traffic/${subtype}?rows=${rows}"
+            $response = Invoke-FGTRestMethod -uri $uri -method 'GET' -connection $connection @invokeParams -verbose
+            $response.results
+        }
     }
 
     End {
