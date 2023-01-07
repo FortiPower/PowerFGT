@@ -361,3 +361,28 @@ Function Confirm-FGTVpnIpsecPhase1Interface {
 
     $true
 }
+
+Function Confirm-FGTVpnIpsecPhase2Interface {
+
+    Param (
+        [Parameter (Mandatory = $true)]
+        [object]$argument
+    )
+
+    #Check if it looks like a VPN IPsec Phase 2 Interface element
+
+    if ( -not ( $argument | get-member -name name -Membertype Properties)) {
+        throw "Element specified does not contain a name property."
+    }
+    if ( -not ( $argument | get-member -name phase1name -Membertype Properties)) {
+        throw "Element specified does not contain a phase1name property."
+    }
+    if ( -not ( $argument | get-member -name src-addr-type -Membertype Properties)) {
+        throw "Element specified does not contain a src-addr-type property."
+    }
+    if ( -not ( $argument | get-member -name dst-addr-type -Membertype Properties)) {
+        throw "Element specified does not contain a dst-addr-type property."
+    }
+
+    $true
+}
