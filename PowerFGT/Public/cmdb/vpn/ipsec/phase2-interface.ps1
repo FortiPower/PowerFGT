@@ -259,3 +259,55 @@ function Get-FGTVpnIpsecPhase2Interface {
     End {
     }
 }
+
+function Remove-FGTVpnIpsecPhase2Interface {
+
+    <#
+        .SYNOPSIS
+        Remove a Vpn IPsec Phase 2 Interface
+
+        .DESCRIPTION
+        Remove a Vpn IPsec Phase 2 Interface
+
+        .EXAMPLE
+        Get-FGTVpnIpsecPhase2Interface -name ph2_PowerFGT_VPN | Remove-FGTVpnIpsecPhase2Interface
+
+        Removes the Vpn IPsec Phase 2 Interface ph2_PowerFGT_VPN which was retrieved with Get-FGTVpnIpsecPhase2Interface
+
+        .EXAMPLE
+        Get-FGTVpnIpsecPhase2Interfacee -name ph2_PowerFGT_VPN | Remove-FGTVpnIpsecPhase2Interfacee -Confirm:$false
+
+        Removes the Vpn IPsec Phase 2 Interface ph2_PowerFGT_VPN and suppresses the confirmation question
+    #>
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [ValidateScript( { Confirm-FGTVpnIpsecPhase2Interface $_ })]
+        [psobject]$interface,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/vpn.ipsec/phase2-interface/$($interface.name)"
+
+        if ($PSCmdlet.ShouldProcess($interface.name, 'Remove Vpn IPsec Phase 2 Interface')) {
+            $null = Invoke-FGTRestMethod -uri $uri -method 'DELETE' -connection $connection @invokeParams
+        }
+    }
+
+    End {
+    }
+}
