@@ -72,6 +72,146 @@ $type = @(
     @{ "type" = "IKEv2 Dynamic"; "param" = @{ "ikeversion" = 2; "type" = "dynamic" } }
 )
 
+Describe "Add VPN Ipsec Phase 2 Interface" -ForEach $type {
+
+    Context "Interface $($_.type)" {
+        BeforeAll {
+            $p = $_.param
+            Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -interface $pester_port1 -psksecret MySecret @p
+        }
+        AfterEach {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Remove-FGTVpnIpsecPhase2Interface -Confirm:$false
+        }
+
+        It "Add VPN Ipsec Phase 2 Interface with only mandatory parameters (name)" {
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.proposal | Should -Not -BeNullOrEmpty
+            $vpn.pfs | Should -Be "enable"
+            $vpn.dhgrp | Should -Not -BeNullOrEmpty
+            $vpn.replay | Should -Be "enable"
+            $vpn.keepalive | Should -Be "disable"
+            $vpn.'auto-negotiate' | Should -Be "disable"
+            $vpn.keylifeseconds | Should -Be "43200"
+            $vpn.keylifekbs | Should -Be "5120"
+            $vpn.'keylife-type' | Should -Be "seconds"
+            $vpn.encapsulation | Should -Be "tunnel-mode"
+            $vpn.comments | Should -Be ""
+            $vpn.protocol | Should -Be "0"
+            $vpn.'src-name' | Should -Be ""
+            $vpn.'src-addr-type' | Should -Be "subnet"
+            $vpn.'src-subnet' | Should -Be "0.0.0.0 0.0.0.0"
+            $vpn.'dst-name' | Should -Be ""
+            $vpn.'dst-addr-type' | Should -Be "subnet"
+            $vpn.'dst-subnet' | Should -Be "0.0.0.0 0.0.0.0"
+        }
+
+        It "Add VPN Ipsec Phase 2 Interface with 1 proposal (des-md5)" {
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -proposal des-md5
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.proposal | Should -Be "des-md5"
+        }
+
+        It "Add VPN Ipsec Phase 2 Interface with 1 proposal (des-sha1)" {
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -proposal des-sha1
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.proposal | Should -Be "des-sha1"
+        }
+
+        It "Add VPN Ipsec Phase 2 Interface with 2 proposal (des-md5, des-sha1)" {
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -proposal des-md5, des-sha1
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.proposal | Should -Be "des-md5 des-sha1"
+        }
+
+        It "Add VPN Ipsec Phase 2 Interface with pfs disabled" {
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -pfs:$false
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.pfs | Should -Be "disable"
+        }
+
+        It "Add VPN Ipsec Phase 2 Interface with 1 DH Group (1)" {
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -dhgrp 1
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.dhgrp | Should -Be "1"
+        }
+
+        It "Add VPN Ipsec Phase 2 Interface with 1 DH Group (2)" {
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -dhgrp 2
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.dhgrp | Should -Be "2"
+        }
+
+        It "Add VPN Ipsec Phase 2 Interface with 2 DH Group (1, 2)" {
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -dhgrp 1, 2
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.dhgrp | Should -Be "1 2"
+        }
+
+        It "Add VPN Ipsec Phase 2 Interface with replay disabled" {
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -replay:$false
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.replay | Should -Be "disable"
+        }
+
+        It "Add VPN Ipsec Phase 2 Interface with keepalive enable" {
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -keepalive
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.keepalive | Should -Be "enable"
+        }
+
+        It "Add VPN Ipsec Phase 2 Interface with auto-negotiate enable" {
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -autonegotiate
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'auto-negotiate' | Should -Be "enable"
+        }
+
+        It "Add VPN Ipsec Phase 2 Interface with keylifeseconds (28800)" {
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -keylifeseconds 28800
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'keylife-type' | Should -Be "seconds"
+            $vpn.keylifeseconds | Should -Be "28800"
+        }
+
+        It "Add VPN Ipsec Phase 2 Interface with a comments" {
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -comment "Add by PowerFGT"
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'comments' | Should -Be "Add by PowerFGT"
+        }
+
+        AfterAll {
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Remove-FGTVpnIpsecPhase1Interface -Confirm:$false
+        }
+    }
+
+}
+
 Describe "Remove VPN Ipsec Phase 2 Interface" -ForEach $type {
 
     Context "Interface $($_.type)" {
