@@ -57,7 +57,7 @@ function Add-FGTVpnIpsecPhase2Interface {
         [Parameter (Mandatory = $false)]
         [int]$keylifeseconds,
         [Parameter (Mandatory = $false)]
-        [int]$comments,
+        [string]$comments,
         [Parameter (Mandatory = $false)]
         [string]$src,
         [Parameter (Mandatory = $false)]
@@ -124,10 +124,10 @@ function Add-FGTVpnIpsecPhase2Interface {
 
         if ( $PsBoundParameters.ContainsKey('autonegotiate') ) {
             if ($autonegotiate) {
-                $_interface | Add-member -name "autonegotiate" -membertype NoteProperty -Value "enable"
+                $_interface | Add-member -name "auto-negotiate" -membertype NoteProperty -Value "enable"
             }
             else {
-                $_interface | Add-member -name "autonegotiate" -membertype NoteProperty -Value "disable"
+                $_interface | Add-member -name "auto-negotiate" -membertype NoteProperty -Value "disable"
             }
         }
 
