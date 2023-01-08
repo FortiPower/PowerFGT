@@ -78,6 +78,8 @@ Describe "Add VPN Ipsec Phase 2 Interface" -ForEach $type {
         BeforeAll {
             $p = $_.param
             Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -interface $pester_port1 -psksecret MySecret @p
+            Add-FGTFirewallAddress -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0
+            Add-FGTFirewallAddress -Name $pester_address2 -ip 192.0.51.0 -mask 255.255.255.0
         }
         AfterEach {
             Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Remove-FGTVpnIpsecPhase2Interface -Confirm:$false
@@ -205,8 +207,43 @@ Describe "Add VPN Ipsec Phase 2 Interface" -ForEach $type {
             $vpn.'comments' | Should -Be "Add by PowerFGT"
         }
 
+        It "Add VPN Ipsec Phase 2 Interface with a src (object)" {
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -src $pester_address1
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'src-addr-type' | Should -Be "name"
+            $vpn.'src-name' | Should -Be $pester_address1
+            $vpn.'dst-addr-type' | Should -Be "name"
+            $vpn.'dst-name' | Should -Be "all"
+        }
+
+        It "Add VPN Ipsec Phase 2 Interface with a dst (object)" {
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -dst $pester_address2
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'src-addr-type' | Should -Be "name"
+            $vpn.'src-name' | Should -Be "all"
+            $vpn.'dst-addr-type' | Should -Be "name"
+            $vpn.'dst-name' | Should -Be $pester_address2
+        }
+
+        It "Add VPN Ipsec Phase 2 Interface with a src (object) and dst (object)" {
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -src $pester_address1 -dst $pester_address2
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'src-addr-type' | Should -Be "name"
+            $vpn.'src-name' | Should -Be $pester_address1
+            $vpn.'dst-addr-type' | Should -Be "name"
+            $vpn.'dst-name' | Should -Be $pester_address2
+        }
+
         AfterAll {
             Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Remove-FGTVpnIpsecPhase1Interface -Confirm:$false
+            Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -confirm:$false
+            Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -confirm:$false
         }
     }
 
