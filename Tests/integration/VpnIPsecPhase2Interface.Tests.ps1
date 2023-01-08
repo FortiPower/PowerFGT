@@ -28,12 +28,12 @@ Describe "Get VPN Ipsec Phase 2 Interface" {
 
     It "Get ALL VPN Ipsec Phase 2 interface(s)" {
         $interface = Get-FGTVpnIpsecPhase2Interface
-        $interface.count | Should -Not -Be $NULL
+        @($interface).count | Should -Not -Be $NULL
     }
 
     It "Get ALL VPN Ipsec Phase 2 interface(s) with -skip" {
         $interface = Get-FGTVpnIpsecPhase2Interface -skip
-        $interface.count | Should -Not -Be $NULL
+        @($interface).count | Should -Not -Be $NULL
     }
 
     It "Get VPN Ipsec Phase 2 interface ($pester_int1)" {
