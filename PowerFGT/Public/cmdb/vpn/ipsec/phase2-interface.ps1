@@ -140,14 +140,26 @@ function Add-FGTVpnIpsecPhase2Interface {
             $_interface | Add-member -name "comments" -membertype NoteProperty -Value $comments
         }
 
-        if ( $PsBoundParameters.ContainsKey('src') ) {
-            $_interface | Add-member -name "src-addr-type" -membertype NoteProperty -Value "name"
-            $_interface | Add-member -name "src-name" -membertype NoteProperty -Value $src
-        }
+        #When use src or dst object, it need to be on source and destination (use all if not defined)
+        if ( $PsBoundParameters.ContainsKey('src') -or $PsBoundParameters.ContainsKey('dst') ) {
 
-        if ( $PsBoundParameters.ContainsKey('dst') ) {
+            #Source
+            $_interface | Add-member -name "src-addr-type" -membertype NoteProperty -Value "name"
+            if ( $PsBoundParameters.ContainsKey('src') ) {
+                $_interface | Add-member -name "src-name" -membertype NoteProperty -Value $src
+            }
+            else {
+                $_interface | Add-member -name "src-name" -membertype NoteProperty -Value "all"
+            }
+
+            #Destination
             $_interface | Add-member -name "dst-addr-type" -membertype NoteProperty -Value "name"
-            $_interface | Add-member -name "dst-name" -membertype NoteProperty -Value $dst
+            if ( $PsBoundParameters.ContainsKey('dst') ) {
+                $_interface | Add-member -name "dst-name" -membertype NoteProperty -Value $dst
+            }
+            else {
+                $_interface | Add-member -name "dst-name" -membertype NoteProperty -Value "all"
+            }
         }
 
         if ( $PsBoundParameters.ContainsKey('data') ) {
