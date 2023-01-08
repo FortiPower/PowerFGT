@@ -96,7 +96,7 @@ function Add-FGTVpnIpsecPhase2Interface {
                 $_interface | Add-member -name "pfs" -membertype NoteProperty -Value "enable"
             }
             else {
-                $_interface | Add-member -name "pfs" -membertype NoteProperty -Value "pfs"
+                $_interface | Add-member -name "pfs" -membertype NoteProperty -Value "disable"
             }
         }
 
@@ -115,19 +115,19 @@ function Add-FGTVpnIpsecPhase2Interface {
 
         if ( $PsBoundParameters.ContainsKey('keepalive') ) {
             if ($keepalive) {
-                $_interface | Add-member -name "keepalive" -membertype NoteProperty -Value "keepalive"
+                $_interface | Add-member -name "keepalive" -membertype NoteProperty -Value "enable"
             }
             else {
-                $_interface | Add-member -name "keepalive" -membertype NoteProperty -Value "keepalive"
+                $_interface | Add-member -name "keepalive" -membertype NoteProperty -Value "disable"
             }
         }
 
         if ( $PsBoundParameters.ContainsKey('autonegotiate') ) {
             if ($autonegotiate) {
-                $_interface | Add-member -name "autonegotiate" -membertype NoteProperty -Value "autonegotiate"
+                $_interface | Add-member -name "autonegotiate" -membertype NoteProperty -Value "enable"
             }
             else {
-                $_interface | Add-member -name "autonegotiate" -membertype NoteProperty -Value "autonegotiate"
+                $_interface | Add-member -name "autonegotiate" -membertype NoteProperty -Value "disable"
             }
         }
 
