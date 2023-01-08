@@ -65,6 +65,37 @@ Describe "Get VPN Ipsec Phase 2 Interface" {
 
 }
 
+$type = @(
+    @{ "type" = "IKEv1 Static"; "param" = @{ "ikeversion" = 1; "type" = "static"; "remotegw" = "192.0.2.1" } }
+    @{ "type" = "IKEv1 Dynamic"; "param" = @{ "ikeversion" = 1; "type" = "dynamic" } }
+    @{ "type" = "IKEv2 Static"; "param" = @{ "ikeversion" = 2; "type" = "static" ; "remotegw" = "192.0.2.1" } }
+    @{ "type" = "IKEv2 Dynamic"; "param" = @{ "ikeversion" = 2; "type" = "dynamic" } }
+)
+
+Describe "Remove VPN Ipsec Phase 2 Interface" -ForEach $type {
+
+    Context "Interface $($_.type)" {
+
+        BeforeEach {
+            $p = $_.param
+            Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -interface $pester_port1 -psksecret MySecret @p
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+        }
+
+        AfterEach {
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Remove-FGTVpnIpsecPhase1Interface -Confirm:$false
+        }
+
+
+        It "Remove VPN IPsec Phase 2 Interface by pipeline" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Remove-FGTVpnIpsecPhase2Interface -Confirm:$false
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn | Should -Be $NULL
+        }
+    }
+}
+
+
 AfterAll {
     Disconnect-FGT -confirm:$false
 }
