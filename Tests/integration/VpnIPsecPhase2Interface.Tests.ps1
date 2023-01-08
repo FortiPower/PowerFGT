@@ -36,7 +36,7 @@ Describe "Get VPN Ipsec Phase 2 Interface" {
         @($interface).count | Should -Not -Be $NULL
     }
 
-    It "Get VPN Ipsec Phase 2 interface ($pester_int1)" {
+    It "Get VPN Ipsec Phase 2 interface ($pester_vpn1_ph2)" {
         $interface = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
         $interface.name | Should -Be $pester_vpn1_ph2
     }
