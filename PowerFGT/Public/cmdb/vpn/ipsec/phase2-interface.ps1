@@ -35,6 +35,8 @@ function Add-FGTVpnIpsecPhase2Interface {
         Create a VPN IPsec Phase 2 Interface named ph2_PowerFGT_VPN with protocol and encapsulation using -data parameter
 
     #>
+
+    [CmdletBinding(DefaultParameterSetName = "default")]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript( { Confirm-FGTVpnIpsecPhase1Interface $_ })]
@@ -62,6 +64,14 @@ function Add-FGTVpnIpsecPhase2Interface {
         [string]$src,
         [Parameter (Mandatory = $false)]
         [string]$dst,
+        [Parameter (Mandatory = $false)]
+        [ValidateScript( { $_ -match [IPAddress]$_ })]
+        [string]$srcip,
+        [Parameter (Mandatory = $false, ParameterSetName = "srcnetmask")]
+        [string]$srcnetmask,
+        [Parameter (Mandatory = $false, ParameterSetName = "srcrange")]
+        [ValidateScript( { $_ -match [IPAddress]$_ })]
+        [string]$srcrange,
         [Parameter (Mandatory = $false)]
         [hashtable]$data,
         [Parameter(Mandatory = $false)]
@@ -160,6 +170,28 @@ function Add-FGTVpnIpsecPhase2Interface {
             else {
                 $_interface | Add-member -name "dst-name" -membertype NoteProperty -Value "all"
             }
+        }
+
+        #src (IP/Subnet/Range)
+        if ( $PsBoundParameters.ContainsKey('srcip') ) {
+            $srctype = "ip"
+            $ip = $srcip
+            $type = "src-start-ip"
+
+            #Source Subnet
+            if ( $PsBoundParameters.ContainsKey('srcnetmask') ) {
+                $srctype = "subnet"
+                $ip += " " + $srcnetmask
+                $type = "src-subnet"
+            }
+            #Source Range
+            if ( $PsBoundParameters.ContainsKey('srcrange') ) {
+                $srctype = "range"
+                $type = "src-start-ip"
+                $_interface | Add-member -name "src-end-ip" -membertype NoteProperty -Value $srcrange
+            }
+            $_interface | Add-member -name "src-addr-type" -membertype NoteProperty -Value $srctype
+            $_interface | Add-member -name $type -membertype NoteProperty -Value $ip
         }
 
         if ( $PsBoundParameters.ContainsKey('data') ) {
