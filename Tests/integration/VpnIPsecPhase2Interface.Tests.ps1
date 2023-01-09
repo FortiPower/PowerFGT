@@ -272,6 +272,39 @@ Describe "Add VPN Ipsec Phase 2 Interface" -ForEach $type {
             { Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -srcip 192.0.2.0 -srcrange 192.0.2.23 -srcnetmask 255.255.255.0 } | Should -Throw
         }
 
+        It "Add VPN Ipsec Phase 2 Interface with a dst (ip)" {
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -dstip 192.0.2.1
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'dst-addr-type' | Should -Be "ip"
+            $vpn.'dst-start-ip' | Should -Be "192.0.2.1"
+        }
+
+        It "Add VPN Ipsec Phase 2 Interface with a dst (range)" {
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -dstip 192.0.2.1 -dstrange 192.0.2.23
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'dst-addr-type' | Should -Be "range"
+            $vpn.'dst-start-ip' | Should -Be "192.0.2.1"
+            $vpn.'dst-end-ip' | Should -Be "192.0.2.23"
+        }
+
+        It "Add VPN Ipsec Phase 2 Interface with a dst (subnet)" {
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -dstip 192.0.2.0 -dstnetmask 255.255.255.0
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'dst-addr-type' | Should -Be "subnet"
+            $vpn.'dst-subnet' | Should -Be "192.0.2.0 255.255.255.0"
+        }
+
+        It "Try to Add VPN Ipsec Phase 2 Interface with a dst (subnet and range)" {
+            { Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -dstip 192.0.2.0 -dstrange 192.0.2.23 -dstnetmask 255.255.255.0 } | Should -Throw
+        }
+
+
         AfterAll {
             Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Remove-FGTVpnIpsecPhase1Interface -Confirm:$false
             Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -confirm:$false

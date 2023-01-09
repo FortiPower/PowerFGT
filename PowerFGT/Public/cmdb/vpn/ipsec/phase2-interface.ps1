@@ -67,11 +67,19 @@ function Add-FGTVpnIpsecPhase2Interface {
         [Parameter (Mandatory = $false)]
         [ValidateScript( { $_ -match [IPAddress]$_ })]
         [string]$srcip,
-        [Parameter (Mandatory = $false, ParameterSetName = "srcnetmask")]
+        [Parameter (Mandatory = $false)]
         [string]$srcnetmask,
-        [Parameter (Mandatory = $false, ParameterSetName = "srcrange")]
+        [Parameter (Mandatory = $false)]
         [ValidateScript( { $_ -match [IPAddress]$_ })]
         [string]$srcrange,
+        [Parameter (Mandatory = $false)]
+        [ValidateScript( { $_ -match [IPAddress]$_ })]
+        [string]$dstip,
+        [Parameter (Mandatory = $false)]
+        [string]$dstnetmask,
+        [Parameter (Mandatory = $false)]
+        [ValidateScript( { $_ -match [IPAddress]$_ })]
+        [string]$dstrange,
         [Parameter (Mandatory = $false)]
         [hashtable]$data,
         [Parameter(Mandatory = $false)]
@@ -178,6 +186,9 @@ function Add-FGTVpnIpsecPhase2Interface {
             $ip = $srcip
             $type = "src-start-ip"
 
+            if ( $PsBoundParameters.ContainsKey('srcnetmask') -and $PsBoundParameters.ContainsKey('srcrange')) {
+                Throw "You can't use -srcnetmask and -srcrange on the sametime"
+            }
             #Source Subnet
             if ( $PsBoundParameters.ContainsKey('srcnetmask') ) {
                 $srctype = "subnet"
@@ -191,6 +202,32 @@ function Add-FGTVpnIpsecPhase2Interface {
                 $_interface | Add-member -name "src-end-ip" -membertype NoteProperty -Value $srcrange
             }
             $_interface | Add-member -name "src-addr-type" -membertype NoteProperty -Value $srctype
+            $_interface | Add-member -name $type -membertype NoteProperty -Value $ip
+        }
+
+        #dst (IP/Subnet/Range)
+        if ( $PsBoundParameters.ContainsKey('dstip') ) {
+            $dsttype = "ip"
+            $ip = $dstip
+            $type = "dst-start-ip"
+
+            if ( $PsBoundParameters.ContainsKey('dstnetmask') -and $PsBoundParameters.ContainsKey('dstrange')) {
+                Throw "You can't use -dstnetmask and -dstrange on the sametime"
+            }
+
+            #Destination Subnet
+            if ( $PsBoundParameters.ContainsKey('dstnetmask') ) {
+                $dsttype = "subnet"
+                $ip += " " + $dstnetmask
+                $type = "dst-subnet"
+            }
+            #Destination Range
+            if ( $PsBoundParameters.ContainsKey('dstrange') ) {
+                $dsttype = "range"
+                $type = "dst-start-ip"
+                $_interface | Add-member -name "dst-end-ip" -membertype NoteProperty -Value $dstrange
+            }
+            $_interface | Add-member -name "dst-addr-type" -membertype NoteProperty -Value $dsttype
             $_interface | Add-member -name $type -membertype NoteProperty -Value $ip
         }
 
