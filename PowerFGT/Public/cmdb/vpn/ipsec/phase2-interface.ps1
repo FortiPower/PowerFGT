@@ -61,9 +61,9 @@ function Add-FGTVpnIpsecPhase2Interface {
         [Parameter (Mandatory = $false)]
         [string]$comments,
         [Parameter (Mandatory = $false)]
-        [string]$src,
+        [string]$srcname,
         [Parameter (Mandatory = $false)]
-        [string]$dst,
+        [string]$dstname,
         [Parameter (Mandatory = $false)]
         [ValidateScript( { $_ -match [IPAddress]$_ })]
         [string]$srcip,
@@ -159,12 +159,12 @@ function Add-FGTVpnIpsecPhase2Interface {
         }
 
         #When use src or dst object, it need to be on source and destination (use all if not defined)
-        if ( $PsBoundParameters.ContainsKey('src') -or $PsBoundParameters.ContainsKey('dst') ) {
+        if ( $PsBoundParameters.ContainsKey('srcname') -or $PsBoundParameters.ContainsKey('dstname') ) {
 
             #Source
             $_interface | Add-member -name "src-addr-type" -membertype NoteProperty -Value "name"
-            if ( $PsBoundParameters.ContainsKey('src') ) {
-                $_interface | Add-member -name "src-name" -membertype NoteProperty -Value $src
+            if ( $PsBoundParameters.ContainsKey('srcname') ) {
+                $_interface | Add-member -name "src-name" -membertype NoteProperty -Value $srcname
             }
             else {
                 $_interface | Add-member -name "src-name" -membertype NoteProperty -Value "all"
@@ -172,8 +172,8 @@ function Add-FGTVpnIpsecPhase2Interface {
 
             #Destination
             $_interface | Add-member -name "dst-addr-type" -membertype NoteProperty -Value "name"
-            if ( $PsBoundParameters.ContainsKey('dst') ) {
-                $_interface | Add-member -name "dst-name" -membertype NoteProperty -Value $dst
+            if ( $PsBoundParameters.ContainsKey('dstname') ) {
+                $_interface | Add-member -name "dst-name" -membertype NoteProperty -Value $dstname
             }
             else {
                 $_interface | Add-member -name "dst-name" -membertype NoteProperty -Value "all"
