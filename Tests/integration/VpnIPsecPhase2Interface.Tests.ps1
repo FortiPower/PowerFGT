@@ -79,7 +79,7 @@ Describe "Add VPN Ipsec Phase 2 Interface" -ForEach $type {
             $p = $_.param
             Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -interface $pester_port1 -psksecret MySecret @p
             Add-FGTFirewallAddress -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0
-            Add-FGTFirewallAddress -Name $pester_address2 -ip 192.0.51.0 -mask 255.255.255.0
+            Add-FGTFirewallAddress -Name $pester_address2 -ip 192.51.0.0 -mask 255.255.255.0
         }
         AfterEach {
             Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Remove-FGTVpnIpsecPhase2Interface -Confirm:$false
