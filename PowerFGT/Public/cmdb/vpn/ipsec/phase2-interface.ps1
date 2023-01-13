@@ -158,6 +158,11 @@ function Add-FGTVpnIpsecPhase2Interface {
             $_interface | Add-member -name "comments" -membertype NoteProperty -Value $comments
         }
 
+        #Throw if you want to use -srcname/dstname with -srcip/dstip
+        if ( ($PsBoundParameters.ContainsKey('srcname') -or $PsBoundParameters.ContainsKey('dstname')) -and ( $PsBoundParameters.ContainsKey('srcip') -or $PsBoundParameters.ContainsKey('dstip'))  ) {
+            Throw "You can't use -srcname/dstname with -srcip/dstip"
+        }
+
         #When use src or dst object, it need to be on source and destination (use all if not defined)
         if ( $PsBoundParameters.ContainsKey('srcname') -or $PsBoundParameters.ContainsKey('dstname') ) {
 
