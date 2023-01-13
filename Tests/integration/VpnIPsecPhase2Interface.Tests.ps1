@@ -208,7 +208,7 @@ Describe "Add VPN Ipsec Phase 2 Interface" -ForEach $type {
         }
 
         It "Add VPN Ipsec Phase 2 Interface with a src (object)" {
-            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -src $pester_address1
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -srcname $pester_address1
             $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
             $vpn.name | Should -Be $pester_vpn1_ph2
             $vpn.phase1name | Should -Be $pester_vpn1
@@ -219,7 +219,7 @@ Describe "Add VPN Ipsec Phase 2 Interface" -ForEach $type {
         }
 
         It "Add VPN Ipsec Phase 2 Interface with a dst (object)" {
-            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -dst $pester_address2
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -dstname $pester_address2
             $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
             $vpn.name | Should -Be $pester_vpn1_ph2
             $vpn.phase1name | Should -Be $pester_vpn1
@@ -230,7 +230,7 @@ Describe "Add VPN Ipsec Phase 2 Interface" -ForEach $type {
         }
 
         It "Add VPN Ipsec Phase 2 Interface with a src (object) and dst (object)" {
-            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -src $pester_address1 -dst $pester_address2
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -srcname $pester_address1 -dstname $pester_address2
             $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
             $vpn.name | Should -Be $pester_vpn1_ph2
             $vpn.phase1name | Should -Be $pester_vpn1
