@@ -410,23 +410,19 @@ Describe "Add VPN Ipsec Phase 2 Interface" -ForEach $type {
         }
 
         It "Try to Add VPN Ipsec Phase 2 Interface with a srcname and srcip" {
-            { Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -srcname $pester_address1 -srcip 192.0.2.1 }
-            | Should -Throw "You can't use -srcname/dstname with -srcip/dstip"
+            { Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -srcname $pester_address1 -srcip 192.0.2.1 } | Should -Throw "You can't use -srcname/dstname with -srcip/dstip"
         }
 
         It "Try to Add VPN Ipsec Phase 2 Interface with a dstname and dstip" {
-            { Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -dstname $pester_address1 -dstip 192.0.2.1 }
-            | Should -Throw "You can't use -srcname/dstname with -srcip/dstip"
+            { Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -dstname $pester_address1 -dstip 192.0.2.1 } | Should -Throw "You can't use -srcname/dstname with -srcip/dstip"
         }
 
         It "Try to Add VPN Ipsec Phase 2 Interface with a srcname and dstip" {
-            { Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -srcname $pester_address1 -dstip 192.0.2.1 }
-            | Should -Throw "You can't use -srcname/dstname with -srcip/dstip"
+            { Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -srcname $pester_address1 -dstip 192.0.2.1 } | Should -Throw "You can't use -srcname/dstname with -srcip/dstip"
         }
 
         It "Try to Add VPN Ipsec Phase 2 Interface with a dstname and src ip" {
-            { Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -srcname $pester_address1 -dstip 192.0.2.1 }
-            | Should -Throw "You can't use -srcname/dstname with -srcip/dstip"
+            { Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -srcname $pester_address1 -dstip 192.0.2.1 } | Should -Throw "You can't use -srcname/dstname with -srcip/dstip"
         }
 
         AfterAll {
