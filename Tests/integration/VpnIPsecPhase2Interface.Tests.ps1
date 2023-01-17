@@ -438,6 +438,386 @@ Describe "Add VPN Ipsec Phase 2 Interface" -ForEach $type {
 
 }
 
+Describe "Configure VPN Ipsec Phase 2 Interface" -ForEach $type {
+
+    Context "Interface $($_.type)" {
+        BeforeAll {
+            $p = $_.param
+            Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -interface $pester_port1 -psksecret MySecret @p
+            Add-FGTFirewallAddress -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0
+            Add-FGTFirewallAddress -Name $pester_address2 -ip 192.51.0.0 -mask 255.255.255.0
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with 1 proposal (des-md5)" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -proposal des-md5
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.proposal | Should -Be "des-md5"
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with 1 proposal (des-sha1)" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -proposal des-sha1
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.proposal | Should -Be "des-sha1"
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with 2 proposal (des-md5, des-sha1)" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -proposal des-md5, des-sha1
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.proposal | Should -Be "des-md5 des-sha1"
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with pfs disabled" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -pfs:$false
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.pfs | Should -Be "disable"
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with pfs enable" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -pfs
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.pfs | Should -Be "enable"
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with 1 DH Group (1)" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -dhgrp 1
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.dhgrp | Should -Be "1"
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with 1 DH Group (2)" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -dhgrp 2
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.dhgrp | Should -Be "2"
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with 2 DH Group (1, 2)" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -dhgrp 1, 2
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.dhgrp | Should -Be "1 2"
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with replay disabled" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -replay:$false
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.replay | Should -Be "disable"
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with replay enable" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -replay
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.replay | Should -Be "enable"
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with keepalive enable" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -keepalive
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.keepalive | Should -Be "enable"
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with keepalive disabled" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -keepalive:$false
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.keepalive | Should -Be "disable"
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with auto-negotiate enable" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -autonegotiate
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'auto-negotiate' | Should -Be "enable"
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with auto-negotiate disabled" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -autonegotiate:$false
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'auto-negotiate' | Should -Be "disable"
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with keylifeseconds (28800)" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -keylifeseconds 28800
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'keylife-type' | Should -Be "seconds"
+            $vpn.keylifeseconds | Should -Be "28800"
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with a comments" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -comment "Add by PowerFGT"
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'comments' | Should -Be "Add by PowerFGT"
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with a src (object)" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -srcname $pester_address1
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'src-addr-type' | Should -Be "name"
+            $vpn.'src-name' | Should -Be $pester_address1
+            $vpn.'dst-addr-type' | Should -Be "name"
+            $vpn.'dst-name' | Should -Be "all"
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with a dst (object)" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -dstname $pester_address2
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'src-addr-type' | Should -Be "name"
+            $vpn.'src-name' | Should -Be "all"
+            $vpn.'dst-addr-type' | Should -Be "name"
+            $vpn.'dst-name' | Should -Be $pester_address2
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with a src (object) and dst (object)" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -srcname $pester_address1 -dstname $pester_address2
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'src-addr-type' | Should -Be "name"
+            $vpn.'src-name' | Should -Be $pester_address1
+            $vpn.'dst-addr-type' | Should -Be "name"
+            $vpn.'dst-name' | Should -Be $pester_address2
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with a src and dst by default (using -data)" {
+            $data = @{ "src-addr-type" = "subnet"; "src-subnet" = "0.0.0.0 0.0.0.0"; "dst-addr-type" = "subnet"; "dst-subnet" = "0.0.0.0 0.0.0.0" }
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -data $data
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'src-addr-type' | Should -Be "subnet"
+            $vpn.'src-subnet' | Should -Be "0.0.0.0 0.0.0.0"
+            $vpn.'dst-addr-type' | Should -Be "subnet"
+            $vpn.'dst-subnet' | Should -Be "0.0.0.0 0.0.0.0"
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with a src (ip)" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -srcip 192.0.2.1
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'src-addr-type' | Should -Be "ip"
+            $vpn.'src-start-ip' | Should -Be "192.0.2.1"
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with a src (range)" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -srcip 192.0.2.2 -srcrange 192.0.2.23
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'src-addr-type' | Should -Be "range"
+            $vpn.'src-start-ip' | Should -Be "192.0.2.2"
+            $vpn.'src-end-ip' | Should -Be "192.0.2.23"
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with a src (subnet)" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -srcip 192.0.2.0 -srcnetmask 255.255.255.0
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'src-addr-type' | Should -Be "subnet"
+            $vpn.'src-subnet' | Should -Be "192.0.2.0 255.255.255.0"
+        }
+
+        It "Try to Set VPN Ipsec Phase 2 Interface with a src (subnet and range)" {
+            { Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -srcip 192.0.2.0 -srcrange 192.0.2.23 -srcnetmask 255.255.255.0 } | Should -Throw
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with a dst (ip)" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -dstip 192.0.2.1
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'dst-addr-type' | Should -Be "ip"
+            $vpn.'dst-start-ip' | Should -Be "192.0.2.1"
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with a dst (range)" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -dstip 192.0.2.2 -dstrange 192.0.2.23
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'dst-addr-type' | Should -Be "range"
+            $vpn.'dst-start-ip' | Should -Be "192.0.2.2"
+            $vpn.'dst-end-ip' | Should -Be "192.0.2.23"
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with a dst (subnet)" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -dstip 192.0.2.0 -dstnetmask 255.255.255.0
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'dst-addr-type' | Should -Be "subnet"
+            $vpn.'dst-subnet' | Should -Be "192.0.2.0 255.255.255.0"
+        }
+
+        It "Try to Set VPN Ipsec Phase 2 Interface with a dst (subnet and range)" {
+            { Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -dstip 192.0.2.0 -dstrange 192.0.2.23 -dstnetmask 255.255.255.0 } | Should -Throw
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with a src (ip) and dst (ip)" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -srcip 192.0.2.1 -dstip 198.51.100.1
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'src-addr-type' | Should -Be "ip"
+            $vpn.'src-start-ip' | Should -Be "192.0.2.1"
+            $vpn.'dst-addr-type' | Should -Be "ip"
+            $vpn.'dst-start-ip' | Should -Be "198.51.100.1"
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with a src (range) and dst (ip)" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -srcip 192.0.2.2 -srcrange 192.0.2.23 -dstip 198.51.100.1
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'src-addr-type' | Should -Be "range"
+            $vpn.'src-start-ip' | Should -Be "192.0.2.2"
+            $vpn.'src-end-ip' | Should -Be "192.0.2.23"
+            $vpn.'dst-addr-type' | Should -Be "ip"
+            $vpn.'dst-start-ip' | Should -Be "198.51.100.1"
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with a src (subnet) and dst (ip)" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -srcip 192.0.2.0 -srcnetmask 255.255.255.0 -dstip 198.51.100.1
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'src-addr-type' | Should -Be "subnet"
+            $vpn.'src-subnet' | Should -Be "192.0.2.0 255.255.255.0"
+            $vpn.'dst-addr-type' | Should -Be "ip"
+            $vpn.'dst-start-ip' | Should -Be "198.51.100.1"
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with a src (ip) and dst (range)" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -srcip 192.0.2.1 -dstip 198.51.100.2 -dstrange 198.51.100.23
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'src-addr-type' | Should -Be "ip"
+            $vpn.'src-start-ip' | Should -Be "192.0.2.1"
+            $vpn.'dst-addr-type' | Should -Be "range"
+            $vpn.'dst-start-ip' | Should -Be "198.51.100.2"
+            $vpn.'dst-end-ip' | Should -Be "198.51.100.23"
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with a src (range) and dst (range)" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -srcip 192.0.2.2 -srcrange 192.0.2.23 -dstip 198.51.100.1 -dstrange 198.51.100.23
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'src-addr-type' | Should -Be "range"
+            $vpn.'src-start-ip' | Should -Be "192.0.2.2"
+            $vpn.'src-end-ip' | Should -Be "192.0.2.23"
+            $vpn.'dst-addr-type' | Should -Be "range"
+            $vpn.'dst-start-ip' | Should -Be "198.51.100.1"
+            $vpn.'dst-end-ip' | Should -Be "198.51.100.23"
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with a src (subnet) and dst (range)" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -srcip 192.0.2.0 -srcnetmask 255.255.255.0 -dstip 198.51.100.1 -dstrange 198.51.100.23
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'src-addr-type' | Should -Be "subnet"
+            $vpn.'src-subnet' | Should -Be "192.0.2.0 255.255.255.0"
+            $vpn.'dst-addr-type' | Should -Be "range"
+            $vpn.'dst-start-ip' | Should -Be "198.51.100.1"
+            $vpn.'dst-end-ip' | Should -Be "198.51.100.23"
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with a src (ip) and dst (subnet)" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -srcip 192.0.2.1 -dstip 198.51.100.0 -dstnetmask 255.255.255.0
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'src-addr-type' | Should -Be "ip"
+            $vpn.'src-start-ip' | Should -Be "192.0.2.1"
+            $vpn.'dst-addr-type' | Should -Be "subnet"
+            $vpn.'dst-subnet' | Should -Be "198.51.100.0 255.255.255.0"
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with a src (range) and dst (subnet)" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -srcip 192.0.2.2 -srcrange 192.0.2.23 -dstip 198.51.100.0 -dstnetmask 255.255.255.0
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'src-addr-type' | Should -Be "range"
+            $vpn.'src-start-ip' | Should -Be "192.0.2.2"
+            $vpn.'src-end-ip' | Should -Be "192.0.2.23"
+            $vpn.'dst-addr-type' | Should -Be "subnet"
+            $vpn.'dst-subnet' | Should -Be "198.51.100.0 255.255.255.0"
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with a src (subnet) and dst (subnet)" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -srcip 192.0.2.0 -srcnetmask 255.255.255.0 -dstip 198.51.100.0 -dstnetmask 255.255.255.0
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.'src-addr-type' | Should -Be "subnet"
+            $vpn.'src-subnet' | Should -Be "192.0.2.0 255.255.255.0"
+            $vpn.'dst-addr-type' | Should -Be "subnet"
+            $vpn.'dst-subnet' | Should -Be "198.51.100.0 255.255.255.0"
+        }
+
+        It "Try to Set VPN Ipsec Phase 2 Interface with a srcname and srcip" {
+            { Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -srcname $pester_address1 -srcip 192.0.2.1 } | Should -Throw "You can't use -srcname/dstname with -srcip/dstip"
+        }
+
+        It "Try to Set VPN Ipsec Phase 2 Interface with a dstname and dstip" {
+            { Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -dstname $pester_address1 -dstip 192.0.2.1 } | Should -Throw "You can't use -srcname/dstname with -srcip/dstip"
+        }
+
+        It "Try to Set VPN Ipsec Phase 2 Interface with a srcname and dstip" {
+            { Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -srcname $pester_address1 -dstip 192.0.2.1 } | Should -Throw "You can't use -srcname/dstname with -srcip/dstip"
+        }
+
+        It "Try to Set VPN Ipsec Phase 2 Interface with a dstname and src ip" {
+            { Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -srcname $pester_address1 -dstip 192.0.2.1 } | Should -Throw "You can't use -srcname/dstname with -srcip/dstip"
+        }
+
+        AfterAll {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Remove-FGTVpnIpsecPhase2Interface -Confirm:$false
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Remove-FGTVpnIpsecPhase1Interface -Confirm:$false
+            Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -confirm:$false
+            Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -confirm:$false
+        }
+    }
+
+}
+
 Describe "Remove VPN Ipsec Phase 2 Interface" -ForEach $type {
 
     Context "Interface $($_.type)" {
