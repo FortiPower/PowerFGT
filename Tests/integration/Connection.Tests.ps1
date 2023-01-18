@@ -256,6 +256,9 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Monitor License Status" {
             { Get-FGTMonitorLicenseStatus -connection $fgt } | Should -Not -Throw
         }
+        It "Use Multi connection for call Get Monitor Network ARP" {
+            { Get-FGTMonitorNetworkARP -connection $fgt } | Should -Not -Throw
+        }
         It "Use Multi connection for call Get Monitor VPN SSL" {
             { Get-FGTMonitorVpnSsl -connection $fgt } | Should -Not -Throw
         }
