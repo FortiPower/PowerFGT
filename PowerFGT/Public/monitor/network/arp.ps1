@@ -29,6 +29,11 @@ function Get-FGTMonitorNetworkARP {
 
     Process {
 
+        #before 6.4.x, it is not available
+        if ($connection.version -lt "6.4.0") {
+            Throw "Monitor Network ARP is no available before Forti OS 6.4"
+        }
+
         $uri = 'api/v2/monitor/network/arp'
         $response = Invoke-FGTRestMethod -uri $uri -method 'GET' -connection $connection
         $response.results

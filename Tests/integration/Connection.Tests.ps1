@@ -256,8 +256,11 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Monitor License Status" {
             { Get-FGTMonitorLicenseStatus -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get Monitor Network ARP" {
+        It "Use Multi connection for call Get Monitor Network ARP (> 6.4.0)" -skip:($fgt_version -lt "6.4.0") {
             { Get-FGTMonitorNetworkARP -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get Monitor Network ARP (< 6.4.0)" -skip:($fgt_version -ge "6.4.0") {
+            { Get-FGTMonitorNetworkARP -connection $fgt } | Should -Throw "Monitor Network ARP is no available before Forti OS 6.4"
         }
         It "Use Multi connection for call Get Monitor VPN SSL" {
             { Get-FGTMonitorVpnSsl -connection $fgt } | Should -Not -Throw
