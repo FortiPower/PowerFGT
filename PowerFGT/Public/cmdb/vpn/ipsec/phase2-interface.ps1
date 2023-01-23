@@ -495,26 +495,22 @@ function Set-FGTVpnIpsecPhase2Interface {
             Throw "You can't use -srcname/dstname with -srcip/dstip"
         }
 
-        #When use src or dst object, it need to be on source and destination (use all if not defined)
-        if ( $PsBoundParameters.ContainsKey('srcname') -or $PsBoundParameters.ContainsKey('dstname') ) {
-
-            #Source
+        #Source Name
+        if ($PsBoundParameters.ContainsKey('srcname')) {
+            if ( $vpn.'dst-addr-type' -ne 'name' -and (-not $PsBoundParameters.ContainsKey('dstname'))) {
+                Throw "You can't use -srcname when destination is not name object (-dstname)"
+            }
             $_interface | Add-member -name "src-addr-type" -membertype NoteProperty -Value "name"
-            if ( $PsBoundParameters.ContainsKey('srcname') ) {
-                $_interface | Add-member -name "src-name" -membertype NoteProperty -Value $srcname
-            }
-            else {
-                $_interface | Add-member -name "src-name" -membertype NoteProperty -Value "all"
-            }
+            $_interface | Add-member -name "src-name" -membertype NoteProperty -Value $srcname
+        }
 
-            #Destination
+        #Destination Name
+        if ($PsBoundParameters.ContainsKey('dstname')) {
+            if ( $vpn.'src-addr-type' -ne 'name' -and (-not $PsBoundParameters.ContainsKey('srcname'))) {
+                Throw "You can't use -dstname when source is not name object (-srcname)"
+            }
             $_interface | Add-member -name "dst-addr-type" -membertype NoteProperty -Value "name"
-            if ( $PsBoundParameters.ContainsKey('dstname') ) {
-                $_interface | Add-member -name "dst-name" -membertype NoteProperty -Value $dstname
-            }
-            else {
-                $_interface | Add-member -name "dst-name" -membertype NoteProperty -Value "all"
-            }
+            $_interface | Add-member -name "dst-name" -membertype NoteProperty -Value $dstname
         }
 
         #src (IP/Subnet/Range)
@@ -523,6 +519,9 @@ function Set-FGTVpnIpsecPhase2Interface {
             $ip = $srcip
             $type = "src-start-ip"
 
+            if ( $vpn.'dst-addr-type' -eq 'name' -and (-not $PsBoundParameters.ContainsKey('dstip'))) {
+                Throw "You can't use -srcip when destination is not ip (-dstip)"
+            }
             if ( $PsBoundParameters.ContainsKey('srcnetmask') -and $PsBoundParameters.ContainsKey('srcrange')) {
                 Throw "You can't use -srcnetmask and -srcrange on the sametime"
             }
@@ -548,10 +547,12 @@ function Set-FGTVpnIpsecPhase2Interface {
             $ip = $dstip
             $type = "dst-start-ip"
 
+            if ( $vpn.'src-addr-type' -eq 'name' -and (-not $PsBoundParameters.ContainsKey('srcip'))) {
+                Throw "You can't use -dstip when source is not ip (-srcip)"
+            }
             if ( $PsBoundParameters.ContainsKey('dstnetmask') -and $PsBoundParameters.ContainsKey('dstrange')) {
                 Throw "You can't use -dstnetmask and -dstrange on the sametime"
             }
-
             #Destination Subnet
             if ( $PsBoundParameters.ContainsKey('dstnetmask') ) {
                 $dsttype = "subnet"
