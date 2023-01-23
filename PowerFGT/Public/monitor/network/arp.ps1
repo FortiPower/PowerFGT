@@ -31,7 +31,7 @@ function Get-FGTMonitorNetworkARP {
 
         #before 6.4.x, it is not available
         if ($connection.version -lt "6.4.0") {
-            Throw "Monitor Network ARP is no available before Forti OS 6.4"
+            Throw "Monitor Network ARP is not available before Forti OS 6.4"
         }
 
         $uri = 'api/v2/monitor/network/arp'
