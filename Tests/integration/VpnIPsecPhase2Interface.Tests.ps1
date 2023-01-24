@@ -543,19 +543,29 @@ Describe "Configure VPN Ipsec Phase 2 Interface" -ForEach $type {
         }
 
         It "Set VPN Ipsec Phase 2 Interface with auto-negotiate enable" {
-            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -autonegotiate
-            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
-            $vpn.name | Should -Be $pester_vpn1_ph2
-            $vpn.phase1name | Should -Be $pester_vpn1
-            $vpn.'auto-negotiate' | Should -Be "enable"
+            if ($_.param.type -eq "dynamic") {
+                { Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -autonegotiate } | Should -Throw "You can't configure auto-negotiate when use type dynamic"
+            }
+            else {
+                Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -autonegotiate
+                $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+                $vpn.name | Should -Be $pester_vpn1_ph2
+                $vpn.phase1name | Should -Be $pester_vpn1
+                $vpn.'auto-negotiate' | Should -Be "enable"
+            }
         }
 
         It "Set VPN Ipsec Phase 2 Interface with auto-negotiate disabled" {
-            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -autonegotiate:$false
-            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
-            $vpn.name | Should -Be $pester_vpn1_ph2
-            $vpn.phase1name | Should -Be $pester_vpn1
-            $vpn.'auto-negotiate' | Should -Be "disable"
+            if ($_.param.type -eq "dynamic") {
+                { Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -autonegotiate:$false } | Should -Throw "You can't configure auto-negotiate when use type dynamic"
+            }
+            else {
+                Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -autonegotiate:$false
+                $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+                $vpn.name | Should -Be $pester_vpn1_ph2
+                $vpn.phase1name | Should -Be $pester_vpn1
+                $vpn.'auto-negotiate' | Should -Be "disable"
+            }
         }
 
         It "Set VPN Ipsec Phase 2 Interface with keylifeseconds (28800)" {
