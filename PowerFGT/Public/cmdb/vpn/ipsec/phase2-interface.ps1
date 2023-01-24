@@ -473,6 +473,10 @@ function Set-FGTVpnIpsecPhase2Interface {
         }
 
         if ( $PsBoundParameters.ContainsKey('autonegotiate') ) {
+            $vpn_ph1 = Get-FGTVpnIpsecPhase1Interface $vpn.phase1name
+            if ($vpn_ph1.type -eq "dynamic") {
+                Throw "You can't configure auto-negotiate when use type dynamic"
+            }
             if ($autonegotiate) {
                 $_interface | Add-member -name "auto-negotiate" -membertype NoteProperty -Value "enable"
             }
