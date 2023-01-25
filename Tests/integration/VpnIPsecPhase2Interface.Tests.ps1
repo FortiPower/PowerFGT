@@ -269,7 +269,7 @@ Describe "Add VPN Ipsec Phase 2 Interface" -ForEach $type {
         }
 
         It "Try to Add VPN Ipsec Phase 2 Interface with a src (subnet and range)" {
-            { Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -srcip 192.0.2.0 -srcrange 192.0.2.23 -srcnetmask 255.255.255.0 } | Should -Throw
+            { Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -srcip 192.0.2.0 -srcrange 192.0.2.23 -srcnetmask 255.255.255.0 } | Should -Throw "You can't use -srcnetmask and -srcrange on the sametime"
         }
 
         It "Add VPN Ipsec Phase 2 Interface with a dst (ip)" {
@@ -301,7 +301,7 @@ Describe "Add VPN Ipsec Phase 2 Interface" -ForEach $type {
         }
 
         It "Try to Add VPN Ipsec Phase 2 Interface with a dst (subnet and range)" {
-            { Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -dstip 192.0.2.0 -dstrange 192.0.2.23 -dstnetmask 255.255.255.0 } | Should -Throw
+            { Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -dstip 192.0.2.0 -dstrange 192.0.2.23 -dstnetmask 255.255.255.0 } | Should -Throw "You can't use -dstnetmask and -dstrange on the sametime"
         }
 
         It "Add VPN Ipsec Phase 2 Interface with a src (ip) and dst (ip)" {
@@ -614,7 +614,7 @@ Describe "Configure VPN Ipsec Phase 2 Interface" -ForEach $type {
         }
 
         It "Try to Set VPN Ipsec Phase 2 Interface with a src (subnet and range)" {
-            { Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -srcip 192.0.2.0 -srcrange 192.0.2.23 -srcnetmask 255.255.255.0 } | Should -Throw
+            { Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -srcip 192.0.2.0 -srcrange 192.0.2.23 -srcnetmask 255.255.255.0 } | Should -Throw "You can't use -srcnetmask and -srcrange on the sametime"
         }
 
         It "Set VPN Ipsec Phase 2 Interface with a dst (ip)" {
@@ -646,7 +646,7 @@ Describe "Configure VPN Ipsec Phase 2 Interface" -ForEach $type {
         }
 
         It "Try to Set VPN Ipsec Phase 2 Interface with a dst (subnet and range)" {
-            { Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -dstip 192.0.2.0 -dstrange 192.0.2.23 -dstnetmask 255.255.255.0 } | Should -Throw
+            { Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -dstip 192.0.2.0 -dstrange 192.0.2.23 -dstnetmask 255.255.255.0 } | Should -Throw "You can't use -dstnetmask and -dstrange on the sametime"
         }
 
         It "Set VPN Ipsec Phase 2 Interface with a src (ip) and dst (ip)" {
