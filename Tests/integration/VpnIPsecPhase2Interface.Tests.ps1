@@ -425,6 +425,23 @@ Describe "Add VPN Ipsec Phase 2 Interface" -ForEach $type {
             { Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -srcname $pester_address1 -dstip 192.0.2.1 } | Should -Throw "You can't use -srcname/dstname with -srcip/dstip"
         }
 
+        It "Add VPN Ipsec Phase 2 Interface with data (one field)" {
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -data @{ "protocol" = "23" }
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.protocol | Should -Be "23"
+        }
+
+        It "Add VPN Ipsec Phase 2 Interface with data (two fields)" {
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -data @{ "protocol" = "85" ; "encapsulation" = "transport-mode" }
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.protocol | Should -Be "85"
+            $vpn.encapsulation | Should -Be "transport-mode"
+        }
+
         AfterAll {
             Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Remove-FGTVpnIpsecPhase1Interface -Confirm:$false
             Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -confirm:$false
