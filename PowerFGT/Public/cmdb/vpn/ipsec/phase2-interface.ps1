@@ -374,8 +374,6 @@ function Set-FGTVpnIpsecPhase2Interface {
         [ValidateScript( { Confirm-FGTVpnIpsecPhase2Interface $_ })]
         [psobject]$vpn,
         [Parameter (Mandatory = $false)]
-        [string]$name,
-        [Parameter (Mandatory = $false)]
         [string[]]$proposal,
         [Parameter (Mandatory = $false)]
         [switch]$pfs,
@@ -432,10 +430,6 @@ function Set-FGTVpnIpsecPhase2Interface {
 
         $uri = "api/v2/cmdb/vpn.ipsec/phase2-interface/$($vpn.name)"
         $_interface = new-Object -TypeName PSObject
-
-        if ( $PsBoundParameters.ContainsKey('name') ) {
-            $_interface | add-member -name "proposal" -membertype NoteProperty -Value $name
-        }
 
         if ( $PsBoundParameters.ContainsKey('proposal') ) {
             $_interface | add-member -name "proposal" -membertype NoteProperty -Value ($proposal -join " ")
