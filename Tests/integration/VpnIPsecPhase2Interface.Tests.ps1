@@ -595,11 +595,11 @@ Describe "Configure VPN Ipsec Phase 2 Interface" -ForEach $type {
         }
 
         It "Set VPN Ipsec Phase 2 Interface with a comments" {
-            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -comment "Add by PowerFGT"
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -comment "Set by PowerFGT"
             $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
             $vpn.name | Should -Be $pester_vpn1_ph2
             $vpn.phase1name | Should -Be $pester_vpn1
-            $vpn.'comments' | Should -Be "Add by PowerFGT"
+            $vpn.'comments' | Should -Be "Set by PowerFGT"
         }
 
         It "Set VPN Ipsec Phase 2 Interface with a src (ip)" {
