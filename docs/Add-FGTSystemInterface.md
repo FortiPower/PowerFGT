@@ -28,6 +28,14 @@ Add-FGTSystemInterface [-name] <String> [-alias <String>] [-role <String>] -memb
  [<CommonParameters>]
 ```
 
+### loopback
+```
+Add-FGTSystemInterface [-name] <String> [-alias <String>] [-role <String>] [-loopback]
+ [-allowaccess <String[]>] [-status <String>] [-device_identification <String>] [-mode <String>] [-ip <String>]
+ [-netmask <String>] [-vdom_interface <String>] [-vdom <String[]>] [-connection <PSObject>]
+ [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Add an interface (Type, Role, Vlan, Address IP...
 )
@@ -62,6 +70,13 @@ Add-FGTSystemInterface -name PowerFGT -alias Alias_PowerFGT -role lan -vlan_id 1
 
 Create an interface named PowerFGT with alias Alias_PowerFGT, role lan with vlan id 10 on interface port10.
 Administrative access by https and ssh, ping authorize on ip 192.0.2.1 and state connected.
+
+### EXAMPLE 5
+```
+Add-FGTSystemInterface -name PowerFGT_loopback -loopback -mode static -ip 192.0.2.1 -netmask 255.255.255.0 -allowaccess ping
+```
+
+This creates a new interface loopback with IP 192.0.2.1(/24) and allow access to ping
 
 ## PARAMETERS
 
@@ -166,6 +181,21 @@ Aliases:
 Required: True
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -loopback
+{{ Fill loopback Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: loopback
+Aliases:
+
+Required: True
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
