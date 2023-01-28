@@ -11,7 +11,7 @@ function Add-FGTVpnIpsecPhase2Interface {
         Add a Vpn IPsec Phase 2 Interface
 
         .DESCRIPTION
-        Add a Vpn IPsec Phase 2 Interface (proposal, dhgrp, source, destination )
+        Add a Vpn IPsec Phase 2 Interface (proposal, dhgrp, source, destination)
 
         .EXAMPLE
         Get-FGTVpnIpsecPhase1Interface -name PowerFGT_VPN | Add-FGTVpnIpsecPhase2Interface -name ph2_PowerFGT_VPN
@@ -24,9 +24,14 @@ function Add-FGTVpnIpsecPhase2Interface {
         Create a VPN IPsec Phase 2 Interface named ph2_PowerFGT_VPN with multiple proposal aes256-sha256, aes256-sha512 and DH Group 14 & 15
 
         .EXAMPLE
-        Get-FGTVpnIpsecPhase1Interface -name PowerFGT_VPN | Add-FGTVpnIpsecPhase2Interface -name ph2_PowerFGT_VPN -src 192.0.2.0/24 -dst 192.0.51.0/24
+        Get-FGTVpnIpsecPhase1Interface -name PowerFGT_VPN | Add-FGTVpnIpsecPhase2Interface -name ph2_PowerFGT_VPN -srcip 192.0.2.0 -srcnetmask 255.255.255.0 -dstip 198.51.100.0 -dstnetmask 255.255.255.0
 
-        Create a VPN IPsec Phase 2 Interface named ph2_PowerFGT_VPN with source 192.0.2.0/24 and destination 192.0.51.0/24
+        Create a VPN IPsec Phase 2 Interface named ph2_PowerFGT_VPN with source ip 192.0.2.0/24 and destination ip 198.51.100.0/24
+
+        .EXAMPLE
+        Get-FGTVpnIpsecPhase1Interface -name PowerFGT_VPN | Add-FGTVpnIpsecPhase2Interface -name ph2_PowerFGT_VPN -srcname VPN_LOCAL -dstname VPN_REMOTE
+
+        Create a VPN IPsec Phase 2 Interface named ph2_PowerFGT_VPN with source object name VPN_LOCAL and destination object name VPN_REMOTE
 
         .EXAMPLE
         $data = @{ "protocol" = "23" ; "encapsulation" = "transport-mode" }
