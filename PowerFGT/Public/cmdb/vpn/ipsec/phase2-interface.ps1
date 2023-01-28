@@ -361,15 +361,25 @@ function Set-FGTVpnIpsecPhase2Interface {
         Configure a Vpn IPsec Phase 2 Interface (proposal, dhgrp, source, destination )
 
         .EXAMPLE
-        Get-FGTVpnIpsecPhase2Interface -name ph2_PowerFGT_VPN | Set-FGTVpnIpsecPhase2Interface -name ph2_PowerFGT_VPN
+        Get-FGTVpnIpsecPhase2Interface -name ph2_PowerFGT_VPN | Set-FGTVpnIpsecPhase2Interface -dhgrp 14 -proposal aes256-sha256
 
-        Create a VPN IPsec Phase 2 Interface named ph2_PowerFGT_VPN
+        Change dhgrp and proposal of VPN IPsec Phase 2 Interface ph2_PowerFGT_VPN
+
+        .EXAMPLE
+        Get-FGTVpnIpsecPhase1Interface -name PowerFGT_VPN | Set-FGTVpnIpsecPhase2Interface -srcname VPN_LOCAL2
+
+        Change source object name (VPN_LOCAL2) of VPN IPsec Phase 2 Interface ph2_PowerFGT_VPN
+
+        .EXAMPLE
+        Get-FGTVpnIpsecPhase1Interface -name PowerFGT_VPN | Set-FGTVpnIpsecPhase2Interface -dstip 198.51.100.0 -dstnetmask 255.255.255.0
+
+        Change destination IP (198.51.100.0/24) of VPN IPsec Phase 2 Interface ph2_PowerFGT_VPN
 
         .EXAMPLE
         $data = @{ "protocol" = "23" ; "encapsulation" = "transport-mode" }
         PS C> Get-FGTVpnIpsecPhase1Interface -name PowerFGT_VPN | Set-FGTVpnIpsecPhase2Interface -name ph2_PowerFGT_VPN -data $data
 
-        Create a VPN IPsec Phase 2 Interface named ph2_PowerFGT_VPN with protocol and encapsulation using -data parameter
+        Change protocol and encapsulation using -data parameter of VPN IPsec Phase 2 Interface ph2_PowerFGT_VPN
 
     #>
 
