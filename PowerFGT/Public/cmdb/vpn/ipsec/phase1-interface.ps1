@@ -364,9 +364,6 @@ function Set-FGTVpnIpsecPhase1Interface {
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript( { Confirm-FGTVpnIpsecPhase1Interface $_ })]
         [psobject]$vpn,
-        [Parameter (Mandatory = $false, Position = 1)]
-        [ValidateLength(1, 15)]
-        [string]$name,
         [Parameter (Mandatory = $false)]
         [ValidateSet('static', 'dynamic', IgnoreCase = $false)]
         [string]$type,
@@ -429,9 +426,6 @@ function Set-FGTVpnIpsecPhase1Interface {
 
         $_interface = new-Object -TypeName PSObject
 
-        if ( $PsBoundParameters.ContainsKey('name') ) {
-            $_interface | add-member -name "name" -membertype NoteProperty -Value $name
-        }
         if ( $PsBoundParameters.ContainsKey('interface') ) {
             $_interface | add-member -name "interface" -membertype NoteProperty -Value $interface
         }
