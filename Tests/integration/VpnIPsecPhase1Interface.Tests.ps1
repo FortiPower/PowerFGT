@@ -68,7 +68,6 @@ $type = @(
     @{ "type" = "IKEv2 Dynamic"; "param" = @{ "ikeversion" = 2; "type" = "dynamic" } }
 )
 
-
 Describe "Add VPN Ipsec Phase 1 Interface" -ForEach $type {
 
     Context "Interface $($_.type)" {
