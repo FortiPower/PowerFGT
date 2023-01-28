@@ -30,6 +30,12 @@ Add-FGTFirewallAddress -name <String> [-startip <IPAddress>] [-endip <IPAddress>
  [-comment <String>] [-visibility <Boolean>] [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
 ```
 
+### geography
+```
+Add-FGTFirewallAddress -name <String> [-country <String>] [-interface <String>] [-comment <String>]
+ [-visibility <Boolean>] [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Add a FortiGate Address (ipmask, iprange, fqdn)
 
@@ -76,6 +82,13 @@ Add-FGTFirewallAddress -Name FGT-Range -startip 192.0.2.1 -endip 192.0.2.100
 ```
 
 Add Address object type iprange with name FGT-Range with start IP 192.0.2.1 and end ip 192.0.2.100
+
+### EXAMPLE 7
+```
+Add-FGTFirewallAddress -Name FGT-Country-FR -country FR
+```
+
+Add Address object type geo (country) with name FGT-Country-FR and value FR (France)
 
 ## PARAMETERS
 
@@ -160,6 +173,21 @@ Accept wildcard characters: False
 ```yaml
 Type: IPAddress
 Parameter Sets: iprange
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -country
+{{ Fill country Description }}
+
+```yaml
+Type: String
+Parameter Sets: geography
 Aliases:
 
 Required: False

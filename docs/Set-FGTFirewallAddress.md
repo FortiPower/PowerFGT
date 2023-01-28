@@ -39,6 +39,13 @@ Set-FGTFirewallAddress [-address] <PSObject> [-name <String>] [-startip <IPAddre
  [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
+### geography
+```
+Set-FGTFirewallAddress [-address] <PSObject> [-name <String>] [-country <String>] [-interface <String>]
+ [-comment <String>] [-visibility <Boolean>] [-vdom <String[]>] [-connection <PSObject>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Change a FortiGate Address (ip, mask, comment, associated interface...
 )
@@ -100,6 +107,14 @@ PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -endip 192.0.2.200
 ```
 
 Change MyFGTAddress to set a new endip (iprange) 192.0.2.200
+
+### EXAMPLE 8
+```
+$MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
+PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -country FR
+```
+
+Change MyFGTAddress to set a new country (geo) FR (France)
 
 ## PARAMETERS
 
@@ -199,6 +214,21 @@ Accept wildcard characters: False
 ```yaml
 Type: IPAddress
 Parameter Sets: iprange
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -country
+{{ Fill country Description }}
+
+```yaml
+Type: String
+Parameter Sets: geography
 Aliases:
 
 Required: False
