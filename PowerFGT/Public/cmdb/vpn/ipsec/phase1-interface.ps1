@@ -30,6 +30,7 @@ function Add-FGTVpnIpsecPhase1Interface {
         Create a dynamic VPN IPsec Phase 1 Interface named PowerFGT_VPN with fragmentation and npu-offload using -data parameter
 
     #>
+
     Param(
         [Parameter (Mandatory = $true, Position = 1)]
         [ValidateLength(1, 15)]
@@ -98,7 +99,6 @@ function Add-FGTVpnIpsecPhase1Interface {
         $_interface = new-Object -TypeName PSObject
 
         $_interface | add-member -name "name" -membertype NoteProperty -Value $name
-
         $_interface | add-member -name "type" -membertype NoteProperty -Value $type
         $_interface | add-member -name "interface" -membertype NoteProperty -Value $interface
         $_interface | add-member -name "psksecret" -membertype NoteProperty -Value $psksecret
@@ -419,7 +419,6 @@ function Set-FGTVpnIpsecPhase1Interface {
     }
 
     Process {
-
 
         $invokeParams = @{ }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
