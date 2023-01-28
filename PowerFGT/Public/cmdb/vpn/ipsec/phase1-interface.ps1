@@ -340,7 +340,7 @@ function Set-FGTVpnIpsecPhase1Interface {
         Configure a Vpn IPsec Phase 1 Interface
 
         .DESCRIPTION
-        Configure an Vpn IPsec Phase 1 Interface (Version, type, interface, proposal, psksecret... )
+        Configure a Vpn IPsec Phase 1 Interface (Version, type, interface, proposal, psksecret... )
 
         .EXAMPLE
         Get-FGTVpnIpsecPhase1Interface PowerFGT_VPN | Set-FGTVpnIpsecPhase1Interface -psksecret MySecret
