@@ -836,6 +836,23 @@ Describe "Configure VPN Ipsec Phase 2 Interface" -ForEach $type {
             { Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -dstip 192.0.2.1 } | Should -Throw "You can't use -dstip when source is not ip (-srcip)"
         }
 
+        It "Set VPN Ipsec Phase 2 Interface with data (one field)" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -data @{ "protocol" = "23" }
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.protocol | Should -Be "23"
+        }
+
+        It "Set VPN Ipsec Phase 2 Interface with data (two fields)" {
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -data @{ "protocol" = "85" ; "encapsulation" = "transport-mode" }
+            $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
+            $vpn.name | Should -Be $pester_vpn1_ph2
+            $vpn.phase1name | Should -Be $pester_vpn1
+            $vpn.protocol | Should -Be "85"
+            $vpn.encapsulation | Should -Be "transport-mode"
+        }
+
         AfterAll {
             Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Remove-FGTVpnIpsecPhase2Interface -Confirm:$false
             Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Remove-FGTVpnIpsecPhase1Interface -Confirm:$false
