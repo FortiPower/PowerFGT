@@ -5,7 +5,11 @@
 # https://aka.ms/yaml
 
 trigger:
-- master
+  branches:
+    - master
+  paths:
+    exclude:
+    - docs/
 
 stages:
 - stage: Ubuntu
