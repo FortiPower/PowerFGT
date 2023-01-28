@@ -11,7 +11,7 @@ function Add-FGTVpnIpsecPhase1Interface {
         Add a Vpn IPsec Phase 1 Interface
 
         .DESCRIPTION
-        Add an Vpn IPsec Phase 1 Interface (Version, type, interface, proposal, psksecret... )
+        Add a Vpn IPsec Phase 1 Interface (Version, type, interface, proposal, psksecret... )
 
         .EXAMPLE
         Add-FGTVpnIpsecPhase1Interface -name PowerFGT_VPN -type static -interface port2 -psksecret MySecret -remotegw 192.0.2.1
