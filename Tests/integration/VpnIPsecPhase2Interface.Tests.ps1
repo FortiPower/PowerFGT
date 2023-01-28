@@ -817,7 +817,6 @@ Describe "Configure VPN Ipsec Phase 2 Interface" -ForEach $type {
             $vpn.'dst-name' | Should -Be $pester_address2
         }
 
-
         It "Set VPN Ipsec Phase 2 Interface with a dst (object)" {
             Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -dstname $pester_address1
             $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
