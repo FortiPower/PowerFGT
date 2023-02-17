@@ -229,6 +229,15 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get VPN IPsec Phase 2 Interface" {
             { Get-FGTVpnIpsecPhase2Interface -connection $fgt } | Should -Not -Throw
         }
+        It "Use Multi connection for call Get VPN SSL Client" {
+            { Get-FGTVpnSSLClient -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get VPN SSL Portal" {
+            { Get-FGTVpnSSLPortal -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get VPN SSL Settings" {
+            { Get-FGTVpnSSLSettings -connection $fgt } | Should -Not -Throw
+        }
         It "Use Multi connection for call Get Monitor Firewall Policy" {
             { Get-FGTMonitorFirewallPolicy -connection $fgt } | Should -Not -Throw
         }
