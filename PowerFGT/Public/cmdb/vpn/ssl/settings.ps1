@@ -33,6 +33,7 @@ function Get-FGTVpnSSLSettings {
         Get list of all settings of VPN SSL on vdomX
     #>
 
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "")]
     Param(
         [Parameter (Mandatory = $false)]
         [Parameter (ParameterSetName = "filter")]
