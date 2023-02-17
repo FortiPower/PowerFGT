@@ -34,6 +34,7 @@ function Get-FGTVpnSSLSettings {
     #>
 
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "")]
+    [CmdletBinding(DefaultParameterSetName = "default")]
     Param(
         [Parameter (Mandatory = $false)]
         [Parameter (ParameterSetName = "filter")]
