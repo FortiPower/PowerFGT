@@ -35,8 +35,6 @@ function Get-FGTVpnSSLSettings {
 
     Param(
         [Parameter (Mandatory = $false)]
-        [switch]$plaintext_password,
-        [Parameter (Mandatory = $false)]
         [Parameter (ParameterSetName = "filter")]
         [string]$filter_attribute,
         [Parameter (Mandatory = $false)]
