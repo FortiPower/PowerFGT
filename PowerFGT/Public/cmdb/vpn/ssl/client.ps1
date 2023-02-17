@@ -94,6 +94,11 @@ function Get-FGTVpnSSLClient {
             $invokeParams.add( 'filter_type', $filter_type )
         }
 
+        #before 7.2.x, it is not available !
+        if ($connection.version -lt "7.0.0") {
+            Throw "VPN SSL Client is not available before FortiOS 7.0.x"
+        }
+
         $response = Invoke-FGTRestMethod -uri $uri -method 'GET' -connection $connection @invokeParams
         $response.results
     }
