@@ -159,6 +159,7 @@ function Get-FGTLogTraffic {
         if ( $PsBoundParameters.ContainsKey('extra') -or $PsBoundParameters.ContainsKey('since')) {
             $filter = ""
 
+            #by default, there is last 1hour of log, need to specifiy _metadata.timestamp (Unix)
             if ($since) {
                 $currentime = [DateTimeOffset]::Now.ToUnixTimeMilliSeconds()
                 Switch ($since) {
@@ -171,11 +172,13 @@ function Get-FGTLogTraffic {
                 $filter += "_metadata.timestamp>=$mtimestamp"
             }
 
+            #Add list of extra parameter (reverse_lookup, country_id...)
             foreach ($e in $extra) {
                 $filter += "&extra=$e"
             }
-            if ( $filter_value -and $filter_attribute ) {
 
+            #if there is other filder add to &filter
+            if ( $filter_value -and $filter_attribute ) {
                 $filter_value += "&filter=" + $filter
             }
             else {
