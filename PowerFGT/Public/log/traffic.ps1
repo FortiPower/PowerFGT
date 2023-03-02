@@ -37,6 +37,11 @@ function Get-FGTLogTraffic {
 
         Get Log Traffic from disk on subtype forward with 10 000 rows with reverse lookup
 
+        .EXAMPLE
+        Get-FGTLogTraffic -type disk -subtype forward -rows 10000 -wait 5000
+
+        Get Log Traffic from disk on subtype forward with 10 000 rows and wait 5000 Milliseconds between each request
+
     #>
 
     [CmdletBinding(DefaultParameterSetName = 'default')]
@@ -81,6 +86,8 @@ function Get-FGTLogTraffic {
         [Parameter (Mandatory = $false)]
         [ValidateSet('1h', '6h', '1d', '7d', '30d', IgnoreCase = $false)]
         [string]$since,
+        [Parameter (Mandatory = $false)]
+        [int]$wait = 1000,
         [Parameter (Mandatory = $false)]
         [Parameter (ParameterSetName = "filter")]
         [string]$filter_attribute,
@@ -210,8 +217,8 @@ function Get-FGTLogTraffic {
                 $uri2 = $uri + "&start=$($i)"
                 $response = Invoke-FGTRestMethod -uri $uri2 -method 'GET' -connection $connection @invokeParams
                 while ($response.completed -ne "100") {
-                    #Wait 1s to result
-                    Start-Sleep 1
+                    #Wait X Milliseconds to result
+                    Start-Sleep -Milliseconds $wait
                     $response = Invoke-FGTRestMethod -uri $uri2 -method 'GET' -connection $connection @invokeParams
                 }
 
