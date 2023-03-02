@@ -27,6 +27,15 @@ function Get-FGTLogTraffic {
 
         Get Log Traffic from disk on subtype forward with 10 000 rows with Source IP 192.0.0.1
 
+        .EXAMPLE
+        Get-FGTLogTraffic -type fortianalyzer -subtype forward -rows 10000 -since 7d
+
+        Get Log Traffic from fortianalyzer on subtype forward with 10 000 rows since 7 day
+
+        .EXAMPLE
+        Get-FGTLogTraffic -type disk -subtype forward -rows 10000 -extra reverse_lookup
+
+        Get Log Traffic from disk on subtype forward with 10 000 rows with reverse lookup
 
     #>
 
