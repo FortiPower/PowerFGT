@@ -216,10 +216,12 @@ function Get-FGTLogTraffic {
             while ($i -lt $r) {
                 $uri2 = $uri + "&start=$($i)"
                 $response = Invoke-FGTRestMethod -uri $uri2 -method 'GET' -connection $connection @invokeParams
+                Write-Debug "start=$($i), total_lines=$($response.total_lines) completed=$($response.completed) "
                 while ($response.completed -ne "100") {
                     #Wait X Milliseconds to result
                     Start-Sleep -Milliseconds $wait
                     $response = Invoke-FGTRestMethod -uri $uri2 -method 'GET' -connection $connection @invokeParams
+                    Write-Debug "start=$($i), total_lines=$($response.total_lines) completed=$($response.completed) "
                 }
 
                 $i += 1024
