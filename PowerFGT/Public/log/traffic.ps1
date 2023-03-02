@@ -20,12 +20,13 @@ function Get-FGTLogTraffic {
         .EXAMPLE
         Get-FGTLogTraffic -type memory -subtype forward -rows 10000
 
-        Get Log Traffic from memory on subtype forward and 10 000 rows
+        Get Log Traffic from memory on subtype forward with 10 000 rows
 
         .EXAMPLE
-        Get-FGTLogTraffic -type disk -subtype forward -rows 10000 -srcip
+        Get-FGTLogTraffic -type disk -subtype forward -rows 10000 -srcip 192.0.2.1
 
-        Get Log Traffic from memory on subtype forward and 10 000 rows
+        Get Log Traffic from disk on subtype forward with 10 000 rows with Source IP 192.0.0.1
+
 
     #>
 
