@@ -64,7 +64,13 @@ function Get-FGTLogTraffic {
         [int]$policyid,
         [Parameter (Mandatory = $false)]
         [Parameter (ParameterSetName = "poluuid")]
-        [guid]$poluuid,
+        [string]$poluuid,
+        [Parameter (Mandatory = $false)]
+        [ValidateSet('country_id', 'reverse_lookup', IgnoreCase = $false)]
+        [string[]]$extra,
+        [Parameter (Mandatory = $false)]
+        [ValidateSet('1h', '6h', '1d', '7d', '30d', IgnoreCase = $false)]
+        [string]$since,
         [Parameter (Mandatory = $false)]
         [Parameter (ParameterSetName = "filter")]
         [string]$filter_attribute,
@@ -138,6 +144,34 @@ function Get-FGTLogTraffic {
                 $filter_attribute = "poluuid"
             }
             default { }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('extra') -or $PsBoundParameters.ContainsKey('since')) {
+            $filter = ""
+
+            if ($since) {
+                $currentime = [DateTimeOffset]::Now.ToUnixTimeMilliSeconds()
+                Switch ($since) {
+                    '1h' { $mtimestamp = $currentime - 3600000 }
+                    '6h' { $mtimestamp = $currentime - 21600000 }
+                    '1d' { $mtimestamp = $currentime - 86400000 }
+                    '7d' { $mtimestamp = $currentime - 604800000 }
+                    '30d' { $mtimestamp = $currentime - 2592000000 }
+                }
+                $filter += "_metadata.timestamp>=$mtimestamp"
+            }
+
+            foreach ($e in $extra) {
+                $filter += "&extra=$e"
+            }
+            if ( $filter_value -and $filter_attribute ) {
+
+                $filter_value += "&filter=" + $filter
+            }
+            else {
+                $invokeParams.add( 'filter', $filter )
+            }
+
         }
 
         #if filter value and filter_attribute, add filter (by default filter_type is equal)
