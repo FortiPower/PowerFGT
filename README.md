@@ -45,6 +45,7 @@ With this module (version 0.6.1) you can manage:
 - User LDAP (Get)
 - User Local (Get)
 - User Group (Get)
+- User SAML (Get)
 - User RADIUS (Get)
 - [VDOM](#vdom) (Get)
 - [Virtual IP](#virtual-ip) (Add/Get/Remove object type static-nat)
