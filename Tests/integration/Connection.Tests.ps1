@@ -247,6 +247,9 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get VPN SSL Settings" {
             { Get-FGTVpnSSLSettings -connection $fgt } | Should -Not -Throw
         }
+        It "Use Multi connection for call Get Webfilter Profile" {
+            { Get-FGTWebfilterProfile -connection $fgt } | Should -Not -Throw
+        }
         It "Use Multi connection for call Get Monitor Firewall Policy" {
             { Get-FGTMonitorFirewallPolicy -connection $fgt } | Should -Not -Throw
         }
@@ -285,6 +288,9 @@ Describe "Connect to a FortiGate (using multi connection)" {
         }
         It "Use Multi connection for call Get Monitor VPN IPsec" {
             { Get-FGTMonitorVpnIPsec -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get Monitor Webfilter Cateogries" {
+            { Get-FGTMonitorWebfilterCategories -connection $fgt } | Should -Not -Throw
         }
     }
 
