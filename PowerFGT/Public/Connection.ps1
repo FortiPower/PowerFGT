@@ -291,7 +291,7 @@ function Connect-FGT {
                 }
 
                 #Reconnect...
-                Connect-FGT -server $server -port $port -httpOnly:$httpOnly -vdom $vdom -Username $Credentials.username -Password $new_password -license $license -DefaultConnection $DefaultConnection
+                Connect-FGT -server $server -port $port -httpOnly:$httpOnly -vdom $vdom -Username $Credentials.username -Password $new_password -license $license -SkipCertificateCheck $SkipCertificateCheck -DefaultConnection $DefaultConnection
                 return
             }
 
