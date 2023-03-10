@@ -15,17 +15,22 @@ function Get-FGTMonitorFirewallSession {
         .EXAMPLE
         Get-FGTMonitorFirewallSession
 
-        Get ALL Firewall Policy session
+        Get ALL Firewall Policy session (by default 20 first session)
+
+        .EXAMPLE
+        Get-FGTMonitorFirewallSession -count 1000
+
+        Get 1000 Firewall Session monitor
 
         .EXAMPLE
         Get-FGTMonitorFirewallSession -policyid 23
 
-        Get Firewall Policy monitor with id 23
+        Get Firewall Session monitor with id 23
 
         .EXAMPLE
         Get-FGTMonitorFirewallSession -vdom vdomX
 
-        Get Firewall Policy monitor of vdomX
+        Get Firewall Session monitor of vdomX
 
     #>
 
@@ -57,17 +62,35 @@ function Get-FGTMonitorFirewallSession {
             $invokeParams.add( 'vdom', $vdom )
         }
 
+        $c = $count
+        if ($count -gt 1000) {
+            $count = 1000
+        }
+
         $uri = "api/v2/monitor/firewall/session?count=${count}"
 
         if ( $PsBoundParameters.ContainsKey('summary') ) {
             $uri += "&summary=$true"
         }
-
         if ( $PsBoundParameters.ContainsKey('policyid') ) {
             $uri += "&policyid=$policyid"
         }
-        $response = Invoke-FGTRestMethod -uri $uri -method 'GET' -connection $connection @invokeParams
-        $response.results
+
+        $results = @()
+        $i = 0
+        while ($i -lt $c) {
+            $uri2 = $uri + "&start=$($i)"
+            $response = Invoke-FGTRestMethod -uri $uri2 -method 'GET' -connection $connection @invokeParams
+
+            $i += 1024
+            $results += $response.results.details
+        }
+        $output = new-Object -TypeName PSObject
+        if ( $PsBoundParameters.ContainsKey('summary') ) {
+            $output | add-member -name "summary" -membertype NoteProperty -Value $response.summary
+        }
+        $output | add-member -name "details" -membertype NoteProperty -Value $results
+        $output
     }
 
     End {
