@@ -16,14 +16,16 @@ Connect to a FortiGate
 ```
 Connect-FGT [-Server] <String> [-Username <String>] [-Password <SecureString>] [-ApiToken <String>]
  [-New_Password <SecureString>] [-Credentials <PSCredential>] [-httpOnly] [-SkipCertificateCheck]
- [-port <Int32>] [-Timeout <Int32>] [-vdom <String[]>] [-DefaultConnection <Boolean>] [<CommonParameters>]
+ [-port <Int32>] [-Timeout <Int32>] [-token_code <String>] [-token_prompt] [-vdom <String[]>]
+ [-DefaultConnection <Boolean>] [<CommonParameters>]
 ```
 
 ### token
 ```
 Connect-FGT [-Server] <String> [-Username <String>] [-Password <SecureString>] [-ApiToken <String>]
  [-New_Password <SecureString>] [-Credentials <PSCredential>] [-httpOnly] [-SkipCertificateCheck]
- [-port <Int32>] [-Timeout <Int32>] [-vdom <String[]>] [-DefaultConnection <Boolean>] [<CommonParameters>]
+ [-port <Int32>] [-Timeout <Int32>] [-token_code <String>] [-token_prompt] [-vdom <String[]>]
+ [-DefaultConnection <Boolean>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -113,6 +115,21 @@ Connect-FGT -Server 192.0.2.1 -new_password $mysecpassword
 ```
 
 Connect to a FortiGate with IP 192.0.2.1 and change the password
+
+### EXAMPLE 12
+```
+$mysecpassword = ConvertTo-SecureString mypassword -AsPlainText -Force
+Connect-FGT -Server 192.0.2.1 -Username admin -Password $mysecpassword -token_code XXXXX
+```
+
+Connect to a FortiGate with IP 192.0.2.1 using Username, Password and (Forti)token code XXXXXX
+
+### EXAMPLE 13
+```
+Connect-FGT -Server 192.0.2.1 -token_prompt
+```
+
+Connect to a FortiGate with IP 192.0.2.1 and it will ask to get (Forti)Token code when connect
 
 ## PARAMETERS
 
@@ -262,6 +279,36 @@ Aliases:
 Required: False
 Position: Named
 Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -token_code
+{{ Fill token_code Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -token_prompt
+{{ Fill token_prompt Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
