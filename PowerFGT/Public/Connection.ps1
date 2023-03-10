@@ -83,6 +83,13 @@ function Connect-FGT {
       Connect-FGT -Server 192.0.2.1 -token_prompt
 
       Connect to a FortiGate with IP 192.0.2.1 and it will ask to get (Forti)Token code when connect
+
+     .EXAMPLE
+      $lic = Get-Content -Raw $license_file
+      $mynewpassword = ConvertTo-SecureString mypassword -AsPlainText -Force
+      Connect-FGT -Server 192.0.2.1 -New_Password $mynewsecpassword -license $lic
+
+      Connect to a FortiGate with IP 192.0.2.1 and upload the new license and change the password
   #>
     [CmdletBinding(DefaultParameterSetName = 'default')]
     [OutputType([System.Collections.Hashtable])]
