@@ -253,6 +253,9 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Monitor Firewall Policy" {
             { Get-FGTMonitorFirewallPolicy -connection $fgt } | Should -Not -Throw
         }
+        It "Use Multi connection for call Get Monitor Firewall Session" {
+            { Get-FGTMonitorFirewallSession -connection $fgt } | Should -Not -Throw
+        }
         It "Use Multi connection for call Get Monitor Router IPv4" {
             { Get-FGTMonitorRouterIPv4 -connection $fgt } | Should -Not -Throw
         }
