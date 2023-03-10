@@ -43,8 +43,6 @@ function Get-FGTVpnSSLClient {
         [Parameter (Mandatory = $false, Position = 1, ParameterSetName = "name")]
         [string]$name,
         [Parameter (Mandatory = $false)]
-        [switch]$plaintext_password,
-        [Parameter (Mandatory = $false)]
         [Parameter (ParameterSetName = "filter")]
         [string]$filter_attribute,
         [Parameter (Mandatory = $false)]
@@ -94,7 +92,7 @@ function Get-FGTVpnSSLClient {
             $invokeParams.add( 'filter_type', $filter_type )
         }
 
-        #before 7.2.x, it is not available !
+        #before 7.0.x, it is not available !
         if ($connection.version -lt "7.0.0") {
             Throw "VPN SSL Client is not available before FortiOS 7.0.x"
         }
