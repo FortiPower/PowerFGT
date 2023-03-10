@@ -18,7 +18,7 @@ Describe  "Connect to a FortiGate (using HTTP)" {
         $DefaultFGTConnection.version | Should -Not -BeNullOrEmpty
         $DefaultFGTConnection.serial | Should -Not -BeNullOrEmpty
     }
-    It "Disconnect to a FortiGate (using HTTP) and check global variable" -Skip:( -not $httpOnly ){
+    It "Disconnect to a FortiGate (using HTTP) and check global variable" -Skip:( -not $httpOnly ) {
         Disconnect-FGT -confirm:$false
         $DefaultFGTConnection | Should -Be $null
     }
