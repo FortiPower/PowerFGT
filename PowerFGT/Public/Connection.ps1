@@ -238,7 +238,7 @@ function Connect-FGT {
             #Search crsf cookie and to X-CSRFTOKEN
             $cookies = $FGT.Cookies.GetCookies($uri)
             foreach ($cookie in $cookies) {
-                if ($cookie.name -eq "ccsrftoken") {
+                if ($cookie.name -like "ccsrftoken*") {
                     $cookie_csrf = $cookie.value
                 }
             }
