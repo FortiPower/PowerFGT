@@ -310,7 +310,7 @@ function Connect-FGT {
                     file_content = $license_b64
                 }
                 try {
-                    Invoke-RestMethod $uri -Method "POST" -Header $headers -WebSession $FGT -Body ($postParams | ConvertTo-Json) @invokeParams
+                    Invoke-RestMethod $uri -Method "POST" -Header $headers -WebSession $FGT -Body ($postParams | ConvertTo-Json) @invokeParams | Out-Null
                 }
                 catch {
                     Show-FGTException $_
