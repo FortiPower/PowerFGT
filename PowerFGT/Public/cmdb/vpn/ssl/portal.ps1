@@ -43,8 +43,6 @@ function Get-FGTVpnSSLPortal {
         [Parameter (Mandatory = $false, Position = 1, ParameterSetName = "name")]
         [string]$name,
         [Parameter (Mandatory = $false)]
-        [switch]$plaintext_password,
-        [Parameter (Mandatory = $false)]
         [Parameter (ParameterSetName = "filter")]
         [string]$filter_attribute,
         [Parameter (Mandatory = $false)]
