@@ -191,7 +191,6 @@ function Connect-FGT {
             $uri = $url + "logincheck"
             $iwrResponse = $null
             try {
-                Write-verbose ($postParams | Convertto-json)
                 $iwrResponse = Invoke-WebRequest $uri -Method POST -Body $postParams -SessionVariable FGT @invokeParams
             }
             catch {
@@ -291,25 +290,23 @@ function Connect-FGT {
 
             if ($iwrResponse.Content -match '/system/vm/license') {
                 if (-not $PsBoundParameters.ContainsKey('license')) {
-                    #throw if you don't have specify new_password
+                    #throw if you don't have specify license
                     throw "Need to install a license (use -license parameter)"
                 }
                 $uri = $url + "api/v2/monitor/system/vmlicense/upload"
-                $uri
+
+                #Convert the license to base64 and POST to vmlicense/upload
                 $Bytes = [System.Text.Encoding]::UTF8.GetBytes($license)
                 $license_b64 = [Convert]::ToBase64String($Bytes)
                 $postParams = @{
                     file_content = $license_b64
-                    # CSRF_TOKEN = $cookie_csrf
-                    #ajax       = 1;
-                    # confirm    = 1
                 }
                 try {
-                    Invoke-RestMethod $uri -Method "POST" -Header $headers -WebSession $FGT -Body ($postParams | Convertto-json) @invokeParams
+                    Invoke-RestMethod $uri -Method "POST" -Header $headers -WebSession $FGT -Body ($postParams | ConvertTo-Json) @invokeParams
                 }
                 catch {
                     Show-FGTException $_
-                    throw "Unable to upload license password"
+                    throw "Unable to upload license"
                 }
                 Write-Warning "Fortigate restart (installing license...)"
                 return
