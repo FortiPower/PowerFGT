@@ -18,7 +18,7 @@ Describe  "Connect to a FortiGate (using HTTP)" {
         $DefaultFGTConnection.version | Should -Not -BeNullOrEmpty
         $DefaultFGTConnection.serial | Should -Not -BeNullOrEmpty
     }
-    It "Disconnect to a FortiGate (using HTTP) and check global variable" -Skip:( -not $httpOnly ){
+    It "Disconnect to a FortiGate (using HTTP) and check global variable" -Skip:( -not $httpOnly ) {
         Disconnect-FGT -confirm:$false
         $DefaultFGTConnection | Should -Be $null
     }
@@ -237,6 +237,9 @@ Describe "Connect to a FortiGate (using multi connection)" {
         }
         It "Use Multi connection for call Get Monitor Firewall Policy" {
             { Get-FGTMonitorFirewallPolicy -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get Monitor Firewall Session" {
+            { Get-FGTMonitorFirewallSession -connection $fgt } | Should -Not -Throw
         }
         It "Use Multi connection for call Get Monitor Router IPv4" {
             { Get-FGTMonitorRouterIPv4 -connection $fgt } | Should -Not -Throw
