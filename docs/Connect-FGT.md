@@ -16,16 +16,16 @@ Connect to a FortiGate
 ```
 Connect-FGT [-Server] <String> [-Username <String>] [-Password <SecureString>] [-ApiToken <String>]
  [-New_Password <SecureString>] [-Credentials <PSCredential>] [-httpOnly] [-SkipCertificateCheck]
- [-port <Int32>] [-Timeout <Int32>] [-token_code <String>] [-token_prompt] [-vdom <String[]>]
- [-DefaultConnection <Boolean>] [<CommonParameters>]
+ [-port <Int32>] [-Timeout <Int32>] [-token_code <String>] [-token_prompt] [-license <String>]
+ [-vdom <String[]>] [-DefaultConnection <Boolean>] [<CommonParameters>]
 ```
 
 ### token
 ```
 Connect-FGT [-Server] <String> [-Username <String>] [-Password <SecureString>] [-ApiToken <String>]
  [-New_Password <SecureString>] [-Credentials <PSCredential>] [-httpOnly] [-SkipCertificateCheck]
- [-port <Int32>] [-Timeout <Int32>] [-token_code <String>] [-token_prompt] [-vdom <String[]>]
- [-DefaultConnection <Boolean>] [<CommonParameters>]
+ [-port <Int32>] [-Timeout <Int32>] [-token_code <String>] [-token_prompt] [-license <String>]
+ [-vdom <String[]>] [-DefaultConnection <Boolean>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -130,6 +130,16 @@ Connect-FGT -Server 192.0.2.1 -token_prompt
 ```
 
 Connect to a FortiGate with IP 192.0.2.1 and it will ask to get (Forti)Token code when connect
+
+### EXAMPLE 14
+```
+$lic = Get-Content -Raw license.lic
+$Credential = New-Object System.Management.Automation.PSCredential("admin", (new-object System.Security.SecureString))
+$mynewpassword = ConvertTo-SecureString mypassword -AsPlainText -Force
+Connect-FGT -Server 192.0.2.1 -credentials $credential -New_Password $mynewsecpassword -license $lic -SkipCertificateCheck
+```
+
+Connect to a FortiGate with IP 192.0.2.1 and upload the new license and change the password
 
 ## PARAMETERS
 
@@ -309,6 +319,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -license
+{{ Fill license Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

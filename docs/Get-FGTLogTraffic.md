@@ -16,80 +16,90 @@ Get Log Traffic
 ```
 Get-FGTLogTraffic [-type] <String> [-subtype] <String> [-rows <Int32>] [-srcip <String>] [-srcintf <String>]
  [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32>]
- [-poluuid <Guid>] [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
- [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+ [-poluuid <String>] [-extra <String[]>] [-since <String>] [-wait <Int32>] [-filter_attribute <String>]
+ [-filter_type <String>] [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>]
+ [<CommonParameters>]
 ```
 
 ### srcip
 ```
 Get-FGTLogTraffic [-type] <String> [-subtype] <String> [-rows <Int32>] [-srcip <String>] [-srcintf <String>]
  [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32>]
- [-poluuid <Guid>] [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
- [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+ [-poluuid <String>] [-extra <String[]>] [-since <String>] [-wait <Int32>] [-filter_attribute <String>]
+ [-filter_type <String>] [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>]
+ [<CommonParameters>]
 ```
 
 ### srcintf
 ```
 Get-FGTLogTraffic [-type] <String> [-subtype] <String> [-rows <Int32>] [-srcip <String>] [-srcintf <String>]
  [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32>]
- [-poluuid <Guid>] [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
- [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+ [-poluuid <String>] [-extra <String[]>] [-since <String>] [-wait <Int32>] [-filter_attribute <String>]
+ [-filter_type <String>] [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>]
+ [<CommonParameters>]
 ```
 
 ### dstip
 ```
 Get-FGTLogTraffic [-type] <String> [-subtype] <String> [-rows <Int32>] [-srcip <String>] [-srcintf <String>]
  [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32>]
- [-poluuid <Guid>] [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
- [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+ [-poluuid <String>] [-extra <String[]>] [-since <String>] [-wait <Int32>] [-filter_attribute <String>]
+ [-filter_type <String>] [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>]
+ [<CommonParameters>]
 ```
 
 ### dstinf
 ```
 Get-FGTLogTraffic [-type] <String> [-subtype] <String> [-rows <Int32>] [-srcip <String>] [-srcintf <String>]
  [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32>]
- [-poluuid <Guid>] [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
- [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+ [-poluuid <String>] [-extra <String[]>] [-since <String>] [-wait <Int32>] [-filter_attribute <String>]
+ [-filter_type <String>] [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>]
+ [<CommonParameters>]
 ```
 
 ### dstport
 ```
 Get-FGTLogTraffic [-type] <String> [-subtype] <String> [-rows <Int32>] [-srcip <String>] [-srcintf <String>]
  [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32>]
- [-poluuid <Guid>] [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
- [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+ [-poluuid <String>] [-extra <String[]>] [-since <String>] [-wait <Int32>] [-filter_attribute <String>]
+ [-filter_type <String>] [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>]
+ [<CommonParameters>]
 ```
 
 ### action
 ```
 Get-FGTLogTraffic [-type] <String> [-subtype] <String> [-rows <Int32>] [-srcip <String>] [-srcintf <String>]
  [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32>]
- [-poluuid <Guid>] [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
- [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+ [-poluuid <String>] [-extra <String[]>] [-since <String>] [-wait <Int32>] [-filter_attribute <String>]
+ [-filter_type <String>] [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>]
+ [<CommonParameters>]
 ```
 
 ### policyid
 ```
 Get-FGTLogTraffic [-type] <String> [-subtype] <String> [-rows <Int32>] [-srcip <String>] [-srcintf <String>]
  [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32>]
- [-poluuid <Guid>] [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
- [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+ [-poluuid <String>] [-extra <String[]>] [-since <String>] [-wait <Int32>] [-filter_attribute <String>]
+ [-filter_type <String>] [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>]
+ [<CommonParameters>]
 ```
 
 ### poluuid
 ```
 Get-FGTLogTraffic [-type] <String> [-subtype] <String> [-rows <Int32>] [-srcip <String>] [-srcintf <String>]
  [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32>]
- [-poluuid <Guid>] [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
- [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+ [-poluuid <String>] [-extra <String[]>] [-since <String>] [-wait <Int32>] [-filter_attribute <String>]
+ [-filter_type <String>] [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>]
+ [<CommonParameters>]
 ```
 
 ### filter
 ```
 Get-FGTLogTraffic [-type] <String> [-subtype] <String> [-rows <Int32>] [-srcip <String>] [-srcintf <String>]
  [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32>]
- [-poluuid <Guid>] [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
- [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+ [-poluuid <String>] [-extra <String[]>] [-since <String>] [-wait <Int32>] [-filter_attribute <String>]
+ [-filter_type <String>] [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -109,14 +119,35 @@ Get Log Traffic from forticloud on subtype local
 Get-FGTLogTraffic -type memory -subtype forward -rows 10000
 ```
 
-Get Log Traffic from memory on subtype forward and 10 000 rows
+Get Log Traffic from memory on subtype forward with 10 000 rows
 
 ### EXAMPLE 3
 ```
-Get-FGTLogTraffic -type disk -subtype forward -rows 10000 -srcip
+Get-FGTLogTraffic -type disk -subtype forward -rows 10000 -srcip 192.0.2.1
 ```
 
-Get Log Traffic from memory on subtype forward and 10 000 rows
+Get Log Traffic from disk on subtype forward with 10 000 rows with Source IP 192.0.0.1
+
+### EXAMPLE 4
+```
+Get-FGTLogTraffic -type fortianalyzer -subtype forward -rows 10000 -since 7d
+```
+
+Get Log Traffic from fortianalyzer on subtype forward with 10 000 rows since 7 day
+
+### EXAMPLE 5
+```
+Get-FGTLogTraffic -type disk -subtype forward -rows 10000 -extra reverse_lookup
+```
+
+Get Log Traffic from disk on subtype forward with 10 000 rows with reverse lookup
+
+### EXAMPLE 6
+```
+Get-FGTLogTraffic -type disk -subtype forward -rows 10000 -wait 5000
+```
+
+Get Log Traffic from disk on subtype forward with 10 000 rows and wait 5000 Milliseconds between each request
 
 ## PARAMETERS
 
@@ -274,13 +305,58 @@ Accept wildcard characters: False
 {{ Fill poluuid Description }}
 
 ```yaml
-Type: Guid
+Type: String
 Parameter Sets: (All)
 Aliases:
 
 Required: False
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -extra
+{{ Fill extra Description }}
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -since
+{{ Fill since Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -wait
+{{ Fill wait Description }}
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: 1000
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
