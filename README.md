@@ -1381,6 +1381,8 @@ Add-FGTSystemInterface
 Add-FGTSystemInterfaceMember
 Add-FGTSystemZone
 Add-FGTSystemZoneMember
+Add-FGTVpnIpsecPhase1Interface
+Add-FGTVpnIpsecPhase2Interface
 Confirm-FGTAddress
 Confirm-FGTAddressGroup
 Confirm-FGTFirewallPolicy
@@ -1391,6 +1393,8 @@ Confirm-FGTProxyAddressGroup
 Confirm-FGTRouterStatic
 Confirm-FGTVip
 Confirm-FGTVipGroup
+Confirm-FGTVpnIpsecPhase1Interface
+Confirm-FGTVpnIpsecPhase2Interface
 Confirm-FGTZone
 Connect-FGT
 Copy-FGTFirewallAddress
@@ -1413,7 +1417,9 @@ Get-FGTFirewallVip
 Get-FGTFirewallVipGroup
 Get-FGTLogTraffic
 Get-FGTMonitorFirewallPolicy
+Get-FGTMonitorFirewallSession
 Get-FGTMonitorLicenseStatus
+Get-FGTMonitorNetworkARP
 Get-FGTMonitorRouterIPv4
 Get-FGTMonitorSystemConfigBackup
 Get-FGTMonitorSystemFirmware
@@ -1421,6 +1427,7 @@ Get-FGTMonitorSystemHAChecksum
 Get-FGTMonitorSystemHAPeer
 Get-FGTMonitorVpnIPsec
 Get-FGTMonitorVpnSsl
+Get-FGTMonitorWebfilterCategories
 Get-FGTRouterPolicy
 Get-FGTRouterStatic
 Get-FGTSystemAdmin
@@ -1438,8 +1445,13 @@ Get-FGTUserGroup
 Get-FGTUserLDAP
 Get-FGTUserLocal
 Get-FGTUserRADIUS
+Get-FGTUserSAML
 Get-FGTVpnIpsecPhase1Interface
 Get-FGTVpnIpsecPhase2Interface
+Get-FGTVpnSSLClient
+Get-FGTVpnSSLPortal
+Get-FGTVpnSSLSettings
+Get-FGTWebfilterProfile
 Invoke-FGTRestMethod
 Move-FGTFirewallPolicy
 Remove-FGTFirewallAddress
@@ -1459,6 +1471,8 @@ Remove-FGTSystemInterface
 Remove-FGTSystemInterfaceMember
 Remove-FGTSystemZone
 Remove-FGTSystemZoneMember
+Remove-FGTVpnIpsecPhase1Interface
+Remove-FGTVpnIpsecPhase2Interface
 Set-FGTCipherSSL
 Set-FGTConnection
 Set-FGTFirewallAddress
@@ -1470,6 +1484,8 @@ Set-FGTSystemInterface
 Set-FGTSystemSettings
 Set-FGTSystemZone
 Set-FGTUntrustedSSL
+Set-FGTVpnIpsecPhase1Interface
+Set-FGTVpnIpsecPhase2Interface
 Show-FGTException
 ```
 
