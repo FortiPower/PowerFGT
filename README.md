@@ -1128,6 +1128,63 @@ or delete it `Remove-FGTVpnIpsecPhase1Interface`.
     [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): y
 ```
 
+#### VPN IPsec Interface Phase 2
+
+You can create a new VPN IPsec (Interface Phase2) `Add-FGTVpnIpsecPhase2Interface`,
+retrieve its information `Get-FGTVpnIpsecPhase2Interface`, modify its properties `Set-FGTVpnIpsecPhase2Interface`
+or delete it `Remove-FGTVpnIpsecPhase2Interface`.
+
+You need to have VPN IPsec Interface Phase 1 created before 
+
+```powershell
+
+# Create a VPN IPsec Phase 2 Interface named ph2_PowerFGT_VPN based on PowerFGT_VPN phase 1 with source network VPN_LOCAL and desination network VPN_REMOTE
+    Get-FGTVpnIpsecPhase1Interface -name PowerFGT_VPN | Add-FGTVpnIpsecPhase2Interface -name ph2_PowerFGT_VPN -srcname VPN_LOCAL -dstname VPN_REMOTE
+
+    name                     : ph2_PowerFGT_VPN
+    q_origin_key             : ph2_PowerFGT_VPN
+    phase1name               : PowerFGT_VPN
+    [...]
+    src-name                 : VPN_LOCAL
+    src-name6                :
+    src-addr-type            : name
+    src-end-ip6              : ::
+    src-port                 : 0
+    dst-name                 : VPN_REMOTE
+    dst-name6                :
+    dst-addr-type            : name
+    dst-end-ip6              : ::
+    dst-port                 : 0
+
+
+# Get information about ALL VPN IPsec Phase 2 Interface (using Format Table)
+    Get-FGTVpnIpsecPhase2Interface | Format-Table
+
+    name             q_origin_key     phase1name   dhcp-ipsec proposal         pfs    ipv4-df dhgrp replay keepalive
+    ----             ------------     ----------   ---------- --------         ---    ------- ----- ------ ---------
+    ph2_PowerFGT_VPN ph2_PowerFGT_VPN PowerFGT_VPN disable    aes256-sha1      enable disable 14 5  enable disable
+
+# Modify a VPN IPsec 2 Interface (comments ...)
+    Get-FGTVpnIpsecPhase2Interface ph2_PowerFGT_VPN | Set-FGTVpnIpsecPhase2Interface -comments "My PowerFGT IPsec Phase2"
+
+    name                     : ph2_PowerFGT_VPN
+    q_origin_key             : ph2_PowerFGT_VPN
+    phase1name               : PowerFGT_VPN
+    [...]
+    comments                 : My PowerFGT IPsec Phase2
+    [...]
+
+
+# Remove a VPN IPsec 2 Interface
+    Get-FGTVpnIpsecPhase2Interface ph2_PowerFGT_VPN | Remove-FGTVpnIpsecPhase2Interface
+
+    Confirm
+    Are you sure you want to perform this action?
+    Performing the operation "Remove Vpn IPsec Phase 2 Interface" on target "ph2_PowerFGT_VPN".
+    [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): Y
+```
+
+
 ### Monitor
 
 It is possible to `monitor` FortiGate
