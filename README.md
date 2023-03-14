@@ -52,6 +52,8 @@ With this module (version 0.6.1) you can manage:
 - [Virtual IP Group](#virtual-ip-group) (Add/Get/Copy/Set/Remove and Add/Remove Member)
 - Virtual WAN Link/SD-WAN (Get)
 - [VPN IPsec](#vpn-ipsec) [Phase 1](#vpn-ipsec-interface-phase-1)/[Phase 2](#vpn-ipsec-interface-phase-2) Interface (Add/Get/Set/Remove)
+- VPN SSL (Get Client, Portal, Settings)
+- Web Filter (Get Profile)
 - [Zone](#zone) (Add/Get/Set/Remove and Add/Remove Member)
 
 There is some extra feature
