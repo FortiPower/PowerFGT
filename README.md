@@ -1192,14 +1192,17 @@ You need to have VPN IPsec Interface Phase 1 created before
 It is possible to `monitor` FortiGate
 
 * `Get-FGTMonitorFirewallPolicy` List traffic statistics for firewall policies
+* `Get-FGTMonitorFirewallSession` List all active firewall sessions
 * `Get-FGTMonitorRouterIPv4` List all active IPv4 routing table entries
 * `Get-FGTMonitorLicenseStatus` Get current license & registration status
+* `Get-FGTMonitorNetworkARP` Get IPv4 ARP table
 * `Get-FGTMonitorSystemConfigBackup` Backup system config
 * `Get-FGTMonitorSystemFirmware` Retrieve a list of firmware images available to use for upgrade on this device
 * `Get-FGTMonitorSystemHAChecksum` List of checksums for members of HA cluster
 * `Get-FGTMonitorSystemHAPeer` Get configuration of peer(s) in HA cluster
 * `Get-FGTMonitorVpnIPsec` Return active IPsec VPNs
 * `Get-FGTMonitorVpnSsl` Retrieve a list of all SSL-VPN sessions and sub-sessions and Return statistics about the SSL-VPN
+* `Get-FGTMonitorWebfilterCategories` Return FortiGuard web filter categories
 
 to get API uri, you can use `Invoke-FGTRestMethod api/v2/monitor/?action=schema` for get list of uri for monitor
 
