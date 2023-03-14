@@ -109,8 +109,29 @@ The first thing to do is to connect to a FortiGate Firewall with the command `Co
 
 #we get a prompt for credential
 ```
-if you get a warning about `Unable to connect` Look [Issue](#issue)
 
+You can select the port using `-port` parameter
+
+```powershell
+# Connect to the FortiGate Firewall using port 4443
+    Connect-FGT 192.0.2.1 -port 4443
+```
+
+if you are using OTP (FortiToken) for admin access, you can use -token_code or -token_prompt for specifity or ask the token/OTP when connect
+
+```powershell
+# Connect to the FortiGate Firewall with ask token
+    Connect-FGT 192.0.2.1 -token_prompt
+```
+
+You can also connect using API Token ([Documentation for Generate REST API ](https://docs.fortinet.com/document/fortigate/7.2.1/administration-guide/399023/rest-api-administrator))
+
+```powershell
+# Connect to the FortiGate Firewall with API Token
+    Connect-FGT 192.0.2.1 -api_token 79GyN89Q7w00rG6pj09yd7wGG3kmds
+```
+
+if you get a warning about `Unable to connect` Look [Issue](#issue)
 
 ### Address
 
