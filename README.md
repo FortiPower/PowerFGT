@@ -1070,10 +1070,11 @@ You can change System Settings and System Global (settings) using `Set-FGTSystem
 
 ### VPN IPsec
 
-You can create a new VPN IPsec (Interface Phase1/Phase2) `Add-FGTVpnIpsecPhase1Interface` / `Add-FGTVpnIpsecPhase2Interface`,
-retrieve its information `Get-FGTVpnIpsecPhase1Interface` / `Get-FGTVpnIpsecPhase2Interface`,
-modify its properties `Set-FGTVpnIpsecPhase1Interface` / `Set-FGTVpnIpsecPhase2Interface`
-or delete it `Remove-FGTVpnIpsecPhase1Interface` / `Remove-FGTVpnIpsecPhase2Interface`.
+#### VPN IPsec Interface Phase 1
+
+You can create a new VPN IPsec (Interface Phase1) `Add-FGTVpnIpsecPhase1Interface`,
+retrieve its information `Get-FGTVpnIpsecPhase1Interface`, modify its properties `Set-FGTVpnIpsecPhase1Interface`
+or delete it `Remove-FGTVpnIpsecPhase1Interface`.
 
 ```powershell
 
