@@ -29,7 +29,7 @@ With this module (version 0.6.1) you can manage:
 - [AddressGroup](#address-group) (Add/Get/Copy/Set/Remove and Add/Remove Member)
 - DNS (Get)
 - HA (Get)
-- [Interface](#interface) (Add/Get/Set/Remove and Add/remove Member)
+- [Interface](#interface) (Add/Get/Set/Remove Vlan, aggregate, loopback and Add/Remove Member)
 - IP Pool (Get)
 - [Log Traffic](#log-traffic) (Get)
 - [Monitor](#monitor) (Get)
@@ -939,6 +939,32 @@ modify its properties `Set-FGTSystemInterface` or delete it `Remove-FGTSystemInt
     fortilink                                  : disable
     switch-controller-source-ip                : outbound
     mode                                       : static
+    [...]
+
+# Create an interface (type LACP)
+    Add-FGTSystemInterface -name PowerFGT_lacp -atype lacp -member port9, port10
+
+    name                                       : PowerFGT_lacp
+    q_origin_key                               : PowerFGT_lacp
+    vdom                                       : root
+    vrf                                        : 0
+    [...]
+    type                                       : aggregate
+    [...]
+    member                                     : {@{interface-name=port9; q_origin_key=port9}, @{interface-name=port10; q_origin_key=port10}}
+    lacp-mode                                  : active
+    [...]
+
+# Create an interface (type Loopback)
+    Add-FGTSystemInterface -name PowerFGT_lo -loopback -mode static -ip 192.0.2.1 -netmask 255.255.255.0 -allowaccess ping
+
+    name                                       : PowerFGT_lo
+    q_origin_key                               : PowerFGT_lo
+    vdom                                       : root
+    [...]
+    ip                                         : 192.0.2.1 255.255.255.0
+    allowaccess                                : ping
+    type                                       : loopback
     [...]
 
 # Get information an Interface (name) and display only some field (using Format-Table)
