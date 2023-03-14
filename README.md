@@ -1068,6 +1068,65 @@ You can change System Settings and System Global (settings) using `Set-FGTSystem
 
 ```
 
+### VPN IPsec
+
+You can create a new VPN IPsec (Interface Phase1/Phase2) `Add-FGTVpnIpsecPhase1Interface` / `Add-FGTVpnIpsecPhase2Interface`,
+retrieve its information `Get-FGTVpnIpsecPhase1Interface` / `Get-FGTVpnIpsecPhase2Interface`,
+modify its properties `Set-FGTVpnIpsecPhase1Interface` / `Set-FGTVpnIpsecPhase2Interface`
+or delete it `Remove-FGTVpnIpsecPhase1Interface` / `Remove-FGTVpnIpsecPhase2Interface`.
+
+```powershell
+
+# Create a static VPN IPsec Phase 1 Interface named PowerFGT_VPN with interface port2 with Remote Gateway 192.0.2.1
+    Add-FGTVpnIpsecPhase1Interface -name PowerFGT_VPN -type static -interface port2 -psksecret MySecret -remotegw 192.0.2.1
+
+    name                        : PowerFGT_VPN
+    q_origin_key                : PowerFGT_VPN
+    type                        : static
+    interface                   : port2
+    ip-version                  : 4
+    ike-version                 : 1
+    local-gw                    : 0.0.0.0
+    local-gw6                   : ::
+    remote-gw                   : 192.0.2.1
+    [...]
+
+
+# Get information about ALL VPN IPsec Phase 1 Interface (using Format Table)
+    Get-FGTVpnIpsecPhase1Interface | Format-Table
+
+    name          q_origin_key  type    interface ip-version ike-version local-gw local-gw6 remote-gw remote-gw6
+    ----          ------------  ----    --------- ---------- ----------- -------- --------- --------- ----------
+    PowerFGT_VPN  PowerFGT_VPN  static  port2     4          1           0.0.0.0  ::        192.0.2.1 ::
+    PowerFGT_VPN2 PowerFGT_VPN2 dynamic port2     4          2           0.0.0.0  ::        0.0.0.0   ::
+
+# Modify a VPN IPsec 1 Interface (dhgrp, autodiscovery ...)
+    Get-FGTVpnIpsecPhase1Interface PowerFGT_VPN | Set-FGTVpnIpsecPhase1Interface -dhgrp 14 -autodiscoverysender
+
+    name                        : PowerFGT_VPN
+    q_origin_key                : PowerFGT_VPN
+    type                        : static
+    interface                   : port2
+    ip-version                  : 4
+    ike-version                 : 1
+    local-gw                    : 0.0.0.0
+    local-gw6                   : ::
+    remote-gw                   : 192.0.2.1
+    [...]
+    dhgrp                       : 14
+    [...]
+    auto-discovery-sender       : enable
+
+
+# Remove a VPN IPsec 1 Interface
+    Get-FGTVpnIpsecPhase1Interface PowerFGT_VPN | Remove-FGTVpnIpsecPhase1Interface
+
+    Confirm
+    Are you sure you want to perform this action?
+    Performing the operation "Remove Vpn IPsec Phase 1 Interface" on target "PowerFGT_VPN".
+    [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): y
+```
+
 ### Monitor
 
 It is possible to `monitor` FortiGate
