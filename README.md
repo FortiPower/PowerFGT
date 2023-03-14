@@ -1260,6 +1260,11 @@ for Example
     2022-03-06 22:52:27 1646635948163208549 -0800 0000000022 traffic forward notice  root 10.88.110.122
     [...]
 
+you can also get some extra info using -extra parameter :
+* reverse_lookup to get name of IP (found by the fortigate)
+* country_id to get country of IP Address
+
+You can also select the 'timeline' using -since parameter 1h(our), 1d(ay), 7d(ays), 30(days), only for Fortiguard type
 ```
 ### Invoke API
 for example to get Fortigate System Global Info
