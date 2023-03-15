@@ -194,6 +194,15 @@ function Copy-FGTFirewallAddress {
             $invokeParams.add( 'vdom', $vdom )
         }
 
+        # Check if address name contain escape character like 192.168.1.0/24
+        $regexMatchEscapeChar = [regex]::Matches($address.name, '[^\w\s]')
+
+        # Replace / by HTML encoding
+        if($regexMatchEscapeChar) {
+
+            $address.name = [System.Web.HttpUtility]::UrlEncode($address.name)
+        }
+
         $uri = "api/v2/cmdb/firewall/address/$($address.name)/?action=clone&nkey=$($name)"
 
         Invoke-FGTRestMethod -method "POST" -uri $uri -connection $connection @invokeParams | out-Null
@@ -415,14 +424,14 @@ function Set-FGTFirewallAddress {
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
         }
-        
-        # Check if address name contain / like 192.168.1.0/24
-        $regexMatchSlash = [regex]::Matches($address.name, '/')
-        
-        # Replace / by htlm encoding %2F
-        if($regexMatchSlash) {
 
-            $address.name = $address.name.replace('/','%2F')
+        # Check if address name contain escape character like 192.168.1.0/24
+        $regexMatchEscapeChar = [regex]::Matches($address.name, '[^\w\s]')
+
+        # Replace / by HTML encoding
+        if($regexMatchEscapeChar) {
+
+            $address.name = [System.Web.HttpUtility]::UrlEncode($address.name)
         }
 
         $uri = "api/v2/cmdb/firewall/address/$($address.name)"
@@ -560,6 +569,15 @@ function Remove-FGTFirewallAddress {
         $invokeParams = @{ }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        # Check if address name contain escape character like 192.168.1.0/24
+        $regexMatchEscapeChar = [regex]::Matches($address.name, '[^\w\s]')
+
+        # Replace / by HTML encoding
+        if($regexMatchEscapeChar) {
+
+            $address.name = [System.Web.HttpUtility]::UrlEncode($address.name)
         }
 
         $uri = "api/v2/cmdb/firewall/address/$($address.name)"
