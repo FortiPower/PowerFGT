@@ -468,7 +468,7 @@ function Set-FGTFirewallAddress {
 
                 if ( $PsBoundParameters.ContainsKey('endip') ) {
                     $_address | add-member -name "end-ip" -membertype NoteProperty -Value $endip.ToString()
-                }.
+                }
             }
             "fqdn" {
                 if ( $PsBoundParameters.ContainsKey('fqdn') ) {
