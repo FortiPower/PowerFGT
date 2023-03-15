@@ -415,6 +415,15 @@ function Set-FGTFirewallAddress {
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
         }
+        
+        # Check if address name contain / like 192.168.1.0/24
+        $regexMatchSlash = [regex]::Matches($address.name, '/')
+        
+        # Replace / by htlm encoding %2F
+        if($regexMatchSlash) {
+
+            $address.name = $address.name.replace('/','%2F')
+        }
 
         $uri = "api/v2/cmdb/firewall/address/$($address.name)"
 
@@ -459,7 +468,7 @@ function Set-FGTFirewallAddress {
 
                 if ( $PsBoundParameters.ContainsKey('endip') ) {
                     $_address | add-member -name "end-ip" -membertype NoteProperty -Value $endip.ToString()
-                }
+                }.
             }
             "fqdn" {
                 if ( $PsBoundParameters.ContainsKey('fqdn') ) {
