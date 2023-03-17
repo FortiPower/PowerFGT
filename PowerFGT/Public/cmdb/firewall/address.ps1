@@ -198,7 +198,7 @@ function Copy-FGTFirewallAddress {
         $regexMatchEscapeChar = [regex]::Matches($address.name, '[^\w\s]')
 
         # Replace / by HTML encoding
-        if($regexMatchEscapeChar) {
+        if ($regexMatchEscapeChar) {
 
             $address.name = [System.Web.HttpUtility]::UrlEncode($address.name)
         }
@@ -424,12 +424,13 @@ function Set-FGTFirewallAddress {
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
         }
+        #
 
         # Check if address name contain escape character like 192.168.1.0/24
         $regexMatchEscapeChar = [regex]::Matches($address.name, '[^\w\s]')
 
         # Replace / by HTML encoding
-        if($regexMatchEscapeChar) {
+        if ($regexMatchEscapeChar) {
 
             $address.name = [System.Web.HttpUtility]::UrlEncode($address.name)
         }
@@ -575,7 +576,7 @@ function Remove-FGTFirewallAddress {
         $regexMatchEscapeChar = [regex]::Matches($address.name, '[^\w\s]')
 
         # Replace / by HTML encoding
-        if($regexMatchEscapeChar) {
+        if ($regexMatchEscapeChar) {
 
             $address.name = [System.Web.HttpUtility]::UrlEncode($address.name)
         }
