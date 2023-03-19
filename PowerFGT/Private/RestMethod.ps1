@@ -130,14 +130,14 @@ function Invoke-FGTRestMethod {
         #filter
         switch ( $filter_type ) {
             "equal" {
-                $filter_value = "==" + $filter_value
+                $filter_value = "==" + [System.Web.HttpUtility]::UrlEncode($filter_value)
             }
             "contains" {
-                $filter_value = "=@" + $filter_value
+                $filter_value = "=@" + [System.Web.HttpUtility]::UrlEncode($filter_value)
             }
             #by default set to equal..
             default {
-                $filter_value = "==" + $filter_value
+                $filter_value = "==" + [System.Web.HttpUtility]::UrlEncode($filter_value)
             }
         }
 
