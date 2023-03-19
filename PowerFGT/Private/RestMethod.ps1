@@ -80,6 +80,8 @@ function Invoke-FGTRestMethod {
         [Parameter (Mandatory = $false)]
         [Parameter (ParameterSetName = "filter_build")]
         [psobject]$filter_value,
+        [Parameter (Mandatory = $false)]
+        [string]$uri_escape,
         [Parameter(Mandatory = $false)]
         [psobject]$connection
     )
@@ -108,6 +110,10 @@ function Invoke-FGTRestMethod {
         }
         else {
             $fullurl = "https://${Server}:${port}/${uri}"
+        }
+
+        if ( $PsBoundParameters.ContainsKey('uri_escape') ) {
+            $fullurl += "/" + [System.Web.HttpUtility]::UrlEncode($uri_escape)
         }
 
         #Extra parameter...
