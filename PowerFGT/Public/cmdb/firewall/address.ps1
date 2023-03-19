@@ -416,7 +416,8 @@ function Set-FGTFirewallAddress {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $uri = "api/v2/cmdb/firewall/address/$($address.name)"
+        $uri = "api/v2/cmdb/firewall/address"
+        $old_name = $address.name
 
         $_address = new-Object -TypeName PSObject
 
@@ -499,7 +500,7 @@ function Set-FGTFirewallAddress {
         }
 
         if ($PSCmdlet.ShouldProcess($address.name, 'Configure Firewall Address')) {
-            Invoke-FGTRestMethod -method "PUT" -body $_address -uri $uri -connection $connection @invokeParams | out-Null
+            Invoke-FGTRestMethod -method "PUT" -body $_address -uri $uri -uri_escape $old_name -connection $connection @invokeParams | out-Null
 
             Get-FGTFirewallAddress -connection $connection @invokeParams -name $address.name
         }
@@ -553,10 +554,10 @@ function Remove-FGTFirewallAddress {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $uri = "api/v2/cmdb/firewall/address/$($address.name)"
+        $uri = "api/v2/cmdb/firewall/address"
 
         if ($PSCmdlet.ShouldProcess($address.name, 'Remove Firewall Address')) {
-            $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -connection $connection @invokeParams
+            $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -uri_escape $address.name -connection $connection @invokeParams
         }
     }
 
