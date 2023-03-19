@@ -194,9 +194,9 @@ function Copy-FGTFirewallAddress {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $uri = "api/v2/cmdb/firewall/address/$($address.name)/?action=clone&nkey=$($name)"
-
-        Invoke-FGTRestMethod -method "POST" -uri $uri -connection $connection @invokeParams | out-Null
+        $uri = "api/v2/cmdb/firewall/address"
+        $extra = "action=clone&nkey=$($name)"
+        Invoke-FGTRestMethod -method "POST" -uri $uri -uri_escape $address.name -extra $extra -connection $connection @invokeParams | out-Null
 
         Get-FGTFirewallAddress -connection $connection @invokeParams -name $name
     }
