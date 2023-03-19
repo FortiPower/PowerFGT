@@ -60,6 +60,8 @@ function Add-FGTFirewallVip {
         [Parameter (Mandatory = $false)]
         [string]$mappedport,
         [Parameter (Mandatory = $false)]
+        [boolean]$arpreply,
+        [Parameter (Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
@@ -120,6 +122,15 @@ function Add-FGTFirewallVip {
             }
             else {
                 $vip | add-member -name "mappedport" -membertype NoteProperty -Value $extport
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('arpreply') ) {
+            if ( $arpreply ) {
+                $vip | add-member -name "arp-reply" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $vip | add-member -name "arp-reply" -membertype NoteProperty -Value "disable"
             }
         }
 
