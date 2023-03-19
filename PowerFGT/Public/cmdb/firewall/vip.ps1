@@ -33,6 +33,11 @@ function Add-FGTFirewallVip {
 
         Add VIP objet type static-nat (One to One) with name myVIP3 with external IP 192.0.2.1 and mapped IP 198.51.100.1 with Port Forward and UDP Port 5000 mapped to port 6000
 
+        .EXAMPLE
+        $data = @{ "nat-source-vip" = "enable" ; "color" = "23"}
+        PS C> Add-FGTFirewallVip -name myVIP5-data -type static-nat -extip 192.0.2.1 -mappedip 198.51.100.1 -data $data
+
+        Change dns-mapping-ttl and color settings using -data parameter
     #>
 
     Param(
@@ -61,6 +66,8 @@ function Add-FGTFirewallVip {
         [string]$mappedport,
         [Parameter (Mandatory = $false)]
         [boolean]$arpreply,
+        [Parameter (Mandatory = $false)]
+        [hashtable]$data,
         [Parameter (Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
@@ -131,6 +138,12 @@ function Add-FGTFirewallVip {
             }
             else {
                 $vip | add-member -name "arp-reply" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('data') ) {
+            $data.GetEnumerator() | ForEach-Object {
+                $vip | Add-member -name $_.key -membertype NoteProperty -Value $_.value
             }
         }
 
