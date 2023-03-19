@@ -88,6 +88,7 @@ Describe "Add Firewall VIP" {
         $vip.protocol | Should -Be "tcp"
         $vip.extport | Should -Be "0-65535"
         $vip.mappedport | Should -Be "0-65535"
+        $vip.'arp-reply' | Should -Be "enable"
     }
 
     It "Add Virtual IP $pester_vip1 (type static-nat with comment)" {
@@ -104,6 +105,7 @@ Describe "Add Firewall VIP" {
         $vip.protocol | Should -Be "tcp"
         $vip.extport | Should -Be "0-65535"
         $vip.mappedport | Should -Be "0-65535"
+        $vip.'arp-reply' | Should -Be "enable"
     }
 
     It "Add Virtual IP $pester_vip1 (type static-nat with interface)" {
@@ -120,6 +122,7 @@ Describe "Add Firewall VIP" {
         $vip.protocol | Should -Be "tcp"
         $vip.extport | Should -Be "0-65535"
         $vip.mappedport | Should -Be "0-65535"
+        $vip.'arp-reply' | Should -Be "enable"
     }
 
     It "Add Virtual IP $pester_vip1 (type static-nat with Port Forward TCP 8080)" {
@@ -136,6 +139,7 @@ Describe "Add Firewall VIP" {
         $vip.protocol | Should -Be "tcp"
         $vip.extport | Should -Be "8080"
         $vip.mappedport | Should -Be "8080"
+        $vip.'arp-reply' | Should -Be "enable"
     }
 
     It "Add Virtual IP $pester_vip1 (type static-nat with Port Forward UDP 8080)" {
@@ -152,6 +156,7 @@ Describe "Add Firewall VIP" {
         $vip.protocol | Should -Be "udp"
         $vip.extport | Should -Be "8080"
         $vip.mappedport | Should -Be "8080"
+        $vip.'arp-reply' | Should -Be "enable"
     }
 
     It "Add Virtual IP $pester_vip1 (type static-nat with Port Forward TCP 8080 -> 80)" {
@@ -168,6 +173,41 @@ Describe "Add Firewall VIP" {
         $vip.protocol | Should -Be "tcp"
         $vip.extport | Should -Be "8080"
         $vip.mappedport | Should -Be "80"
+        $vip.'arp-reply' | Should -Be "enable"
+    }
+
+    It "Add Virtual IP $pester_vip1 (type static-nat with arpreply enabled)" {
+        Add-FGTFirewallVip -Name $pester_vip1 -type static-nat -extip 192.2.0.1 -mappedip 198.51.100.1 -arpreply:$true
+        $vip = Get-FGTFirewallVip -name $pester_vip1
+        $vip.name | Should -Be $pester_vip1
+        $vip.uuid | Should -Not -BeNullOrEmpty
+        $vip.comment | Should -BeNullOrEmpty
+        $vip.type | Should -Be "static-nat"
+        $vip.extip | Should -Be "192.2.0.1"
+        $vip.mappedip.range | Should -Be "198.51.100.1"
+        $vip.extintf | Should -Be "any"
+        $vip.portforward | Should -Be "disable"
+        $vip.protocol | Should -Be "tcp"
+        $vip.extport | Should -Be "0-65535"
+        $vip.mappedport | Should -Be "0-65535"
+        $vip.'arp-reply' | Should -Be "enable"
+    }
+
+    It "Add Virtual IP $pester_vip1 (type static-nat with arpreply disabled)" {
+        Add-FGTFirewallVip -Name $pester_vip1 -type static-nat -extip 192.2.0.1 -mappedip 198.51.100.1 -arpreply:$false
+        $vip = Get-FGTFirewallVip -name $pester_vip1
+        $vip.name | Should -Be $pester_vip1
+        $vip.uuid | Should -Not -BeNullOrEmpty
+        $vip.comment | Should -BeNullOrEmpty
+        $vip.type | Should -Be "static-nat"
+        $vip.extip | Should -Be "192.2.0.1"
+        $vip.mappedip.range | Should -Be "198.51.100.1"
+        $vip.extintf | Should -Be "any"
+        $vip.portforward | Should -Be "disable"
+        $vip.protocol | Should -Be "tcp"
+        $vip.extport | Should -Be "0-65535"
+        $vip.mappedport | Should -Be "0-65535"
+        $vip.'arp-reply' | Should -Be "disable"
     }
 
     It "Try to Add Virtual IP $pester_vip1 (but there is already a object with same name)" {
