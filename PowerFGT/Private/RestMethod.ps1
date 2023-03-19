@@ -82,6 +82,8 @@ function Invoke-FGTRestMethod {
         [psobject]$filter_value,
         [Parameter (Mandatory = $false)]
         [string]$uri_escape,
+        [Parameter (Mandatory = $false)]
+        [string]$extra,
         [Parameter(Mandatory = $false)]
         [psobject]$connection
     )
@@ -153,6 +155,10 @@ function Invoke-FGTRestMethod {
 
         if ( $filter ) {
             $fullurl += "&filter=$filter"
+        }
+
+        if ( $PsBoundParameters.ContainsKey('extra') ) {
+            $fullurl += $extra
         }
 
         #Display (Full)url when verbose (no longer available with PS 7.2.x...)
