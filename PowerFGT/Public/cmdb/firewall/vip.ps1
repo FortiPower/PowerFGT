@@ -53,7 +53,7 @@ function Add-FGTFirewallVip {
         [Parameter (Mandatory = $false)]
         [switch]$portforward,
         [Parameter (Mandatory = $false)]
-        [ValidateSet("tcp", "udp", "sctp", "icmp",IgnoreCase=$false)]
+        [ValidateSet("tcp", "udp", "sctp", "icmp", IgnoreCase = $false)]
         [string]$protocol = "tcp",
         [Parameter (Mandatory = $false)]
         [string]$extport,
