@@ -307,10 +307,10 @@ function Remove-FGTFirewallVip {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $uri = "api/v2/cmdb/firewall/vip/$($vip.name)"
+        $uri = "api/v2/cmdb/firewall/vip"
 
         if ($PSCmdlet.ShouldProcess($vip.name, 'Remove Firewall VIP')) {
-            $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -connection $connection @invokeParams
+            $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -uri_escape $vip.name -connection $connection @invokeParams
         }
     }
 
