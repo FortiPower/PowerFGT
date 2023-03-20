@@ -397,6 +397,14 @@ function Set-FGTFirewallAddressGroup {
             $invokeParams.add( 'vdom', $vdom )
         }
 
+        # Check if address name contain escape character like 192.168.1.0/24
+        $regexMatchEscapeChar = [regex]::Matches($address.name, '[^\w\s]')
+
+        # Replace / by HTML encoding
+        if ($regexMatchEscapeChar) {
+
+            $address.name = [System.Web.HttpUtility]::UrlEncode($address.name)
+        }
         $uri = "api/v2/cmdb/firewall/addrgrp/$($addrgrp.name)"
 
         $_addrgrp = new-Object -TypeName PSObject
@@ -489,6 +497,14 @@ function Remove-FGTFirewallAddressGroup {
         $invokeParams = @{ }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+        # Check if address name contain escape character like 192.168.1.0/24
+        $regexMatchEscapeChar = [regex]::Matches($address.name, '[^\w\s]')
+
+        # Replace / by HTML encoding
+        if ($regexMatchEscapeChar) {
+
+            $address.name = [System.Web.HttpUtility]::UrlEncode($address.name)
         }
 
         $uri = "api/v2/cmdb/firewall/addrgrp/$($addrgrp.name)"
