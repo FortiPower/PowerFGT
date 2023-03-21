@@ -152,7 +152,7 @@ function Add-FGTFirewallProxyAddressGroupMember {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $uri = "api/v2/cmdb/firewall/proxy-addrgrp/$($addrgrp.name)"
+        $uri = "api/v2/cmdb/firewall/proxy-addrgrp"
 
         $_addrgrp = new-Object -TypeName PSObject
 
@@ -167,7 +167,7 @@ function Add-FGTFirewallProxyAddressGroupMember {
             $_addrgrp | add-member -name "member" -membertype NoteProperty -Value $members
         }
 
-        Invoke-FGTRestMethod -method "PUT" -body $_addrgrp -uri $uri -connection $connection @invokeParams | out-Null
+        Invoke-FGTRestMethod -method "PUT" -body $_addrgrp -uri $uri -uri_escape $addrgrp.name -connection $connection @invokeParams | out-Null
 
         Get-FGTFirewallProxyAddressGroup -connection $connection @invokeParams -name $addrgrp.name
     }
@@ -219,9 +219,10 @@ function Copy-FGTFirewallProxyAddressGroup {
             Throw "Already a ProxyAddress Group object using the same name"
         }
 
-        $uri = "api/v2/cmdb/firewall/proxy-addrgrp/$($addrgrp.name)/?action=clone&nkey=$($name)"
+        $uri = "api/v2/cmdb/firewall/proxy-addrgrp"
+        $extra = "action=clone&nkey=$($name)"
 
-        Invoke-FGTRestMethod -method "POST" -uri $uri -connection $connection @invokeParams | Out-Null
+        Invoke-FGTRestMethod -method "POST" -uri $uri -uri_escape $addrgrp.name -extra $extra -connection $connection @invokeParams | Out-Null
 
         Get-FGTFirewallProxyAddressGroup -connection $connection @invokeParams -name $name
     }
@@ -400,7 +401,8 @@ function Set-FGTFirewallProxyAddressGroup {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $uri = "api/v2/cmdb/firewall/proxy-addrgrp/$($addrgrp.name)"
+        $uri = "api/v2/cmdb/firewall/proxy-addrgrp"
+        $old_name = $addrgrp.name
 
         $_addrgrp = new-Object -TypeName PSObject
 
@@ -441,7 +443,7 @@ function Set-FGTFirewallProxyAddressGroup {
         }
 
         if ($PSCmdlet.ShouldProcess($addrgrp.name, 'Configure Firewall Proxy Address Group')) {
-            Invoke-FGTRestMethod -method "PUT" -body $_addrgrp -uri $uri -connection $connection @invokeParams | out-Null
+            Invoke-FGTRestMethod -method "PUT" -body $_addrgrp -uri $uri -uri_escape $old_name -connection $connection @invokeParams | out-Null
 
             Get-FGTFirewallProxyAddressGroup -connection $connection @invokeParams -name $addrgrp.name
         }
@@ -495,10 +497,10 @@ function Remove-FGTFirewallProxyAddressGroup {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $uri = "api/v2/cmdb/firewall/proxy-addrgrp/$($addrgrp.name)"
+        $uri = "api/v2/cmdb/firewall/proxy-addrgrp"
 
         if ($PSCmdlet.ShouldProcess($addrgrp.name, 'Remove Firewall Proxy Address Group')) {
-            $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -connection $connection @invokeParams
+            $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -uri_escape $addrgrp.name -connection $connection @invokeParams
         }
     }
 
@@ -552,7 +554,7 @@ function Remove-FGTFirewallProxyAddressGroupMember {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $uri = "api/v2/cmdb/firewall/proxy-addrgrp/$($addrgrp.name)"
+        $uri = "api/v2/cmdb/firewall/proxy-addrgrp"
 
         $_addrgrp = new-Object -TypeName PSObject
 
@@ -583,7 +585,7 @@ function Remove-FGTFirewallProxyAddressGroupMember {
         }
 
         if ($PSCmdlet.ShouldProcess($addrgrp.name, 'Remove Firewall Proxy Address Group Member')) {
-            Invoke-FGTRestMethod -method "PUT" -body $_addrgrp -uri $uri -connection $connection @invokeParams | Out-Null
+            Invoke-FGTRestMethod -method "PUT" -body $_addrgrp -uri $uri -uri_escape $addrgrp.name -connection $connection @invokeParams | Out-Null
 
             Get-FGTFirewallProxyAddressGroup -connection $connection @invokeParams -name $addrgrp.name
         }

@@ -342,10 +342,10 @@ function Remove-FGTFirewallProxyPolicy {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $uri = "api/v2/cmdb/firewall/proxy-policy/$($policy.policyid)"
+        $uri = "api/v2/cmdb/firewall/proxy-policy"
 
         if ($PSCmdlet.ShouldProcess($policy.policyid, 'Remove Firewall Proxy Policy')) {
-            $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -connection $connection @invokeParams
+            $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -uri_escape $policy.policyid -connection $connection @invokeParams
         }
     }
 
