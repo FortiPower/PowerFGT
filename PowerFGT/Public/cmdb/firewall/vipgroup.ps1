@@ -136,7 +136,7 @@ function Add-FGTFirewallVipGroupMember {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $uri = "api/v2/cmdb/firewall/vipgrp/$($vipgrp.name)"
+        $uri = "api/v2/cmdb/firewall/vipgrp"
 
         $_vipgrp = new-Object -TypeName PSObject
 
@@ -151,7 +151,7 @@ function Add-FGTFirewallVipGroupMember {
             $_vipgrp | add-member -name "member" -membertype NoteProperty -Value $members
         }
 
-        Invoke-FGTRestMethod -method "PUT" -body $_vipgrp -uri $uri -connection $connection @invokeParams | out-Null
+        Invoke-FGTRestMethod -method "PUT" -body $_vipgrp -uri $uri -uri_escape $vipgrp.name -connection $connection @invokeParams | out-Null
 
         Get-FGTFirewallVipGroup -connection $connection @invokeParams -name $vipgrp.name
     }
@@ -203,9 +203,9 @@ function Copy-FGTFirewallVipGroup {
             Throw "Already a VIP Group object using the same name"
         }
 
-        $uri = "api/v2/cmdb/firewall/vipgrp/$($vipgrp.name)/?action=clone&nkey=$($name)"
-
-        Invoke-FGTRestMethod -method "POST" -uri $uri -connection $connection @invokeParams | Out-Null
+        $uri = "api/v2/cmdb/firewall/vipgrp"
+        $extra = "action=clone&nkey=$($name)"
+        Invoke-FGTRestMethod -method "POST" -uri $uri -uri_escape $vipgrp.name -extra $extra -connection $connection @invokeParams | Out-Null
 
         Get-FGTFirewallVipGroup -connection $connection @invokeParams -name $name
     }
@@ -387,8 +387,8 @@ function Set-FGTFirewallVipGroup {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $uri = "api/v2/cmdb/firewall/vipgrp/$($vipgrp.name)"
-
+        $uri = "api/v2/cmdb/firewall/vipgrp"
+        $old_name = $vipgrp.name
         $_vipgrp = new-Object -TypeName PSObject
 
         if ( $PsBoundParameters.ContainsKey('name') ) {
@@ -413,7 +413,7 @@ function Set-FGTFirewallVipGroup {
         }
 
         if ($PSCmdlet.ShouldProcess($addrgrp.name, 'Configure Firewall VIP Group')) {
-            Invoke-FGTRestMethod -method "PUT" -body $_vipgrp -uri $uri -connection $connection @invokeParams | out-Null
+            Invoke-FGTRestMethod -method "PUT" -body $_vipgrp -uri $uri -uri_escape $old_name -connection $connection @invokeParams | out-Null
 
             Get-FGTFirewallVipGroup -connection $connection @invokeParams -name $vipgrp.name
         }
@@ -467,10 +467,10 @@ function Remove-FGTFirewallVipGroup {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $uri = "api/v2/cmdb/firewall/vipgrp/$($vipgrp.name)"
+        $uri = "api/v2/cmdb/firewall/vipgrp"
 
         if ($PSCmdlet.ShouldProcess($vipgrp.name, 'Remove Firewall VIP Group')) {
-            $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -connection $connection @invokeParams
+            $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -uri_escape $vipgrp.name -connection $connection @invokeParams
         }
     }
 
@@ -524,7 +524,7 @@ function Remove-FGTFirewallVipGroupMember {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $uri = "api/v2/cmdb/firewall/vipgrp/$($vipgrp.name)"
+        $uri = "api/v2/cmdb/firewall/vipgrp"
 
         $_vipgrp = new-Object -TypeName PSObject
 
@@ -558,7 +558,7 @@ function Remove-FGTFirewallVipGroupMember {
 
         if ($PSCmdlet.ShouldProcess($addrgrp.name, 'Remove Firewall VIP Group Member')) {
 
-            Invoke-FGTRestMethod -method "PUT" -body $_vipgrp -uri $uri -connection $connection @invokeParams | Out-Null
+            Invoke-FGTRestMethod -method "PUT" -body $_vipgrp -uri $uri -uri_escape $vipgrp.name -connection $connection @invokeParams | Out-Null
 
             Get-FGTFirewallVipGroup -connection $connection @invokeParams -name $vipgrp.name
         }
