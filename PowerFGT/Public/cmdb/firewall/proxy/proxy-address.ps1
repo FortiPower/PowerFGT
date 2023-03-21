@@ -169,9 +169,9 @@ function Copy-FGTFirewallProxyAddress {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $uri = "api/v2/cmdb/firewall/proxy-address/$($address.name)/?action=clone&nkey=$($name)"
-
-        Invoke-FGTRestMethod -method "POST" -uri $uri -connection $connection @invokeParams | out-Null
+        $uri = "api/v2/cmdb/firewall/proxy-address"
+        $extra = "action=clone&nkey=$($name)"
+        Invoke-FGTRestMethod -method "POST" -uri $uri -uri_escape $address.name -extra $extra -connection $connection @invokeParams | out-Null
 
         Get-FGTFirewallproxyAddress -connection $connection @invokeParams -name $name
     }
@@ -333,10 +333,10 @@ function Remove-FGTFirewallProxyAddress {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $uri = "api/v2/cmdb/firewall/proxy-address/$($address.name)"
+        $uri = "api/v2/cmdb/firewall/proxy-address"
 
         if ($PSCmdlet.ShouldProcess($address.name, 'Remove Firewall Proxy Address')) {
-            $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -connection $connection @invokeParams
+            $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -uri_escape $address.name -connection $connection @invokeParams
         }
 
     }
