@@ -443,7 +443,7 @@ function Set-FGTVpnIpsecPhase2Interface {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $uri = "api/v2/cmdb/vpn.ipsec/phase2-interface/$($vpn.name)"
+        $uri = "api/v2/cmdb/vpn.ipsec/phase2-interface"
         $_interface = new-Object -TypeName PSObject
 
         if ( $PsBoundParameters.ContainsKey('proposal') ) {
@@ -589,7 +589,7 @@ function Set-FGTVpnIpsecPhase2Interface {
         }
 
         if ($PSCmdlet.ShouldProcess($vpn.name, 'Vpn IPsec Phase 2 Interface')) {
-            $null = Invoke-FGTRestMethod -uri $uri -method 'PUT' -body $_interface -connection $connection @invokeParams
+            $null = Invoke-FGTRestMethod -uri $uri -uri_escape $vpn.name -method 'PUT' -body $_interface -connection $connection @invokeParams
             Get-FGTVpnIpsecPhase2Interface -name $vpn.name -connection $connection @invokeParams
         }
     }
@@ -639,10 +639,10 @@ function Remove-FGTVpnIpsecPhase2Interface {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $uri = "api/v2/cmdb/vpn.ipsec/phase2-interface/$($interface.name)"
+        $uri = "api/v2/cmdb/vpn.ipsec/phase2-interface"
 
         if ($PSCmdlet.ShouldProcess($interface.name, 'Remove Vpn IPsec Phase 2 Interface')) {
-            $null = Invoke-FGTRestMethod -uri $uri -method 'DELETE' -connection $connection @invokeParams
+            $null = Invoke-FGTRestMethod -uri $uri -uri_escape $interface.name -method 'DELETE' -connection $connection @invokeParams
         }
     }
 
