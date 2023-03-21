@@ -297,7 +297,7 @@ function Add-FGTFirewallPolicyMember {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $uri = "api/v2/cmdb/firewall/policy/$($policy.policyid)"
+        $uri = "api/v2/cmdb/firewall/policy"
 
         $_policy = new-Object -TypeName PSObject
 
@@ -324,7 +324,7 @@ function Add-FGTFirewallPolicyMember {
         }
 
         if ($PSCmdlet.ShouldProcess($policy.name, 'Add Firewall Policy Group Member')) {
-            Invoke-FGTRestMethod -method "PUT" -body $_policy -uri $uri -connection $connection @invokeParams | Out-Null
+            Invoke-FGTRestMethod -method "PUT" -body $_policy -uri $uri -uri_escape $policy.policyid -connection $connection @invokeParams | Out-Null
 
             Get-FGTFirewallPolicy -connection $connection @invokeParams -name $policy.name
         }
@@ -510,19 +510,20 @@ function Move-FGTFirewallPolicy {
             [int]$id = $id.policyid
         }
 
-        $uri = "api/v2/cmdb/firewall/policy/$($policy.policyid)/?action=move"
+        $uri = "api/v2/cmdb/firewall/policy"
+        $extra = "action=move"
 
         switch ( $PSCmdlet.ParameterSetName ) {
             "after" {
-                $uri += "&after=$($id)"
+                $extra += "&after=$($id)"
             }
             "before" {
-                $uri += "&before=$($id)"
+                $extra += "&before=$($id)"
             }
             default { }
         }
         if ($PSCmdlet.ShouldProcess($policy.name, 'Move Firewall Policy')) {
-            $null = Invoke-FGTRestMethod -method "PUT" -uri $uri -connection $connection @invokeParams
+            $null = Invoke-FGTRestMethod -method "PUT" -uri $uri -uri_escape $policy.policyid -extra $extra -connection $connection @invokeParams
         }
 
         Get-FGTFirewallPolicy -policyid $policy.policyid -connection $connection
@@ -575,10 +576,10 @@ function Remove-FGTFirewallPolicy {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $uri = "api/v2/cmdb/firewall/policy/$($policy.policyid)"
+        $uri = "api/v2/cmdb/firewall/policy"
 
         if ($PSCmdlet.ShouldProcess($policy.name, 'Remove Firewall Policy')) {
-            $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -connection $connection @invokeParams
+            $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -uri_escape $policy.policyid -connection $connection @invokeParams
         }
     }
 
@@ -634,7 +635,7 @@ function Remove-FGTFirewallPolicyMember {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $uri = "api/v2/cmdb/firewall/policy/$($policy.policyid)"
+        $uri = "api/v2/cmdb/firewall/policy"
 
         $_policy = new-Object -TypeName PSObject
 
@@ -685,7 +686,7 @@ function Remove-FGTFirewallPolicyMember {
         }
 
         if ($PSCmdlet.ShouldProcess($policy.name, 'Remove Firewall Policy Group Member')) {
-            Invoke-FGTRestMethod -method "PUT" -body $_policy -uri $uri -connection $connection @invokeParams | Out-Null
+            Invoke-FGTRestMethod -method "PUT" -body $_policy -uri $uri -uri_escape $policy.policyid -connection $connection @invokeParams | Out-Null
 
             Get-FGTFirewallPolicy -connection $connection @invokeParams -name $addrgrp.name
         }
