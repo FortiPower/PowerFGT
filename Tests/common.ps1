@@ -41,7 +41,7 @@ $script:pester_vpn1 = "pester_vpn1"
 $script:pester_vpn2 = "pester_vpn2"
 $script:pester_vpn1_ph2 = "pester_vpn %1_ph2"
 $script:pester_vpn2_ph2 = "pester_vpn2_ph2"
-$script:pester_zone1 = "pester_zone %1"
+$script:pester_zone1 = "pester_zone %/1"
 $script:pester_zone2 = "pester_zone2"
 
 . ../credential.ps1
