@@ -117,10 +117,10 @@ You can select the port using `-port` parameter
     Connect-FGT 192.0.2.1 -port 4443
 ```
 
-if you are using OTP (FortiToken) for admin access, you can use -token_code or -token_prompt for specifity or ask the token/OTP when connect
+if you are using OTP (FortiToken) for admin access, you can use -token_code or -token_prompt for specifity or ask the token/OTP when connecting
 
 ```powershell
-# Connect to the FortiGate Firewall with ask token
+# Connect to the FortiGate Firewall with the token asked
     Connect-FGT 192.0.2.1 -token_prompt
 ```
 
@@ -956,13 +956,13 @@ modify its properties `Set-FGTSystemInterface` or delete it `Remove-FGTSystemInt
     [...]
 
 # Create an interface (type Loopback)
-    Add-FGTSystemInterface -name PowerFGT_lo -loopback -mode static -ip 192.0.2.1 -netmask 255.255.255.0 -allowaccess ping
+    Add-FGTSystemInterface -name PowerFGT_lo -loopback -mode static -ip 192.0.2.1 -netmask 255.255.255.255 -allowaccess ping
 
     name                                       : PowerFGT_lo
     q_origin_key                               : PowerFGT_lo
     vdom                                       : root
     [...]
-    ip                                         : 192.0.2.1 255.255.255.0
+    ip                                         : 192.0.2.1 255.255.255.255
     allowaccess                                : ping
     type                                       : loopback
     [...]
