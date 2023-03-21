@@ -34,9 +34,9 @@ function Add-FGTSystemInterface {
         Create an interface named PowerFGT with alias Alias_PowerFGT, role lan with vlan id 10 on interface port10. Administrative access by https and ssh, ping authorize on ip 192.0.2.1 and state connected.
 
         .EXAMPLE
-        Add-FGTSystemInterface -name PowerFGT_loopback -loopback -mode static -ip 192.0.2.1 -netmask 255.255.255.0 -allowaccess ping
+        Add-FGTSystemInterface -name PowerFGT_lo -loopback -mode static -ip 192.0.2.1 -netmask 255.255.255.255 -allowaccess ping
 
-        This creates a new interface loopback with IP 192.0.2.1(/24) and allow access to ping
+        This creates a new interface loopback with IP 192.0.2.1(/32) and allow access to ping
     #>
 
     Param(
