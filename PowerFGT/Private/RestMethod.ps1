@@ -115,7 +115,7 @@ function Invoke-FGTRestMethod {
         }
 
         if ( $PsBoundParameters.ContainsKey('uri_escape') ) {
-            $fullurl += "/" + [System.Web.HttpUtility]::UrlEncode($uri_escape)
+            $fullurl += "/" + (($uri_escape -replace ("%", "%25")) -replace ("/", "%2f"))
         }
 
         #Extra parameter...
@@ -138,14 +138,14 @@ function Invoke-FGTRestMethod {
         #filter
         switch ( $filter_type ) {
             "equal" {
-                $filter_value = "==" + [System.Web.HttpUtility]::UrlEncode($filter_value)
+                $filter_value = "==" + (($filter_value -replace ("%", "%25")) -replace ("/", "%2f"))
             }
             "contains" {
-                $filter_value = "=@" + [System.Web.HttpUtility]::UrlEncode($filter_value)
+                $filter_value = "=@" + (($filter_value -replace ("%", "%25")) -replace ("/", "%2f"))
             }
             #by default set to equal..
             default {
-                $filter_value = "==" + [System.Web.HttpUtility]::UrlEncode($filter_value)
+                $filter_value = "==" + (($filter_value -replace ("%", "%25")) -replace ("/", "%2f"))
             }
         }
 
