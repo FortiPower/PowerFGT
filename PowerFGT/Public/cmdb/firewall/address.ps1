@@ -72,6 +72,8 @@ function Add-FGTFirewallAddress {
         [string]$comment,
         [Parameter (Mandatory = $false)]
         [boolean]$visibility,
+        [Parameter (Mandatory = $false)]
+        [switch]$allowrouting,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -143,6 +145,15 @@ function Add-FGTFirewallAddress {
                 else {
                     $address | add-member -name "visibility" -membertype NoteProperty -Value "disable"
                 }
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('allowrouting') ) {
+            if ( $allowrouting ) {
+                $address | add-member -name "allow-routing" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $address | add-member -name "allow-routing" -membertype NoteProperty -Value "disable"
             }
         }
 
@@ -400,6 +411,8 @@ function Set-FGTFirewallAddress {
         [string]$comment,
         [Parameter (Mandatory = $false)]
         [boolean]$visibility,
+        [Parameter (Mandatory = $false)]
+        [switch]$allowrouting,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -496,6 +509,15 @@ function Set-FGTFirewallAddress {
                 else {
                     $_address | add-member -name "visibility" -membertype NoteProperty -Value "disable"
                 }
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('allowrouting') ) {
+            if ( $allowrouting ) {
+                $_address | add-member -name "allow-routing" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_address | add-member -name "allow-routing" -membertype NoteProperty -Value "disable"
             }
         }
 

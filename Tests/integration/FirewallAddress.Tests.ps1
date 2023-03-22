@@ -94,6 +94,7 @@ Describe "Add Firewall Address" {
             if ($DefaultFGTConnection.version -lt "6.4.0") {
                 $address.visibility | Should -Be $true
             }
+            $address.'allow-routing' | Should -Be "disable"
         }
 
         It "Add Address $pester_address1 (type ipmask and interface)" {
@@ -144,6 +145,23 @@ Describe "Add Firewall Address" {
             }
         }
 
+        It "Add Address $pester_address1 (type ipmask and allow routing)" {
+            Add-FGTFirewallAddress -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0 -allowrouting
+            $address = Get-FGTFirewallAddress -name $pester_address1
+            $address.name | Should -Be $pester_address1
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "ipmask"
+            #$address.'start-ip' | Should -Be "192.0.2.0"
+            #$address.'end-ip' | Should -Be "255.255.255.0"
+            $address.subnet | Should -Be "192.0.2.0 255.255.255.0"
+            $address.'associated-interface' | Should -BeNullOrEmpty
+            $address.comment | Should -BeNullOrEmpty
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "disable"
+            }
+            $address.'allow-routing' | Should -Be "enable"
+        }
+
         It "Try to Add Address $pester_address1 (but there is already a object with same name)" {
             #Add first address
             Add-FGTFirewallAddress -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0
@@ -172,6 +190,7 @@ Describe "Add Firewall Address" {
             if ($DefaultFGTConnection.version -lt "6.4.0") {
                 $address.visibility | Should -Be $true
             }
+            $address.'allow-routing' | Should -Be "disable"
         }
 
         It "Add Address $pester_address3 (type iprange and interface)" {
@@ -247,6 +266,7 @@ Describe "Add Firewall Address" {
             if ($DefaultFGTConnection.version -lt "6.4.0") {
                 $address.visibility | Should -Be $true
             }
+            $address.'allow-routing' | Should -Be "disable"
         }
 
         It "Add Address $pester_address2 (type fqdn and interface)" {
@@ -315,6 +335,7 @@ Describe "Add Firewall Address" {
             if ($DefaultFGTConnection.version -lt "6.4.0") {
                 $address.visibility | Should -Be $true
             }
+            $address.'allow-routing' | Should -Be "disable"
         }
 
         It "Add Address $pester_address4 (type geography and interface)" {
@@ -389,6 +410,7 @@ Describe "Configure Firewall Address" {
             if ($DefaultFGTConnection.version -lt "6.4.0") {
                 $address.visibility | Should -Be $true
             }
+            $address.'allow-routing' | Should -Be "disable"
         }
 
         It "Change IP Mask" {
@@ -455,6 +477,41 @@ Describe "Configure Firewall Address" {
             }
         }
 
+        It "Change allow routing (enable)" {
+            Get-FGTFirewallAddress -name $pester_address1 | Set-FGTFirewallAddress -allowrouting
+            $address = Get-FGTFirewallAddress -name $pester_address1
+            $address.name | Should -Be $pester_address1
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "ipmask"
+            # $address.'start-ip' | Should -Be "192.0.3.0"
+            # $address.'end-ip' | Should -Be "255.255.255.128"
+            $address.subnet | Should -Be "192.0.3.0 255.255.255.128"
+            $address.'associated-interface' | Should -Be "port2"
+            $address.comment | Should -Be "Modified by PowerFGT"
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "disable"
+            }
+            $address.'allow-routing' | Should -Be "enable"
+        }
+
+        It "Change allow routing (disable)" {
+            Get-FGTFirewallAddress -name $pester_address1 | Set-FGTFirewallAddress -allowrouting:$false
+            $address = Get-FGTFirewallAddress -name $pester_address1
+            $address.name | Should -Be $pester_address1
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "ipmask"
+            # $address.'start-ip' | Should -Be "192.0.3.0"
+            # $address.'end-ip' | Should -Be "255.255.255.128"
+            $address.subnet | Should -Be "192.0.3.0 255.255.255.128"
+            $address.'associated-interface' | Should -Be "port2"
+            $address.comment | Should -Be "Modified by PowerFGT"
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "disable"
+            }
+            $address.'allow-routing' | Should -Be "disable"
+        }
+
+
         It "Try to Configure Address $pester_address1 (but it is wrong type...)" {
             { Get-FGTFirewallAddress -name $pester_address1 | Set-FGTFirewallAddress -fqdn "fortipower.github.io" } | Should -Throw "Address type (ipmask) need to be on the same type (fqdn)"
         }
@@ -501,6 +558,7 @@ Describe "Configure Firewall Address" {
             if ($DefaultFGTConnection.version -lt "6.4.0") {
                 $address.visibility | Should -Be $true
             }
+            $address.'allow-routing' | Should -Be "disable"
         }
 
         It "Change End IP" {
@@ -607,6 +665,7 @@ Describe "Configure Firewall Address" {
             if ($DefaultFGTConnection.version -lt "6.4.0") {
                 $address.visibility | Should -Be $true
             }
+            $address.'allow-routing' | Should -Be "disable"
         }
 
         It "Change (Associated) Interface" {
@@ -694,6 +753,7 @@ Describe "Configure Firewall Address" {
             if ($DefaultFGTConnection.version -lt "6.4.0") {
                 $address.visibility | Should -Be $true
             }
+            $address.'allow-routing' | Should -Be "disable"
         }
 
         It "Change (Associated) Interface" {
