@@ -48,6 +48,11 @@ function Add-FGTFirewallAddress {
 
         Add Address object type geo (country) with name FGT-Country-FR and value FR (France)
 
+        .EXAMPLE
+        $data = @{ "color" = 23 }
+        PS C:\>Add-FGTFirewallAddress -Name FGT -ip 192.0.2.0 -mask 255.255.255.0 -data $data
+
+        Add Address object type ipmask with name FGT and value 192.0.2.0/24 and color (23) via -data parameter
     #>
 
     Param(
@@ -74,6 +79,8 @@ function Add-FGTFirewallAddress {
         [boolean]$visibility,
         [Parameter (Mandatory = $false)]
         [switch]$allowrouting,
+        [Parameter (Mandatory = $false)]
+        [hashtable]$data,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -154,6 +161,12 @@ function Add-FGTFirewallAddress {
             }
             else {
                 $address | add-member -name "allow-routing" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('data') ) {
+            $data.GetEnumerator() | ForEach-Object {
+                $address | Add-member -name $_.key -membertype NoteProperty -Value $_.value
             }
         }
 
@@ -383,6 +396,14 @@ function Set-FGTFirewallAddress {
 
         Change MyFGTAddress to set a new country (geo) FR (France)
 
+        .EXAMPLE
+        $data = @{ "color" = 23 }
+        PS C:\>$MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
+        PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -data $color
+
+        Change MyFGTAddress to set a color (23) using -data
+
+
     #>
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium', DefaultParameterSetName = 'default')]
@@ -413,6 +434,8 @@ function Set-FGTFirewallAddress {
         [boolean]$visibility,
         [Parameter (Mandatory = $false)]
         [switch]$allowrouting,
+        [Parameter (Mandatory = $false)]
+        [hashtable]$data,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -518,6 +541,12 @@ function Set-FGTFirewallAddress {
             }
             else {
                 $_address | add-member -name "allow-routing" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('data') ) {
+            $data.GetEnumerator() | ForEach-Object {
+                $_address | Add-member -name $_.key -membertype NoteProperty -Value $_.value
             }
         }
 

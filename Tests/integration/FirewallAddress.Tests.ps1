@@ -95,6 +95,7 @@ Describe "Add Firewall Address" {
                 $address.visibility | Should -Be $true
             }
             $address.'allow-routing' | Should -Be "disable"
+            $address.color | Should -Be "0"
         }
 
         It "Add Address $pester_address1 (type ipmask and interface)" {
@@ -160,6 +161,44 @@ Describe "Add Firewall Address" {
                 $address.visibility | Should -Be "disable"
             }
             $address.'allow-routing' | Should -Be "enable"
+        }
+
+        It "Add Address $pester_address1 (type ipmask and data (1 field))" {
+            $data = @{ "color" = 23 }
+            Add-FGTFirewallAddress -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0 -data $data
+            $address = Get-FGTFirewallAddress -name $pester_address1
+            $address.name | Should -Be $pester_address1
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "ipmask"
+            #$address.'start-ip' | Should -Be "192.0.2.0"
+            #$address.'end-ip' | Should -Be "255.255.255.0"
+            $address.subnet | Should -Be "192.0.2.0 255.255.255.0"
+            $address.'associated-interface' | Should -BeNullOrEmpty
+            $address.comment | Should -BeNullOrEmpty
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "disable"
+            }
+            $address.'allow-routing' | Should -Be "disable"
+            $address.'color' | Should -Be "23"
+        }
+
+        It "Add Address $pester_address1 (type ipmask and data (2 fields))" {
+            $data = @{ "color" = 23 ; "comment" = "Add via PowerFGT and -data" }
+            Add-FGTFirewallAddress -Name $pester_address1 -ip 192.0.2.0 -mask 255.255.255.0 -data $data
+            $address = Get-FGTFirewallAddress -name $pester_address1
+            $address.name | Should -Be $pester_address1
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "ipmask"
+            #$address.'start-ip' | Should -Be "192.0.2.0"
+            #$address.'end-ip' | Should -Be "255.255.255.0"
+            $address.subnet | Should -Be "192.0.2.0 255.255.255.0"
+            $address.'associated-interface' | Should -BeNullOrEmpty
+            $address.comment | Should -Be "Add via PowerFGT and -data"
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "disable"
+            }
+            $address.'allow-routing' | Should -Be "disable"
+            $address.'color' | Should -Be "23"
         }
 
         It "Try to Add Address $pester_address1 (but there is already a object with same name)" {
