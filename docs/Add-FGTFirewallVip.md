@@ -15,7 +15,8 @@ Add a FortiGate Virtual IP
 ```
 Add-FGTFirewallVip [-type] <String> [-name] <String> [-extip] <IPAddress> [-mappedip] <IPAddress>
  [[-interface] <String>] [[-comment] <String>] [-portforward] [[-protocol] <String>] [[-extport] <String>]
- [[-mappedport] <String>] [-skip] [[-vdom] <String[]>] [[-connection] <PSObject>] [<CommonParameters>]
+ [[-mappedport] <String>] [[-arpreply] <Boolean>] [[-data] <Hashtable>] [-skip] [[-vdom] <String[]>]
+ [[-connection] <PSObject>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -50,6 +51,14 @@ Add-FGTFirewallVip -name myVIP4-5000-6000 -type static-nat -extip 192.0.2.1 -map
 ```
 
 Add VIP objet type static-nat (One to One) with name myVIP3 with external IP 192.0.2.1 and mapped IP 198.51.100.1 with Port Forward and UDP Port 5000 mapped to port 6000
+
+### EXAMPLE 5
+```
+$data = @{ "nat-source-vip" = "enable" ; "color" = "23"}
+PS C> Add-FGTFirewallVip -name myVIP5-data -type static-nat -extip 192.0.2.1 -mappedip 198.51.100.1 -data $data
+```
+
+Change dns-mapping-ttl and color settings using -data parameter
 
 ## PARAMETERS
 
@@ -168,7 +177,7 @@ Aliases:
 
 Required: False
 Position: 7
-Default value: TCP
+Default value: Tcp
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -203,6 +212,36 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -arpreply
+{{ Fill arpreply Description }}
+
+```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 10
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -data
+{{ Fill data Description }}
+
+```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 11
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -skip
 Ignores the specified number of objects and then gets the remaining objects.
 Enter the number of objects to skip.
@@ -228,7 +267,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 10
+Position: 12
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -243,7 +282,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 11
+Position: 13
 Default value: $DefaultFGTConnection
 Accept pipeline input: False
 Accept wildcard characters: False
