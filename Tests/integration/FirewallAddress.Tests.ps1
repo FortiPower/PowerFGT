@@ -158,7 +158,7 @@ Describe "Add Firewall Address" {
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be "disable"
+                $address.visibility | Should -Be "enable"
             }
             $address.'allow-routing' | Should -Be "enable"
         }
@@ -176,7 +176,7 @@ Describe "Add Firewall Address" {
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be "disable"
+                $address.visibility | Should -Be "enable"
             }
             $address.'allow-routing' | Should -Be "disable"
             $address.'color' | Should -Be "23"
@@ -195,7 +195,7 @@ Describe "Add Firewall Address" {
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -Be "Add via PowerFGT and -data"
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be "disable"
+                $address.visibility | Should -Be "enable"
             }
             $address.'allow-routing' | Should -Be "disable"
             $address.'color' | Should -Be "23"
