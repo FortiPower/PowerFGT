@@ -92,7 +92,7 @@ Describe "Add Firewall Address" {
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be $true
+                $address.visibility | Should -Be "enable"
             }
             $address.'allow-routing' | Should -Be "disable"
             $address.color | Should -Be "0"
@@ -110,7 +110,7 @@ Describe "Add Firewall Address" {
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -BeNullOrEmpty
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be $true
+                $address.visibility | Should -Be "enable"
             }
         }
 
@@ -126,7 +126,7 @@ Describe "Add Firewall Address" {
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -Be "Add via PowerFGT"
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be $true
+                $address.visibility | Should -Be "enable"
             }
         }
 
@@ -227,7 +227,7 @@ Describe "Add Firewall Address" {
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be $true
+                $address.visibility | Should -Be "enable"
             }
             $address.'allow-routing' | Should -Be "disable"
         }
@@ -243,7 +243,7 @@ Describe "Add Firewall Address" {
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -BeNullOrEmpty
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be $true
+                $address.visibility | Should -Be "enable"
             }
         }
 
@@ -258,7 +258,7 @@ Describe "Add Firewall Address" {
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -Be "Add via PowerFGT"
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be $true
+                $address.visibility | Should -Be "enable"
             }
         }
 
@@ -303,7 +303,7 @@ Describe "Add Firewall Address" {
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be $true
+                $address.visibility | Should -Be "enable"
             }
             $address.'allow-routing' | Should -Be "disable"
         }
@@ -319,7 +319,7 @@ Describe "Add Firewall Address" {
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -BeNullOrEmpty
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be $true
+                $address.visibility | Should -Be "enable"
             }
         }
 
@@ -334,7 +334,7 @@ Describe "Add Firewall Address" {
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -Be "Add via PowerFGT"
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be $true
+                $address.visibility | Should -Be "enable"
             }
         }
 
@@ -372,7 +372,7 @@ Describe "Add Firewall Address" {
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be $true
+                $address.visibility | Should -Be "enable"
             }
             $address.'allow-routing' | Should -Be "disable"
         }
@@ -388,7 +388,7 @@ Describe "Add Firewall Address" {
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -BeNullOrEmpty
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be $true
+                $address.visibility | Should -Be "enable"
             }
         }
 
@@ -403,7 +403,7 @@ Describe "Add Firewall Address" {
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -Be "Add via PowerFGT"
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be $true
+                $address.visibility | Should -Be "enable"
             }
         }
 
@@ -447,7 +447,7 @@ Describe "Configure Firewall Address" {
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be $true
+                $address.visibility | Should -Be "enable"
             }
             $address.'allow-routing' | Should -Be "disable"
         }
@@ -464,7 +464,7 @@ Describe "Configure Firewall Address" {
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be $true
+                $address.visibility | Should -Be "enable"
             }
         }
 
@@ -480,7 +480,7 @@ Describe "Configure Firewall Address" {
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -BeNullOrEmpty
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be $true
+                $address.visibility | Should -Be "enable"
             }
         }
 
@@ -496,7 +496,7 @@ Describe "Configure Firewall Address" {
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -Be "Modified by PowerFGT"
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be $true
+                $address.visibility | Should -Be "enable"
             }
         }
 
@@ -595,7 +595,7 @@ Describe "Configure Firewall Address" {
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be $true
+                $address.visibility | Should -Be "enable"
             }
             $address.'allow-routing' | Should -Be "disable"
         }
@@ -611,7 +611,7 @@ Describe "Configure Firewall Address" {
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be $true
+                $address.visibility | Should -Be "enable"
             }
         }
 
@@ -626,7 +626,7 @@ Describe "Configure Firewall Address" {
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -BeNullOrEmpty
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be $true
+                $address.visibility | Should -Be "enable"
             }
         }
 
@@ -641,7 +641,7 @@ Describe "Configure Firewall Address" {
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -Be "Modified by PowerFGT"
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be $true
+                $address.visibility | Should -Be "enable"
             }
         }
 
@@ -702,7 +702,7 @@ Describe "Configure Firewall Address" {
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be $true
+                $address.visibility | Should -Be "enable"
             }
             $address.'allow-routing' | Should -Be "disable"
         }
@@ -717,7 +717,7 @@ Describe "Configure Firewall Address" {
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -BeNullOrEmpty
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be $true
+                $address.visibility | Should -Be "enable"
             }
         }
 
@@ -731,7 +731,7 @@ Describe "Configure Firewall Address" {
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -Be "Modified by PowerFGT"
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be $true
+                $address.visibility | Should -Be "enable"
             }
         }
 
@@ -790,7 +790,7 @@ Describe "Configure Firewall Address" {
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be $true
+                $address.visibility | Should -Be "enable"
             }
             $address.'allow-routing' | Should -Be "disable"
         }
@@ -805,7 +805,7 @@ Describe "Configure Firewall Address" {
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -BeNullOrEmpty
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be $true
+                $address.visibility | Should -Be "enable"
             }
         }
 
@@ -819,7 +819,7 @@ Describe "Configure Firewall Address" {
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -Be "Modified by PowerFGT"
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be $true
+                $address.visibility | Should -Be "enable"
             }
         }
 
@@ -883,7 +883,7 @@ Describe "Copy Firewall Address" {
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be $true
+                $address.visibility | Should -Be "enable"
             }
         }
 
@@ -913,7 +913,7 @@ Describe "Copy Firewall Address" {
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be $true
+                $address.visibility | Should -Be "enable"
             }
         }
 
@@ -943,7 +943,7 @@ Describe "Copy Firewall Address" {
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be $true
+                $address.visibility | Should -Be "enable"
             }
         }
 
@@ -973,7 +973,7 @@ Describe "Copy Firewall Address" {
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
             if ($DefaultFGTConnection.version -lt "6.4.0") {
-                $address.visibility | Should -Be $true
+                $address.visibility | Should -Be "enable"
             }
         }
 
