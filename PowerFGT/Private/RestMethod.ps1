@@ -125,7 +125,7 @@ function Invoke-FGTRestMethod {
         }
 
         if ( $PsBoundParameters.ContainsKey('uri_escape') ) {
-            $fullurl += "/" + (($uri_escape -replace ("%", "%25")) -replace ("/", "%2f"))
+            $fullurl += "/" + ((($uri_escape -replace ("%", "%25")) -replace ("/", "%2f")) -replace ("\?", "%3f"))
         }
 
         #Extra parameter...
@@ -148,14 +148,14 @@ function Invoke-FGTRestMethod {
         #filter
         switch ( $filter_type ) {
             "equal" {
-                $filter_value = "==" + (($filter_value -replace ("%", "%25")) -replace ("/", "%2f"))
+                $filter_value = "==" + ((($filter_value -replace ("%", "%25")) -replace ("/", "%2f")) -replace ("\?", "%3f"))
             }
             "contains" {
-                $filter_value = "=@" + (($filter_value -replace ("%", "%25")) -replace ("/", "%2f"))
+                $filter_value = "=@" + ((($filter_value -replace ("%", "%25")) -replace ("/", "%2f")) -replace ("\?", "%3f"))
             }
             #by default set to equal..
             default {
-                $filter_value = "==" + (($filter_value -replace ("%", "%25")) -replace ("/", "%2f"))
+                $filter_value = "==" + ((($filter_value -replace ("%", "%25")) -replace ("/", "%2f")) -replace ("\?", "%3f"))
             }
         }
 
