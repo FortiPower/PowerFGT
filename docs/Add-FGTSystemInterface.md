@@ -73,10 +73,10 @@ Administrative access by https and ssh, ping authorize on ip 192.0.2.1 and state
 
 ### EXAMPLE 5
 ```
-Add-FGTSystemInterface -name PowerFGT_loopback -loopback -mode static -ip 192.0.2.1 -netmask 255.255.255.0 -allowaccess ping
+Add-FGTSystemInterface -name PowerFGT_lo -loopback -mode static -ip 192.0.2.1 -netmask 255.255.255.255 -allowaccess ping
 ```
 
-This creates a new interface loopback with IP 192.0.2.1(/24) and allow access to ping
+This creates a new interface loopback with IP 192.0.2.1(/32) and allow access to ping
 
 ## PARAMETERS
 
