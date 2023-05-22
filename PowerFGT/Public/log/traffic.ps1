@@ -153,7 +153,7 @@ function Get-FGTLogTraffic {
                 $filter_attribute = "action"
             }
             "policyid" {
-                $filter_value = $policyid
+                $filter_value = [string]$policyid
                 $filter_attribute = "policyid"
             }
             "poluuid" {
