@@ -47,6 +47,21 @@ Describe "Get Firewall Address" {
         Confirm-FGTAddress ($address) | Should -Be $true
     }
 
+    It "Get Address ($pester_address1) with meta" {
+        $address = Get-FGTFirewallAddress -name $pester_address1 -meta
+        $address.name | Should -Be $pester_address1
+        $address.q_ref | Should -Not -BeNullOrEmpty
+        $address.q_static | Should -Not -BeNullOrEmpty
+        $address.q_no_rename | Should -Not -BeNullOrEmpty
+        $address.q_global_entry | Should -Not -BeNullOrEmpty
+        $address.q_type | Should -Be '31'
+        $address.q_path | Should -Be "firewall"
+        $address.q_name | Should -Be "address"
+        $address.q_mkey_type | Should -Be "string"
+        $address.q_no_edit | Should -Not -BeNullOrEmpty
+        $address.q_class | Should -Not -BeNullOrEmpty
+    }
+
     Context "Search" {
 
         It "Search Address by name ($pester_address1)" {
