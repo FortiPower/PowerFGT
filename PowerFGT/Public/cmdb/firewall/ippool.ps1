@@ -29,6 +29,11 @@ function Get-FGTFirewallIPPool {
         Get ip pool contains with *FGT*
 
         .EXAMPLE
+        Get-FGTFirewallIPPool -meta
+
+        Get list of all (NAT) ip pool object with metadata (q_...) like usage (q_ref)
+
+        .EXAMPLE
         Get-FGTFirewallIPPool -skip
 
         Get list of all (NAT) ip pool object (but only relevant attributes)
@@ -55,6 +60,8 @@ function Get-FGTFirewallIPPool {
         [Parameter (ParameterSetName = "filter")]
         [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
+        [switch]$meta,
+        [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
@@ -68,6 +75,9 @@ function Get-FGTFirewallIPPool {
     Process {
 
         $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('meta') ) {
+            $invokeParams.add( 'meta', $meta )
+        }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
         }
