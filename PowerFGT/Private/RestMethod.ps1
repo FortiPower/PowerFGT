@@ -54,12 +54,12 @@ function Invoke-FGTRestMethod {
       Invoke-RestMethod with FGT connection for get api/v2/cmdb/firewall/address uri with filter attribute equal name and filter value contains FGT
 
       .EXAMPLE
-      Invoke-FGTRestMethod -method "Ppost" -uri "api/v2/cmdb/firewall/address" -uri_escape "My /% Address" -body $body
+      Invoke-FGTRestMethod -method "post" -uri "api/v2/cmdb/firewall/address" -uri_escape "My /% Address" -body $body
 
       Invoke-RestMethod with FGT connection for post api/v2/cmdb/firewall/address uri with uri escape (replace / or % by HTML code)
 
       .EXAMPLE
-      Invoke-FGTRestMethod -method "Ppost" -uri "api/v2/cmdb/firewall/address" -extra "action=move"
+      Invoke-FGTRestMethod -method "post" -uri "api/v2/cmdb/firewall/address" -extra "action=move"
 
       Invoke-RestMethod with FGT connection for post api/v2/cmdb/firewall/address uri with extra uri (add ?action=move on this example)
 
@@ -71,7 +71,7 @@ function Invoke-FGTRestMethod {
     .EXAMPLE
       Invoke-FGTRestMethod -method "get" -uri "api/v2/cmdb/firewall/address" -meta
 
-      Invoke-RestMethod with FGT connection for get api/v2/cmdb/firewall/address?&meta=1 uri with meta(data) of object (q_ref...)
+      Invoke-RestMethod with FGT connection for get api/v2/cmdb/firewall/address?&with_meta=1 uri with meta(data) of object (q_ref...)
     #>
 
     [CmdletBinding(DefaultParameterSetName = "default")]
