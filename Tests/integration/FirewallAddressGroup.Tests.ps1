@@ -49,6 +49,21 @@ Describe "Get Firewall Address Group" {
         Confirm-FGTAddressGroup ($addressgroup) | Should -Be $true
     }
 
+    It "Get Address Group ($pester_addressgroup1) and meta" {
+        $addressgroup = Get-FGTFirewallAddressGroup -name $pester_addressgroup1 -meta
+        $addressgroup.name | Should -Be $pester_addressgroup1
+        $addressgroup.q_ref | Should -Not -BeNullOrEmpty
+        $addressgroup.q_static | Should -Not -BeNullOrEmpty
+        $addressgroup.q_no_rename | Should -Not -BeNullOrEmpty
+        $addressgroup.q_global_entry | Should -Not -BeNullOrEmpty
+        $addressgroup.q_type | Should -Be '31'
+        $addressgroup.q_path | Should -Be "firewall"
+        $addressgroup.q_name | Should -Be "addressgroup"
+        $addressgroup.q_mkey_type | Should -Be "string"
+        $addressgroup.q_no_edit | Should -Not -BeNullOrEmpty
+        $addressgroup.q_class | Should -Not -BeNullOrEmpty
+    }
+
     Context "Search" {
 
         It "Search Address Group by name ($pester_addressgroup1)" {
