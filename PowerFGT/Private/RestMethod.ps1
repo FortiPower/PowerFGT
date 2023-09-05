@@ -74,6 +74,8 @@ function Invoke-FGTRestMethod {
         [Parameter(Mandatory = $false)]
         [psobject]$body,
         [Parameter(Mandatory = $false)]
+        [switch]$meta,
+        [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
@@ -133,6 +135,9 @@ function Invoke-FGTRestMethod {
             $fullurl += "?"
         }
 
+        if ( $PsBoundParameters.ContainsKey('meta') ) {
+            $fullurl += "&with_meta=1"
+        }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $fullurl += "&skip=1"
         }
