@@ -45,6 +45,21 @@ Describe "Get Firewall VIP" {
         Confirm-FGTVip ($vip) | Should -Be $true
     }
 
+    It "Get Virtual IP ($pester_vip1) and meta" {
+        $vip = Get-FGTFirewallVip -name $pester_vip1 -meta
+        $vip.name | Should -Be $pester_vip1
+        $vip.q_ref | Should -Not -BeNullOrEmpty
+        $vip.q_static | Should -Not -BeNullOrEmpty
+        $vip.q_no_rename | Should -Not -BeNullOrEmpty
+        $vip.q_global_entry | Should -Not -BeNullOrEmpty
+        $vip.q_type | Should -Be '42'
+        $vip.q_path | Should -Be "firewall"
+        $vip.q_name | Should -Be "vip"
+        $vip.q_mkey_type | Should -Be "string"
+        $vip.q_no_edit | Should -Not -BeNullOrEmpty
+        $vip.q_class | Should -Not -BeNullOrEmpty
+    }
+
     Context "Search" {
 
         It "Search Virtual IP by name ($pester_vip1)" {
