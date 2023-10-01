@@ -49,6 +49,21 @@ Describe "Get Firewall Vip Group" {
         Confirm-FGTVipGroup ($vipgroup) | Should -Be $true
     }
 
+    It "Get Vip Group ($pester_vipgroup1) and meta" {
+        $vipgroup = Get-FGTFirewallVipGroup -name $pester_vipgroup1 -meta
+        $vipgroup.name | Should -Be $pester_vipgroup1
+        $vipgroup.q_ref | Should -Not -BeNullOrEmpty
+        $vipgroup.q_static | Should -Not -BeNullOrEmpty
+        $vipgroup.q_no_rename | Should -Not -BeNullOrEmpty
+        $vipgroup.q_global_entry | Should -Not -BeNullOrEmpty
+        $vipgroup.q_type | Should -Be '206'
+        $vipgroup.q_path | Should -Be "firewall"
+        $vipgroup.q_name | Should -Be "vipgrp"
+        $vipgroup.q_mkey_type | Should -Be "string"
+        $vipgroup.q_no_edit | Should -Not -BeNullOrEmpty
+        $vipgroup.q_class | Should -Not -BeNullOrEmpty
+    }
+
     Context "Search" {
 
         It "Search Vip Group by name ($pester_vipgroup1)" {

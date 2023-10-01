@@ -244,6 +244,11 @@ function Get-FGTFirewallVipGroup {
         Get VIP Group with uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
 
         .EXAMPLE
+        Get-FGTFirewallVipGroup -meta
+
+        Get list of all nat vip groups with metadata (q_...) like usage (q_ref)
+
+        .EXAMPLE
         Get-FGTFirewallVipGroup -skip
 
         Display all VIP groups (but only relevant attributes)
@@ -273,6 +278,8 @@ function Get-FGTFirewallVipGroup {
         [Parameter (ParameterSetName = "filter")]
         [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
+        [switch]$meta,
+        [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
@@ -286,6 +293,9 @@ function Get-FGTFirewallVipGroup {
     Process {
 
         $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('meta') ) {
+            $invokeParams.add( 'meta', $meta )
+        }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
         }
