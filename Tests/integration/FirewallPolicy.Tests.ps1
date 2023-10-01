@@ -46,6 +46,21 @@ Describe "Get Firewall Policy" {
         Confirm-FGTFirewallPolicy ($policy) | Should -Be $true
     }
 
+    It "Get Policy ($pester_policy1) and meta" {
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1 -meta
+        $policy.name | Should -Be $pester_policy1
+        $policy.q_ref | Should -Not -BeNullOrEmpty
+        $policy.q_static | Should -Not -BeNullOrEmpty
+        $policy.q_no_rename | Should -Not -BeNullOrEmpty
+        $policy.q_global_entry | Should -Not -BeNullOrEmpty
+        $policy.q_type | Should -Be '53'
+        $policy.q_path | Should -Be "firewall"
+        $policy.q_name | Should -Be "policy"
+        $policy.q_mkey_type | Should -Be "integer"
+        $policy.q_no_edit | Should -Not -BeNullOrEmpty
+        #$policy.q_class | Should -Not -BeNullOrEmpty
+    }
+
     Context "Search" {
 
         It "Search Policy by name ($pester_policy1)" {
