@@ -50,6 +50,21 @@ Describe "Get Firewall Proxy Address Group" {
         Confirm-FGTProxyAddressGroup ($addressgroup) | Should -Be $true
     }
 
+    It "Get Proxy Address Group ($pester_proxyaddressgroup1) with meta" {
+        $addressgroup = Get-FGTFirewallProxyAddressGroup -name $pester_proxyaddressgroup1 -meta
+        $addressgroup.name | Should -Be $pester_proxyaddressgroup1
+        $addressgroup.q_ref | Should -Not -BeNullOrEmpty
+        $addressgroup.q_static | Should -Not -BeNullOrEmpty
+        $addressgroup.q_no_rename | Should -Not -BeNullOrEmpty
+        $addressgroup.q_global_entry | Should -Not -BeNullOrEmpty
+        $addressgroup.q_type | Should -Be '485'
+        $addressgroup.q_path | Should -Be "firewall"
+        $addressgroup.q_name | Should -Be "proxy-addrgrp"
+        $addressgroup.q_mkey_type | Should -Be "string"
+        $addressgroup.q_no_edit | Should -Not -BeNullOrEmpty
+        $addressgroup.q_class | Should -Not -BeNullOrEmpty
+    }
+
     Context "Search" {
 
         It "Search Proxy Address Group by name ($pester_proxyaddressgroup1)" {
