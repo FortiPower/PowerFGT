@@ -47,6 +47,21 @@ Describe "Get Firewall Proxy Address" {
         Confirm-FGTProxyAddress ($address) | Should -Be $true
     }
 
+    It "Get Address ($pester_proxyaddress1) and meta" {
+        $address = Get-FGTFirewallProxyAddress -name $pester_proxyaddress1 -meta
+        $address.name | Should -Be $pester_proxyaddress1
+        $address.q_ref | Should -Not -BeNullOrEmpty
+        $address.q_static | Should -Not -BeNullOrEmpty
+        $address.q_no_rename | Should -Not -BeNullOrEmpty
+        $address.q_global_entry | Should -Not -BeNullOrEmpty
+        $address.q_type | Should -Be '484'
+        $address.q_path | Should -Be "firewall"
+        $address.q_name | Should -Be "proxy-address"
+        $address.q_mkey_type | Should -Be "string"
+        $address.q_no_edit | Should -Not -BeNullOrEmpty
+        $address.q_class | Should -Not -BeNullOrEmpty
+    }
+
     Context "Search" {
 
         It "Search Address by name ($pester_proxyaddress1)" {

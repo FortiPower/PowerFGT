@@ -215,6 +215,11 @@ function Get-FGTFirewallProxyAddress {
         Get list of all proxy-address object (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTFirewallProxyAddress -meta
+
+        Get list of all proxy-address object with metadata (q_...) like usage (q_ref)
+
+        .EXAMPLE
         Get-FGTFirewallProxyAddress -vdom vdomX
 
         Get list of all proxy-address on VdomX
@@ -237,6 +242,8 @@ function Get-FGTFirewallProxyAddress {
         [Parameter (Mandatory = $false, ParameterSetName = "filter_build")]
         [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
+        [switch]$meta,
+        [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
@@ -250,6 +257,9 @@ function Get-FGTFirewallProxyAddress {
     Process {
 
         $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('meta') ) {
+            $invokeParams.add( 'meta', $meta )
+        }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
         }
