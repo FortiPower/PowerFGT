@@ -46,6 +46,21 @@ Describe "Get Firewall Proxy Policy" {
         Confirm-FGTFirewallProxyPolicy ($policy) | Should -Be $true
     }
 
+    It "Get Policy ($script:uuid) with meta" {
+        $policy = Get-FGTFirewallProxyPolicy -uuid $script:uuid -meta
+        $policy.uuid | Should -Be $script:uuid
+        $policy.q_ref | Should -Not -BeNullOrEmpty
+        $policy.q_static | Should -Not -BeNullOrEmpty
+        $policy.q_no_rename | Should -Not -BeNullOrEmpty
+        $policy.q_global_entry | Should -Not -BeNullOrEmpty
+        $policy.q_type | Should -Be '475'
+        $policy.q_path | Should -Be "firewall"
+        $policy.q_name | Should -Be "proxy-policy"
+        $policy.q_mkey_type | Should -Be "integer"
+        $policy.q_no_edit | Should -Not -BeNullOrEmpty
+        #$policy.q_class | Should -Not -BeNullOrEmpty
+    }
+
     Context "Search" {
 
         It "Search Policy by uuid ($script:uuid)" {

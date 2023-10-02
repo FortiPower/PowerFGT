@@ -222,6 +222,11 @@ function Get-FGTFirewallProxyPolicy {
         Get Proxy policy with uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
 
         .EXAMPLE
+        Get-FGTFirewallProxyPolicy -meta
+
+        Get list of all Proxy Policies object with metadata (q_...) like usage (q_ref)
+
+        .EXAMPLE
         Get-FGTFirewallProxyPolicy -skip
 
         Get list of all Proxy policies (but only relevant attributes)
@@ -248,6 +253,8 @@ function Get-FGTFirewallProxyPolicy {
         [Parameter (Mandatory = $false, ParameterSetName = "filter_build")]
         [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
+        [switch]$meta,
+        [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
@@ -261,6 +268,9 @@ function Get-FGTFirewallProxyPolicy {
     Process {
 
         $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('meta') ) {
+            $invokeParams.add( 'meta', $meta )
+        }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
         }
