@@ -29,6 +29,11 @@ function Get-FGTFirewallServiceGroup {
         Get services group object contains with *FGT*
 
         .EXAMPLE
+        Get-FGTFirewallServiceGroup -meta
+
+        Get list of all services group object with metadata (q_...) like usage (q_ref)
+
+        .EXAMPLE
         Get-FGTFirewallServiceGroup -skip
 
         Get list of all services group object (but only relevant attributes)
@@ -55,6 +60,8 @@ function Get-FGTFirewallServiceGroup {
         [Parameter (ParameterSetName = "filter")]
         [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
+        [switch]$meta,
+        [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
@@ -68,6 +75,9 @@ function Get-FGTFirewallServiceGroup {
     Process {
 
         $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('meta') ) {
+            $invokeParams.add( 'meta', $meta )
+        }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
         }
