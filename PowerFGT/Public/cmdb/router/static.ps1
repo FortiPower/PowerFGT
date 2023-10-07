@@ -50,6 +50,11 @@ function Get-FGTRouterStatic {
         Get static route object with device contains port
 
         .EXAMPLE
+        Get-FGTRouterStatic -meta
+
+        Get list of all static route object with metadata (q_...) like usage (q_ref)
+
+        .EXAMPLE
         Get-FGTRouterStatic -skip
 
         Get list of all static route object (but only relevant attributes)
@@ -81,6 +86,8 @@ function Get-FGTRouterStatic {
         [Parameter (ParameterSetName = "filter")]
         [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
+        [switch]$meta,
+        [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
@@ -94,6 +101,9 @@ function Get-FGTRouterStatic {
     Process {
 
         $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('meta') ) {
+            $invokeParams.add( 'meta', $meta )
+        }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
         }
