@@ -30,6 +30,11 @@ function Get-FGTRouterPolicy {
         Get route policy object with device contains port
 
         .EXAMPLE
+        Get-FGTRouterPolicy -meta
+
+        Get list of all route policy object with metadata (q_...) like usage (q_ref)
+
+        .EXAMPLE
         Get-FGTRouterPolicy -skip
 
         Get list of all route policy object (but only relevant attributes)
@@ -53,6 +58,8 @@ function Get-FGTRouterPolicy {
         [Parameter (ParameterSetName = "filter")]
         [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
+        [switch]$meta,
+        [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
@@ -66,6 +73,9 @@ function Get-FGTRouterPolicy {
     Process {
 
         $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('meta') ) {
+            $invokeParams.add( 'meta', $meta )
+        }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
         }
