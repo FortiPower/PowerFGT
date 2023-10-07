@@ -40,6 +40,20 @@ Describe "Get Static Route" {
         Confirm-FGTRouterStatic ($route) | Should -Be $true
     }
 
+    It "Get ALL Static Route with meta" {
+        $route = Get-FGTRouterStatic -meta -gateway 192.2.0.254
+        $route.q_ref | Should -Not -BeNullOrEmpty
+        $route.q_static | Should -Not -BeNullOrEmpty
+        $route.q_no_rename | Should -Not -BeNullOrEmpty
+        $route.q_global_entry | Should -Not -BeNullOrEmpty
+        $route.q_type | Should -Be '2'
+        $route.q_path | Should -Be "router"
+        $route.q_name | Should -Be "static"
+        $route.q_mkey_type | Should -Be "integer"
+        $route.q_no_edit | Should -Not -BeNullOrEmpty
+        #$route.q_class | Should -Not -BeNullOrEmpty
+    }
+
     Context "Search" {
 
         It "Search Static Route by device" {
