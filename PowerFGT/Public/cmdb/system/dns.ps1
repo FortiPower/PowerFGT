@@ -34,7 +34,7 @@ function Get-FGTSystemDns {
 
         Display DNS configured on the FortiGate (but only relevant attributes)
 
-        EXAMPLE
+        .EXAMPLE
         Get-FGTSystemDns -vdom vdomX
 
         Display DNS configured on the FortiGate on vdomX
