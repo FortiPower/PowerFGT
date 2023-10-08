@@ -24,6 +24,11 @@ function Get-FGTSystemAdmin {
         Get system administrators contains with *FGT*
 
         .EXAMPLE
+        Get-FGTSystemAdmin -meta
+
+        Display all system administrators with metadata (q_...) like usage (q_ref)
+
+        .EXAMPLE
         Get-FGTSystemAdmin -skip
 
         Display all system administrators (but only relevant attributes)
@@ -50,6 +55,8 @@ function Get-FGTSystemAdmin {
         [Parameter (ParameterSetName = "filter")]
         [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
+        [switch]$meta,
+        [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
@@ -63,6 +70,9 @@ function Get-FGTSystemAdmin {
     Process {
 
         $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('meta') ) {
+            $invokeParams.add( 'meta', $meta )
+        }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
         }
