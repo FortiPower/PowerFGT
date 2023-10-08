@@ -29,6 +29,11 @@ function Get-FGTSystemDnsServer {
         Get System Server DNS with mode  contains forward
 
         .EXAMPLE
+        Get-FGTSystemDnsServer -meta
+
+        Display DNS Server configured on the FortiGate with metadata (q_...) like usage (q_ref)
+
+        .EXAMPLE
         Get-FGTSystemDnsServer -skip
 
         Display DNS Server configured on the FortiGate (but only relevant attributes)
@@ -52,6 +57,8 @@ function Get-FGTSystemDnsServer {
         [Parameter (ParameterSetName = "filter")]
         [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
+        [switch]$meta,
+        [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
@@ -65,6 +72,9 @@ function Get-FGTSystemDnsServer {
     Process {
 
         $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('meta') ) {
+            $invokeParams.add( 'meta', $meta )
+        }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
         }
