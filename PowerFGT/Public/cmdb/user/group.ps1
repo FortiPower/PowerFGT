@@ -29,6 +29,11 @@ function Get-FGTUserGroup {
         Get local group contains with *FGT*
 
         .EXAMPLE
+        Get-FGTUserGroup -meta
+
+        Display all local group with metadata (q_...) like usage (q_ref)
+
+        .EXAMPLE
         Get-FGTUserGroup -skip
 
         Display all local group (but only relevant attributes)
@@ -58,6 +63,8 @@ function Get-FGTUserGroup {
         [Parameter (ParameterSetName = "filter")]
         [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
+        [switch]$meta,
+        [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
@@ -71,6 +78,9 @@ function Get-FGTUserGroup {
     Process {
 
         $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('meta') ) {
+            $invokeParams.add( 'meta', $meta )
+        }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
         }

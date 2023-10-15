@@ -30,6 +30,11 @@ function Get-FGTUserLocal {
         Get local user contains with *FGT*
 
         .EXAMPLE
+        Get-FGTUserLocal -meta
+
+        Display all local users with metadata (q_...) like usage (q_ref)
+
+        .EXAMPLE
         Get-FGTUserLocal -skip
 
         Display all local users (but only relevant attributes)
@@ -59,6 +64,8 @@ function Get-FGTUserLocal {
         [Parameter (ParameterSetName = "filter")]
         [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
+        [switch]$meta,
+        [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
@@ -72,6 +79,9 @@ function Get-FGTUserLocal {
     Process {
 
         $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('meta') ) {
+            $invokeParams.add( 'meta', $meta )
+        }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
         }
