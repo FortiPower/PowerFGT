@@ -24,6 +24,11 @@ function Get-FGTUserLDAP {
         Get LDAP servers contains with *FGT*
 
         .EXAMPLE
+        Get-FGTUserLDAP -meta
+
+        Display all LDAP servers with metadata (q_...) like usage (q_ref)
+
+        .EXAMPLE
         Get-FGTUserLDAP -skip
 
         Display all LDAP servers (but only relevant attributes)
@@ -50,6 +55,8 @@ function Get-FGTUserLDAP {
         [Parameter (ParameterSetName = "filter")]
         [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
+        [switch]$meta,
+        [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
@@ -63,6 +70,9 @@ function Get-FGTUserLDAP {
     Process {
 
         $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('meta') ) {
+            $invokeParams.add( 'meta', $meta )
+        }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
         }

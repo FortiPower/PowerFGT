@@ -24,6 +24,11 @@ function Get-FGTUserRADIUS {
         Get RADIUS servers contains with *FGT*
 
         .EXAMPLE
+        Get-FGTUserRADIUS -meta
+
+        Display all RADIUS servers with metadata (q_...) like usage (q_ref)
+
+        .EXAMPLE
         Get-FGTUserRADIUS -skip
 
         Display all RADIUS servers (but only relevant attributes)
@@ -50,6 +55,8 @@ function Get-FGTUserRADIUS {
         [Parameter (ParameterSetName = "filter")]
         [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
+        [switch]$meta,
+        [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
@@ -63,6 +70,9 @@ function Get-FGTUserRADIUS {
     Process {
 
         $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('meta') ) {
+            $invokeParams.add( 'meta', $meta )
+        }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
         }
