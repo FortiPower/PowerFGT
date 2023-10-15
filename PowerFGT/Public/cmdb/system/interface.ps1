@@ -274,6 +274,11 @@ function Get-FGTSystemInterface {
         Get interface contains with *port*
 
         .EXAMPLE
+        Get-FGTSystemInterface -meta
+
+        Get list of all interface with metadata (q_...) like usage (q_ref)
+
+        .EXAMPLE
         Get-FGTSystemInterface -skip
 
         Get list of all interface (but only relevant attributes)
@@ -300,6 +305,8 @@ function Get-FGTSystemInterface {
         [Parameter (ParameterSetName = "filter")]
         [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
+        [switch]$meta,
+        [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
@@ -313,6 +320,9 @@ function Get-FGTSystemInterface {
     Process {
 
         $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('meta') ) {
+            $invokeParams.add( 'meta', $meta )
+        }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
         }
