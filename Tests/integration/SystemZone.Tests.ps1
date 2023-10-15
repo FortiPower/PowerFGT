@@ -39,6 +39,21 @@ Describe "Get zone" {
         $zone.name | Should -Be $pester_zone1
     }
 
+    It "Get zone ($pester_zone1) with meta" {
+        $zone = Get-FGTSystemZone -name $pester_zone1 -meta
+        $zone.name | Should -Be $pester_zone1
+        $zone.q_ref | Should -Not -BeNullOrEmpty
+        $zone.q_static | Should -Not -BeNullOrEmpty
+        $zone.q_no_rename | Should -Not -BeNullOrEmpty
+        $zone.q_global_entry | Should -Not -BeNullOrEmpty
+        $zone.q_type | Should -Be '12'
+        $zone.q_path | Should -Be "system"
+        $zone.q_name | Should -Be "zone"
+        $zone.q_mkey_type | Should -Be "string"
+        $zone.q_no_edit | Should -Not -BeNullOrEmpty
+        #$zone.q_class | Should -Not -BeNullOrEmpty
+    }
+
     Context "Search" {
 
         It "Search zone by name ($pester_zone1)" {
