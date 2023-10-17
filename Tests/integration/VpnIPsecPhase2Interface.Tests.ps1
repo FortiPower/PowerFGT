@@ -46,6 +46,21 @@ Describe "Get VPN Ipsec Phase 2 Interface" {
         Confirm-FGTVpnIpsecPhase2Interface $interface | Should -Be $true
     }
 
+    It "Get VPN Ipsec Phase 1 interface ($pester_vpn1) with meta" {
+        $interface = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -meta
+        $interface.name | Should -Be $pester_vpn1_ph2
+        $interface.q_ref | Should -Not -BeNullOrEmpty
+        $interface.q_static | Should -Not -BeNullOrEmpty
+        $interface.q_no_rename | Should -Not -BeNullOrEmpty
+        $interface.q_global_entry | Should -Not -BeNullOrEmpty
+        $interface.q_type | Should -Be '179'
+        $interface.q_path | Should -Be "vpn.ipsec"
+        $interface.q_name | Should -Be "phase2-interface"
+        $interface.q_mkey_type | Should -Be "string"
+        $interface.q_no_edit | Should -Not -BeNullOrEmpty
+        #$interface.q_class | Should -Not -BeNullOrEmpty
+    }
+
     Context "Search" {
 
         It "Search VPN Ipsec Phase 2 interface by name ($pester_vpn1_ph2)" {
