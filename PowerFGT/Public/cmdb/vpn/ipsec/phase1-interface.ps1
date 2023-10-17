@@ -253,6 +253,11 @@ function Get-FGTVpnIpsecPhase1Interface {
         Get VPN IPsec Phase 1 interface contains with *FGT*
 
         .EXAMPLE
+        Get-FGTVpnIPsecPhase1Interface -meta
+
+        Get list of all settings of VPN IPsec Phase 1 interface with metadata (q_...) like usage (q_ref)
+
+        .EXAMPLE
         Get-FGTVpnIPsecPhase1Interface -skip
 
         Get list of all settings of VPN IPsec Phase 1 interface (but only relevant attributes)
@@ -281,6 +286,8 @@ function Get-FGTVpnIpsecPhase1Interface {
         [Parameter (ParameterSetName = "filter")]
         [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
+        [switch]$meta,
+        [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
@@ -296,6 +303,9 @@ function Get-FGTVpnIpsecPhase1Interface {
         $uri = 'api/v2/cmdb/vpn.ipsec/phase1-interface'
 
         $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('meta') ) {
+            $invokeParams.add( 'meta', $meta )
+        }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
         }
