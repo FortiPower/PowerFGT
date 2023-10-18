@@ -28,6 +28,11 @@ function Get-FGTVpnSSLClient {
         Get VPN SSL Client contains with *FGT*
 
         .EXAMPLE
+        Get-FGTVpnSSLClient -meta
+
+        Get list of all settings of VPN SSL Client with metadata (q_...) like usage (q_ref)
+
+        .EXAMPLE
         Get-FGTVpnSSLClient -skip
 
         Get list of all settings of VPN SSL Client (but only relevant attributes)
@@ -54,6 +59,8 @@ function Get-FGTVpnSSLClient {
         [Parameter (ParameterSetName = "filter")]
         [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
+        [switch]$meta,
+        [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
@@ -69,6 +76,9 @@ function Get-FGTVpnSSLClient {
         $uri = 'api/v2/cmdb/vpn.ssl/client'
 
         $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('meta') ) {
+            $invokeParams.add( 'meta', $meta )
+        }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
         }
