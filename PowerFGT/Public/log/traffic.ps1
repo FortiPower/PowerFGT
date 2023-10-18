@@ -137,7 +137,7 @@ function Get-FGTLogTraffic {
                 $filter_attribute = "srcintf"
             }
             "dstip" {
-                $filter_value = $dstcip
+                $filter_value = $dstip
                 $filter_attribute = "dstip"
             }
             "dstintf" {
