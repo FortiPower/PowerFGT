@@ -28,6 +28,11 @@ function Get-FGTVpnSSLPortal {
         Get VPN SSL Portal contains with *FGT*
 
         .EXAMPLE
+        Get-FGTVpnSSLPortal -meta
+
+        Get list of all settings of VPN SSL Portal with metadata (q_...) like usage (q_ref)
+
+        .EXAMPLE
         Get-FGTVpnSSLPortal -skip
 
         Get list of all settings of VPN SSL Portal (but only relevant attributes)
@@ -54,6 +59,8 @@ function Get-FGTVpnSSLPortal {
         [Parameter (ParameterSetName = "filter")]
         [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
+        [switch]$meta,
+        [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
@@ -69,6 +76,9 @@ function Get-FGTVpnSSLPortal {
         $uri = 'api/v2/cmdb/vpn.ssl.web/portal'
 
         $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('meta') ) {
+            $invokeParams.add( 'meta', $meta )
+        }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
         }
