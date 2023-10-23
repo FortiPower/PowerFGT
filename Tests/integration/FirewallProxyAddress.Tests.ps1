@@ -54,7 +54,7 @@ Describe "Get Firewall Proxy Address" {
         $address.q_static | Should -Not -BeNullOrEmpty
         $address.q_no_rename | Should -Not -BeNullOrEmpty
         $address.q_global_entry | Should -Not -BeNullOrEmpty
-        $address.q_type | Should -Be '484'
+        $address.q_type | Should -BeIn @('484', '487')
         $address.q_path | Should -Be "firewall"
         $address.q_name | Should -Be "proxy-address"
         $address.q_mkey_type | Should -Be "string"

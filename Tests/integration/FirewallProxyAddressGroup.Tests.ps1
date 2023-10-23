@@ -57,7 +57,7 @@ Describe "Get Firewall Proxy Address Group" {
         $addressgroup.q_static | Should -Not -BeNullOrEmpty
         $addressgroup.q_no_rename | Should -Not -BeNullOrEmpty
         $addressgroup.q_global_entry | Should -Not -BeNullOrEmpty
-        $addressgroup.q_type | Should -Be '485'
+        $addressgroup.q_type | Should -BeIn @('485', '488')
         $addressgroup.q_path | Should -Be "firewall"
         $addressgroup.q_name | Should -Be "proxy-addrgrp"
         $addressgroup.q_mkey_type | Should -Be "string"
