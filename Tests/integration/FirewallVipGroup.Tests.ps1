@@ -56,7 +56,7 @@ Describe "Get Firewall Vip Group" {
         $vipgroup.q_static | Should -Not -BeNullOrEmpty
         $vipgroup.q_no_rename | Should -Not -BeNullOrEmpty
         $vipgroup.q_global_entry | Should -Not -BeNullOrEmpty
-        $vipgroup.q_type | Should -BeIn @('197', '198', '206')
+        $vipgroup.q_type | Should -BeIn @('188', '197', '198', '206')
         $vipgroup.q_path | Should -Be "firewall"
         $vipgroup.q_name | Should -Be "vipgrp"
         $vipgroup.q_mkey_type | Should -Be "string"
