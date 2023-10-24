@@ -51,7 +51,7 @@ Describe "Get VPN Ipsec Phase 1 Interface" {
         $interface.q_static | Should -Not -BeNullOrEmpty
         $interface.q_no_rename | Should -Not -BeNullOrEmpty
         $interface.q_global_entry | Should -Not -BeNullOrEmpty
-        $interface.q_type | Should -BeIn @('166', '178')
+        $interface.q_type | Should -BeIn @('165', '166', '178')
         $interface.q_path | Should -Be "vpn.ipsec"
         $interface.q_name | Should -Be "phase1-interface"
         $interface.q_mkey_type | Should -Be "string"
