@@ -50,7 +50,9 @@ Describe "Get Static Route" {
         $route.q_path | Should -Be "router"
         $route.q_name | Should -Be "static"
         $route.q_mkey_type | Should -Be "integer"
-        $route.q_no_edit | Should -Not -BeNullOrEmpty
+        if ($DefaultFGTConnection.version -ge "6.2.0") {
+            $route.q_no_edit | Should -Not -BeNullOrEmpty
+        }
         #$route.q_class | Should -Not -BeNullOrEmpty
     }
 

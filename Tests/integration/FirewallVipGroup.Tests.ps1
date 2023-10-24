@@ -60,7 +60,9 @@ Describe "Get Firewall Vip Group" {
         $vipgroup.q_path | Should -Be "firewall"
         $vipgroup.q_name | Should -Be "vipgrp"
         $vipgroup.q_mkey_type | Should -Be "string"
-        $vipgroup.q_no_edit | Should -Not -BeNullOrEmpty
+        if ($DefaultFGTConnection.version -ge "6.2.0") {
+            $vipgroup.q_no_edit | Should -Not -BeNullOrEmpty
+        }
         $vipgroup.q_class | Should -Not -BeNullOrEmpty
     }
 
