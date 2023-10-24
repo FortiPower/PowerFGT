@@ -54,7 +54,9 @@ Describe "Get System Interface" {
         $interface.q_path | Should -Be "system"
         $interface.q_name | Should -Be "interface"
         $interface.q_mkey_type | Should -Be "string"
-        $interface.q_no_edit | Should -Not -BeNullOrEmpty
+        if ($DefaultFGTConnection.version -ge "6.2.0") {
+            $interface.q_no_edit | Should -Not -BeNullOrEmpty
+        }
         #$interface.q_class | Should -Not -BeNullOrEmpty
     }
 

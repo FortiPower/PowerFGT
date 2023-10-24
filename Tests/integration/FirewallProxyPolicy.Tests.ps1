@@ -57,7 +57,9 @@ Describe "Get Firewall Proxy Policy" {
         $policy.q_path | Should -Be "firewall"
         $policy.q_name | Should -Be "proxy-policy"
         $policy.q_mkey_type | Should -Be "integer"
-        $policy.q_no_edit | Should -Not -BeNullOrEmpty
+        if ($DefaultFGTConnection.version -ge "6.2.0") {
+            $policy.q_no_edit | Should -Not -BeNullOrEmpty
+        }
         #$policy.q_class | Should -Not -BeNullOrEmpty
     }
 

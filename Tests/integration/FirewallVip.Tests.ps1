@@ -56,7 +56,9 @@ Describe "Get Firewall VIP" {
         $vip.q_path | Should -Be "firewall"
         $vip.q_name | Should -Be "vip"
         $vip.q_mkey_type | Should -Be "string"
-        $vip.q_no_edit | Should -Not -BeNullOrEmpty
+        if ($DefaultFGTConnection.version -ge "6.2.0") {
+            $vip.q_no_edit | Should -Not -BeNullOrEmpty
+        }
         $vip.q_class | Should -Not -BeNullOrEmpty
     }
 

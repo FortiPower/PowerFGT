@@ -50,7 +50,9 @@ Describe "Get zone" {
         $zone.q_path | Should -Be "system"
         $zone.q_name | Should -Be "zone"
         $zone.q_mkey_type | Should -Be "string"
-        $zone.q_no_edit | Should -Not -BeNullOrEmpty
+        if ($DefaultFGTConnection.version -ge "6.2.0") {
+            $zone.q_no_edit | Should -Not -BeNullOrEmpty
+        }
         #$zone.q_class | Should -Not -BeNullOrEmpty
     }
 

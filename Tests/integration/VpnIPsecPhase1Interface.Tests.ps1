@@ -55,7 +55,9 @@ Describe "Get VPN Ipsec Phase 1 Interface" {
         $interface.q_path | Should -Be "vpn.ipsec"
         $interface.q_name | Should -Be "phase1-interface"
         $interface.q_mkey_type | Should -Be "string"
-        $interface.q_no_edit | Should -Not -BeNullOrEmpty
+        if ($DefaultFGTConnection.version -ge "6.2.0") {
+            $interface.q_no_edit | Should -Not -BeNullOrEmpty
+        }
         #$interface.q_class | Should -Not -BeNullOrEmpty
     }
 

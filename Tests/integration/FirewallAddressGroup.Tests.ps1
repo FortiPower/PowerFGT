@@ -60,7 +60,9 @@ Describe "Get Firewall Address Group" {
         $addressgroup.q_path | Should -Be "firewall"
         $addressgroup.q_name | Should -Be "addrgrp"
         $addressgroup.q_mkey_type | Should -Be "string"
-        $addressgroup.q_no_edit | Should -Not -BeNullOrEmpty
+        if ($DefaultFGTConnection.version -ge "6.2.0") {
+            $addressgroup.q_no_edit | Should -Not -BeNullOrEmpty
+        }
         $addressgroup.q_class | Should -Not -BeNullOrEmpty
     }
 

@@ -58,7 +58,9 @@ Describe "Get Firewall Proxy Address" {
         $address.q_path | Should -Be "firewall"
         $address.q_name | Should -Be "proxy-address"
         $address.q_mkey_type | Should -Be "string"
-        $address.q_no_edit | Should -Not -BeNullOrEmpty
+        if ($DefaultFGTConnection.version -ge "6.2.0") {
+            $address.q_no_edit | Should -Not -BeNullOrEmpty
+        }
         $address.q_class | Should -Not -BeNullOrEmpty
     }
 
