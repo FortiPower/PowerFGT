@@ -56,7 +56,7 @@ Describe "Get Firewall Address Group" {
         $addressgroup.q_static | Should -Not -BeNullOrEmpty
         $addressgroup.q_no_rename | Should -Not -BeNullOrEmpty
         $addressgroup.q_global_entry | Should -Not -BeNullOrEmpty
-        $addressgroup.q_type | Should -BeIn @('30', '32', '33')
+        $addressgroup.q_type | Should -BeIn @('29', '30', '32', '33')
         $addressgroup.q_path | Should -Be "firewall"
         $addressgroup.q_name | Should -Be "addrgrp"
         $addressgroup.q_mkey_type | Should -Be "string"
