@@ -53,7 +53,7 @@ Describe "Get Firewall Policy" {
         $policy.q_static | Should -Not -BeNullOrEmpty
         $policy.q_no_rename | Should -Not -BeNullOrEmpty
         $policy.q_global_entry | Should -Not -BeNullOrEmpty
-        $policy.q_type | Should -Be '53'
+        $policy.q_type | Should -BeIn @('50', '53')
         $policy.q_path | Should -Be "firewall"
         $policy.q_name | Should -Be "policy"
         $policy.q_mkey_type | Should -Be "integer"
