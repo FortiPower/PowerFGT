@@ -52,7 +52,7 @@ Describe "Get Firewall VIP" {
         $vip.q_static | Should -Not -BeNullOrEmpty
         $vip.q_no_rename | Should -Not -BeNullOrEmpty
         $vip.q_global_entry | Should -Not -BeNullOrEmpty
-        $vip.q_type | Should -BeIn @('41', '42')
+        $vip.q_type | Should -BeIn @('41', '42', '43')
         $vip.q_path | Should -Be "firewall"
         $vip.q_name | Should -Be "vip"
         $vip.q_mkey_type | Should -Be "string"
