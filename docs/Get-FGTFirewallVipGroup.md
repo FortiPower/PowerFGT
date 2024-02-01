@@ -14,28 +14,28 @@ Get VIP group(s) configured
 
 ### default (Default)
 ```
-Get-FGTFirewallVipGroup [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
- [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-FGTFirewallVipGroup [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-meta]
+ [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### name
 ```
 Get-FGTFirewallVipGroup [[-name] <String>] [-filter_attribute <String>] [-filter_type <String>]
- [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>]
+ [-filter_value <PSObject>] [-meta] [-skip] [-vdom <String[]>] [-connection <PSObject>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### uuid
 ```
 Get-FGTFirewallVipGroup [-uuid <String>] [-filter_attribute <String>] [-filter_type <String>]
- [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>]
+ [-filter_value <PSObject>] [-meta] [-skip] [-vdom <String[]>] [-connection <PSObject>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### filter
 ```
-Get-FGTFirewallVipGroup [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
- [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-FGTFirewallVipGroup [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-meta]
+ [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -73,12 +73,19 @@ Get VIP Group with uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
 
 ### EXAMPLE 5
 ```
+Get-FGTFirewallVipGroup -meta
+```
+
+Get list of all nat vip groups with metadata (q_...) like usage (q_ref)
+
+### EXAMPLE 6
+```
 Get-FGTFirewallVipGroup -skip
 ```
 
 Display all VIP groups (but only relevant attributes)
 
-### EXAMPLE 6
+### EXAMPLE 7
 ```
 Get-FGTFirewallVipGroup -vdom vdomX
 ```
@@ -158,6 +165,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -meta
+{{ Fill meta Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

@@ -14,26 +14,27 @@ Get list of all "SAML users"
 
 ### default (Default)
 ```
-Get-FGTUserSAML [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
+Get-FGTUserSAML [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-meta] [-skip]
  [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### name
 ```
 Get-FGTUserSAML [[-name] <String>] [-filter_attribute <String>] [-filter_type <String>]
- [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>]
+ [-filter_value <PSObject>] [-meta] [-skip] [-vdom <String[]>] [-connection <PSObject>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### id
 ```
 Get-FGTUserSAML [-id <String>] [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>]
- [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-meta] [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ### filter
 ```
-Get-FGTUserSAML [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
+Get-FGTUserSAML [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-meta] [-skip]
  [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
@@ -66,12 +67,19 @@ Get SAML user contains with *FGT*
 
 ### EXAMPLE 4
 ```
+Get-FGTUserSAML -meta
+```
+
+Display all SAML users with metadata (q_...) like usage (q_ref)
+
+### EXAMPLE 5
+```
 Get-FGTUserSAML -skip
 ```
 
 Display all SAML users (but only relevant attributes)
 
-### EXAMPLE 5
+### EXAMPLE 6
 ```
 Get-FGTUserSAML -vdom vdomX
 ```
@@ -151,6 +159,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -meta
+{{ Fill meta Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

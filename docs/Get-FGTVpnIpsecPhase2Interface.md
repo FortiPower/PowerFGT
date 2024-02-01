@@ -15,20 +15,22 @@ Get list of all VPN IPsec phase 2 (IKE) settings
 ### default (Default)
 ```
 Get-FGTVpnIpsecPhase2Interface [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>]
- [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-meta] [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ### name
 ```
 Get-FGTVpnIpsecPhase2Interface [[-name] <String>] [-filter_attribute <String>] [-filter_type <String>]
- [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>]
+ [-filter_value <PSObject>] [-meta] [-skip] [-vdom <String[]>] [-connection <PSObject>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### filter
 ```
 Get-FGTVpnIpsecPhase2Interface [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>]
- [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-meta] [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -65,6 +67,13 @@ Get-FGTVpnIPsecPhase2Interface -skip
 Get list of all settings of VPN IPsec Phase 2 interface (but only relevant attributes)
 
 ### EXAMPLE 5
+```
+Get-FGTVpnIPsecPhase2Interface -skip
+```
+
+Get list of all settings of VPN IPsec Phase 2 interface (but only relevant attributes)
+
+### EXAMPLE 6
 ```
 Get-FGTVpnIPsecPhase2Interface -vdom vdomX
 ```
@@ -129,6 +138,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -meta
+{{ Fill meta Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

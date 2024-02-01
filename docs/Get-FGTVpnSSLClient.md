@@ -14,21 +14,21 @@ Get list of all VPN SSL Client settings
 
 ### default (Default)
 ```
-Get-FGTVpnSSLClient [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
- [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-FGTVpnSSLClient [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-meta]
+ [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### name
 ```
 Get-FGTVpnSSLClient [[-name] <String>] [-filter_attribute <String>] [-filter_type <String>]
- [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>]
+ [-filter_value <PSObject>] [-meta] [-skip] [-vdom <String[]>] [-connection <PSObject>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### filter
 ```
-Get-FGTVpnSSLClient [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
- [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-FGTVpnSSLClient [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-meta]
+ [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -59,12 +59,19 @@ Get VPN SSL Client contains with *FGT*
 
 ### EXAMPLE 4
 ```
+Get-FGTVpnSSLClient -meta
+```
+
+Get list of all settings of VPN SSL Client with metadata (q_...) like usage (q_ref)
+
+### EXAMPLE 5
+```
 Get-FGTVpnSSLClient -skip
 ```
 
 Get list of all settings of VPN SSL Client (but only relevant attributes)
 
-### EXAMPLE 5
+### EXAMPLE 6
 ```
 Get-FGTVpnSSLClient -vdom vdomX
 ```
@@ -129,6 +136,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -meta
+{{ Fill meta Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

@@ -14,26 +14,27 @@ Get list of all "proxy-address"
 
 ### default (Default)
 ```
-Get-FGTFirewallProxyAddress [-skip] [-vdom <String[]>] [-connection <PSObject>]
+Get-FGTFirewallProxyAddress [-meta] [-skip] [-vdom <String[]>] [-connection <PSObject>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### name
 ```
-Get-FGTFirewallProxyAddress [[-name] <String>] [-filter_type <String>] [-skip] [-vdom <String[]>]
+Get-FGTFirewallProxyAddress [[-name] <String>] [-filter_type <String>] [-meta] [-skip] [-vdom <String[]>]
  [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### uuid
 ```
-Get-FGTFirewallProxyAddress [-uuid <String>] [-filter_type <String>] [-skip] [-vdom <String[]>]
+Get-FGTFirewallProxyAddress [-uuid <String>] [-filter_type <String>] [-meta] [-skip] [-vdom <String[]>]
  [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### filter_build
 ```
 Get-FGTFirewallProxyAddress [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>]
- [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-meta] [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -77,6 +78,13 @@ Get-FGTFirewallProxyAddress -skip
 Get list of all proxy-address object (but only relevant attributes)
 
 ### EXAMPLE 6
+```
+Get-FGTFirewallProxyAddress -meta
+```
+
+Get list of all proxy-address object with metadata (q_...) like usage (q_ref)
+
+### EXAMPLE 7
 ```
 Get-FGTFirewallProxyAddress -vdom vdomX
 ```
@@ -156,6 +164,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -meta
+{{ Fill meta Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

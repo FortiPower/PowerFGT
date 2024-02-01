@@ -14,28 +14,28 @@ Get list of all (NAT) Virtual IP
 
 ### default (Default)
 ```
-Get-FGTFirewallVip [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
- [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-FGTFirewallVip [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-meta]
+ [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### name
 ```
 Get-FGTFirewallVip [[-name] <String>] [-filter_attribute <String>] [-filter_type <String>]
- [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>]
+ [-filter_value <PSObject>] [-meta] [-skip] [-vdom <String[]>] [-connection <PSObject>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### uuid
 ```
 Get-FGTFirewallVip [-uuid <String>] [-filter_attribute <String>] [-filter_type <String>]
- [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>]
+ [-filter_value <PSObject>] [-meta] [-skip] [-vdom <String[]>] [-connection <PSObject>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### filter
 ```
-Get-FGTFirewallVip [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
- [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-FGTFirewallVip [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-meta]
+ [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -79,6 +79,13 @@ Get-FGTFirewallVip -skip
 Get list of all nat vip object (but only relevant attributes)
 
 ### EXAMPLE 6
+```
+Get-FGTFirewallVip -meta
+```
+
+Get list of all nat vip object with metadata (q_...) like usage (q_ref)
+
+### EXAMPLE 7
 ```
 Get-FGTFirewallVip -vdom vdomX
 ```
@@ -158,6 +165,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -meta
+{{ Fill meta Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

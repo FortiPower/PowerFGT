@@ -14,35 +14,35 @@ Get list of all policies/rules
 
 ### default (Default)
 ```
-Get-FGTFirewallPolicy [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
- [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-FGTFirewallPolicy [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-meta]
+ [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### name
 ```
 Get-FGTFirewallPolicy [[-name] <String>] [-filter_attribute <String>] [-filter_type <String>]
- [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>]
+ [-filter_value <PSObject>] [-meta] [-skip] [-vdom <String[]>] [-connection <PSObject>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### uuid
 ```
 Get-FGTFirewallPolicy [-uuid <String>] [-filter_attribute <String>] [-filter_type <String>]
- [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>]
+ [-filter_value <PSObject>] [-meta] [-skip] [-vdom <String[]>] [-connection <PSObject>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### policyid
 ```
 Get-FGTFirewallPolicy [-policyid <String>] [-filter_attribute <String>] [-filter_type <String>]
- [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>]
+ [-filter_value <PSObject>] [-meta] [-skip] [-vdom <String[]>] [-connection <PSObject>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### filter
 ```
-Get-FGTFirewallPolicy [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
- [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-FGTFirewallPolicy [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-meta]
+ [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -93,6 +93,13 @@ Get-FGTFirewallPolicy -skip
 Get list of all policies (but only relevant attributes)
 
 ### EXAMPLE 7
+```
+Get-FGTFirewallPolicy -meta
+```
+
+Get list of all policies with metadata (q_...) like usage (q_ref)
+
+### EXAMPLE 8
 ```
 Get-FGTFirewallPolicy -vdom vdomX
 ```
@@ -187,6 +194,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -meta
+{{ Fill meta Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

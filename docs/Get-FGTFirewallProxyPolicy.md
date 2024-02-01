@@ -14,26 +14,27 @@ Get list of all Proxy Policies/rules
 
 ### default (Default)
 ```
-Get-FGTFirewallProxyPolicy [-skip] [-vdom <String[]>] [-connection <PSObject>]
+Get-FGTFirewallProxyPolicy [-meta] [-skip] [-vdom <String[]>] [-connection <PSObject>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### uuid
 ```
-Get-FGTFirewallProxyPolicy [-uuid <String>] [-filter_type <String>] [-skip] [-vdom <String[]>]
+Get-FGTFirewallProxyPolicy [-uuid <String>] [-filter_type <String>] [-meta] [-skip] [-vdom <String[]>]
  [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### policyid
 ```
-Get-FGTFirewallProxyPolicy [-policyid <String>] [-filter_type <String>] [-skip] [-vdom <String[]>]
+Get-FGTFirewallProxyPolicy [-policyid <String>] [-filter_type <String>] [-meta] [-skip] [-vdom <String[]>]
  [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### filter_build
 ```
 Get-FGTFirewallProxyPolicy [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>]
- [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-meta] [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -64,12 +65,19 @@ Get Proxy policy with uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
 
 ### EXAMPLE 4
 ```
+Get-FGTFirewallProxyPolicy -meta
+```
+
+Get list of all Proxy Policies object with metadata (q_...) like usage (q_ref)
+
+### EXAMPLE 5
+```
 Get-FGTFirewallProxyPolicy -skip
 ```
 
 Get list of all Proxy policies (but only relevant attributes)
 
-### EXAMPLE 5
+### EXAMPLE 6
 ```
 Get-FGTFirewallPolicy -vdom vdomX
 ```
@@ -149,6 +157,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -meta
+{{ Fill meta Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

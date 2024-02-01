@@ -14,26 +14,26 @@ Get proxy-addresses group configured
 
 ### default (Default)
 ```
-Get-FGTFirewallProxyAddressGroup [-skip] [-vdom <String[]>] [-connection <PSObject>]
+Get-FGTFirewallProxyAddressGroup [-meta] [-skip] [-vdom <String[]>] [-connection <PSObject>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### name
 ```
-Get-FGTFirewallProxyAddressGroup [[-name] <String>] [-filter_type <String>] [-skip] [-vdom <String[]>]
+Get-FGTFirewallProxyAddressGroup [[-name] <String>] [-filter_type <String>] [-meta] [-skip] [-vdom <String[]>]
  [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### uuid
 ```
-Get-FGTFirewallProxyAddressGroup [-uuid <String>] [-filter_type <String>] [-skip] [-vdom <String[]>]
+Get-FGTFirewallProxyAddressGroup [-uuid <String>] [-filter_type <String>] [-meta] [-skip] [-vdom <String[]>]
  [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### filter_build
 ```
 Get-FGTFirewallProxyAddressGroup [-filter_attribute <String>] [-filter_type <String>]
- [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>]
+ [-filter_value <PSObject>] [-meta] [-skip] [-vdom <String[]>] [-connection <PSObject>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
@@ -72,12 +72,19 @@ Get Address Group with uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
 
 ### EXAMPLE 5
 ```
+Get-FGTFirewallProxyAddressGroup -meta
+```
+
+Display all proxy-address group  with metadata (q_...) like usage (q_ref)
+
+### EXAMPLE 6
+```
 Get-FGTFirewallProxyAddressGroup -skip
 ```
 
 Display all addresses group (but only relevant attributes)
 
-### EXAMPLE 6
+### EXAMPLE 7
 ```
 Get-FGTFirewallProxyAddressGroup -vdom vdomX
 ```
@@ -157,6 +164,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -meta
+{{ Fill meta Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

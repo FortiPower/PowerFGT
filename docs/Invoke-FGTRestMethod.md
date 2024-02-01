@@ -14,7 +14,7 @@ Invoke RestMethod with FGT connection (internal) variable
 
 ### default (Default)
 ```
-Invoke-FGTRestMethod [-uri] <String> [-method <String>] [-body <PSObject>] [-skip] [-vdom <String[]>]
+Invoke-FGTRestMethod [-uri] <String> [-method <String>] [-body <PSObject>] [-meta] [-skip] [-vdom <String[]>]
  [-filter <String>] [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>]
  [-uri_escape <String>] [-extra <String>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
  [<CommonParameters>]
@@ -22,7 +22,7 @@ Invoke-FGTRestMethod [-uri] <String> [-method <String>] [-body <PSObject>] [-ski
 
 ### filter
 ```
-Invoke-FGTRestMethod [-uri] <String> [-method <String>] [-body <PSObject>] [-skip] [-vdom <String[]>]
+Invoke-FGTRestMethod [-uri] <String> [-method <String>] [-body <PSObject>] [-meta] [-skip] [-vdom <String[]>]
  [-filter <String>] [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>]
  [-uri_escape <String>] [-extra <String>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
  [<CommonParameters>]
@@ -30,7 +30,7 @@ Invoke-FGTRestMethod [-uri] <String> [-method <String>] [-body <PSObject>] [-ski
 
 ### filter_build
 ```
-Invoke-FGTRestMethod [-uri] <String> [-method <String>] [-body <PSObject>] [-skip] [-vdom <String[]>]
+Invoke-FGTRestMethod [-uri] <String> [-method <String>] [-body <PSObject>] [-meta] [-skip] [-vdom <String[]>]
  [-filter <String>] [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>]
  [-uri_escape <String>] [-extra <String>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
  [<CommonParameters>]
@@ -99,17 +99,31 @@ Invoke-RestMethod with FGT connection for get api/v2/cmdb/firewall/address uri w
 
 ### EXAMPLE 9
 ```
-Invoke-FGTRestMethod -method "Ppost" -uri "api/v2/cmdb/firewall/address" -uri_escape "My /% Address" -body $body
+Invoke-FGTRestMethod -method "post" -uri "api/v2/cmdb/firewall/address" -uri_escape "My /% Address" -body $body
 ```
 
 Invoke-RestMethod with FGT connection for post api/v2/cmdb/firewall/address uri with uri escape (replace / or % by HTML code)
 
 ### EXAMPLE 10
 ```
-Invoke-FGTRestMethod -method "Ppost" -uri "api/v2/cmdb/firewall/address" -extra "action=move"
+Invoke-FGTRestMethod -method "post" -uri "api/v2/cmdb/firewall/address" -extra "action=move"
 ```
 
 Invoke-RestMethod with FGT connection for post api/v2/cmdb/firewall/address uri with extra uri (add ?action=move on this example)
+
+### EXAMPLE 11
+```
+Invoke-FGTRestMethod -method "get" -uri "api/v2/cmdb/firewall/address" -skip
+```
+
+Invoke-RestMethod with FGT connection for get api/v2/cmdb/firewall/address?&skip=1 uri with skip some value
+
+### EXAMPLE 12
+```
+Invoke-FGTRestMethod -method "get" -uri "api/v2/cmdb/firewall/address" -meta
+```
+
+Invoke-RestMethod with FGT connection for get api/v2/cmdb/firewall/address?&with_meta=1 uri with meta(data) of object (q_ref...)
 
 ## PARAMETERS
 
@@ -154,6 +168,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -meta
+{{ Fill meta Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

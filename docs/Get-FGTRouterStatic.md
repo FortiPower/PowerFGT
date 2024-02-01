@@ -14,42 +14,42 @@ Get list of all "static routes"
 
 ### default (Default)
 ```
-Get-FGTRouterStatic [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
- [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-FGTRouterStatic [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-meta]
+ [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### device
 ```
 Get-FGTRouterStatic [-device <String>] [-filter_attribute <String>] [-filter_type <String>]
- [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>]
+ [-filter_value <PSObject>] [-meta] [-skip] [-vdom <String[]>] [-connection <PSObject>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### dst
 ```
 Get-FGTRouterStatic [-dst <String>] [-filter_attribute <String>] [-filter_type <String>]
- [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>]
+ [-filter_value <PSObject>] [-meta] [-skip] [-vdom <String[]>] [-connection <PSObject>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### gateway
 ```
 Get-FGTRouterStatic [-gateway <String>] [-filter_attribute <String>] [-filter_type <String>]
- [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>]
+ [-filter_value <PSObject>] [-meta] [-skip] [-vdom <String[]>] [-connection <PSObject>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### seq_num
 ```
 Get-FGTRouterStatic [-seq_num <Int32>] [-filter_attribute <String>] [-filter_type <String>]
- [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>]
+ [-filter_value <PSObject>] [-meta] [-skip] [-vdom <String[]>] [-connection <PSObject>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### filter
 ```
-Get-FGTRouterStatic [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
- [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-FGTRouterStatic [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-meta]
+ [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -108,12 +108,19 @@ Get static route object with device contains port
 
 ### EXAMPLE 8
 ```
+Get-FGTRouterStatic -meta
+```
+
+Get list of all static route object with metadata (q_...) like usage (q_ref)
+
+### EXAMPLE 9
+```
 Get-FGTRouterStatic -skip
 ```
 
 Get list of all static route object (but only relevant attributes)
 
-### EXAMPLE 9
+### EXAMPLE 10
 ```
 Get-FGTRouterStatic -vdom vdomX
 ```
@@ -223,6 +230,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -meta
+{{ Fill meta Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

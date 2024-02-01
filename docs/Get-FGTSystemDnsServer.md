@@ -14,14 +14,14 @@ Get DNS Server configured
 
 ### default (Default)
 ```
-Get-FGTSystemDnsServer [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
- [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-FGTSystemDnsServer [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-meta]
+ [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### filter
 ```
-Get-FGTSystemDnsServer [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip]
- [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-FGTSystemDnsServer [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-meta]
+ [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -51,6 +51,13 @@ Get-FGTSystemDnsServer -filter_attribute mode -filter_value forward -filter_type
 Get System Server DNS with mode  contains forward
 
 ### EXAMPLE 4
+```
+Get-FGTSystemDnsServer -meta
+```
+
+Display DNS Server configured on the FortiGate with metadata (q_...) like usage (q_ref)
+
+### EXAMPLE 5
 ```
 Get-FGTSystemDnsServer -skip
 ```
@@ -105,6 +112,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -meta
+{{ Fill meta Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

@@ -15,27 +15,29 @@ Get addresses group configured
 ### default (Default)
 ```
 Get-FGTFirewallAddressGroup [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>]
- [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-meta] [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ### name
 ```
 Get-FGTFirewallAddressGroup [[-name] <String>] [-filter_attribute <String>] [-filter_type <String>]
- [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>]
+ [-filter_value <PSObject>] [-meta] [-skip] [-vdom <String[]>] [-connection <PSObject>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### uuid
 ```
 Get-FGTFirewallAddressGroup [-uuid <String>] [-filter_attribute <String>] [-filter_type <String>]
- [-filter_value <PSObject>] [-skip] [-vdom <String[]>] [-connection <PSObject>]
+ [-filter_value <PSObject>] [-meta] [-skip] [-vdom <String[]>] [-connection <PSObject>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### filter
 ```
 Get-FGTFirewallAddressGroup [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>]
- [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-meta] [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -73,12 +75,19 @@ Get Address Group with uuid 9e73a10e-1772-51ea-a8d7-297686fd7702
 
 ### EXAMPLE 5
 ```
+Get-FGTFirewallAddressGroup -meta
+```
+
+Display all addresses group with metadata (q_...) like usage (q_ref)
+
+### EXAMPLE 6
+```
 Get-FGTFirewallAddressGroup -skip
 ```
 
 Display all addresses group (but only relevant attributes)
 
-### EXAMPLE 6
+### EXAMPLE 7
 ```
 Get-FGTFirewallAddressGroup -vdom vdomX
 ```
@@ -158,6 +167,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -meta
+{{ Fill meta Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
