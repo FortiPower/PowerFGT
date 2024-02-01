@@ -301,6 +301,13 @@ function Set-FGTSystemGlobal {
 
         if ($PSCmdlet.ShouldProcess("Global", 'Configure Settings')) {
             Invoke-FGTRestMethod -method "PUT" -body $_sg -uri $uri -connection $connection @invokeParams | Out-Null
+
+            #Change the admin (secure) port if you use for the connection
+            if ( $PsBoundParameters.ContainsKey('admin_sport') -and $connection.httpOnly -eq $false ) {
+                $connection.port = $admin_sport
+                #Add Sleep 2 seconds for wait on the server...
+                Start-Sleep 2
+            }
         }
 
         Get-FGTSystemGlobal -connection $connection @invokeParams
