@@ -649,6 +649,75 @@ Describe "Add System Interface" -ForEach $type {
             $interface.ip | Should -Be "192.0.2.1 255.255.255.0"
         }
 
+        It "Add System Interface (with -data (1 field))" {
+            $data = @{ "alias" = "int_PowerFGT" }
+            $p = $_.param
+            Add-FGTSystemInterface -name $pester_int1 @p -data $data
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            switch ($_.type) {
+                "vlan" {
+                    $interface.type | Should -Be "vlan"
+                    $interface.vlanid | Should -Be $pester_vlanid1
+                    $interface.interface | Should -Be $pester_port1
+                }
+                "aggregate_lacp" {
+                    $interface.type | Should -Be "aggregate"
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "aggregate_static" {
+                    if (($fgt_version -ge "6.2.0")) {
+                        $interface.type | Should -Be "redundant"
+                    }
+                    else {
+                        $interface.type | Should -Be "aggregate"
+                    }
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "loopback" {
+                    $interface.type | Should -Be "loopback"
+                }
+            }
+            $interface.role | Should -Be "lan"
+            $interface.mode | Should -Be "static"
+            $interface.alias | Should -Be "int_PowerFGT"
+        }
+
+        It "Add System Interface (with -data (2 fields))" {
+            $data = @{ "alias" = "int_PowerFGT"; description = "Add via PowerFGT using -data" }
+            $p = $_.param
+            Add-FGTSystemInterface -name $pester_int1 @p -data $data
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.name | Should -Be $pester_int1
+            switch ($_.type) {
+                "vlan" {
+                    $interface.type | Should -Be "vlan"
+                    $interface.vlanid | Should -Be $pester_vlanid1
+                    $interface.interface | Should -Be $pester_port1
+                }
+                "aggregate_lacp" {
+                    $interface.type | Should -Be "aggregate"
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "aggregate_static" {
+                    if (($fgt_version -ge "6.2.0")) {
+                        $interface.type | Should -Be "redundant"
+                    }
+                    else {
+                        $interface.type | Should -Be "aggregate"
+                    }
+                    $interface.member.'interface-name' | Should -BeIn $pester_port1, $pester_port2
+                }
+                "loopback" {
+                    $interface.type | Should -Be "loopback"
+                }
+            }
+            $interface.role | Should -Be "lan"
+            $interface.mode | Should -Be "static"
+            $interface.alias | Should -Be "int_PowerFGT"
+            $interface.description | Should -Be "Add via PowerFGT using -data"
+        }
+
         It "Add Vlan System Interface (on aggregate $($_.type) interface)" -Skip:($_.type -eq "loopback" -or $_.type -eq "vlan") {
             $p = $_.param
             Add-FGTSystemInterface -name $pester_int1 @p
@@ -800,6 +869,21 @@ Describe "Set System Interface" -ForEach $type {
             Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -dhcprelayip $null
             $interface = Get-FGTSystemInterface -name $pester_int1
             $interface.'dhcp-relay-service' | Should -Be "disable"
+        }
+
+        It "Set System Interface using -data (1 field)" {
+            $data = @{ "alias" = "int_PowerFGT" }
+            Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -data $data
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.alias | Should -Be "int_PowerFGT"
+        }
+
+        It "Set System Interface using -data (2 fields)" {
+            $data = @{ "alias" = "int_PowerFGT" ; description = "Modified via PowerFGT using -data" }
+            Get-FGTSystemInterface -name $pester_int1 | Set-FGTSystemInterface -data $data
+            $interface = Get-FGTSystemInterface -name $pester_int1
+            $interface.alias | Should -Be "int_PowerFGT"
+            $interface.description | Should -Be "Modified via PowerFGT using -data"
         }
 
         AfterAll {
