@@ -53,10 +53,10 @@ Describe "Set System Global" {
         $script:settings = Get-FGTSystemGlobal
     }
 
-    It "Change admintimeout to 480" {
-        Set-FGTSystemGlobal -admintimeout 480
+    It "Change admintimeout to 60" {
+        Set-FGTSystemGlobal -admintimeout 60
         $sg = Get-FGTSystemGlobal
-        $sg.'admintimeout' | Should -Be "480"
+        $sg.'admintimeout' | Should -Be "60"
     }
 
     It "Change admin_port (HTTP)" -Skip:($httpOnly -or $ci) {

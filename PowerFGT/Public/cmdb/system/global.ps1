@@ -131,7 +131,7 @@ function Set-FGTSystemGlobal {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
     Param(
         [Parameter (Mandatory = $false)]
-        [ValidateRange("1", "480")]
+        [ValidateRange(1, 480)]
         [int]$admintimeout,
         [Parameter (Mandatory = $false)]
         [ValidateRange(1, 65535)]
