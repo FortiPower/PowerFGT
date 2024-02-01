@@ -31,7 +31,7 @@ function Add-FGTFirewallVip {
         .EXAMPLE
         Add-FGTFirewallVip -name myVIP4-5000-6000 -type static-nat -extip 192.0.2.1 -mappedip 198.51.100.1 -portforward -extport 5000 -mappedport 6000 -protocol udp
 
-        Add VIP objet type static-nat (One to One) with name myVIP3 with external IP 192.0.2.1 and mapped IP 198.51.100.1 with Port Forward and UDP Port 5000 mapped to port 6000
+        Add VIP objet type static-nat (One to One) with name myVIP4 with external IP 192.0.2.1 and mapped IP 198.51.100.1 with Port Forward and UDP Port 5000 mapped to port 6000
 
         .EXAMPLE
         $data = @{ "nat-source-vip" = "enable" ; "color" = "23"}
