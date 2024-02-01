@@ -157,6 +157,36 @@ Describe "Add Firewall Address Group" {
         }
     }
 
+    It "Add Address Group $pester_addressgroup1 (with 1 member and data (1 field))" {
+        $data = @{ "color" = 23 }
+        Add-FGTFirewallAddressGroup -Name $pester_addressgroup1 -member $pester_address1 -data $data
+        $addressgroup = Get-FGTFirewallAddressGroup -name $pester_addressgroup1
+        $addressgroup.name | Should -Be $pester_addressgroup1
+        $addressgroup.uuid | Should -Not -BeNullOrEmpty
+        ($addressgroup.member).count | Should -Be "1"
+        $addressgroup.member.name | Should -BeIn $pester_address1
+        $addressgroup.comment | Should -BeNullOrEmpty
+        $addressgroup.color | Should -Be "23"
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be $true
+        }
+    }
+
+    It "Add Address Group $pester_addressgroup1 (with 1 member and data (2 fields))" {
+        $data = @{ "color" = 23; "comment" = "Add via PowerFGT and -data" }
+        Add-FGTFirewallAddressGroup -Name $pester_addressgroup1 -member $pester_address1 -data $data
+        $addressgroup = Get-FGTFirewallAddressGroup -name $pester_addressgroup1
+        $addressgroup.name | Should -Be $pester_addressgroup1
+        $addressgroup.uuid | Should -Not -BeNullOrEmpty
+        ($addressgroup.member).count | Should -Be "1"
+        $addressgroup.member.name | Should -BeIn $pester_address1
+        $addressgroup.comment | Should -Be "Add via PowerFGT and -data"
+        $addressgroup.color | Should -Be "23"
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be $true
+        }
+    }
+
     It "Try to Add Address Group $pester_addressgroup1 (but there is already a object with same name)" {
         #Add first Address Group
         Add-FGTFirewallAddressGroup -Name $pester_addressgroup1 -member $pester_address1
@@ -302,6 +332,36 @@ Describe "Configure Firewall Address Group" {
         }
     }
 
+    It "Change -data (1 field)" {
+        $data = @{ "color" = 23 }
+        Get-FGTFirewallAddressGroup -name $pester_addressgroup1 | Set-FGTFirewallAddressGroup -data $data
+        $addressgroup = Get-FGTFirewallAddressGroup -name $pester_addressgroup1
+        $addressgroup.name | Should -Be $pester_addressgroup1
+        $addressgroup.uuid | Should -Not -BeNullOrEmpty
+        ($addressgroup.member).count | Should -Be "2"
+        $addressgroup.member.name | Should -BeIn $pester_address1, $pester_address2
+        $addressgroup.comment | Should -Be "Modified by PowerFGT"
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be "disable"
+        }
+        $addressgroup.color | Should -Be "23"
+    }
+
+    It "Change -data (2 fields)" {
+        $data = @{ "color" = 4 ; comment = "Modified by PowerFGT via -data" }
+        Get-FGTFirewallAddressGroup -name $pester_addressgroup1 | Set-FGTFirewallAddressGroup -data $data
+        $addressgroup = Get-FGTFirewallAddressGroup -name $pester_addressgroup1
+        $addressgroup.name | Should -Be $pester_addressgroup1
+        $addressgroup.uuid | Should -Not -BeNullOrEmpty
+        ($addressgroup.member).count | Should -Be "2"
+        $addressgroup.member.name | Should -BeIn $pester_address1, $pester_address2
+        $addressgroup.comment | Should -Be "Modified by PowerFGT via -data"
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be "disable"
+        }
+        $addressgroup.color | Should -Be "4"
+    }
+
     It "Change Name" {
         Get-FGTFirewallAddressGroup -name $pester_addressgroup1 | Set-FGTFirewallAddressGroup -name "pester_addressgroup1_change"
         $addressgroup = Get-FGTFirewallAddressGroup -name "pester_addressgroup1_change"
@@ -309,7 +369,7 @@ Describe "Configure Firewall Address Group" {
         $addressgroup.uuid | Should -Not -BeNullOrEmpty
         ($addressgroup.member).count | Should -Be "2"
         $addressgroup.member.name | Should -BeIn $pester_address1, $pester_address2
-        $addressgroup.comment | Should -Be "Modified by PowerFGT"
+        $addressgroup.comment | Should -Be "Modified by PowerFGT via -data"
         if ($DefaultFGTConnection.version -lt "6.4.0") {
             $addressgroup.visibility | Should -Be "disable"
         }

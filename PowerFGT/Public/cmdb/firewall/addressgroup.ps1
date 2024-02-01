@@ -27,6 +27,12 @@ function Add-FGTFirewallAddressGroup {
         Add-FGTFirewallAddressGroup -name MyAddressGroup -member MyAddress1 -comment "My Address Group"
 
         Add Address Group with member MyAddress1 and a comment
+
+        .EXAMPLE
+        $data = @{ "color" = 23 }
+        PS C:\>Add-FGTFirewallAddressGroup -name MyAddressGroup -member MyAddress1 -comment "My Address Group".0 -data $data
+
+        Add Address Group with member MyAddress1, a comment and color (23) via -data parameter
     #>
 
     Param(
@@ -39,6 +45,8 @@ function Add-FGTFirewallAddressGroup {
         [string]$comment,
         [Parameter (Mandatory = $false)]
         [boolean]$visibility,
+        [Parameter (Mandatory = $false)]
+        [hashtable]$data,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -90,6 +98,12 @@ function Add-FGTFirewallAddressGroup {
                 else {
                     $addrgrp | add-member -name "visibility" -membertype NoteProperty -Value "disable"
                 }
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('data') ) {
+            $data.GetEnumerator() | ForEach-Object {
+                $addrgrp | Add-member -name $_.key -membertype NoteProperty -Value $_.value
             }
         }
 
@@ -376,6 +390,12 @@ function Set-FGTFirewallAddressGroup {
 
         Change MyFGTAddressGroup to set a new comment and disabled visibility
 
+        .EXAMPLE
+        $data = @{ "color" = 23 }
+        PS C:\>$MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
+        PS C:\>$MyFGTAddressGroup | Set-FGTFirewallAddressGroup -data $data
+
+        Change MyFGTAddressGroup to set color (23) using -data
     #>
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
@@ -392,6 +412,8 @@ function Set-FGTFirewallAddressGroup {
         [string]$comment,
         [Parameter (Mandatory = $false)]
         [boolean]$visibility,
+        [Parameter (Mandatory = $false)]
+        [hashtable]$data,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -445,6 +467,12 @@ function Set-FGTFirewallAddressGroup {
                 else {
                     $_addrgrp | add-member -name "visibility" -membertype NoteProperty -Value "disable"
                 }
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('data') ) {
+            $data.GetEnumerator() | ForEach-Object {
+                $_addrgrp | Add-member -name $_.key -membertype NoteProperty -Value $_.value
             }
         }
 
