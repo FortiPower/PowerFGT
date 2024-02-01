@@ -300,7 +300,7 @@ function Set-FGTSystemGlobal {
         }
 
         if ($PSCmdlet.ShouldProcess("Global", 'Configure Settings')) {
-            Invoke-FGTRestMethod -method "PUT" -body $_sg -uri $uri -connection $connection @invokeParams | Out-Null
+            Invoke-FGTRestMethod -method "PUT" -body $_sg -uri $uri -connection $connection @invokeParams -ErrorAction SilentlyContinue | Out-Null
             #Change the admin port if you use for the connection
             if ( $PsBoundParameters.ContainsKey('admin_port') -and $connection.httpOnly ) {
                 $connection.port = $admin_port
