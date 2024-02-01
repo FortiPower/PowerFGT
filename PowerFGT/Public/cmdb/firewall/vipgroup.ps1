@@ -28,6 +28,12 @@ function Add-FGTFirewallVipGroup {
         Add-FGTFirewallVipGroup -name MyVipGroup -member MyVip1 -comments "My VIP Group" -interface wan1
 
         Add VIP Group with member MyVip1 and a comments, associated to interface wan1
+
+        .EXAMPLE
+        $data = @{ "color" = "23"}
+        PS C> Add-FGTFirewallVipGroup -name MyVipGroup -member MyVip1 -interface wan1 -data $data
+
+        Add VIP Group with member MyVip1 with color 23 (using -data)
     #>
 
     Param(
@@ -40,6 +46,8 @@ function Add-FGTFirewallVipGroup {
         [Parameter (Mandatory = $false)]
         [ValidateLength(0, 255)]
         [string]$comments,
+        [Parameter (Mandatory = $false)]
+        [hashtable]$data,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -77,6 +85,12 @@ function Add-FGTFirewallVipGroup {
 
         #TODO: check if interface is valid (and also if members use the same interface...)
         $vipgrp | add-member -name "interface" -membertype NoteProperty -Value $interface
+
+        if ( $PsBoundParameters.ContainsKey('data') ) {
+            $data.GetEnumerator() | ForEach-Object {
+                $vipgrp | Add-member -name $_.key -membertype NoteProperty -Value $_.value
+            }
+        }
 
         if ( $PsBoundParameters.ContainsKey('comments') ) {
             $vipgrp | add-member -name "comments" -membertype NoteProperty -Value $comments
@@ -367,6 +381,12 @@ function Set-FGTFirewallVipGroup {
 
         Change MyFGTVipGroup to set a new comments
 
+        .EXAMPLE
+        $data = @{ "color" = "23" }
+        PS C:\>$MyFGTVipGroup = Get-FGTFirewallVipGroup -name MyFGTVipGroup
+        PS C:\>$MyFGTVipGroup | Set-FGTFirewallVipGroup -data $data
+
+        Change MyFGTVipGroup to set color (23) with -data parameter
     #>
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
@@ -381,6 +401,8 @@ function Set-FGTFirewallVipGroup {
         [Parameter (Mandatory = $false)]
         [ValidateLength(0, 255)]
         [string]$comments,
+        [Parameter (Mandatory = $false)]
+        [hashtable]$data,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -420,6 +442,12 @@ function Set-FGTFirewallVipGroup {
 
         if ( $PsBoundParameters.ContainsKey('comments') ) {
             $_vipgrp | add-member -name "comments" -membertype NoteProperty -Value $comments
+        }
+
+        if ( $PsBoundParameters.ContainsKey('data') ) {
+            $data.GetEnumerator() | ForEach-Object {
+                $_vipgrp | Add-member -name $_.key -membertype NoteProperty -Value $_.value
+            }
         }
 
         if ($PSCmdlet.ShouldProcess($addrgrp.name, 'Configure Firewall VIP Group')) {
