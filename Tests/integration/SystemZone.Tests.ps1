@@ -125,6 +125,16 @@ Describe "Add zone" {
         $zone.interface."interface-name" | Should -BeIn $pester_port1, $pester_port2
     }
 
+    It "Add zone $pester_zone1 with -data" {
+        $data = @{ 'intrazone' = "allow" }
+        Add-FGTSystemZone -name $pester_zone1 -interfaces $pester_port1 -data $data
+        $zone = Get-FGTSystemZone -name $pester_zone1
+        $zone.name | Should -Be $pester_zone1
+        $zone.intrazone | Should -Be "allow"
+        $zone.interface.count | Should -Be 1
+        $zone.interface."interface-name" | Should -BeIn $pester_port1
+    }
+
     It "Try to add zone $pester_zone1 (but there is already an object with same name)" {
         #Add first zone
         Add-FGTSystemZone -name $pester_zone1 -interfaces $pester_port1
@@ -172,6 +182,13 @@ Describe "Set zone" {
         $zone = Get-FGTSystemZone -name $pester_zone1
         $zone.interface.count | Should -Be 2
         $zone.interface."interface-name" | Should -BeIn $pester_port3, $pester_port4
+    }
+
+    It "Change with -data " {
+        $data = @{ 'intrazone' = "allow" }
+        Get-FGTSystemZone -name $pester_zone1 | Set-FGTSystemZone -data $data
+        $zone = Get-FGTSystemZone -name $pester_zone1
+        $zone.intrazone | Should -Be "allow"
     }
 
     It "Remove interfaces" -Skip:$VersionIs64 {
