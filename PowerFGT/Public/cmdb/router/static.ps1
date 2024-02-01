@@ -165,6 +165,12 @@ function Add-FGTRouterStatic {
         Add-FGTRouterStatic -status:$false -dst 198.51.100.0/24 -gateway 192.0.2.254 -device internal1
 
         Add a route with status disabled
+
+        .EXAMPLE
+        $data = @{ "sdwan" = "enable" }
+        PS C:\>Add-FGTRouterStatic -dst 198.51.100.0/24 -gateway 192.0.2.254 -device internal1 -data $data
+
+        Add a route with sdwan enable using -data
     #>
 
     [CmdletBinding(DefaultParameterSetName = "default")]
@@ -221,6 +227,8 @@ function Add-FGTRouterStatic {
         [int]$vrf,
         [Parameter (Mandatory = $false)]
         [switch]$bfd = $false,
+        [Parameter (Mandatory = $false)]
+        [hashtable]$data,
         [Parameter (Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
@@ -354,6 +362,12 @@ function Add-FGTRouterStatic {
             }
             else {
                 $static | add-member -name "bfd" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('data') ) {
+            $data.GetEnumerator() | ForEach-Object {
+                $static | Add-member -name $_.key -membertype NoteProperty -Value $_.value
             }
         }
 
