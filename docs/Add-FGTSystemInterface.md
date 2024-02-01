@@ -17,7 +17,7 @@ Add an interface
 Add-FGTSystemInterface [-name] <String> [-alias <String>] [-role <String>] -vlan_id <Int32> -interface <String>
  [-allowaccess <String[]>] [-status <String>] [-device_identification <String>] [-mode <String>] [-ip <String>]
  [-netmask <String>] [-vdom_interface <String>] [-vdom <String[]>] [-connection <PSObject>]
- [<CommonParameters>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### aggregate
@@ -25,7 +25,7 @@ Add-FGTSystemInterface [-name] <String> [-alias <String>] [-role <String>] -vlan
 Add-FGTSystemInterface [-name] <String> [-alias <String>] [-role <String>] -member <String[]> -atype <String>
  [-allowaccess <String[]>] [-status <String>] [-device_identification <String>] [-mode <String>] [-ip <String>]
  [-netmask <String>] [-vdom_interface <String>] [-vdom <String[]>] [-connection <PSObject>]
- [<CommonParameters>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### loopback
@@ -33,7 +33,7 @@ Add-FGTSystemInterface [-name] <String> [-alias <String>] [-role <String>] -memb
 Add-FGTSystemInterface [-name] <String> [-alias <String>] [-role <String>] [-loopback]
  [-allowaccess <String[]>] [-status <String>] [-device_identification <String>] [-mode <String>] [-ip <String>]
  [-netmask <String>] [-vdom_interface <String>] [-vdom <String[]>] [-connection <PSObject>]
- [<CommonParameters>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -331,6 +331,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: $DefaultFGTConnection
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

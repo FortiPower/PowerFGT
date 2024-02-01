@@ -17,7 +17,7 @@ Set-FGTVpnIpsecPhase1Interface [-vpn] <PSObject> [-type <String>] [-ikeversion <
  [-dhgrp <Int32[]>] [-psksecret <String>] [-remotegw <String>] [-peertype <String>] [-netdevice] [-addroute]
  [-autodiscoverysender] [-autodiscoveryreceiver] [-exchangeinterfaceip] [-networkid <Int32>] [-dpd <String>]
  [-dpdretrycount <Int32>] [-dpdretryinterval <Int32>] [-idletimeout] [-data <Hashtable>] [-vdom <String[]>]
- [-connection <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-connection <PSObject>] [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -388,6 +388,21 @@ Prompts you for confirmation before running the cmdlet.
 Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
 
 Required: False
 Position: Named

@@ -18,7 +18,8 @@ Set-FGTSystemSettings [-allow_subnet_overlap] [-central_nat] [[-inspection_mode]
  [-gui_load_balance] [-gui_local_in_policy] [-gui_multiple_interface_policy] [-gui_multiple_utm_profiles]
  [-gui_spamfilter] [-gui_sslvpn_personal_bookmarks] [-gui_sslvpn_realms] [-gui_voip_profile] [-gui_waf_profile]
  [-gui_ztna] [[-lldp_transmission] <String>] [[-lldp_reception] <String>] [[-data] <Hashtable>]
- [[-vdom] <String[]>] [[-connection] <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]
+ [[-vdom] <String[]>] [[-connection] <PSObject>] [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -419,6 +420,21 @@ Prompts you for confirmation before running the cmdlet.
 Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
 
 Required: False
 Position: Named

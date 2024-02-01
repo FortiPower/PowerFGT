@@ -14,7 +14,8 @@ Get Router IPv4
 
 ```
 Get-FGTMonitorRouterIPv4 [[-ip_mask] <String>] [[-gateway] <String>] [[-type] <String>] [[-interface] <String>]
- [-skip] [[-vdom] <String[]>] [[-connection] <PSObject>] [<CommonParameters>]
+ [-skip] [[-vdom] <String[]>] [[-connection] <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -168,6 +169,21 @@ Aliases:
 Required: False
 Position: 6
 Default value: $DefaultFGTConnection
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

@@ -17,7 +17,7 @@ Add-FGTVpnIpsecPhase2Interface [-vpn] <PSObject> [-name] <String> [-proposal <St
  [-dhgrp <Int32[]>] [-replay] [-keepalive] [-autonegotiate] [-keylifeseconds <Int32>] [-comments <String>]
  [-srcname <String>] [-dstname <String>] [-srcip <String>] [-srcnetmask <String>] [-srcrange <String>]
  [-dstip <String>] [-dstnetmask <String>] [-dstrange <String>] [-data <Hashtable>] [-vdom <String[]>]
- [-connection <PSObject>] [<CommonParameters>]
+ [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -374,6 +374,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: $DefaultFGTConnection
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

@@ -16,35 +16,37 @@ Configure a FortiGate Address
 ```
 Set-FGTFirewallAddress [-address] <PSObject> [-name <String>] [-interface <String>] [-comment <String>]
  [-visibility <Boolean>] [-allowrouting] [-data <Hashtable>] [-vdom <String[]>] [-connection <PSObject>]
- [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### fqdn
 ```
 Set-FGTFirewallAddress [-address] <PSObject> [-name <String>] [-fqdn <String>] [-interface <String>]
  [-comment <String>] [-visibility <Boolean>] [-allowrouting] [-data <Hashtable>] [-vdom <String[]>]
- [-connection <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-connection <PSObject>] [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### ipmask
 ```
 Set-FGTFirewallAddress [-address] <PSObject> [-name <String>] [-ip <IPAddress>] [-mask <IPAddress>]
  [-interface <String>] [-comment <String>] [-visibility <Boolean>] [-allowrouting] [-data <Hashtable>]
- [-vdom <String[]>] [-connection <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ### iprange
 ```
 Set-FGTFirewallAddress [-address] <PSObject> [-name <String>] [-startip <IPAddress>] [-endip <IPAddress>]
  [-interface <String>] [-comment <String>] [-visibility <Boolean>] [-allowrouting] [-data <Hashtable>]
- [-vdom <String[]>] [-connection <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ### geography
 ```
 Set-FGTFirewallAddress [-address] <PSObject> [-name <String>] [-country <String>] [-interface <String>]
  [-comment <String>] [-visibility <Boolean>] [-allowrouting] [-data <Hashtable>] [-vdom <String[]>]
- [-connection <PSObject>] [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-connection <PSObject>] [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -376,6 +378,21 @@ Prompts you for confirmation before running the cmdlet.
 Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
 
 Required: False
 Position: Named

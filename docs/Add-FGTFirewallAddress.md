@@ -16,28 +16,28 @@ Add a FortiGate Address
 ```
 Add-FGTFirewallAddress -name <String> [-fqdn <String>] [-interface <String>] [-comment <String>]
  [-visibility <Boolean>] [-allowrouting] [-data <Hashtable>] [-vdom <String[]>] [-connection <PSObject>]
- [<CommonParameters>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### ipmask
 ```
 Add-FGTFirewallAddress -name <String> [-ip <IPAddress>] [-mask <IPAddress>] [-interface <String>]
  [-comment <String>] [-visibility <Boolean>] [-allowrouting] [-data <Hashtable>] [-vdom <String[]>]
- [-connection <PSObject>] [<CommonParameters>]
+ [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### iprange
 ```
 Add-FGTFirewallAddress -name <String> [-startip <IPAddress>] [-endip <IPAddress>] [-interface <String>]
  [-comment <String>] [-visibility <Boolean>] [-allowrouting] [-data <Hashtable>] [-vdom <String[]>]
- [-connection <PSObject>] [<CommonParameters>]
+ [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### geography
 ```
 Add-FGTFirewallAddress -name <String> [-country <String>] [-interface <String>] [-comment <String>]
  [-visibility <Boolean>] [-allowrouting] [-data <Hashtable>] [-vdom <String[]>] [-connection <PSObject>]
- [<CommonParameters>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -310,6 +310,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: $DefaultFGTConnection
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

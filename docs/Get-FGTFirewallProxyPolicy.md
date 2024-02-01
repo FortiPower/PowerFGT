@@ -14,25 +14,26 @@ Get list of all Proxy Policies/rules
 
 ### default (Default)
 ```
-Get-FGTFirewallProxyPolicy [-skip] [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+Get-FGTFirewallProxyPolicy [-skip] [-vdom <String[]>] [-connection <PSObject>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### uuid
 ```
 Get-FGTFirewallProxyPolicy [-uuid <String>] [-filter_type <String>] [-skip] [-vdom <String[]>]
- [-connection <PSObject>] [<CommonParameters>]
+ [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### policyid
 ```
 Get-FGTFirewallProxyPolicy [-policyid <String>] [-filter_type <String>] [-skip] [-vdom <String[]>]
- [-connection <PSObject>] [<CommonParameters>]
+ [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### filter_build
 ```
 Get-FGTFirewallProxyPolicy [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>]
- [-skip] [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+ [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -194,6 +195,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: $DefaultFGTConnection
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

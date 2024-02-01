@@ -15,8 +15,8 @@ Modify an interface
 ```
 Set-FGTSystemInterface [-interface] <PSObject> [-alias <String>] [-role <String>] [-allowaccess <String[]>]
  [-mode <String>] [-ip <String>] [-netmask <String>] [-status <String>] [-device_identification <String>]
- [-vdom <String[]>] [-dhcprelayip <String[]>] [-connection <PSObject>] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+ [-vdom <String[]>] [-dhcprelayip <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -250,6 +250,21 @@ Prompts you for confirmation before running the cmdlet.
 Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
 
 Required: False
 Position: Named

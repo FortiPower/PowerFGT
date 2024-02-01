@@ -26,7 +26,7 @@ Deploy-FGTVm [-ovf_path] <String> [-vm_host] <String> -datastore <String> -clust
  [-int6_port_group <String>] [-int7_network_mode <String>] [-int7_ip <String>] [-int7_netmask <String>]
  [-int7_port_group <String>] [-int8_network_mode <String>] [-int8_ip <String>] [-int8_netmask <String>]
  [-int8_port_group <String>] [-int9_network_mode <String>] [-int9_ip <String>] [-int9_netmask <String>]
- [-int9_port_group <String>] [<CommonParameters>]
+ [-int9_port_group <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -923,6 +923,21 @@ Accept wildcard characters: False
 Type: String
 Parameter Sets: (All)
 Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
 
 Required: False
 Position: Named

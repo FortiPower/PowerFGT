@@ -16,21 +16,24 @@ Invoke RestMethod with FGT connection (internal) variable
 ```
 Invoke-FGTRestMethod [-uri] <String> [-method <String>] [-body <PSObject>] [-skip] [-vdom <String[]>]
  [-filter <String>] [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>]
- [-uri_escape <String>] [-extra <String>] [-connection <PSObject>] [<CommonParameters>]
+ [-uri_escape <String>] [-extra <String>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ### filter
 ```
 Invoke-FGTRestMethod [-uri] <String> [-method <String>] [-body <PSObject>] [-skip] [-vdom <String[]>]
  [-filter <String>] [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>]
- [-uri_escape <String>] [-extra <String>] [-connection <PSObject>] [<CommonParameters>]
+ [-uri_escape <String>] [-extra <String>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ### filter_build
 ```
 Invoke-FGTRestMethod [-uri] <String> [-method <String>] [-body <PSObject>] [-skip] [-vdom <String[]>]
  [-filter <String>] [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>]
- [-uri_escape <String>] [-extra <String>] [-connection <PSObject>] [<CommonParameters>]
+ [-uri_escape <String>] [-extra <String>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -283,6 +286,21 @@ Accept wildcard characters: False
 Type: PSObject
 Parameter Sets: (All)
 Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
 
 Required: False
 Position: Named

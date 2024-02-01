@@ -17,7 +17,7 @@ Add a FortiGate static route
 Add-FGTRouterStatic [-seq_num <Int32>] [-status] [-gateway <String>] [-distance <Int32>] [-weight <Int32>]
  [-priority <Int32>] [-comment <String>] [-dynamic_gateway] [-internet_service_custom <String>]
  [-link_monitor_exempt] [-vrf <Int32>] [-bfd] [-skip] [-vdom <String[]>] [-connection <PSObject>]
- [<CommonParameters>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### dst_blackhole
@@ -25,7 +25,7 @@ Add-FGTRouterStatic [-seq_num <Int32>] [-status] [-gateway <String>] [-distance 
 Add-FGTRouterStatic [-seq_num <Int32>] [-status] -dst <String> [-gateway <String>] [-distance <Int32>]
  [-weight <Int32>] [-priority <Int32>] [-comment <String>] [-blackhole] [-dynamic_gateway]
  [-internet_service_custom <String>] [-link_monitor_exempt] [-vrf <Int32>] [-bfd] [-skip] [-vdom <String[]>]
- [-connection <PSObject>] [<CommonParameters>]
+ [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### dst_device
@@ -33,7 +33,7 @@ Add-FGTRouterStatic [-seq_num <Int32>] [-status] -dst <String> [-gateway <String
 Add-FGTRouterStatic [-seq_num <Int32>] [-status] -dst <String> [-gateway <String>] [-distance <Int32>]
  [-weight <Int32>] [-priority <Int32>] -device <String> [-comment <String>] [-dynamic_gateway]
  [-internet_service_custom <String>] [-link_monitor_exempt] [-vrf <Int32>] [-bfd] [-skip] [-vdom <String[]>]
- [-connection <PSObject>] [<CommonParameters>]
+ [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### isdb_device
@@ -41,7 +41,7 @@ Add-FGTRouterStatic [-seq_num <Int32>] [-status] -dst <String> [-gateway <String
 Add-FGTRouterStatic [-seq_num <Int32>] [-status] [-gateway <String>] [-distance <Int32>] [-weight <Int32>]
  [-priority <Int32>] -device <String> [-comment <String>] [-dynamic_gateway] -internet_service <Int32>
  [-internet_service_custom <String>] [-link_monitor_exempt] [-vrf <Int32>] [-bfd] [-skip] [-vdom <String[]>]
- [-connection <PSObject>] [<CommonParameters>]
+ [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### dstaddr_device
@@ -49,7 +49,7 @@ Add-FGTRouterStatic [-seq_num <Int32>] [-status] [-gateway <String>] [-distance 
 Add-FGTRouterStatic [-seq_num <Int32>] [-status] [-gateway <String>] [-distance <Int32>] [-weight <Int32>]
  [-priority <Int32>] -device <String> [-comment <String>] [-blackhole] [-dynamic_gateway] -dstaddr <String>
  [-internet_service_custom <String>] [-link_monitor_exempt] [-vrf <Int32>] [-bfd] [-skip] [-vdom <String[]>]
- [-connection <PSObject>] [<CommonParameters>]
+ [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### isdb_blackhole
@@ -57,7 +57,7 @@ Add-FGTRouterStatic [-seq_num <Int32>] [-status] [-gateway <String>] [-distance 
 Add-FGTRouterStatic [-seq_num <Int32>] [-status] [-gateway <String>] [-distance <Int32>] [-weight <Int32>]
  [-priority <Int32>] [-comment <String>] [-blackhole] [-dynamic_gateway] -internet_service <Int32>
  [-internet_service_custom <String>] [-link_monitor_exempt] [-vrf <Int32>] [-bfd] [-skip] [-vdom <String[]>]
- [-connection <PSObject>] [<CommonParameters>]
+ [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### dstaddr_blackhole
@@ -65,7 +65,7 @@ Add-FGTRouterStatic [-seq_num <Int32>] [-status] [-gateway <String>] [-distance 
 Add-FGTRouterStatic [-seq_num <Int32>] [-status] [-gateway <String>] [-distance <Int32>] [-weight <Int32>]
  [-priority <Int32>] [-comment <String>] [-dynamic_gateway] -dstaddr <String>
  [-internet_service_custom <String>] [-link_monitor_exempt] [-vrf <Int32>] [-bfd] [-skip] [-vdom <String[]>]
- [-connection <PSObject>] [<CommonParameters>]
+ [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -388,6 +388,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: $DefaultFGTConnection
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

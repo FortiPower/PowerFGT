@@ -15,25 +15,27 @@ Add a FortiGate ProxyAddress
 ### default (Default)
 ```
 Add-FGTFirewallProxyAddress -name <String> [-comment <String>] [-visibility <Boolean>] [-vdom <String[]>]
- [-connection <PSObject>] [<CommonParameters>]
+ [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### host-regex
 ```
 Add-FGTFirewallProxyAddress -name <String> [-hostregex <String>] [-comment <String>] [-visibility <Boolean>]
- [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+ [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### url
 ```
 Add-FGTFirewallProxyAddress -name <String> [-path <String>] [-hostObjectName <String>] [-comment <String>]
- [-visibility <Boolean>] [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+ [-visibility <Boolean>] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ### method
 ```
 Add-FGTFirewallProxyAddress -name <String> [-method <String>] [-hostObjectName <String>] [-comment <String>]
- [-visibility <Boolean>] [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+ [-visibility <Boolean>] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -197,6 +199,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: $DefaultFGTConnection
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

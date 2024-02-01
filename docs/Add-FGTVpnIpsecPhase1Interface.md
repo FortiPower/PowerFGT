@@ -17,7 +17,8 @@ Add-FGTVpnIpsecPhase1Interface [-name] <String> -type <String> -interface <Strin
  [-proposal <String[]>] [-dhgrp <Int32[]>] -psksecret <String> [-remotegw <String>] [-peertype <String>]
  [-netdevice] [-addroute] [-autodiscoverysender] [-autodiscoveryreceiver] [-exchangeinterfaceip]
  [-networkid <Int32>] [-dpd <String>] [-dpdretrycount <Int32>] [-dpdretryinterval <Int32>] [-idletimeout]
- [-data <Hashtable>] [-vdom <String[]>] [-connection <PSObject>] [<CommonParameters>]
+ [-data <Hashtable>] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -376,6 +377,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: $DefaultFGTConnection
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
