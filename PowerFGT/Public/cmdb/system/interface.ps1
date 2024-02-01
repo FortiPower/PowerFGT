@@ -37,6 +37,12 @@ function Add-FGTSystemInterface {
         Add-FGTSystemInterface -name PowerFGT_lo -loopback -mode static -ip 192.0.2.1 -netmask 255.255.255.255 -allowaccess ping
 
         This creates a new interface loopback with IP 192.0.2.1(/32) and allow access to ping
+
+        .EXAMPLE
+        $data = @{ 'sflow-sampler' = "enable" }
+        Add-FGTSystemInterface -name PowerFGT -interface port10 -vlan_id 10 -data $data
+
+        This creates a new interface with sflow-sampler enable using -data parameter
     #>
 
     Param(
@@ -77,6 +83,8 @@ function Add-FGTSystemInterface {
         [string]$netmask,
         [Parameter (Mandatory = $false)]
         [string]$vdom_interface = "root",
+        [Parameter (Mandatory = $false)]
+        [hashtable]$data,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -164,6 +172,12 @@ function Add-FGTSystemInterface {
             }
 
             $_interface | add-member -name "device-identification" -membertype NoteProperty -Value $device_identification
+        }
+
+        if ( $PsBoundParameters.ContainsKey('data') ) {
+            $data.GetEnumerator() | ForEach-Object {
+                $_interface | Add-member -name $_.key -membertype NoteProperty -Value $_.value
+            }
         }
 
         $null = Invoke-FGTRestMethod -uri $uri -method 'POST' -body $_interface -connection $connection @invokeParams
@@ -377,6 +391,12 @@ function Set-FGTSystemInterface {
         Get-FGTSystemInterface -name PowerFGT | Set-FGTSystemInterface -dhcprelayip $null
 
         This disables DCHP relay and clears the relay ip addresses
+
+        .EXAMPLE
+        $data = @{ "sflow-sampler" = "enable" }
+        PS C:\>Get-FGTSystemInterface -name PowerFGT | Set-FGTSystemInterface -data $data
+
+        Configure sflow-sampler setting using -data parameter on interface PowerFGT
     #>
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
@@ -405,6 +425,8 @@ function Set-FGTSystemInterface {
         [string]$status,
         [Parameter (Mandatory = $false)]
         [string]$device_identification,
+        [Parameter (Mandatory = $false)]
+        [hashtable]$data,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -474,6 +496,12 @@ function Set-FGTSystemInterface {
                 $dhcprelayipoption = $dhcprelayip -join " "
                 $_interface | add-member -name "dhcp-relay-ip" -membertype NoteProperty -Value $dhcprelayipoption
                 $_interface | add-member -name "dhcp-relay-service" -membertype NoteProperty -Value "enable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('data') ) {
+            $data.GetEnumerator() | ForEach-Object {
+                $_interface | Add-member -name $_.key -membertype NoteProperty -Value $_.value
             }
         }
 
