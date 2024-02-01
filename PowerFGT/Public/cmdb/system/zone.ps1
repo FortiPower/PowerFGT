@@ -144,6 +144,8 @@ function Add-FGTSystemZone {
         [string[]]$interfaces,
         [Parameter(Mandatory = $false)]
         [string]$description,
+        [Parameter (Mandatory = $false)]
+        [hashtable]$data,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -190,6 +192,12 @@ function Add-FGTSystemZone {
             }
             else {
                 $zone | add-member -name "description" -membertype NoteProperty -Value $description
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('data') ) {
+            $data.GetEnumerator() | ForEach-Object {
+                $zone | Add-member -name $_.key -membertype NoteProperty -Value $_.value
             }
         }
 
@@ -246,6 +254,8 @@ function Set-FGTSystemZone {
         [string]$description,
         [Parameter(Mandatory = $false)]
         [string[]]$interfaces,
+        [Parameter (Mandatory = $false)]
+        [hashtable]$data,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -298,6 +308,12 @@ function Set-FGTSystemZone {
             }
             else {
                 $zone_body | add-member -name "description" -membertype NoteProperty -Value $description
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('data') ) {
+            $data.GetEnumerator() | ForEach-Object {
+                $zone_body | Add-member -name $_.key -membertype NoteProperty -Value $_.value
             }
         }
 
