@@ -19,6 +19,7 @@ Describe "Get Firewall Address" {
         Add-FGTFirewallAddress -Name $pester_address2 -fqdn fortipower.github.io
         Add-FGTFirewallAddress -Name $pester_address3 -startip 192.0.2.1 -endip 192.0.2.100
         Add-FGTFirewallAddress -Name $pester_address4 -country FR
+        Add-FGTFirewallAddress -Name $pester_address5 -mac 01:02:03:04:05:06
     }
 
     It "Get Address Does not throw an error" {
@@ -85,6 +86,7 @@ Describe "Get Firewall Address" {
         Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -confirm:$false
         Get-FGTFirewallAddress -name $pester_address3 | Remove-FGTFirewallAddress -confirm:$false
         Get-FGTFirewallAddress -name $pester_address4 | Remove-FGTFirewallAddress -confirm:$false
+        Get-FGTFirewallAddress -name $pester_address5 | Remove-FGTFirewallAddress -confirm:$false
     }
 
 }

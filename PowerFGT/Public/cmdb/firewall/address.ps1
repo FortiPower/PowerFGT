@@ -49,6 +49,11 @@ function Add-FGTFirewallAddress {
         Add Address object type geo (country) with name FGT-Country-FR and value FR (France)
 
         .EXAMPLE
+        Add-FGTFirewallAddress -Name FGT-Mac -mac 01:02:03:04:05:06
+
+        Add Address object type mac (macaddr) with name FGT-Country-FR and value FR (France)
+
+        .EXAMPLE
         $data = @{ "color" = 23 }
         PS C:\>Add-FGTFirewallAddress -Name FGT -ip 192.0.2.0 -mask 255.255.255.0 -data $data
 
@@ -70,6 +75,8 @@ function Add-FGTFirewallAddress {
         [ipaddress]$endip,
         [Parameter (Mandatory = $false, ParameterSetName = "geography")]
         [string]$country,
+        [Parameter (Mandatory = $false, ParameterSetName = "mac")]
+        [string[]]$mac,
         [Parameter (Mandatory = $false)]
         [string]$interface,
         [Parameter (Mandatory = $false)]
@@ -127,6 +134,15 @@ function Add-FGTFirewallAddress {
             "geography" {
                 $address | add-member -name "type" -membertype NoteProperty -Value "geography"
                 $address | add-member -name "country" -membertype NoteProperty -Value $country
+            }
+            "mac" {
+                # MAC
+                $mac_array = @()
+                foreach ($s in $mac) {
+                    $mac_array += @{ 'macaddr' = $s }
+                }
+                $address | add-member -name "type" -membertype NoteProperty -Value "mac"
+                $address | add-member -name "macaddr" -membertype NoteProperty -Value @($mac_array)
             }
             default { }
         }
@@ -407,6 +423,12 @@ function Set-FGTFirewallAddress {
         Change MyFGTAddress to set a new country (geo) FR (France)
 
         .EXAMPLE
+        $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
+        PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -mac 01:02:03:04:05:06
+
+        Change MyFGTAddress to set a new mac address 01:02:03:04:05:06
+
+        .EXAMPLE
         $data = @{ "color" = 23 }
         PS C:\>$MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
         PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -data $color
@@ -435,6 +457,8 @@ function Set-FGTFirewallAddress {
         [ipaddress]$endip,
         [Parameter (Mandatory = $false, ParameterSetName = "geography")]
         [string]$country,
+        [Parameter (Mandatory = $false, ParameterSetName = "mac")]
+        [string]$mac,
         [Parameter (Mandatory = $false)]
         [string]$interface,
         [Parameter (Mandatory = $false)]
@@ -516,6 +540,11 @@ function Set-FGTFirewallAddress {
             "geography" {
                 if ( $PsBoundParameters.ContainsKey('country') ) {
                     $_address | add-member -name "country" -membertype NoteProperty -Value $country
+                }
+            }
+            "mac" {
+                if ( $PsBoundParameters.ContainsKey('mac') ) {
+                    $_address | add-member -name "macaddr" -membertype NoteProperty -Value @($mac)
                 }
             }
             default { }
