@@ -135,6 +135,30 @@ Describe "Add Firewall Vip Group" {
         $vipgroup.comments | Should -BeNullOrEmpty
     }
 
+    It "Add Vip Group $pester_vipgroup1 (with 1 member and data (1 field))" {
+        $data = @{ "color" = "23" }
+        Add-FGTFirewallVipGroup -Name $pester_vipgroup1 -member $pester_vip1 -data $data
+        $vipgroup = Get-FGTFirewallVipGroup -name $pester_vipgroup1
+        $vipgroup.name | Should -Be $pester_vipgroup1
+        $vipgroup.uuid | Should -Not -BeNullOrEmpty
+        ($vipgroup.member).count | Should -Be "1"
+        $vipgroup.member.name | Should -BeIn $pester_vip1
+        $vipgroup.comments | Should -BeNullOrEmpty
+        $vipgroup.color | Should -Be "23"
+    }
+
+    It "Add Vip Group $pester_vipgroup1 (with 1 member and data (2 fields))" {
+        $data = @{ "color" = "23" ; comments = "Add via PowerFGT with -data" }
+        Add-FGTFirewallVipGroup -Name $pester_vipgroup1 -member $pester_vip1 -data $data
+        $vipgroup = Get-FGTFirewallVipGroup -name $pester_vipgroup1
+        $vipgroup.name | Should -Be $pester_vipgroup1
+        $vipgroup.uuid | Should -Not -BeNullOrEmpty
+        ($vipgroup.member).count | Should -Be "1"
+        $vipgroup.member.name | Should -BeIn $pester_vip1
+        $vipgroup.comments | Should -Be "Add via PowerFGT with -data"
+        $vipgroup.color | Should -Be "23"
+    }
+
     It "Try to Add Vip Group $pester_vipgroup1 (but there is already a object with same name)" {
         #Add first Vip Group
         Add-FGTFirewallVipGroup -Name $pester_vipgroup1 -member $pester_vip1
@@ -249,6 +273,30 @@ Describe "Configure Firewall Vip Group" {
         $vipgroup.comments | Should -Be "Modified by PowerFGT"
     }
 
+    It "Change -data (1 field)" {
+        $data = @{ "color" = "23" }
+        Get-FGTFirewallVipGroup -name $pester_vipgroup1 | Set-FGTFirewallVipGroup -data $data
+        $vipgroup = Get-FGTFirewallVipGroup -name $pester_vipgroup1
+        $vipgroup.name | Should -Be $pester_vipgroup1
+        $vipgroup.uuid | Should -Not -BeNullOrEmpty
+        ($vipgroup.member).count | Should -Be "2"
+        $vipgroup.member.name | Should -BeIn $pester_vip1, $pester_vip2
+        $vipgroup.comments | Should -Be "Modified by PowerFGT"
+        $vipgroup.color | Should -Be "23"
+    }
+
+    It "Change -data (2 fields)" {
+        $data = @{ "color" = "4" ; comments = "Modified by PowerFGT with -data" }
+        Get-FGTFirewallVipGroup -name $pester_vipgroup1 | Set-FGTFirewallVipGroup -data $data
+        $vipgroup = Get-FGTFirewallVipGroup -name $pester_vipgroup1
+        $vipgroup.name | Should -Be $pester_vipgroup1
+        $vipgroup.uuid | Should -Not -BeNullOrEmpty
+        ($vipgroup.member).count | Should -Be "2"
+        $vipgroup.member.name | Should -BeIn $pester_vip1, $pester_vip2
+        $vipgroup.comments | Should -Be "Modified by PowerFGT with -data"
+        $vipgroup.color | Should -Be "4"
+    }
+
     It "Change Name" {
         Get-FGTFirewallVipGroup -name $pester_vipgroup1 | Set-FGTFirewallVipGroup -name "pester_vipgroup1_change"
         $vipgroup = Get-FGTFirewallVipGroup -name "pester_vipgroup1_change"
@@ -256,7 +304,7 @@ Describe "Configure Firewall Vip Group" {
         $vipgroup.uuid | Should -Not -BeNullOrEmpty
         ($vipgroup.member).count | Should -Be "2"
         $vipgroup.member.name | Should -BeIn $pester_vip1, $pester_vip2
-        $vipgroup.comments | Should -Be "Modified by PowerFGT"
+        $vipgroup.comments | Should -Be "Modified by PowerFGT with -data"
     }
 
     AfterAll {
