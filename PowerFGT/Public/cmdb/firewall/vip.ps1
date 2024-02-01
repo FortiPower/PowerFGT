@@ -37,7 +37,7 @@ function Add-FGTFirewallVip {
         $data = @{ "nat-source-vip" = "enable" ; "color" = "23"}
         PS C> Add-FGTFirewallVip -name myVIP5-data -type static-nat -extip 192.0.2.1 -mappedip 198.51.100.1 -data $data
 
-        Add VIP objet type static-nat (One to One) with name myVIP5 with  nat-source-vip and color settings using -data parameter
+        Add VIP objet type static-nat (One to One) with name myVIP5 with nat-source-vip and color settings using -data parameter
     #>
 
     Param(
