@@ -536,6 +536,48 @@ Describe "Add Firewall Policy" {
         $policy.poolname | Should -Be "MyIPPool"
     }
 
+    It "Add Policy $pester_policy1 (with data (1 field))" {
+        $data = @{ "logtraffic-start" = "enable" }
+        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -data $data
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.srcintf.name | Should -Be "port1"
+        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcaddr.name | Should -Be "all"
+        $policy.dstaddr.name | Should -Be "all"
+        $policy.action | Should -Be "accept"
+        $policy.status | Should -Be "enable"
+        $policy.service.name | Should -Be "All"
+        $policy.schedule | Should -Be "always"
+        $policy.nat | Should -Be "disable"
+        $policy.logtraffic | Should -Be "utm"
+        $policy.comments | Should -BeNullOrEmpty
+        $policy.'logtraffic-start' | Should -Be "enable"
+    }
+
+    It "Add Policy $pester_policy1 (with data (2 fields))" {
+        $data = @{ "logtraffic-start" = "enable" ; "comments" = "Add via PowerFGT and -data" }
+        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -data $data
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.srcintf.name | Should -Be "port1"
+        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcaddr.name | Should -Be "all"
+        $policy.dstaddr.name | Should -Be "all"
+        $policy.action | Should -Be "accept"
+        $policy.status | Should -Be "enable"
+        $policy.service.name | Should -Be "All"
+        $policy.schedule | Should -Be "always"
+        $policy.nat | Should -Be "disable"
+        $policy.logtraffic | Should -Be "utm"
+        $policy.comments | Should -Be "Add via PowerFGT and -data"
+        $policy.'logtraffic-start' | Should -Be "enable"
+    }
+
     It "Try to Add Policy $pester_policy1 (but there is already a object with same name)" {
         #Add first policy
         Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all

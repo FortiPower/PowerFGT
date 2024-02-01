@@ -63,6 +63,13 @@ function Add-FGTFirewallPolicy {
         Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -policyid 23
 
         Add a MyFGTPolicy with Policy ID equal 23
+
+        .EXAMPLE
+        $data = @{ "logtraffic-start" = "enable" }
+        Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -data $data
+
+        Add a MyFGTPolicy with logtraffic-start using -data
+
     #>
 
 
@@ -100,6 +107,8 @@ function Add-FGTFirewallPolicy {
         [string[]]$ippool,
         [Parameter (Mandatory = $false)]
         [switch]$skip,
+        [Parameter (Mandatory = $false)]
+        [hashtable]$data,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -231,6 +240,12 @@ function Add-FGTFirewallPolicy {
             }
             $policy | add-member -name "ippool" -membertype NoteProperty -Value "enable"
             $policy | add-member -name "poolname" -membertype NoteProperty -Value $ippool_array
+        }
+
+        if ( $PsBoundParameters.ContainsKey('data') ) {
+            $data.GetEnumerator() | ForEach-Object {
+                $policy | Add-member -name $_.key -membertype NoteProperty -Value $_.value
+            }
         }
 
         $post = Invoke-FGTRestMethod -method "POST" -body $policy -uri $uri -connection $connection @invokeParams
