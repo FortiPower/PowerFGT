@@ -145,6 +145,9 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Application List" {
             { Get-FGTApplicationList-connection $fgt } | Should -Not -Throw
         }
+        It "Use Multi connection for call Get IPS Sensor" {
+            { Get-FGTIpsSensor -connection $fgt } | Should -Not -Throw
+        }
         It "Use Multi connection for call Get Firewall Address" {
             { Get-FGTFirewallAddress -connection $fgt } | Should -Not -Throw
         }
