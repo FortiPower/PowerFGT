@@ -145,6 +145,9 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Antivirus Profile" {
             { Get-FGTAntivirusProfile -connection $fgt } | Should -Not -Throw
         }
+        It "Use Multi connection for call Get DNS Filter Profile" {
+            { Get-FGTDnsfilterProfile -connection $fgt } | Should -Not -Throw
+        }
         It "Use Multi connection for call Get IPS Sensor" {
             { Get-FGTIpsSensor -connection $fgt } | Should -Not -Throw
         }
