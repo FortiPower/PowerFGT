@@ -548,6 +548,174 @@ Describe "Add Firewall Address" {
 
     }
 
+    Context "mac" {
+
+        AfterEach {
+            Get-FGTFirewallAddress -name $pester_address5 | Remove-FGTFirewallAddress -confirm:$false
+        }
+
+        It "Add Address $pester_address5 (type mac)" {
+            Add-FGTFirewallAddress -Name $pester_address5 -mac 01:02:03:04:05:06
+            $address = Get-FGTFirewallAddress -name $pester_address5
+            $address.name | Should -Be $pester_address5
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "mac"
+            $address.subnet | Should -BeNullOrEmpty
+            $address.macaddr.macaddr | Should -Be "01:02:03:04:05:06"
+            ($address.macaddr.macaddr).count | Should -Be "1"
+            $address.'associated-interface' | Should -BeNullOrEmpty
+            $address.comment | Should -BeNullOrEmpty
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "enable"
+            }
+            $address.'allow-routing' | Should -Be "disable"
+            $address.color | Should -Be "0"
+        }
+
+        It "Add 2 Address(es) $pester_address5 (type mac)" {
+            Add-FGTFirewallAddress -Name $pester_address5 -mac 01:02:03:04:05:06, 01:02:03:04:05:07
+            $address = Get-FGTFirewallAddress -name $pester_address5
+            $address.name | Should -Be $pester_address5
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "mac"
+            $address.subnet | Should -BeNullOrEmpty
+            $address.macaddr.macaddr | Should -Be "01:02:03:04:05:06", "01:02:03:04:05:07"
+            ($address.macaddr.macaddr).count | Should -Be "2"
+            $address.'associated-interface' | Should -BeNullOrEmpty
+            $address.comment | Should -BeNullOrEmpty
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "enable"
+            }
+            $address.'allow-routing' | Should -Be "disable"
+            $address.color | Should -Be "0"
+        }
+
+        It "Add Address $pester_address5 (type mac and interface)" {
+            Add-FGTFirewallAddress -Name $pester_address5 -mac 01:02:03:04:05:06 -interface port2
+            $address = Get-FGTFirewallAddress -name $pester_address5
+            $address.name | Should -Be $pester_address5
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "mac"
+            #$address.'start-ip' | Should -Be "192.0.2.0"
+            #$address.'end-ip' | Should -Be "255.255.255.0"
+            $address.subnet | Should -BeNullOrEmpty
+            $address.macaddr.macaddr | Should -Be "01:02:03:04:05:06"
+            ($address.macaddr.macaddr).count | Should -Be "1"
+            $address.'associated-interface' | Should -Be "port2"
+            $address.comment | Should -BeNullOrEmpty
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "enable"
+            }
+        }
+
+        It "Add Address $pester_address5 (type mac and comment)" {
+            Add-FGTFirewallAddress -Name $pester_address5 -mac 01:02:03:04:05:06 -comment "Add via PowerFGT"
+            $address = Get-FGTFirewallAddress -name $pester_address5
+            $address.name | Should -Be $pester_address5
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "mac"
+            #$address.'start-ip' | Should -Be "192.0.2.0"
+            #$address.'end-ip' | Should -Be "255.255.255.0"
+            $address.subnet | Should -BeNullOrEmpty
+            $address.macaddr.macaddr | Should -Be "01:02:03:04:05:06"
+            ($address.macaddr.macaddr).count | Should -Be "1"
+            $address.'associated-interface' | Should -BeNullOrEmpty
+            $address.comment | Should -Be "Add via PowerFGT"
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "enable"
+            }
+        }
+
+        It "Add Address $pester_address5 (type mac and visiblity disable)" {
+            Add-FGTFirewallAddress -Name $pester_address5 -mac 01:02:03:04:05:06 -visibility:$false
+            $address = Get-FGTFirewallAddress -name $pester_address5
+            $address.name | Should -Be $pester_address5
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "mac"
+            #$address.'start-ip' | Should -Be "192.0.2.0"
+            #$address.'end-ip' | Should -Be "255.255.255.0"
+            $address.subnet | Should -BeNullOrEmpty
+            $address.macaddr.macaddr | Should -Be "01:02:03:04:05:06"
+            ($address.macaddr.macaddr).count | Should -Be "1"
+            $address.'associated-interface' | Should -BeNullOrEmpty
+            $address.comment | Should -BeNullOrEmpty
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "disable"
+            }
+        }
+
+        <# skip because can't enable allow routing with mac :)#>
+        It "Add Address $pester_address5 (type mac and allow routing)" -skip:$true {
+            Add-FGTFirewallAddress -Name $pester_address5 -mac 01:02:03:04:05:06 -allowrouting
+            $address = Get-FGTFirewallAddress -name $pester_address5
+            $address.name | Should -Be $pester_address5
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "mac"
+            #$address.'start-ip' | Should -Be "192.0.2.0"
+            #$address.'end-ip' | Should -Be "255.255.255.0"
+            $address.subnet | Should -BeNullOrEmpty
+            $address.macaddr.macaddr | Should -Be "01:02:03:04:05:06"
+            ($address.macaddr.macaddr).count | Should -Be "1"
+            $address.'associated-interface' | Should -BeNullOrEmpty
+            $address.comment | Should -BeNullOrEmpty
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "enable"
+            }
+            $address.'allow-routing' | Should -Be "enable"
+        }
+
+
+        It "Add Address $pester_address5 (type mac and data (1 field))" {
+            $data = @{ "color" = 23 }
+            Add-FGTFirewallAddress -Name $pester_address5 -mac 01:02:03:04:05:06 -data $data
+            $address = Get-FGTFirewallAddress -name $pester_address5
+            $address.name | Should -Be $pester_address5
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "mac"
+            #$address.'start-ip' | Should -Be "192.0.2.0"
+            #$address.'end-ip' | Should -Be "255.255.255.0"
+            $address.subnet | Should -BeNullOrEmpty
+            $address.macaddr.macaddr | Should -Be "01:02:03:04:05:06"
+            ($address.macaddr.macaddr).count | Should -Be "1"
+            $address.'associated-interface' | Should -BeNullOrEmpty
+            $address.comment | Should -BeNullOrEmpty
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "enable"
+            }
+            $address.'allow-routing' | Should -Be "disable"
+            $address.color | Should -Be "23"
+        }
+
+        It "Add Address $pester_address5 (type mac and data (2 fields))" {
+            $data = @{ "color" = 23 ; "comment" = "Add via PowerFGT and -data" }
+            Add-FGTFirewallAddress -Name $pester_address5 -mac 01:02:03:04:05:06 -data $data
+            $address = Get-FGTFirewallAddress -name $pester_address5
+            $address.name | Should -Be $pester_address5
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "mac"
+            #$address.'start-ip' | Should -Be "192.0.2.0"
+            #$address.'end-ip' | Should -Be "255.255.255.0"
+            $address.subnet | Should -BeNullOrEmpty
+            $address.macaddr.macaddr | Should -Be "01:02:03:04:05:06"
+            ($address.macaddr.macaddr).count | Should -Be "1"
+            $address.'associated-interface' | Should -BeNullOrEmpty
+            $address.comment | Should -Be "Add via PowerFGT and -data"
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "enable"
+            }
+            $address.'allow-routing' | Should -Be "disable"
+            $address.color | Should -Be "23"
+        }
+
+        It "Try to Add Address $pester_address5 (but there is already a object with same name)" {
+            #Add first address
+            Add-FGTFirewallAddress -Name $pester_address5 -mac 01:02:03:04:05:06
+            #Add Second address with same name
+            { Add-FGTFirewallAddress -Name $pester_address5 -mac 01:02:03:04:05:06 } | Should -Throw "Already an address object using the same name"
+        }
+
+    }
+
 }
 
 Describe "Configure Firewall Address" {
