@@ -136,7 +136,7 @@ function Add-FGTFirewallAddress {
                 $address | add-member -name "country" -membertype NoteProperty -Value $country
             }
             "mac" {
-                # MAC
+                # MAC Address Array
                 $mac_array = @()
                 foreach ($s in $mac) {
                     $mac_array += @{ 'macaddr' = $s }
@@ -544,7 +544,12 @@ function Set-FGTFirewallAddress {
             }
             "mac" {
                 if ( $PsBoundParameters.ContainsKey('mac') ) {
-                    $_address | add-member -name "macaddr" -membertype NoteProperty -Value @($mac)
+                    # MAC Address Array
+                    $mac_array = @()
+                    foreach ($s in $mac) {
+                        $mac_array += @{ 'macaddr' = $s }
+                    }
+                    $_address | add-member -name "macaddr" -membertype NoteProperty -Value @($mac_array)
                 }
             }
             default { }
