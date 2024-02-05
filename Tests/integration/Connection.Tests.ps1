@@ -139,11 +139,11 @@ Describe "Connect to a FortiGate (using multi connection)" {
     }
 
     Context "Use Multi connection for call some (Get) cmdlet (Vlan, System...)" {
+        It "Use Multi connection for call Get Application List" {
+            { Get-FGTApplicationList -connection $fgt } | Should -Not -Throw
+        }
         It "Use Multi connection for call Get Antivirus Profile" {
             { Get-FGTAntivirusProfile -connection $fgt } | Should -Not -Throw
-        }
-        It "Use Multi connection for call Get Application List" {
-            { Get-FGTApplicationList-connection $fgt } | Should -Not -Throw
         }
         It "Use Multi connection for call Get IPS Sensor" {
             { Get-FGTIpsSensor -connection $fgt } | Should -Not -Throw
