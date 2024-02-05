@@ -554,7 +554,7 @@ Describe "Add Firewall Address" {
             Get-FGTFirewallAddress -name $pester_address5 | Remove-FGTFirewallAddress -confirm:$false
         }
 
-        It "Add Address $pester_address5 (type mac)" {
+        It "Add Address $pester_address5 (type mac)" -skip:($fgt_version -lt "7.0.0") {
             Add-FGTFirewallAddress -Name $pester_address5 -mac 01:02:03:04:05:06
             $address = Get-FGTFirewallAddress -name $pester_address5
             $address.name | Should -Be $pester_address5
@@ -572,7 +572,7 @@ Describe "Add Firewall Address" {
             $address.color | Should -Be "0"
         }
 
-        It "Add 2 Address(es) $pester_address5 (type mac)" {
+        It "Add 2 Address(es) $pester_address5 (type mac)" -skip:($fgt_version -lt "7.0.0") {
             Add-FGTFirewallAddress -Name $pester_address5 -mac 01:02:03:04:05:06, 01:02:03:04:05:07
             $address = Get-FGTFirewallAddress -name $pester_address5
             $address.name | Should -Be $pester_address5
@@ -590,7 +590,7 @@ Describe "Add Firewall Address" {
             $address.color | Should -Be "0"
         }
 
-        It "Add Address $pester_address5 (type mac and interface)" {
+        It "Add Address $pester_address5 (type mac and interface)" -skip:($fgt_version -lt "7.0.0") {
             Add-FGTFirewallAddress -Name $pester_address5 -mac 01:02:03:04:05:06 -interface port2
             $address = Get-FGTFirewallAddress -name $pester_address5
             $address.name | Should -Be $pester_address5
@@ -608,7 +608,7 @@ Describe "Add Firewall Address" {
             }
         }
 
-        It "Add Address $pester_address5 (type mac and comment)" {
+        It "Add Address $pester_address5 (type mac and comment)" -skip:($fgt_version -lt "7.0.0") {
             Add-FGTFirewallAddress -Name $pester_address5 -mac 01:02:03:04:05:06 -comment "Add via PowerFGT"
             $address = Get-FGTFirewallAddress -name $pester_address5
             $address.name | Should -Be $pester_address5
@@ -626,7 +626,7 @@ Describe "Add Firewall Address" {
             }
         }
 
-        It "Add Address $pester_address5 (type mac and visiblity disable)" {
+        It "Add Address $pester_address5 (type mac and visiblity disable)" -skip:($fgt_version -lt "7.0.0") {
             Add-FGTFirewallAddress -Name $pester_address5 -mac 01:02:03:04:05:06 -visibility:$false
             $address = Get-FGTFirewallAddress -name $pester_address5
             $address.name | Should -Be $pester_address5
@@ -665,7 +665,7 @@ Describe "Add Firewall Address" {
         }
 
 
-        It "Add Address $pester_address5 (type mac and data (1 field))" {
+        It "Add Address $pester_address5 (type mac and data (1 field))" -skip:($fgt_version -lt "7.0.0") {
             $data = @{ "color" = 23 }
             Add-FGTFirewallAddress -Name $pester_address5 -mac 01:02:03:04:05:06 -data $data
             $address = Get-FGTFirewallAddress -name $pester_address5
@@ -686,7 +686,7 @@ Describe "Add Firewall Address" {
             $address.color | Should -Be "23"
         }
 
-        It "Add Address $pester_address5 (type mac and data (2 fields))" {
+        It "Add Address $pester_address5 (type mac and data (2 fields))" -skip:($fgt_version -lt "7.0.0") {
             $data = @{ "color" = 23 ; "comment" = "Add via PowerFGT and -data" }
             Add-FGTFirewallAddress -Name $pester_address5 -mac 01:02:03:04:05:06 -data $data
             $address = Get-FGTFirewallAddress -name $pester_address5
@@ -707,7 +707,7 @@ Describe "Add Firewall Address" {
             $address.color | Should -Be "23"
         }
 
-        It "Try to Add Address $pester_address5 (but there is already a object with same name)" {
+        It "Try to Add Address $pester_address5 (but there is already a object with same name)" -skip:($fgt_version -lt "7.0.0") {
             #Add first address
             Add-FGTFirewallAddress -Name $pester_address5 -mac 01:02:03:04:05:06
             #Add Second address with same name
@@ -1299,7 +1299,7 @@ Describe "Configure Firewall Address" {
             $script:uuid = $address.uuid
         }
 
-        It "Change 2 MAC" {
+        It "Change 2 MAC" -skip:($fgt_version -lt "7.0.0") {
             Get-FGTFirewallAddress -name $pester_address5 | Set-FGTFirewallAddress -mac 01:02:03:04:05:06, 01:02:03:04:05:07
             $address = Get-FGTFirewallAddress -name $pester_address5
             $address.name | Should -Be $pester_address5
@@ -1317,7 +1317,7 @@ Describe "Configure Firewall Address" {
             $address.color | Should -Be "0"
         }
 
-        It "Change 1 MAC" {
+        It "Change 1 MAC" -skip:($fgt_version -lt "7.0.0") {
             Get-FGTFirewallAddress -name $pester_address5 | Set-FGTFirewallAddress -mac 01:02:03:04:05:07
             $address = Get-FGTFirewallAddress -name $pester_address5
             $address.name | Should -Be $pester_address5
@@ -1334,7 +1334,7 @@ Describe "Configure Firewall Address" {
         }
 
 
-        It "Change (Associated) Interface" {
+        It "Change (Associated) Interface" -skip:($fgt_version -lt "7.0.0") {
             Get-FGTFirewallAddress -name $pester_address5 | Set-FGTFirewallAddress -interface port2
             $address = Get-FGTFirewallAddress -name $pester_address5
             $address.name | Should -Be $pester_address5
@@ -1350,7 +1350,7 @@ Describe "Configure Firewall Address" {
             }
         }
 
-        It "Change comment" {
+        It "Change comment" -skip:($fgt_version -lt "7.0.0") {
             Get-FGTFirewallAddress -name $pester_address5 | Set-FGTFirewallAddress -comment "Modified by PowerFGT"
             $address = Get-FGTFirewallAddress -name $pester_address5
             $address.name | Should -Be $pester_address5
@@ -1364,7 +1364,7 @@ Describe "Configure Firewall Address" {
             }
         }
 
-        It "Change visiblity" {
+        It "Change visiblity" -skip:($fgt_version -lt "7.0.0") {
             Get-FGTFirewallAddress -name $pester_address5 | Set-FGTFirewallAddress -visibility:$false
             $address = Get-FGTFirewallAddress -name $pester_address5
             $address.name | Should -Be $pester_address5
@@ -1416,7 +1416,7 @@ Describe "Configure Firewall Address" {
             $address.'allow-routing' | Should -Be "disable"
         }
 
-        It "Change -data (1 field)" {
+        It "Change -data (1 field)" -skip:($fgt_version -lt "7.0.0") {
             $data = @{ "color" = 23 }
             Get-FGTFirewallAddress -name $pester_address5 | Set-FGTFirewallAddress -data $data
             $address = Get-FGTFirewallAddress -name $pester_address5
@@ -1435,7 +1435,7 @@ Describe "Configure Firewall Address" {
             $address.color | Should -Be "23"
         }
 
-        It "Change -data (2 fields)" {
+        It "Change -data (2 fields)" -skip:($fgt_version -lt "7.0.0") {
             $data = @{ "color" = 4 ; comment = "Modified by PowerFGT via -data" }
             Get-FGTFirewallAddress -name $pester_address5 | Set-FGTFirewallAddress -data $data
             $address = Get-FGTFirewallAddress -name $pester_address5
@@ -1454,11 +1454,11 @@ Describe "Configure Firewall Address" {
             $address.color | Should -Be "4"
         }
 
-        It "Try to Configure Address $pester_address5 (but it is wrong type...)" {
+        It "Try to Configure Address $pester_address5 (but it is wrong type...)" -skip:($fgt_version -lt "7.0.0") {
             { Get-FGTFirewallAddress -name $pester_address5 | Set-FGTFirewallAddress -fqdn "fortipower.github.io" } | Should -Throw "Address type (mac) need to be on the same type (fqdn)"
         }
 
-        It "Change Name" {
+        It "Change Name" -skip:($fgt_version -lt "7.0.0") {
             Get-FGTFirewallAddress -name $pester_address5 | Set-FGTFirewallAddress -name "pester_address_change"
             $address = Get-FGTFirewallAddress -name "pester_address_change"
             $address.name | Should -Be "pester_address_change"
@@ -1611,7 +1611,7 @@ Describe "Copy Firewall Address" {
             Add-FGTFirewallAddress -Name $pester_address5 -mac 01:02:03:04:05:06
         }
 
-        It "Copy Firewall Address ($pester_address5 => copy_pester_address5)" {
+        It "Copy Firewall Address ($pester_address5 => copy_pester_address5)" -skip:($fgt_version -lt "7.0.0") {
             Get-FGTFirewallAddress -name $pester_address5 | Copy-FGTFirewallAddress -name copy_pester_address5
             $address = Get-FGTFirewallAddress -name copy_pester_address5
             $address.name | Should -Be copy_pester_address5
@@ -1705,7 +1705,7 @@ Describe "Remove Firewall Address" {
             Add-FGTFirewallAddress -Name $pester_address5 -mac 01:02:03:04:05:06
         }
 
-        It "Remove Address $pester_address5 by pipeline" {
+        It "Remove Address $pester_address5 by pipeline" -skip:($fgt_version -lt "7.0.0") {
             $address = Get-FGTFirewallAddress -name $pester_address5
             $address | Remove-FGTFirewallAddress -confirm:$false
             $address = Get-FGTFirewallAddress -name $pester_address5
