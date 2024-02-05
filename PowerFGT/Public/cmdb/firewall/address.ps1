@@ -51,7 +51,7 @@ function Add-FGTFirewallAddress {
         .EXAMPLE
         Add-FGTFirewallAddress -Name FGT-Mac -mac 01:02:03:04:05:06
 
-        Add Address object type mac (macaddr) with name FGT-Country-FR and value FR (France)
+        Add Address object type mac (macaddr) with name FGT-Mac and value 01:02:03:04:05:06
 
         .EXAMPLE
         $data = @{ "color" = 23 }
