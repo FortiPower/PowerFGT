@@ -136,6 +136,9 @@ function Add-FGTFirewallAddress {
                 $address | add-member -name "country" -membertype NoteProperty -Value $country
             }
             "mac" {
+                if ($connection.version -lt "7.0.0") {
+                    Throw "-mac is not supported with PowerFGT before FortiOS >= 7.0.0"
+                }
                 # MAC Address Array
                 $mac_array = @()
                 foreach ($s in $mac) {
