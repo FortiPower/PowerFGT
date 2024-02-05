@@ -458,7 +458,7 @@ function Set-FGTFirewallAddress {
         [Parameter (Mandatory = $false, ParameterSetName = "geography")]
         [string]$country,
         [Parameter (Mandatory = $false, ParameterSetName = "mac")]
-        [string]$mac,
+        [string[]]$mac,
         [Parameter (Mandatory = $false)]
         [string]$interface,
         [Parameter (Mandatory = $false)]
