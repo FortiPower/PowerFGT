@@ -1605,6 +1605,36 @@ Describe "Copy Firewall Address" {
 
     }
 
+    Context "mac" {
+
+        BeforeAll {
+            Add-FGTFirewallAddress -Name $pester_address5 -mac 01:02:03:04:05:06
+        }
+
+        It "Copy Firewall Address ($pester_address5 => copy_pester_address5)" {
+            Get-FGTFirewallAddress -name $pester_address5 | Copy-FGTFirewallAddress -name copy_pester_address5
+            $address = Get-FGTFirewallAddress -name copy_pester_address5
+            $address.name | Should -Be copy_pester_address5
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.subnet | Should -BeNullOrEmpty
+            ($address.macaddr.macaddr).count | Should -Be "1"
+            $address.macaddr.macaddr | Should -Be "01:02:03:04:05:06"
+            $address.'associated-interface' | Should -BeNullOrEmpty
+            $address.comment | Should -BeNullOrEmpty
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "enable"
+            }
+        }
+
+        AfterAll {
+            #Remove copy_pester_address5
+            Get-FGTFirewallAddress -name copy_pester_address5 | Remove-FGTFirewallAddress -confirm:$false
+            #Remove $pester_address5
+            Get-FGTFirewallAddress -name $pester_address5 | Remove-FGTFirewallAddress -confirm:$false
+        }
+
+    }
+
 }
 
 Describe "Remove Firewall Address" {
@@ -1664,6 +1694,21 @@ Describe "Remove Firewall Address" {
             $address = Get-FGTFirewallAddress -name $pester_address4
             $address | Remove-FGTFirewallAddress -confirm:$false
             $address = Get-FGTFirewallAddress -name $pester_address4
+            $address | Should -Be $NULL
+        }
+
+    }
+
+    Context "mac" {
+
+        BeforeEach {
+            Add-FGTFirewallAddress -Name $pester_address5 -mac 01:02:03:04:05:06
+        }
+
+        It "Remove Address $pester_address5 by pipeline" {
+            $address = Get-FGTFirewallAddress -name $pester_address5
+            $address | Remove-FGTFirewallAddress -confirm:$false
+            $address = Get-FGTFirewallAddress -name $pester_address5
             $address | Should -Be $NULL
         }
 
