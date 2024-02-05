@@ -25,7 +25,7 @@ This is a Powershell module for configure a FortiGate (Fortinet) Firewall.
 
 With this module (version 0.7.0) you can manage:
 
-- [Address](#address) (Add/Get/Copy/Set/Remove object type ipmask/subnet, FQDN, iprange and geo)
+- [Address](#address) (Add/Get/Copy/Set/Remove object type ipmask/subnet, FQDN, iprange, geo and mac)
 - [AddressGroup](#address-group) (Add/Get/Copy/Set/Remove and Add/Remove Member)
 - DNS (Get)
 - HA (Get)
@@ -352,6 +352,37 @@ or delete it `Remove-FGTFirewallAddress`.
     list                 : {}
     tagging              : {}
     allow-routing        : disable
+
+# Create an address (type mac)
+    Add-FGTFirewallAddress -Name MyMAC -mac 01:02:03:04:05:06
+
+    name                 : MyMAC
+    q_origin_key         : MyMAC
+    uuid                 : eabaa884-c42d-51ee-4a87-4605a5021da9
+    type                 : mac
+    sub-type             : sdn
+    clearpass-spt        : unknown
+    macaddr              : {@{macaddr=01:02:03:04:05:06; q_origin_key=01:02:03:04:05:06}}
+    country              :
+    cache-ttl            : 0
+    sdn                  :
+    fsso-group           : {}
+    interface            :
+    obj-type             : ip
+    tag-detection-level  :
+    tag-type             :
+    dirty                : dirty
+    comment              :
+    associated-interface :
+    color                : 0
+    filter               :
+    sdn-addr-type        : private
+    node-ip-only         : disable
+    obj-id               :
+    list                 : {}
+    tagging              : {}
+    allow-routing        : disable
+    fabric-object        : disable
 
 ```
 
