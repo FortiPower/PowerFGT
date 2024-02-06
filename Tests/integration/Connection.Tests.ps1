@@ -160,6 +160,9 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Firewall IP Pool" {
             { Get-FGTFirewallIPPool -connection $fgt } | Should -Not -Throw
         }
+        It "Use Multi connection for call Get Firewall Internet Service Name (ISDB)" {
+            { Get-FGTFirewallInternetServiceName -connection $fgt } | Should -Not -Throw
+        }
         It "Use Multi connection for call Get Firewall Policy" {
             { Get-FGTFirewallPolicy -connection $fgt } | Should -Not -Throw
         }
