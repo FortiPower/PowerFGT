@@ -172,6 +172,9 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Log Traffic" {
             { Get-FGTLogTraffic -type memory -subtype local -connection $fgt } | Should -Not -Throw
         }
+        It "Use Multi connection for call Get Log Settings" {
+            { Get-FGTLogSetting -type syslogd -connection $fgt } | Should -Not -Throw
+        }
         It "Use Multi connection for call Get Router Policy" {
             { Get-FGTRouterPolicy -connection $fgt } | Should -Not -Throw
         }
