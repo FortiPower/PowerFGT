@@ -49,6 +49,13 @@ Set-FGTFirewallAddress [-address] <PSObject> [-name <String>] [-country <String>
  [-connection <PSObject>] [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
+### mac
+```
+Set-FGTFirewallAddress [-address] <PSObject> [-name <String>] [-mac <String[]>] [-interface <String>]
+ [-comment <String>] [-visibility <Boolean>] [-allowrouting] [-data <Hashtable>] [-vdom <String[]>]
+ [-connection <PSObject>] [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Change a FortiGate Address (ip, mask, comment, associated interface...
 )
@@ -120,6 +127,14 @@ PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -country FR
 Change MyFGTAddress to set a new country (geo) FR (France)
 
 ### EXAMPLE 9
+```
+$MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
+PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -mac 01:02:03:04:05:06
+```
+
+Change MyFGTAddress to set a new mac address 01:02:03:04:05:06
+
+### EXAMPLE 10
 ```
 $data = @{ "color" = 23 }
 PS C:\>$MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
@@ -241,6 +256,21 @@ Accept wildcard characters: False
 ```yaml
 Type: String
 Parameter Sets: geography
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -mac
+{{ Fill mac Description }}
+
+```yaml
+Type: String[]
+Parameter Sets: mac
 Aliases:
 
 Required: False

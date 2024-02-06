@@ -40,6 +40,13 @@ Add-FGTFirewallAddress -name <String> [-country <String>] [-interface <String>] 
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
+### mac
+```
+Add-FGTFirewallAddress -name <String> [-mac <String[]>] [-interface <String>] [-comment <String>]
+ [-visibility <Boolean>] [-allowrouting] [-data <Hashtable>] [-vdom <String[]>] [-connection <PSObject>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Add a FortiGate Address (ipmask, iprange, fqdn)
 
@@ -95,6 +102,13 @@ Add-FGTFirewallAddress -Name FGT-Country-FR -country FR
 Add Address object type geo (country) with name FGT-Country-FR and value FR (France)
 
 ### EXAMPLE 8
+```
+Add-FGTFirewallAddress -Name FGT-Mac -mac 01:02:03:04:05:06
+```
+
+Add Address object type mac (macaddr) with name FGT-Mac and value 01:02:03:04:05:06
+
+### EXAMPLE 9
 ```
 $data = @{ "color" = 23 }
 PS C:\>Add-FGTFirewallAddress -Name FGT -ip 192.0.2.0 -mask 255.255.255.0 -data $data
@@ -200,6 +214,21 @@ Accept wildcard characters: False
 ```yaml
 Type: String
 Parameter Sets: geography
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -mac
+{{ Fill mac Description }}
+
+```yaml
+Type: String[]
+Parameter Sets: mac
 Aliases:
 
 Required: False
