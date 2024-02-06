@@ -181,6 +181,9 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Firewall Service Group" {
             { Get-FGTFirewallServiceGroup -connection $fgt } | Should -Not -Throw
         }
+        It "Use Multi connection for call Get Firewall SSL SSH Profile" {
+            { Get-FGTFirewallSSLSSHProfile -connection $fgt } | Should -Not -Throw
+        }
         It "Use Multi connection for call Get Firewall Virtual IP (VIP)" {
             { Get-FGTFirewallVip -connection $fgt } | Should -Not -Throw
         }
