@@ -14,7 +14,8 @@ Add a zone
 
 ```
 Add-FGTSystemZone [-name] <String> [-intrazone <String>] [-interfaces <String[]>] [-description <String>]
- [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-data <Hashtable>] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -95,6 +96,21 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -data
+{{ Fill data Description }}
+
+```yaml
+Type: Hashtable
 Parameter Sets: (All)
 Aliases:
 

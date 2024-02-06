@@ -15,8 +15,8 @@ Modify an interface
 ```
 Set-FGTSystemInterface [-interface] <PSObject> [-alias <String>] [-role <String>] [-allowaccess <String[]>]
  [-mode <String>] [-ip <String>] [-netmask <String>] [-status <String>] [-device_identification <String>]
- [-vdom <String[]>] [-dhcprelayip <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
- [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-data <Hashtable>] [-vdom <String[]>] [-dhcprelayip <String[]>] [-connection <PSObject>]
+ [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -44,6 +44,14 @@ Get-FGTSystemInterface -name PowerFGT | Set-FGTSystemInterface -dhcprelayip $nul
 ```
 
 This disables DCHP relay and clears the relay ip addresses
+
+### EXAMPLE 4
+```
+$data = @{ "sflow-sampler" = "enable" }
+PS C:\>Get-FGTSystemInterface -name PowerFGT | Set-FGTSystemInterface -data $data
+```
+
+Configure sflow-sampler setting using -data parameter on interface PowerFGT
 
 ## PARAMETERS
 
@@ -172,6 +180,21 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -data
+{{ Fill data Description }}
+
+```yaml
+Type: Hashtable
 Parameter Sets: (All)
 Aliases:
 

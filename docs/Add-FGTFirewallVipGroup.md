@@ -14,7 +14,8 @@ Add a FortiGate VIP Group
 
 ```
 Add-FGTFirewallVipGroup [-name] <String> [-member] <String[]> [[-interface] <String>] [[-comments] <String>]
- [[-vdom] <String[]>] [[-connection] <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [[-data] <Hashtable>] [[-vdom] <String[]>] [[-connection] <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -42,6 +43,14 @@ Add-FGTFirewallVipGroup -name MyVipGroup -member MyVip1 -comments "My VIP Group"
 ```
 
 Add VIP Group with member MyVip1 and a comments, associated to interface wan1
+
+### EXAMPLE 4
+```
+$data = @{ "color" = "23"}
+PS C> Add-FGTFirewallVipGroup -name MyVipGroup -member MyVip1 -interface wan1 -data $data
+```
+
+Add VIP Group with member MyVip1 with color 23 (using -data)
 
 ## PARAMETERS
 
@@ -105,6 +114,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -data
+{{ Fill data Description }}
+
+```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 5
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -vdom
 {{ Fill vdom Description }}
 
@@ -114,7 +138,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 5
+Position: 6
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -129,7 +153,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 6
+Position: 7
 Default value: $DefaultFGTConnection
 Accept pipeline input: False
 Accept wildcard characters: False

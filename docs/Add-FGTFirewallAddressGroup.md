@@ -14,8 +14,8 @@ Add a FortiGate Address Group
 
 ```
 Add-FGTFirewallAddressGroup [-name] <String> [-member] <String[]> [[-comment] <String>]
- [[-visibility] <Boolean>] [[-vdom] <String[]>] [[-connection] <PSObject>] [-ProgressAction <ActionPreference>]
- [<CommonParameters>]
+ [[-visibility] <Boolean>] [[-data] <Hashtable>] [[-vdom] <String[]>] [[-connection] <PSObject>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -43,6 +43,14 @@ Add-FGTFirewallAddressGroup -name MyAddressGroup -member MyAddress1 -comment "My
 ```
 
 Add Address Group with member MyAddress1 and a comment
+
+### EXAMPLE 4
+```
+$data = @{ "color" = 23 }
+PS C:\>Add-FGTFirewallAddressGroup -name MyAddressGroup -member MyAddress1 -comment "My Address Group".0 -data $data
+```
+
+Add Address Group with member MyAddress1, a comment and color (23) via -data parameter
 
 ## PARAMETERS
 
@@ -106,6 +114,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -data
+{{ Fill data Description }}
+
+```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 5
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -vdom
 {{ Fill vdom Description }}
 
@@ -115,7 +138,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 5
+Position: 6
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -130,7 +153,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 6
+Position: 7
 Default value: $DefaultFGTConnection
 Accept pipeline input: False
 Accept wildcard characters: False

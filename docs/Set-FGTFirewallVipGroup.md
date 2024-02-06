@@ -14,8 +14,8 @@ Configure a FortiGate VIP Group
 
 ```
 Set-FGTFirewallVipGroup [-vipgrp] <PSObject> [-name <String>] [-member <String[]>] [-comments <String>]
- [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+ [-data <Hashtable>] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -54,6 +54,15 @@ PS C:\>$MyFGTVipGroup | Set-FGTFirewallVipGroup -comments "Modified by PowerFGT"
 ```
 
 Change MyFGTVipGroup to set a new comments
+
+### EXAMPLE 5
+```
+$data = @{ "color" = "23" }
+PS C:\>$MyFGTVipGroup = Get-FGTFirewallVipGroup -name MyFGTVipGroup
+PS C:\>$MyFGTVipGroup | Set-FGTFirewallVipGroup -data $data
+```
+
+Change MyFGTVipGroup to set color (23) with -data parameter
 
 ## PARAMETERS
 
@@ -107,6 +116,21 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -data
+{{ Fill data Description }}
+
+```yaml
+Type: Hashtable
 Parameter Sets: (All)
 Aliases:
 

@@ -16,7 +16,7 @@ Add an interface
 ```
 Add-FGTSystemInterface [-name] <String> [-alias <String>] [-role <String>] -vlan_id <Int32> -interface <String>
  [-allowaccess <String[]>] [-status <String>] [-device_identification <String>] [-mode <String>] [-ip <String>]
- [-netmask <String>] [-vdom_interface <String>] [-vdom <String[]>] [-connection <PSObject>]
+ [-netmask <String>] [-vdom_interface <String>] [-data <Hashtable>] [-vdom <String[]>] [-connection <PSObject>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
@@ -24,7 +24,7 @@ Add-FGTSystemInterface [-name] <String> [-alias <String>] [-role <String>] -vlan
 ```
 Add-FGTSystemInterface [-name] <String> [-alias <String>] [-role <String>] -member <String[]> -atype <String>
  [-allowaccess <String[]>] [-status <String>] [-device_identification <String>] [-mode <String>] [-ip <String>]
- [-netmask <String>] [-vdom_interface <String>] [-vdom <String[]>] [-connection <PSObject>]
+ [-netmask <String>] [-vdom_interface <String>] [-data <Hashtable>] [-vdom <String[]>] [-connection <PSObject>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
@@ -32,7 +32,7 @@ Add-FGTSystemInterface [-name] <String> [-alias <String>] [-role <String>] -memb
 ```
 Add-FGTSystemInterface [-name] <String> [-alias <String>] [-role <String>] [-loopback]
  [-allowaccess <String[]>] [-status <String>] [-device_identification <String>] [-mode <String>] [-ip <String>]
- [-netmask <String>] [-vdom_interface <String>] [-vdom <String[]>] [-connection <PSObject>]
+ [-netmask <String>] [-vdom_interface <String>] [-data <Hashtable>] [-vdom <String[]>] [-connection <PSObject>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
@@ -77,6 +77,14 @@ Add-FGTSystemInterface -name PowerFGT_lo -loopback -mode static -ip 192.0.2.1 -n
 ```
 
 This creates a new interface loopback with IP 192.0.2.1(/32) and allow access to ping
+
+### EXAMPLE 6
+```
+$data = @{ 'sflow-sampler' = "enable" }
+Add-FGTSystemInterface -name PowerFGT -interface port10 -vlan_id 10 -data $data
+```
+
+This creates a new interface with sflow-sampler enable using -data parameter
 
 ## PARAMETERS
 
@@ -301,6 +309,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: Root
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -data
+{{ Fill data Description }}
+
+```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

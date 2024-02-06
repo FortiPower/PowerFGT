@@ -16,7 +16,8 @@ Add a FortiGate Policy
 Add-FGTFirewallPolicy [[-name] <String>] [[-policyid] <Int32>] [-srcintf] <String[]> [-dstintf] <String[]>
  [-srcaddr] <String[]> [-dstaddr] <String[]> [[-action] <String>] [-status] [[-schedule] <String>]
  [[-service] <String[]>] [-nat] [[-comments] <String>] [[-logtraffic] <String>] [[-ippool] <String[]>] [-skip]
- [[-vdom] <String[]>] [[-connection] <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [[-data] <Hashtable>] [[-vdom] <String[]>] [[-connection] <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -93,6 +94,14 @@ Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr a
 ```
 
 Add a MyFGTPolicy with Policy ID equal 23
+
+### EXAMPLE 11
+```
+$data = @{ "logtraffic-start" = "enable" }
+Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -data $data
+```
+
+Add a MyFGTPolicy with logtraffic-start using -data
 
 ## PARAMETERS
 
@@ -322,6 +331,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -data
+{{ Fill data Description }}
+
+```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 13
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -vdom
 {{ Fill vdom Description }}
 
@@ -331,7 +355,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 13
+Position: 14
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -346,7 +370,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 14
+Position: 15
 Default value: $DefaultFGTConnection
 Accept pipeline input: False
 Accept wildcard characters: False

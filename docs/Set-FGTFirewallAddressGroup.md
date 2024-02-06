@@ -14,8 +14,8 @@ Configure a FortiGate Address Group
 
 ```
 Set-FGTFirewallAddressGroup [-addrgrp] <PSObject> [-name <String>] [-member <String[]>] [-comment <String>]
- [-visibility <Boolean>] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
- [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-visibility <Boolean>] [-data <Hashtable>] [-vdom <String[]>] [-connection <PSObject>]
+ [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -54,6 +54,15 @@ PS C:\>$MyFGTAddressGroup | Set-FGTFirewallAddressGroup -visibility:$false
 ```
 
 Change MyFGTAddressGroup to set a new comment and disabled visibility
+
+### EXAMPLE 5
+```
+$data = @{ "color" = 23 }
+PS C:\>$MyFGTAddressGroup = Get-FGTFirewallAddressGroup -name MyFGTAddressGroup
+PS C:\>$MyFGTAddressGroup | Set-FGTFirewallAddressGroup -data $data
+```
+
+Change MyFGTAddressGroup to set color (23) using -data
 
 ## PARAMETERS
 
@@ -128,6 +137,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -data
+{{ Fill data Description }}
+
+```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

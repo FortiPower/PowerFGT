@@ -16,56 +16,56 @@ Add a FortiGate static route
 ```
 Add-FGTRouterStatic [-seq_num <Int32>] [-status] [-gateway <String>] [-distance <Int32>] [-weight <Int32>]
  [-priority <Int32>] [-comment <String>] [-dynamic_gateway] [-internet_service_custom <String>]
- [-link_monitor_exempt] [-vrf <Int32>] [-bfd] [-skip] [-vdom <String[]>] [-connection <PSObject>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-link_monitor_exempt] [-vrf <Int32>] [-bfd] [-data <Hashtable>] [-skip] [-vdom <String[]>]
+ [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### dst_blackhole
 ```
 Add-FGTRouterStatic [-seq_num <Int32>] [-status] -dst <String> [-gateway <String>] [-distance <Int32>]
  [-weight <Int32>] [-priority <Int32>] [-comment <String>] [-blackhole] [-dynamic_gateway]
- [-internet_service_custom <String>] [-link_monitor_exempt] [-vrf <Int32>] [-bfd] [-skip] [-vdom <String[]>]
- [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-internet_service_custom <String>] [-link_monitor_exempt] [-vrf <Int32>] [-bfd] [-data <Hashtable>] [-skip]
+ [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### dst_device
 ```
 Add-FGTRouterStatic [-seq_num <Int32>] [-status] -dst <String> [-gateway <String>] [-distance <Int32>]
  [-weight <Int32>] [-priority <Int32>] -device <String> [-comment <String>] [-dynamic_gateway]
- [-internet_service_custom <String>] [-link_monitor_exempt] [-vrf <Int32>] [-bfd] [-skip] [-vdom <String[]>]
- [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-internet_service_custom <String>] [-link_monitor_exempt] [-vrf <Int32>] [-bfd] [-data <Hashtable>] [-skip]
+ [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### isdb_device
 ```
 Add-FGTRouterStatic [-seq_num <Int32>] [-status] [-gateway <String>] [-distance <Int32>] [-weight <Int32>]
  [-priority <Int32>] -device <String> [-comment <String>] [-dynamic_gateway] -internet_service <Int32>
- [-internet_service_custom <String>] [-link_monitor_exempt] [-vrf <Int32>] [-bfd] [-skip] [-vdom <String[]>]
- [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-internet_service_custom <String>] [-link_monitor_exempt] [-vrf <Int32>] [-bfd] [-data <Hashtable>] [-skip]
+ [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### dstaddr_device
 ```
 Add-FGTRouterStatic [-seq_num <Int32>] [-status] [-gateway <String>] [-distance <Int32>] [-weight <Int32>]
  [-priority <Int32>] -device <String> [-comment <String>] [-blackhole] [-dynamic_gateway] -dstaddr <String>
- [-internet_service_custom <String>] [-link_monitor_exempt] [-vrf <Int32>] [-bfd] [-skip] [-vdom <String[]>]
- [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-internet_service_custom <String>] [-link_monitor_exempt] [-vrf <Int32>] [-bfd] [-data <Hashtable>] [-skip]
+ [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### isdb_blackhole
 ```
 Add-FGTRouterStatic [-seq_num <Int32>] [-status] [-gateway <String>] [-distance <Int32>] [-weight <Int32>]
  [-priority <Int32>] [-comment <String>] [-blackhole] [-dynamic_gateway] -internet_service <Int32>
- [-internet_service_custom <String>] [-link_monitor_exempt] [-vrf <Int32>] [-bfd] [-skip] [-vdom <String[]>]
- [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-internet_service_custom <String>] [-link_monitor_exempt] [-vrf <Int32>] [-bfd] [-data <Hashtable>] [-skip]
+ [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### dstaddr_blackhole
 ```
 Add-FGTRouterStatic [-seq_num <Int32>] [-status] [-gateway <String>] [-distance <Int32>] [-weight <Int32>]
  [-priority <Int32>] [-comment <String>] [-dynamic_gateway] -dstaddr <String>
- [-internet_service_custom <String>] [-link_monitor_exempt] [-vrf <Int32>] [-bfd] [-skip] [-vdom <String[]>]
- [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-internet_service_custom <String>] [-link_monitor_exempt] [-vrf <Int32>] [-bfd] [-data <Hashtable>] [-skip]
+ [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -86,6 +86,14 @@ Add-FGTRouterStatic -status:$false -dst 198.51.100.0/24 -gateway 192.0.2.254 -de
 ```
 
 Add a route with status disabled
+
+### EXAMPLE 3
+```
+$data = @{ "sdwan" = "enable" }
+PS C:\>Add-FGTRouterStatic -dst 198.51.100.0/24 -gateway 192.0.2.254 -device internal1 -data $data
+```
+
+Add a route with sdwan enable using -data
 
 ## PARAMETERS
 
@@ -342,6 +350,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -data
+{{ Fill data Description }}
+
+```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
