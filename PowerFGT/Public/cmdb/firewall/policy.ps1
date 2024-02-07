@@ -65,11 +65,15 @@ function Add-FGTFirewallPolicy {
         Add a MyFGTPolicy with Policy ID equal 23
 
         .EXAMPLE
+        Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -avprofile default -webfilterprofile default -dnsfilterprofile default -applicationlist default -ipssensor default
+
+        Add a MyFGTPolicy with Security Profile (Antivirus, WebFilter, DNS Filter, Application, IPS)
+
+        .EXAMPLE
         $data = @{ "logtraffic-start" = "enable" }
         Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -data $data
 
         Add a MyFGTPolicy with logtraffic-start using -data
-
     #>
 
 
