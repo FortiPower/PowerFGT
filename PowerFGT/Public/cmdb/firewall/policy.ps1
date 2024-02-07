@@ -106,6 +106,18 @@ function Add-FGTFirewallPolicy {
         [Parameter (Mandatory = $false)]
         [string[]]$ippool,
         [Parameter (Mandatory = $false)]
+        [string]$sslsshprofile,
+        [Parameter (Mandatory = $false)]
+        [string]$avprofile,
+        [Parameter (Mandatory = $false)]
+        [string]$webfilterprofile,
+        [Parameter (Mandatory = $false)]
+        [string]$dnsfilterprofile,
+        [Parameter (Mandatory = $false)]
+        [string]$ipssensor,
+        [Parameter (Mandatory = $false)]
+        [string]$applicationlist,
+        [Parameter (Mandatory = $false)]
         [switch]$skip,
         [Parameter (Mandatory = $false)]
         [hashtable]$data,
@@ -246,6 +258,35 @@ function Add-FGTFirewallPolicy {
             $data.GetEnumerator() | ForEach-Object {
                 $policy | Add-member -name $_.key -membertype NoteProperty -Value $_.value
             }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('sslsshprofile') ) {
+            $policy | add-member -name "ssl-ssh-profile" -membertype NoteProperty -Value $sslsshprofile
+        }
+
+        if ( $PsBoundParameters.ContainsKey('avprofile') ) {
+            $policy | add-member -name "av-profile" -membertype NoteProperty -Value $avprofile
+        }
+
+        if ( $PsBoundParameters.ContainsKey('webfilterprofile') ) {
+            $policy | add-member -name "webfilter-profile" -membertype NoteProperty -Value $webfilterprofile
+        }
+
+        if ( $PsBoundParameters.ContainsKey('dnsfilterprofile') ) {
+            $policy | add-member -name "dnsfilter-profile" -membertype NoteProperty -Value $dnsfilterprofile
+        }
+
+        if ( $PsBoundParameters.ContainsKey('ipssensor') ) {
+            $policy | add-member -name "ips-sensor" -membertype NoteProperty -Value $ipssensor
+        }
+
+        if ( $PsBoundParameters.ContainsKey('applicationlist') ) {
+            $policy | add-member -name "application-list" -membertype NoteProperty -Value $applicationlist
+        }
+
+        #When use Security Profile, you need to enable utm-status
+        if ( $PsBoundParameters.ContainsKey('avprofile') -or $PsBoundParameters.ContainsKey('webfilterprofile') -or $PsBoundParameters.ContainsKey('dnsfilterprofile') -or $PsBoundParameters.ContainsKey('ipssensor') -or $PsBoundParameters.ContainsKey('applicationlist')) {
+            $policy | add-member -name "utm-status" -membertype NoteProperty -Value "enable"
         }
 
         $post = Invoke-FGTRestMethod -method "POST" -body $policy -uri $uri -connection $connection @invokeParams
