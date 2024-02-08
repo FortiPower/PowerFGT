@@ -289,7 +289,7 @@ function Add-FGTFirewallPolicy {
         }
 
         #When use Security Profile, you need to enable utm-status
-        if ( $PsBoundParameters.ContainsKey('avprofile') -or $PsBoundParameters.ContainsKey('webfilterprofile') -or $PsBoundParameters.ContainsKey('dnsfilterprofile') -or $PsBoundParameters.ContainsKey('ipssensor') -or $PsBoundParameters.ContainsKey('applicationlist')) {
+        if ( $PsBoundParameters.ContainsKey('sslsshprofile') -or $PsBoundParameters.ContainsKey('avprofile') -or $PsBoundParameters.ContainsKey('webfilterprofile') -or $PsBoundParameters.ContainsKey('dnsfilterprofile') -or $PsBoundParameters.ContainsKey('ipssensor') -or $PsBoundParameters.ContainsKey('applicationlist')) {
             $policy | add-member -name "utm-status" -membertype NoteProperty -Value "enable"
         }
 
