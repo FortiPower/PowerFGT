@@ -725,6 +725,46 @@ Describe "Add Firewall Policy" {
         $policy.'application-list' | Should -Be "default"
     }
 
+    It "Add Policy $pester_policy1 (with inspection-mode: flow)" {
+        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -inspectionmode flow
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.srcintf.name | Should -Be "port1"
+        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcaddr.name | Should -Be "all"
+        $policy.dstaddr.name | Should -Be "all"
+        $policy.action | Should -Be "accept"
+        $policy.status | Should -Be "enable"
+        $policy.service.name | Should -Be "all"
+        $policy.schedule | Should -Be "always"
+        $policy.nat | Should -Be "disable"
+        $policy.logtraffic | Should -Be "utm"
+        $policy.comments | Should -BeNullOrEmpty
+        $policy.'inspection-mode' | Should -Be "flow"
+    }
+
+    It "Add Policy $pester_policy1 (with inspection-mode: proxy)" {
+        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -inspectionmode proxy
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.srcintf.name | Should -Be "port1"
+        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcaddr.name | Should -Be "all"
+        $policy.dstaddr.name | Should -Be "all"
+        $policy.action | Should -Be "accept"
+        $policy.status | Should -Be "enable"
+        $policy.service.name | Should -Be "all"
+        $policy.schedule | Should -Be "always"
+        $policy.nat | Should -Be "disable"
+        $policy.logtraffic | Should -Be "utm"
+        $policy.comments | Should -BeNullOrEmpty
+        $policy.'inspection-mode' | Should -Be "proxy"
+    }
+
     It "Try to Add Policy $pester_policy1 (but there is already a object with same name)" {
         #Add first policy
         Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all
