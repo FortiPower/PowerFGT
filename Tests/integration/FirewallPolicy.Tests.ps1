@@ -725,7 +725,7 @@ Describe "Add Firewall Policy" {
         $policy.'application-list' | Should -Be "default"
     }
 
-    It "Add Policy $pester_policy1 (with inspection-mode: flow)" {
+    It "Add Policy $pester_policy1 (with inspection-mode: flow)" -skip:($fgt_version -lt "6.2.0") {
         $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -inspectionmode flow
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
@@ -745,7 +745,7 @@ Describe "Add Firewall Policy" {
         $policy.'inspection-mode' | Should -Be "flow"
     }
 
-    It "Add Policy $pester_policy1 (with inspection-mode: proxy)" {
+    It "Add Policy $pester_policy1 (with inspection-mode: proxy)" -skip:($fgt_version -lt "6.2.0") {
         $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -inspectionmode proxy
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
