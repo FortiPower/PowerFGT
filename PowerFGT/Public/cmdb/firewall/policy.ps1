@@ -268,6 +268,9 @@ function Add-FGTFirewallPolicy {
         }
 
         if ( $PsBoundParameters.ContainsKey('inspectionmode') ) {
+            if ($connection.version -lt "6.2.0") {
+                Throw "-inspectionmode (flow/proxy is not available before FortiOS 6.2.x)"
+            }
             $policy | add-member -name "inspection-mode" -membertype NoteProperty -Value $inspectionmode
         }
 
