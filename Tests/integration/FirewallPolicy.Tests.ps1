@@ -599,7 +599,6 @@ Describe "Add Firewall Policy" {
         $policy.'ssl-ssh-profile' | Should -Be "certificate-inspection"
     }
 
-
     It "Add Policy $pester_policy1 (with SSL/SSH Profile: deep-inspection)" {
         $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -sslsshprofile deep-inspection
         @($p).count | Should -Be "1"
