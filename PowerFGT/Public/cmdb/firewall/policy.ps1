@@ -110,6 +110,9 @@ function Add-FGTFirewallPolicy {
         [Parameter (Mandatory = $false)]
         [string[]]$ippool,
         [Parameter (Mandatory = $false)]
+        [ValidateSet("flow", "proxy")]
+        [string]$inspectionmode,
+        [Parameter (Mandatory = $false)]
         [string]$sslsshprofile,
         [Parameter (Mandatory = $false)]
         [string]$avprofile,
@@ -262,6 +265,10 @@ function Add-FGTFirewallPolicy {
             $data.GetEnumerator() | ForEach-Object {
                 $policy | Add-member -name $_.key -membertype NoteProperty -Value $_.value
             }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('inspectionmode') ) {
+            $policy | add-member -name "inspection-mode" -membertype NoteProperty -Value $inspectionmode
         }
 
         if ( $PsBoundParameters.ContainsKey('sslsshprofile') ) {
