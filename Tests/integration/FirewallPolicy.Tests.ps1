@@ -595,7 +595,7 @@ Describe "Add Firewall Policy" {
         $policy.nat | Should -Be "disable"
         $policy.logtraffic | Should -Be "utm"
         $policy.comments | Should -BeNullOrEmpty
-        $policy.'utm-status' | Should -Be "disable"
+        $policy.'utm-status' | Should -Be "enable"
         $policy.'ssl-ssh-profile' | Should -Be "certificate-inspection"
     }
 
@@ -617,7 +617,7 @@ Describe "Add Firewall Policy" {
         $policy.nat | Should -Be "disable"
         $policy.logtraffic | Should -Be "utm"
         $policy.comments | Should -BeNullOrEmpty
-        $policy.'utm-status' | Should -Be "disable"
+        $policy.'utm-status' | Should -Be "enable"
         $policy.'ssl-ssh-profile' | Should -Be "deep-inspection"
     }
 
