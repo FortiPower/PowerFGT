@@ -1097,6 +1097,149 @@ Describe "Move Firewall Policy" {
     }
 }
 
+Describe "Configure Firewall Policy" {
+
+
+    BeforeAll {
+        $policy = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all
+        $script:uuid = $policy.uuid
+    }
+
+    Context "Multi Source / Destination Interface" {
+
+        It "Set Policy $pester_policy1 (src intf: port1, port3)" {
+            $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -srcintf port1, port3
+            @($p).count | Should -Be "1"
+            $policy = Get-FGTFirewallPolicy -name $pester_policy1
+            $policy.name | Should -Be $pester_policy1
+            $policy.uuid | Should -Not -BeNullOrEmpty
+            ($policy.srcintf.name).count | Should -be "2"
+            $policy.srcintf.name | Should -BeIn "port1", "port3"
+        }
+
+        It "Set Policy $pester_policy1 (dst intf: port2, port4)" {
+            $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -dstintf port2, port4
+            @($p).count | Should -Be "1"
+            $policy = Get-FGTFirewallPolicy -name $pester_policy1
+            $policy.name | Should -Be $pester_policy1
+            $policy.uuid | Should -Not -BeNullOrEmpty
+            ($policy.dstintf.name).count | Should -be "2"
+            $policy.dstintf.name | Should -BeIn "port2", "port4"
+        }
+
+        It "Set Policy $pester_policy1 (src intf: port3 and dst intf: port4)" {
+            $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -srcintf port3 -dstintf port4
+            @($p).count | Should -Be "1"
+            $policy = Get-FGTFirewallPolicy -name $pester_policy1
+            $policy.name | Should -Be $pester_policy1
+            $policy.uuid | Should -Not -BeNullOrEmpty
+            ($policy.srcintf.name).count | Should -be "1"
+            $policy.srcintf.name | Should -BeIn "port3"
+            ($policy.dstintf.name).count | Should -be "1"
+            $policy.dstintf.name | Should -BeIn "port4"
+        }
+
+    }
+
+
+    Context "Multi Source / Destination address" {
+
+        BeforeAll {
+            Add-FGTFirewallAddress -Name $pester_address1 -ip 192.0.2.1 -mask 255.255.255.255
+            Add-FGTFirewallAddress -Name $pester_address2 -ip 192.0.2.2 -mask 255.255.255.255
+            Add-FGTFirewallAddress -Name $pester_address3 -ip 192.0.2.3 -mask 255.255.255.255
+            Add-FGTFirewallAddress -Name $pester_address4 -ip 192.0.2.4 -mask 255.255.255.255
+        }
+
+        It "Set Policy $pester_policy1 (src addr: $pester_address1)" {
+            $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -srcaddr $pester_address1
+            @($p).count | Should -Be "1"
+            $policy = Get-FGTFirewallPolicy -name $pester_policy1
+            $policy.name | Should -Be $pester_policy1
+            $policy.uuid | Should -Not -BeNullOrEmpty
+            $policy.srcaddr.name | Should -Be $pester_address1
+        }
+
+        It "Set Policy $pester_policy1 (src addr: $pester_address1, $pester_address3)" {
+            $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -srcaddr $pester_address1, $pester_address3
+            @($p).count | Should -Be "1"
+            $policy = Get-FGTFirewallPolicy -name $pester_policy1
+            $policy.name | Should -Be $pester_policy1
+            $policy.uuid | Should -Not -BeNullOrEmpty
+            ($policy.srcaddr.name).count | Should -Be "2"
+            $policy.srcaddr.name | Should -BeIn $pester_address1, $pester_address3
+        }
+
+        It "Set Policy $pester_policy1 (dst addr: $pester_address2)" {
+            $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -dstaddr $pester_address2
+            @($p).count | Should -Be "1"
+            $policy = Get-FGTFirewallPolicy -name $pester_policy1
+            $policy.name | Should -Be $pester_policy1
+            $policy.uuid | Should -Not -BeNullOrEmpty
+            $policy.dstaddr.name | Should -Be $pester_address2
+        }
+
+        It "Set Policy $pester_policy1 (dst addr: $pester_address2, $pester_address4)" {
+            $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -dstaddr $pester_address2, $pester_address4
+            @($p).count | Should -Be "1"
+            $policy = Get-FGTFirewallPolicy -name $pester_policy1
+            $policy.name | Should -Be $pester_policy1
+            $policy.uuid | Should -Not -BeNullOrEmpty
+            ($policy.dstaddr.name).count | Should -Be "2"
+            $policy.dstaddr.name | Should -BeIn $pester_address2, $pester_address4
+        }
+
+        It "Set Policy $pester_policy1 (src addr: all and dst addr: all)" {
+            $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -srcaddr all -dstaddr all
+            @($p).count | Should -Be "1"
+            $policy = Get-FGTFirewallPolicy -name $pester_policy1
+            $policy.name | Should -Be $pester_policy1
+            $policy.uuid | Should -Not -BeNullOrEmpty
+            ($policy.srcaddr.name).count | Should -Be "1"
+            $policy.srcaddr.name | Should -Be "all"
+            ($policy.dstaddr.name).count | Should -Be "1"
+            $policy.dstaddr.name | Should -Be "all"
+        }
+
+        AfterAll {
+            Get-FGTFirewallAddress -name $pester_address1 | Remove-FGTFirewallAddress -confirm:$false
+            Get-FGTFirewallAddress -name $pester_address2 | Remove-FGTFirewallAddress -confirm:$false
+            Get-FGTFirewallAddress -name $pester_address3 | Remove-FGTFirewallAddress -confirm:$false
+            Get-FGTFirewallAddress -name $pester_address4 | Remove-FGTFirewallAddress -confirm:$false
+        }
+
+    }
+
+    It "Set Policy $pester_policy1 with nat" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -nat
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.nat | Should -Be "enable"
+    }
+
+    It "Set Policy $pester_policy1 without nat" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -nat:$false
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.nat | Should -Be "disable"
+    }
+
+    It "Set Name" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -name "pester_address_change"
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name "pester_address_change"
+        $policy.name | Should -Be "pester_address_change"
+    }
+
+    AfterAll {
+        Get-FGTFirewallPolicy -uuid $script:uuid | Remove-FGTFirewallPolicy -confirm:$false
+    }
+
+}
 Describe "Remove Firewall Policy" {
 
     BeforeEach {
