@@ -15,9 +15,11 @@ Add a FortiGate Policy
 ```
 Add-FGTFirewallPolicy [[-name] <String>] [[-policyid] <Int32>] [-srcintf] <String[]> [-dstintf] <String[]>
  [-srcaddr] <String[]> [-dstaddr] <String[]> [[-action] <String>] [-status] [[-schedule] <String>]
- [[-service] <String[]>] [-nat] [[-comments] <String>] [[-logtraffic] <String>] [[-ippool] <String[]>] [-skip]
- [[-data] <Hashtable>] [[-vdom] <String[]>] [[-connection] <PSObject>] [-ProgressAction <ActionPreference>]
- [<CommonParameters>]
+ [[-service] <String[]>] [-nat] [[-comments] <String>] [[-logtraffic] <String>] [[-ippool] <String[]>]
+ [[-inspectionmode] <String>] [[-sslsshprofile] <String>] [[-avprofile] <String>]
+ [[-webfilterprofile] <String>] [[-dnsfilterprofile] <String>] [[-ipssensor] <String>]
+ [[-applicationlist] <String>] [-skip] [[-data] <Hashtable>] [[-vdom] <String[]>] [[-connection] <PSObject>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -96,6 +98,13 @@ Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr a
 Add a MyFGTPolicy with Policy ID equal 23
 
 ### EXAMPLE 11
+```
+Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -avprofile default -webfilterprofile default -dnsfilterprofile default -applicationlist default -ipssensor default
+```
+
+Add a MyFGTPolicy with Security Profile (Antivirus, WebFilter, DNS Filter, Application, IPS)
+
+### EXAMPLE 12
 ```
 $data = @{ "logtraffic-start" = "enable" }
 Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -data $data
@@ -315,6 +324,111 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -inspectionmode
+{{ Fill inspectionmode Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 13
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -sslsshprofile
+{{ Fill sslsshprofile Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 14
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -avprofile
+{{ Fill avprofile Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 15
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -webfilterprofile
+{{ Fill webfilterprofile Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 16
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -dnsfilterprofile
+{{ Fill dnsfilterprofile Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 17
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ipssensor
+{{ Fill ipssensor Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 18
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -applicationlist
+{{ Fill applicationlist Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 19
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -skip
 Ignores the specified number of objects and then gets the remaining objects.
 Enter the number of objects to skip.
@@ -340,7 +454,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 13
+Position: 20
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -355,7 +469,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 14
+Position: 21
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -370,7 +484,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 15
+Position: 22
 Default value: $DefaultFGTConnection
 Accept pipeline input: False
 Accept wildcard characters: False
