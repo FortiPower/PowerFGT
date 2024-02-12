@@ -70,7 +70,7 @@ function Add-FGTFirewallPolicy {
         Add a MyFGTPolicy with Security Profile (Antivirus, WebFilter, DNS Filter, Application, IPS)
 
         .EXAMPLE
-        $data = @{ "logtraffic-start" = "enable" }
+        $data = @{"logtraffic-start"  = "enable" }
         Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -data $data
 
         Add a MyFGTPolicy with logtraffic-start using -data
@@ -612,6 +612,261 @@ function Move-FGTFirewallPolicy {
     End {
     }
 }
+
+function Set-FGTFirewallPolicy {
+
+    <#
+        .SYNOPSIS
+        Configure a FortiGate Policy
+
+        .DESCRIPTION
+        Change a FortiGate Policy Policy/Rules (source port/ip, destination port, ip, action, status...)
+
+        .EXAMPLE
+        $MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
+        PS C:\>$MyFGTPolicy | Set-FGTFirewallPolicy -srcintf port1 -srcaddr MyFGTAddress
+
+        Change MyFGTPolicy to srcintf port1 and srcaddr MyFGTAddress
+
+        .EXAMPLE
+        $MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
+        PS C:\>$MyFGTPolicy | Set-FGTFirewallPolicy -comments "My FGT Policy"
+        Change MyFGTPolicy to set a new comments
+
+        .EXAMPLE
+         $data = @{"logtraffic-start"  = "enable" }
+        PS C:\>$MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
+        PS C:\>$MyFGTPolicy | Set-FGTFirewallPolicy -data $color
+
+        Change MyFGTPolicy to set logtraffic-start to enabled using -data
+
+    #>
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium', DefaultParameterSetName = 'default')]
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [ValidateScript( { Confirm-FGTFirewallPolicy $_ })]
+        [psobject]$policy,
+        [Parameter (Mandatory = $false)]
+        [string]$name,
+        [string[]]$srcintf,
+        [Parameter (Mandatory = $false)]
+        [string[]]$dstintf,
+        [Parameter (Mandatory = $false)]
+        [string[]]$srcaddr,
+        [Parameter (Mandatory = $false)]
+        [string[]]$dstaddr,
+        [Parameter (Mandatory = $false)]
+        [ValidateSet("accept", "deny")]
+        [string]$action,
+        [Parameter (Mandatory = $false)]
+        [switch]$status,
+        [Parameter (Mandatory = $false)]
+        [string]$schedule,
+        [Parameter (Mandatory = $false)]
+        [string[]]$service,
+        [Parameter (Mandatory = $false)]
+        [switch]$nat,
+        [Parameter (Mandatory = $false)]
+        [ValidateLength(0, 255)]
+        [string]$comments,
+        [Parameter (Mandatory = $false)]
+        [ValidateSet("disable", "utm", "all")]
+        [string]$logtraffic,
+        [Parameter (Mandatory = $false)]
+        [string[]]$ippool,
+        [Parameter (Mandatory = $false)]
+        [ValidateSet("flow", "proxy")]
+        [string]$inspectionmode,
+        [Parameter (Mandatory = $false)]
+        [string]$sslsshprofile,
+        [Parameter (Mandatory = $false)]
+        [string]$avprofile,
+        [Parameter (Mandatory = $false)]
+        [string]$webfilterprofile,
+        [Parameter (Mandatory = $false)]
+        [string]$dnsfilterprofile,
+        [Parameter (Mandatory = $false)]
+        [string]$ipssensor,
+        [Parameter (Mandatory = $false)]
+        [string]$applicationlist,
+        [Parameter (Mandatory = $false)]
+        [hashtable]$data,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/firewall/policy"
+
+        $_policy = new-Object -TypeName PSObject
+
+        if ( $PsBoundParameters.ContainsKey('name') ) {
+            $_policy | add-member -name "name" -membertype NoteProperty -Value $name
+        }
+
+        if ( $PsBoundParameters.ContainsKey('srcintf') ) {
+            # Source interface
+            $srcintf_array = @()
+            #TODO check if the interface (zone ?) is valid
+            foreach ($intf in $srcintf) {
+                $srcintf_array += @{ 'name' = $intf }
+            }
+            $_policy | add-member -name "srcintf" -membertype NoteProperty -Value $srcintf_array
+        }
+
+        if ( $PsBoundParameters.ContainsKey('dstintf') ) {
+            # Destination interface
+            $dstintf_array = @()
+            #TODO check if the interface (zone ?) is valid
+            foreach ($intf in $dstintf) {
+                $dstintf_array += @{ 'name' = $intf }
+            }
+            $_policy | add-member -name "dstintf" -membertype NoteProperty -Value $dstintf_array
+        }
+
+        if ( $PsBoundParameters.ContainsKey('srcaddr') ) {
+            # Source address
+            $srcaddr_array = @()
+            #TODO check if the address (group, vip...) is valid
+            foreach ($addr in $srcaddr) {
+                $srcaddr_array += @{ 'name' = $addr }
+            }
+            $_policy | add-member -name "srcaddr" -membertype NoteProperty -Value $srcaddr_array
+        }
+
+        if ( $PsBoundParameters.ContainsKey('dstaddr') ) {
+            # Destination address
+            $dstaddr_array = @()
+            #TODO check if the address (group, vip...) is valid
+            foreach ($addr in $dstaddr) {
+                $dstaddr_array += @{ 'name' = $addr }
+            }
+
+            $_policy | add-member -name "dstaddr" -membertype NoteProperty -Value $dstaddr_array
+        }
+
+        if ( $PsBoundParameters.ContainsKey('action') ) {
+            $_policy | add-member -name "action" -membertype NoteProperty -Value $action
+        }
+
+        if ( $PsBoundParameters.ContainsKey('status') ) {
+            if ($status) {
+                $_policy | add-member -name "status" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_policy | add-member -name "status" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schedule') ) {
+            $_policy | add-member -name "schedule" -membertype NoteProperty -Value $schedule
+        }
+
+        if ( $PsBoundParameters.ContainsKey('service') ) {
+            # Service
+            $service_array = @()
+            #TODO check if the service (group...) is valid
+            foreach ($s in $service) {
+                $service_array += @{ 'name' = $s }
+            }
+            $_policy | add-member -name "service" -membertype NoteProperty -Value $service_array
+        }
+
+        if ( $PsBoundParameters.ContainsKey('nat') ) {
+            if ($nat) {
+                $_policy | add-member -name "nat" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_policy | add-member -name "nat" -membertype NoteProperty -Value "disable"
+            }
+        }
+        if ( $PsBoundParameters.ContainsKey('comments') ) {
+            $_policy | add-member -name "comments" -membertype NoteProperty -Value $comments
+        }
+
+        if ( $PsBoundParameters.ContainsKey('logtraffic') ) {
+            $_policy | add-member -name "logtraffic" -membertype NoteProperty -Value $logtraffic
+        }
+
+        if ( $PsBoundParameters.ContainsKey('ippool') ) {
+            if (-not $policy.nat -or $nat) {
+                throw "You need to enable NAT (-nat)"
+            }
+            $ippool_array = @()
+            #TODO check if the IP Pool is valid
+            foreach ($i in $ippool) {
+                $ippool_array += @{ 'name' = $i }
+            }
+            $_policy | add-member -name "ippool" -membertype NoteProperty -Value "enable"
+            $_policy | add-member -name "poolname" -membertype NoteProperty -Value $ippool_array
+        }
+
+        if ( $PsBoundParameters.ContainsKey('data') ) {
+            $data.GetEnumerator() | ForEach-Object {
+                $_policy | Add-member -name $_.key -membertype NoteProperty -Value $_.value
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('inspectionmode') ) {
+            if ($connection.version -lt "6.2.0") {
+                Throw "-inspectionmode (flow/proxy is not available before FortiOS 6.2.x)"
+            }
+            $_policy | add-member -name "inspection-mode" -membertype NoteProperty -Value $inspectionmode
+        }
+
+        if ( $PsBoundParameters.ContainsKey('sslsshprofile') ) {
+            $_policy | add-member -name "ssl-ssh-profile" -membertype NoteProperty -Value $sslsshprofile
+        }
+
+        if ( $PsBoundParameters.ContainsKey('avprofile') ) {
+            $_policy | add-member -name "av-profile" -membertype NoteProperty -Value $avprofile
+        }
+
+        if ( $PsBoundParameters.ContainsKey('webfilterprofile') ) {
+            $_policy | add-member -name "webfilter-profile" -membertype NoteProperty -Value $webfilterprofile
+        }
+
+        if ( $PsBoundParameters.ContainsKey('dnsfilterprofile') ) {
+            $_policy | add-member -name "dnsfilter-profile" -membertype NoteProperty -Value $dnsfilterprofile
+        }
+
+        if ( $PsBoundParameters.ContainsKey('ipssensor') ) {
+            $_policy | add-member -name "ips-sensor" -membertype NoteProperty -Value $ipssensor
+        }
+
+        if ( $PsBoundParameters.ContainsKey('applicationlist') ) {
+            $_policy | add-member -name "application-list" -membertype NoteProperty -Value $applicationlist
+        }
+
+        #When use Security Profile, you need to enable utm-status
+        if ( $PsBoundParameters.ContainsKey('sslsshprofile') -or $PsBoundParameters.ContainsKey('avprofile') -or $PsBoundParameters.ContainsKey('webfilterprofile') -or $PsBoundParameters.ContainsKey('dnsfilterprofile') -or $PsBoundParameters.ContainsKey('ipssensor') -or $PsBoundParameters.ContainsKey('applicationlist')) {
+            $_policy | add-member -name "utm-status" -membertype NoteProperty -Value "enable"
+        }
+
+
+        if ($PSCmdlet.ShouldProcess($address.name, 'Configure Firewall Policy')) {
+            Invoke-FGTRestMethod -method "PUT" -body $_policy -uri $uri -uri_escape $policy.policyid -connection $connection @invokeParams | out-Null
+
+            Get-FGTFirewallPolicy -connection $connection @invokeParams -policyid $policy.policyid
+        }
+    }
+
+    End {
+    }
+}
+
 function Remove-FGTFirewallPolicy {
 
     <#
