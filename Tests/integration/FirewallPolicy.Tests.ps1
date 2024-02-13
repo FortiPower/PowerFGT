@@ -1228,6 +1228,324 @@ Describe "Configure Firewall Policy" {
         $policy.nat | Should -Be "disable"
     }
 
+    It "Set Policy $pester_policy1 (with action deny)" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -action deny
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.action | Should -Be "deny"
+    }
+
+    It "Set Policy $pester_policy1 (with action accept)" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -action accept
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.action | Should -Be "accept"
+    }
+
+    It "Set Policy $pester_policy1 (with action deny and log)" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -action deny -logtraffic all
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.action | Should -Be "deny"
+        $policy.logtraffic | Should -Be "all"
+    }
+
+    It "Set Policy $pester_policy1 (with action accept and logtraffic disable)" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -action accept -logtraffic disable
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.action | Should -Be "accept"
+        $policy.logtraffic | Should -Be "disable"
+    }
+
+    It "Set Policy $pester_policy1 (with logtraffic all)" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -logtraffic all
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.logtraffic | Should -Be "all"
+    }
+
+    It "Set Policy $pester_policy1 (with logtraffic utm)" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -logtraffic utm
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.logtraffic | Should -Be "utm"
+    }
+
+    It "Set Policy $pester_policy1 (status disable)" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -status:$false
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.status | Should -Be "disable"
+    }
+
+    It "Set Policy $pester_policy1 (status enable)" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -status
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.status | Should -Be "enable"
+    }
+
+    It "Set Policy $pester_policy1 (with 1 service : HTTP)" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -service HTTP
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.service.name | Should -Be "HTTP"
+    }
+
+    It "Set Policy $pester_policy1 (with 2 services : SSH, HTTPS)" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -service SSH, HTTPS
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.service.name | Should -BeIn "SSH", "HTTPS"
+    }
+
+    It "Set Policy $pester_policy1 (with 1 service : ALL))" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -service ALL
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.service.name | Should -Be "all"
+    }
+
+    #Add Schedule ? need API
+    It "Set Policy $pester_policy1 (with schedule none)" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -schedule none
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.schedule | Should -Be "none"
+    }
+
+    It "Set Policy $pester_policy1 (with schedule always)" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -schedule always
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.schedule | Should -Be "always"
+    }
+
+    It "Set Policy $pester_policy1 (with comments)" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -comments "Modify via PowerFGT"
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.comments | Should -Be "Modify via PowerFGT"
+    }
+
+    It "Set Policy $pester_policy1 (with comments: null)" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -comments ""
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.comments | Should -BeNullOrEmpty
+    }
+
+    #Disable missing API for create IP Pool
+    It "Set Policy $pester_policy1 (with IP Pool)" -skip:$true {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -ippool "MyIPPool"
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.ippool | Should -Be "enable"
+        $policy.poolname | Should -Be "MyIPPool"
+    }
+
+    It "Set Policy $pester_policy1 (with data (1 field))" {
+        $data = @{ "logtraffic-start" = "enable" }
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -data $data
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.'logtraffic-start' | Should -Be "enable"
+    }
+
+    It "Set Policy $pester_policy1 (with data (2 fields))" {
+        $data = @{ "logtraffic-start" = "disable" ; "comments" = "Modify via PowerFGT and -data" }
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -data $data
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.comments | Should -Be "Modify via PowerFGT and -data"
+        $policy.'logtraffic-start' | Should -Be "disable"
+    }
+
+    It "Set Policy $pester_policy1 (with SSL/SSH Profile: certificate-inspection)" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -sslsshprofile certificate-inspection
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.'utm-status' | Should -Be "enable"
+        $policy.'ssl-ssh-profile' | Should -Be "certificate-inspection"
+    }
+
+    It "Add Policy $pester_policy1 (with SSL/SSH Profile: deep-inspection)" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -sslsshprofile deep-inspection
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.'utm-status' | Should -Be "enable"
+        $policy.'ssl-ssh-profile' | Should -Be "deep-inspection"
+    }
+
+    It "Set Policy $pester_policy1 (with SSL/SSH Profile: no-inspection)" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -sslsshprofile no-inspection
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.'utm-status' | Should -Be "enable"
+        $policy.'ssl-ssh-profile' | Should -Be "no-inspection"
+    }
+
+    It "Set Policy $pester_policy1 (with AV Profile: default)" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -avprofile default
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.'utm-status' | Should -Be "enable"
+        $policy.'av-profile' | Should -Be "default"
+    }
+
+    It "Set Policy $pester_policy1 (with AV Profile: null)" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -avprofile ""
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.'utm-status' | Should -Be "enable"
+        $policy.'av-profile' | Should -BeNullOrEmpty
+    }
+
+    It "Set Policy $pester_policy1 (with Web Filter Profile: default)" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -webfilterprofile default
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.'utm-status' | Should -Be "enable"
+        $policy.'webfilter-profile' | Should -Be "default"
+    }
+
+    It "Set Policy $pester_policy1 (with Web Filter Profile: null)" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -webfilterprofile ""
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.'utm-status' | Should -Be "enable"
+        $policy.'webfilter-profile' | Should -BeNullOrEmpty
+    }
+
+    It "Set Policy $pester_policy1 (with DNS Filter Profile: default)" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -dnsfilterprofile default
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.'utm-status' | Should -Be "enable"
+        $policy.'dnsfilter-profile' | Should -Be "default"
+    }
+
+    It "Set Policy $pester_policy1 (with DNS Filter Profile: null)" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -dnsfilterprofile ""
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.'utm-status' | Should -Be "enable"
+        $policy.'dnsfilter-profile' | Should -Be ""
+    }
+
+    It "Set Policy $pester_policy1 (with IP Sensor: default)" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -ipssensor default
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.'utm-status' | Should -Be "enable"
+        $policy.'ips-sensor' | Should -Be "default"
+    }
+
+    It "Set Policy $pester_policy1 (with IP Sensor: null)" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -ipssensor ""
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.'utm-status' | Should -Be "enable"
+        $policy.'ips-sensor' | Should -BeNullOrEmpty
+    }
+
+    It "Set Policy $pester_policy1 (with Application List: default)" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -applicationlist default
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.'utm-status' | Should -Be "enable"
+        $policy.'application-list' | Should -Be "default"
+    }
+
+    It "Set Policy $pester_policy1 (with Application List: null)" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -applicationlist ""
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.'utm-status' | Should -Be "enable"
+        $policy.'application-list' | Should -BeNullOrEmpty
+    }
+
+    It "Set Policy $pester_policy1 (with inspection-mode: proxy)" -skip:($fgt_version -lt "6.2.0") {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -inspectionmode proxy
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.'inspection-mode' | Should -Be "proxy"
+    }
+
+    It "Set Policy $pester_policy1 (with inspection-mode: flow)" -skip:($fgt_version -lt "6.2.0") {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -inspectionmode flow
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.'inspection-mode' | Should -Be "flow"
+    }
+
     It "Set Name" {
         $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -name "pester_address_change"
         @($p).count | Should -Be "1"
