@@ -1430,7 +1430,7 @@ Describe "Configure Firewall Policy" {
             $policy.'ssl-ssh-profile' | Should -Be "no-inspection"
         }
         else {
-            $policy.'ssl-ssh-profile' | Should -BeNullOrEmpty
+            $policy.'ssl-ssh-profile' | Should -Be "certificate-inspection"
         }
     }
 
