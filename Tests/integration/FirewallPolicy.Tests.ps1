@@ -1418,14 +1418,20 @@ Describe "Configure Firewall Policy" {
         $policy.'ssl-ssh-profile' | Should -Be "deep-inspection"
     }
 
-    It "Set Policy $pester_policy1 (with SSL/SSH Profile: no-inspection)" {
-        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -sslsshprofile no-inspection
+    It "Set Policy $pester_policy1 (with SSL/SSH Profile: null / no-inspection)" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -sslsshprofile ""
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
         $policy.name | Should -Be $pester_policy1
         $policy.uuid | Should -Not -BeNullOrEmpty
         $policy.'utm-status' | Should -Be "enable"
-        $policy.'ssl-ssh-profile' | Should -Be "no-inspection"
+        #after 6.2.0, when set default value, it is configured to no-inspection
+        if ($DefaultFGTConnection.version -ge "6.2.0") {
+            $policy.'ssl-ssh-profile' | Should -Be "no-inspection"
+        }
+        else {
+            $policy.'ssl-ssh-profile' | Should -BeNullOrEmpty
+        }
     }
 
     It "Set Policy $pester_policy1 (with AV Profile: default)" {
