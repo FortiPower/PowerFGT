@@ -18,9 +18,9 @@ function Get-FGTFirewallSSLSSHProfile {
         Get list of all SSL SSH Profile object
 
         .EXAMPLE
-        Get-FGTFirewallSSLSSHProfile -name ertificate-inspectio,
+        Get-FGTFirewallSSLSSHProfile -name certificate-inspection
 
-        Get SSL SSH Profile named myertificate-inspectio
+        Get SSL SSH Profile named certificate-inspection
 
         .EXAMPLE
         Get-FGTFirewallSSLSSHProfile -name inspection -filter_type contains
