@@ -10,7 +10,7 @@ function Get-FGTApplicationList {
         Get list of all Application List settings
 
         .DESCRIPTION
-        Get list of all Application List (name, options, ftgd-wf ...)
+        Get list of all Application List (name, options, entries ...)
 
         .EXAMPLE
         Get-FGTApplicationList
