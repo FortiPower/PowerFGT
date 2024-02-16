@@ -48,16 +48,13 @@ function Get-FGTFirewallIPPool {
     Param(
         [Parameter (Mandatory = $false, Position = 1, ParameterSetName = "name")]
         [string]$name,
-        [Parameter (Mandatory = $false)]
-        [Parameter (ParameterSetName = "filter")]
+        [Parameter (Mandatory = $false, ParameterSetName = "filter_build")]
         [string]$filter_attribute,
-        [Parameter (Mandatory = $false)]
-        [Parameter (ParameterSetName = "name")]
-        [Parameter (ParameterSetName = "filter")]
-        [ValidateSet('equal', 'contains')]
+        [Parameter (Mandatory = $false, ParameterSetName = "name")]
+        [Parameter (ParameterSetName = "filter_build")]
+        [ValidateSet('equal', 'notequal', 'contains', 'notcontains', 'less', 'lessorequal', 'greater', 'greaterorequal')]
         [string]$filter_type = "equal",
-        [Parameter (Mandatory = $false)]
-        [Parameter (ParameterSetName = "filter")]
+        [Parameter (Mandatory = $false, ParameterSetName = "filter_build")]
         [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
         [switch]$meta,
