@@ -102,7 +102,6 @@ function Get-FGTApplicationList {
             $invokeParams.add( 'filter_type', $filter_type )
         }
 
-
         $response = Invoke-FGTRestMethod -uri $uri -method 'GET' -connection $connection @invokeParams
         $response.results
     }
