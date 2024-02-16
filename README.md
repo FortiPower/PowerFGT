@@ -1609,8 +1609,12 @@ Copy-FGTFirewallProxyAddressGroup
 Copy-FGTFirewallVipGroup
 Deploy-FGTVm
 Disconnect-FGT
+Get-FGTAntivirusProfile
+Get-FGTApplicationList
+Get-FGTDnsfilterProfile
 Get-FGTFirewallAddress
 Get-FGTFirewallAddressGroup
+Get-FGTFirewallInternetServiceName
 Get-FGTFirewallIPPool
 Get-FGTFirewallPolicy
 Get-FGTFirewallProxyAddress
@@ -1618,8 +1622,11 @@ Get-FGTFirewallProxyAddressGroup
 Get-FGTFirewallProxyPolicy
 Get-FGTFirewallServiceCustom
 Get-FGTFirewallServiceGroup
+Get-FGTFirewallSSLSSHProfile
 Get-FGTFirewallVip
 Get-FGTFirewallVipGroup
+Get-FGTIpsSensor
+Get-FGTLogSetting
 Get-FGTLogTraffic
 Get-FGTMonitorFirewallPolicy
 Get-FGTMonitorFirewallSession
@@ -1630,6 +1637,7 @@ Get-FGTMonitorSystemConfigBackup
 Get-FGTMonitorSystemFirmware
 Get-FGTMonitorSystemHAChecksum
 Get-FGTMonitorSystemHAPeer
+Get-FGTMonitorUtmApplicationCategories
 Get-FGTMonitorVpnIPsec
 Get-FGTMonitorVpnSsl
 Get-FGTMonitorWebfilterCategories
@@ -1682,6 +1690,7 @@ Set-FGTCipherSSL
 Set-FGTConnection
 Set-FGTFirewallAddress
 Set-FGTFirewallAddressGroup
+Set-FGTFirewallPolicy
 Set-FGTFirewallProxyAddressGroup
 Set-FGTFirewallVipGroup
 Set-FGTSystemGlobal
