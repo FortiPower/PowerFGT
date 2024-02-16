@@ -70,7 +70,7 @@ function Add-FGTFirewallPolicy {
         Add a MyFGTPolicy with Security Profile (Antivirus, WebFilter, DNS Filter, Application, IPS)
 
         .EXAMPLE
-        $data = @{"logtraffic-start"  = "enable" }
+        $data = @{ "logtraffic-start" = "enable" }
         Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -data $data
 
         Add a MyFGTPolicy with logtraffic-start using -data
@@ -620,7 +620,7 @@ function Set-FGTFirewallPolicy {
         Configure a FortiGate Policy
 
         .DESCRIPTION
-        Change a FortiGate Policy Policy/Rules (source port/ip, destination port, ip, action, status...)
+        Change a FortiGate Policy Policy/Rules (source port/ip, destination port, ip, action, status, security profiles...)
 
         .EXAMPLE
         $MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
@@ -630,8 +630,27 @@ function Set-FGTFirewallPolicy {
 
         .EXAMPLE
         $MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
+        PS C:\>$MyFGTPolicy | Set-FGTFirewallPolicy -service HTTP,HTTPS
+
+        Change MyFGTPolicy to set service to HTTP and HTTPS
+
+        .EXAMPLE
+        $MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
         PS C:\>$MyFGTPolicy | Set-FGTFirewallPolicy -comments "My FGT Policy"
+
         Change MyFGTPolicy to set a new comments
+
+        .EXAMPLE
+        $MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
+        PS C:\>$MyFGTPolicy | Set-FGTFirewallPolicy -status:$false
+
+        Change MyFGTPolicy to set status disable
+
+        .EXAMPLE
+        $MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
+        PS C:\>$MyFGTPolicy | Set-FGTFirewallPolicy -avprofile default -webfilterprofile default -dnsfilterprofile default -applicationlist default -ipssensor default
+
+        Change MyFGTPolicy to set Security Profile to default (AV, WebFitler, DNS Filter, App Ctrl and IPS)
 
         .EXAMPLE
          $data = @{"logtraffic-start"  = "enable" }
@@ -854,7 +873,6 @@ function Set-FGTFirewallPolicy {
         if ( $PsBoundParameters.ContainsKey('sslsshprofile') -or $PsBoundParameters.ContainsKey('avprofile') -or $PsBoundParameters.ContainsKey('webfilterprofile') -or $PsBoundParameters.ContainsKey('dnsfilterprofile') -or $PsBoundParameters.ContainsKey('ipssensor') -or $PsBoundParameters.ContainsKey('applicationlist')) {
             $_policy | add-member -name "utm-status" -membertype NoteProperty -Value "enable"
         }
-
 
         if ($PSCmdlet.ShouldProcess($address.name, 'Configure Firewall Policy')) {
             Invoke-FGTRestMethod -method "PUT" -body $_policy -uri $uri -uri_escape $policy.policyid -connection $connection @invokeParams | out-Null
