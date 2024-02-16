@@ -10,7 +10,7 @@ function Get-FGTIpsSensor {
         Get list of all IPS Sensor settings
 
         .DESCRIPTION
-        Get list of all IPS Sensor (name, options, ftgd-wf ...)
+        Get list of all IPS Sensor (name, options, entries ...)
 
         .EXAMPLE
         Get-FGTIpsSensor
