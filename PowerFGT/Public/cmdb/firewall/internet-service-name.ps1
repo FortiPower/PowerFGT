@@ -91,6 +91,13 @@ function Get-FGTFirewallInternetServiceName {
             $invokeParams.add( 'vdom', $vdom )
         }
 
+        #no the same URI before FortiOS 6.4.x
+        if ($connection.version -lt "6.4.0") {
+            $uri = 'api/v2/cmdb/firewall/internet-service'
+        }
+        else {
+            $uri = 'api/v2/cmdb/firewall/internet-service-name'
+        }
         #Filtering
         switch ( $PSCmdlet.ParameterSetName ) {
             "name" {
@@ -111,7 +118,7 @@ function Get-FGTFirewallInternetServiceName {
             $invokeParams.add( 'filter_type', $filter_type )
         }
 
-        $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/internet-service-name' -method 'GET' -connection $connection @invokeParams
+        $response = Invoke-FGTRestMethod -uri $uri -method 'GET' -connection $connection @invokeParams
         $response.results
 
     }
