@@ -25,16 +25,16 @@ Remove a FortiGate Policy Member (source or destination address)
 
 ### EXAMPLE 1
 ```
-$MyFGTPolicy = Get-FGTFirewallAddressGroup -name MyFGTPolicy
-PS C:\>$MyFGTPolicy | Remove-FGTFirewallAddressGroupMember -member MyAddress1
+$MyFGTPolicy = Get-FGTFirewallPolicyGroup -name MyFGTPolicy
+PS C:\>$MyFGTPolicy | Remove-FGTFirewallPolicyGroupMember -member MyAddress1
 ```
 
 Remove MyAddress1 member to MyFGTPolicy
 
 ### EXAMPLE 2
 ```
-$MyFGTPolicy = Get-FGTFirewallAddressGroup -name MyFGTPolicy
-PS C:\>$MyFGTPolicy | Remove-FGTFirewallAddressGroupMember -member MyAddress1, MyAddress2
+$MyFGTPolicy = Get-FGTFirewallPolicyGroup -name MyFGTPolicy
+PS C:\>$MyFGTPolicy | Remove-FGTFirewallPolicyGroupMember -member MyAddress1, MyAddress2
 ```
 
 Remove MyAddress1 and MyAddress2 member to MyFGTPolicy
