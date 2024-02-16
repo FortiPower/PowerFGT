@@ -7,10 +7,10 @@ function Get-FGTLogSetting {
 
     <#
         .SYNOPSIS
-        Get list of all syslog
+        Get list of all log server
 
         .DESCRIPTION
-        Get list of all syslog settings
+        Get list of all log settings (Disk, FortiAnalyzer, Fortiguard, syslogd...)
 
         .EXAMPLE
         Get-FGTLogSetting -type syslogd
