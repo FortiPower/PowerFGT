@@ -1099,7 +1099,6 @@ Describe "Move Firewall Policy" {
 
 Describe "Configure Firewall Policy" {
 
-
     BeforeAll {
         $policy = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all
         $script:uuid = $policy.uuid
@@ -1140,7 +1139,6 @@ Describe "Configure Firewall Policy" {
         }
 
     }
-
 
     Context "Multi Source / Destination address" {
 
