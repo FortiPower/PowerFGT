@@ -83,13 +83,13 @@ Describe "Set System Global" {
         $sg.'alias' | Should -Be "alias_PowerFGT"
     }
 
-    It "Change dst to disable" {
+    It "Change dst to disable" -skip:($fgt_version -ge "7.2.0") {
         Set-FGTSystemGlobal -dst:$false
         $sg = Get-FGTSystemGlobal
         $sg.'dst' | Should -Be "disable"
     }
 
-    It "Change dst to enable" {
+    It "Change dst to enable" -Skip:($fgt_version -ge "7.2.0") {
         Set-FGTSystemGlobal -dst
         $sg = Get-FGTSystemGlobal
         $sg.'dst' | Should -Be "enable"
