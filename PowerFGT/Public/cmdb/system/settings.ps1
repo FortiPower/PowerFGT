@@ -157,6 +157,8 @@ function Set-FGTSystemSettings {
         [Parameter (Mandatory = $false)]
         [switch]$gui_local_in_policy,
         [Parameter (Mandatory = $false)]
+        [switch]$gui_proxy_inspection,
+        [Parameter (Mandatory = $false)]
         [switch]$gui_multiple_interface_policy,
         [Parameter (Mandatory = $false)]
         [switch]$gui_multiple_utm_profiles,
@@ -288,6 +290,15 @@ function Set-FGTSystemSettings {
             }
             else {
                 $_ss | Add-member -name "gui-local-in-policy" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('gui_proxy_inspection') ) {
+            if ($gui_proxy_inspection) {
+                $_ss | Add-member -name "gui-proxy-inspection" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_ss | Add-member -name "gui-proxy-inspection" -membertype NoteProperty -Value "disable"
             }
         }
 

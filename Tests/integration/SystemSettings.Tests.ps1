@@ -53,6 +53,13 @@ Describe "Set System Settings" {
         $script:settings = Get-FGTSystemSettings
     }
 
+    #Coming with FortiOS 7.2.x and need for some feature (like waf, ztna.. )
+    It "Change gui-proxy-inspection to enable" {
+        Set-FGTSystemSettings -gui_proxy_inspection
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-proxy-inspection' | Should -Be "enable"
+    }
+
     It "Change allow-subnet-overlap to enable" {
         Set-FGTSystemSettings -allow_subnet_overlap
         $ss = Get-FGTSystemSettings
@@ -327,6 +334,12 @@ Describe "Set System Settings" {
         Set-FGTSystemSettings -lldp_reception global
         $ss = Get-FGTSystemSettings
         $ss.'lldp-reception' | Should -Be "global"
+    }
+
+    It "Change gui-proxy-inspection to disable" {
+        Set-FGTSystemSettings -gui_proxy_inspection:$false
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-proxy-inspection' | Should -Be "disable"
     }
 
     It "Change settings via data (one field)" {
