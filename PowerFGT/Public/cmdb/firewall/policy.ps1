@@ -1007,6 +1007,11 @@ function Remove-FGTFirewallPolicyMember {
                 $members = $members | Where-Object { $_.name -ne $remove_member }
             }
 
+            #check if there is always a member... (it is not really (dependy of release...) possible don't have member on Policy)
+            if ( $members.count -eq 0 ) {
+                Throw "You can't remove all members. Use Set-FGTFirewallPolicy to remove Address Group"
+            }
+
             #if there is only One or less member force to be an array
             if ( $members.count -le 1 ) {
                 $members = @($members)
@@ -1028,6 +1033,11 @@ function Remove-FGTFirewallPolicyMember {
             foreach ($remove_member in $dstaddr) {
                 #May be a better (and faster) solution...
                 $members = $members | Where-Object { $_.name -ne $remove_member }
+            }
+
+            #check if there is always a member... (it is not really (dependy of release...) possible don't have member on Policy)
+            if ( $members.count -eq 0 ) {
+                Throw "You can't remove all members. Use Set-FGTFirewallPolicy to remove Address Group"
             }
 
             #if there is only One or less member force to be an array
