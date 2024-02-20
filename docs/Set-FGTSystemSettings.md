@@ -15,11 +15,11 @@ Configure a FortiGate System Settings
 ```
 Set-FGTSystemSettings [-allow_subnet_overlap] [-central_nat] [[-inspection_mode] <String>]
  [-gui_allow_unnamed_policy] [-gui_dns_database] [-gui_dynamic_routing] [-gui_explicit_proxy] [-gui_ips]
- [-gui_load_balance] [-gui_local_in_policy] [-gui_multiple_interface_policy] [-gui_multiple_utm_profiles]
- [-gui_spamfilter] [-gui_sslvpn_personal_bookmarks] [-gui_sslvpn_realms] [-gui_voip_profile] [-gui_waf_profile]
- [-gui_ztna] [[-lldp_transmission] <String>] [[-lldp_reception] <String>] [[-data] <Hashtable>]
- [[-vdom] <String[]>] [[-connection] <PSObject>] [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+ [-gui_load_balance] [-gui_local_in_policy] [-gui_proxy_inspection] [-gui_multiple_interface_policy]
+ [-gui_multiple_utm_profiles] [-gui_spamfilter] [-gui_sslvpn_personal_bookmarks] [-gui_sslvpn_realms]
+ [-gui_voip_profile] [-gui_waf_profile] [-gui_ztna] [[-lldp_transmission] <String>]
+ [[-lldp_reception] <String>] [[-data] <Hashtable>] [[-vdom] <String[]>] [[-connection] <PSObject>]
+ [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -189,6 +189,21 @@ Accept wildcard characters: False
 
 ### -gui_local_in_policy
 {{ Fill gui_local_in_policy Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -gui_proxy_inspection
+{{ Fill gui_proxy_inspection Description }}
 
 ```yaml
 Type: SwitchParameter
