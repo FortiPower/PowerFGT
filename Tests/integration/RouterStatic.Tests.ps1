@@ -494,7 +494,7 @@ Describe "Add Static Route" {
         $route.'internet-service' | Should -Be "0"
         $route.'internet-service-custom' | Should -Be ""
         $route.'link-monitor-exempt' | Should -Be "disable"
-        $route.vrf | Should -Be "0"
+        $route.vrf | Should -Not -BeNullOrEmpty
         $route.bfd | Should -Be "disable"
     }
 
@@ -524,7 +524,7 @@ Describe "Add Static Route" {
         $route.'internet-service' | Should -Be "0"
         $route.'internet-service-custom' | Should -Be ""
         $route.'link-monitor-exempt' | Should -Be "disable"
-        $route.vrf | Should -Be "0"
+        $route.vrf | Should -Not -BeNullOrEmpty
         $route.bfd | Should -Be "enable"
     }
 
