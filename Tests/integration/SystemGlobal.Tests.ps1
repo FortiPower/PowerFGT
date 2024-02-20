@@ -185,14 +185,14 @@ Describe "Set System Global" {
     It "Change sslvpn-web-mode to enable" -skip:($fgt_version -lt "7.4.0") {
         #Enable SSL VPN
         Set-FGTSystemSettings -gui_sslvpn
-        Set-FGTSystemGlobal -gui_sslvpn_web_mode:$false
+        Set-FGTSystemGlobal -sslvpn_web_mode:$false
         $ss = Get-FGTSystemGlobal
         $ss.'sslvpn-web-mode' | Should -Be "disable"
     }
 
     It "Change sslvpn-web-mode to disable" -skip:($fgt_version -lt "7.4.0") {
         Set-FGTSystemSettings -gui_sslvpn
-        Set-FGTSystemGlobal -gui_sslvpn_web_mode:$false
+        Set-FGTSystemGlobal -sslvpn_web_mode:$false
         $sg = Get-FGTSystemGlobal
         $sg.'sslvpn-web-mode' | Should -Be "disable"
         #Disable SSL VPN

@@ -159,7 +159,7 @@ function Set-FGTSystemGlobal {
         [Parameter (Mandatory = $false)]
         [switch]$lldp_transmission,
         [Parameter (Mandatory = $false)]
-        [switch]$gui_sslvpn_web_mode,
+        [switch]$sslvpn_web_mode,
         [Parameter (Mandatory = $false)]
         [switch]$switch_controller,
         [Parameter (Mandatory = $false)]
