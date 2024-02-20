@@ -175,7 +175,7 @@ Describe "Set System Global" {
     }
     #>
 
-    It "Change timezone" {
+    It "Change timezone" -skip:($fgt_version -ge "7.4.0") {
         Set-FGTSystemGlobal -timezone 28
         $sg = Get-FGTSystemGlobal
         $sg.'timezone' | Should -Be "28"
