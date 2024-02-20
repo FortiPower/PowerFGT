@@ -54,7 +54,7 @@ Describe "Set System Settings" {
     }
 
     #Coming with FortiOS 7.2.x and need for some feature (like waf, ztna.. )
-    It "Change gui-proxy-inspection to enable" {
+    It "Change gui-proxy-inspection to enable" -skip:($fgt_version -lt "7.2.0") {
         Set-FGTSystemSettings -gui_proxy_inspection
         $ss = Get-FGTSystemSettings
         $ss.'gui-proxy-inspection' | Should -Be "enable"
@@ -336,7 +336,7 @@ Describe "Set System Settings" {
         $ss.'lldp-reception' | Should -Be "global"
     }
 
-    It "Change gui-proxy-inspection to disable" {
+    It "Change gui-proxy-inspection to disable" -skip:($fgt_version -lt "7.2.0") {
         Set-FGTSystemSettings -gui_proxy_inspection:$false
         $ss = Get-FGTSystemSettings
         $ss.'gui-proxy-inspection' | Should -Be "disable"
