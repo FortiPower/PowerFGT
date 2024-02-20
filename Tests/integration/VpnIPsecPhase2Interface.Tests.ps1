@@ -118,7 +118,6 @@ Describe "Add VPN Ipsec Phase 2 Interface" -ForEach $type {
             $vpn.'keylife-type' | Should -Be "seconds"
             $vpn.encapsulation | Should -Be "tunnel-mode"
             $vpn.comments | Should -Be ""
-            $vpn.protocol | Should -Be "0"
             $vpn.'src-name' | Should -Be ""
             $vpn.'src-addr-type' | Should -Be "subnet"
             $vpn.'src-subnet' | Should -Be "0.0.0.0 0.0.0.0"
@@ -443,19 +442,19 @@ Describe "Add VPN Ipsec Phase 2 Interface" -ForEach $type {
         }
 
         It "Add VPN Ipsec Phase 2 Interface with data (one field)" {
-            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -data @{ "protocol" = "23" }
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -data @{ "comments" = "23" }
             $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
             $vpn.name | Should -Be $pester_vpn1_ph2
             $vpn.phase1name | Should -Be $pester_vpn1
-            $vpn.protocol | Should -Be "23"
+            $vpn.comments | Should -Be "23"
         }
 
         It "Add VPN Ipsec Phase 2 Interface with data (two fields)" {
-            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -data @{ "protocol" = "85" ; "encapsulation" = "transport-mode" }
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 -data @{ "comments" = "85" ; "encapsulation" = "transport-mode" }
             $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
             $vpn.name | Should -Be $pester_vpn1_ph2
             $vpn.phase1name | Should -Be $pester_vpn1
-            $vpn.protocol | Should -Be "85"
+            $vpn.comments | Should -Be "85"
             $vpn.encapsulation | Should -Be "transport-mode"
         }
 
@@ -854,19 +853,19 @@ Describe "Configure VPN Ipsec Phase 2 Interface" -ForEach $type {
         }
 
         It "Set VPN Ipsec Phase 2 Interface with data (one field)" {
-            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -data @{ "protocol" = "23" }
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -data @{ "comments" = "23" }
             $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
             $vpn.name | Should -Be $pester_vpn1_ph2
             $vpn.phase1name | Should -Be $pester_vpn1
-            $vpn.protocol | Should -Be "23"
+            $vpn.comments | Should -Be "23"
         }
 
         It "Set VPN Ipsec Phase 2 Interface with data (two fields)" {
-            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -data @{ "protocol" = "85" ; "encapsulation" = "transport-mode" }
+            Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2 | Set-FGTVpnIpsecPhase2Interface -data @{ "comments" = "85" ; "encapsulation" = "transport-mode" }
             $vpn = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
             $vpn.name | Should -Be $pester_vpn1_ph2
             $vpn.phase1name | Should -Be $pester_vpn1
-            $vpn.protocol | Should -Be "85"
+            $vpn.comments | Should -Be "85"
             $vpn.encapsulation | Should -Be "transport-mode"
         }
 
