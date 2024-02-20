@@ -1632,22 +1632,10 @@ Describe "Remove Firewall Policy Member" {
             $policy.comments | Should -BeNullOrEmpty
         }
 
-        It "Remove 3 members to Policy Src Address $pester_address1, $pester_address2, $pester_address3 (with 3 members before)" {
-            Get-FGTFirewallPolicy -Name $pester_policy1 | Remove-FGTFirewallPolicyMember -srcaddr $pester_address1, $pester_address2, $pester_address3
-            $policy = Get-FGTFirewallPolicy -name $pester_policy1
-            $policy.name | Should -Be $pester_policy1
-            $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.srcintf.name | Should -BeIn "port1"
-            $policy.dstintf.name | Should -Be "port2"
-            $policy.srcaddr.name | Should -Be $null
-            $policy.dstaddr.name | Should -Be "all"
-            $policy.action | Should -Be "accept"
-            $policy.status | Should -Be "enable"
-            $policy.service.name | Should -Be "all"
-            $policy.schedule | Should -Be "always"
-            $policy.nat | Should -Be "disable"
-            $policy.logtraffic | Should -Be "utm"
-            $policy.comments | Should -BeNullOrEmpty
+        It "Try Remove 3 members to Policy Src Address $pester_address1, $pester_address2, $pester_address3 (with 3 members before)" {
+            {
+                Get-FGTFirewallPolicy -Name $pester_policy1 | Remove-FGTFirewallPolicyMember -srcaddr $pester_address1, $pester_address2, $pester_address3
+            } | Should -Throw "You can't remove all members. Use Set-FGTFirewallPolicy to remove Address Group"
         }
 
     }
@@ -1694,22 +1682,10 @@ Describe "Remove Firewall Policy Member" {
             $policy.comments | Should -BeNullOrEmpty
         }
 
-        It "Remove 3 members to Policy Dst Address $pester_address1, $pester_address2, $pester_address3 (with 3 members before)" {
-            Get-FGTFirewallPolicy -Name $pester_policy1 | Remove-FGTFirewallPolicyMember -dstaddr $pester_address1, $pester_address2, $pester_address3
-            $policy = Get-FGTFirewallPolicy -name $pester_policy1
-            $policy.name | Should -Be $pester_policy1
-            $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.srcintf.name | Should -BeIn "port1"
-            $policy.dstintf.name | Should -Be "port2"
-            $policy.srcaddr.name | Should -Be "all"
-            $policy.dstaddr.name | Should -Be $null
-            $policy.action | Should -Be "accept"
-            $policy.status | Should -Be "enable"
-            $policy.service.name | Should -Be "all"
-            $policy.schedule | Should -Be "always"
-            $policy.nat | Should -Be "disable"
-            $policy.logtraffic | Should -Be "utm"
-            $policy.comments | Should -BeNullOrEmpty
+        It "Try Remove 3 members to Policy Dst Address $pester_address1, $pester_address2, $pester_address3 (with 3 members before)" {
+            {
+                Get-FGTFirewallPolicy -Name $pester_policy1 | Remove-FGTFirewallPolicyMember -dstaddr $pester_address1, $pester_address2, $pester_address3
+            } | Should -Throw "You can't remove all members. Use Set-FGTFirewallPolicy to remove Address Group"
         }
 
     }
