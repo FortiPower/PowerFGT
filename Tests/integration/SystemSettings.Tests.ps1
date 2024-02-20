@@ -60,6 +60,13 @@ Describe "Set System Settings" {
         $ss.'gui-proxy-inspection' | Should -Be "enable"
     }
 
+    #Coming with FortiOS 7.4.x and need for enable VPN SSL (like waf, ztna.. )
+    It "Change gui-sslvpn to enable" -skip:($fgt_version -lt "7.4.0") {
+        Set-FGTSystemSettings -gui_sslvpn
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-sslvpn' | Should -Be "enable"
+    }
+
     It "Change allow-subnet-overlap to enable" {
         Set-FGTSystemSettings -allow_subnet_overlap
         $ss = Get-FGTSystemSettings
@@ -340,6 +347,12 @@ Describe "Set System Settings" {
         Set-FGTSystemSettings -gui_proxy_inspection:$false
         $ss = Get-FGTSystemSettings
         $ss.'gui-proxy-inspection' | Should -Be "disable"
+    }
+
+    It "Change gui-sslvpn to disable" -skip:($fgt_version -lt "7.4.0") {
+        Set-FGTSystemSettings -gui_sslvpn:$false
+        $ss = Get-FGTSystemSettings
+        $ss.'gui-sslvpn' | Should -Be "disable"
     }
 
     It "Change settings via data (one field)" {

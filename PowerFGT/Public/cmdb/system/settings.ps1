@@ -165,6 +165,8 @@ function Set-FGTSystemSettings {
         [Parameter (Mandatory = $false)]
         [switch]$gui_spamfilter,
         [Parameter (Mandatory = $false)]
+        [switch]$gui_sslvpn,
+        [Parameter (Mandatory = $false)]
         [switch]$gui_sslvpn_personal_bookmarks,
         [Parameter (Mandatory = $false)]
         [switch]$gui_sslvpn_realms,
@@ -332,6 +334,16 @@ function Set-FGTSystemSettings {
             }
             else {
                 $_ss | Add-member -name "gui-spamfilter" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        #Coming with FortiOS 7.4.x, you can enable gui SSLVPN...
+        if ( $PsBoundParameters.ContainsKey('gui_sslvpn') ) {
+            if ($gui_sslvpn) {
+                $_ss | Add-member -name "gui-sslvpn" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_ss | Add-member -name "gui-sslvpn" -membertype NoteProperty -Value "disable"
             }
         }
 
