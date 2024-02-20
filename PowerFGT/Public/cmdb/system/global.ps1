@@ -159,6 +159,8 @@ function Set-FGTSystemGlobal {
         [Parameter (Mandatory = $false)]
         [switch]$lldp_transmission,
         [Parameter (Mandatory = $false)]
+        [switch]$gui_sslvpn_web_mode,
+        [Parameter (Mandatory = $false)]
         [switch]$switch_controller,
         [Parameter (Mandatory = $false)]
         [ValidateRange(00, 86)]
@@ -272,6 +274,15 @@ function Set-FGTSystemGlobal {
             }
             else {
                 $_sg | Add-member -name "lldp-transmission" -membertype NoteProperty -Value "disable"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('sslvpn_web_mode') ) {
+            if ($sslvpn_web_mode) {
+                $_sg | Add-member -name "sslvpn-web-mode" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_sg | Add-member -name "sslvpn-web-mode" -membertype NoteProperty -Value "disable"
             }
         }
 

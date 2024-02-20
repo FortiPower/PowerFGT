@@ -181,6 +181,24 @@ Describe "Set System Global" {
         $sg.'timezone' | Should -Be "28"
     }
 
+    #Coming with FortiOS 7.4.x and need for enable VPN SSL Web Mode (for personal bookmark.. )
+    It "Change sslvpn-web-mode to enable" -skip:($fgt_version -lt "7.4.0") {
+        #Enable SSL VPN
+        Set-FGTSystemSettings -gui_sslvpn
+        Set-FGTSystemGlobal -gui_sslvpn_web_mode:$false
+        $ss = Get-FGTSystemGlobal
+        $ss.'sslvpn-web-mode' | Should -Be "disable"
+    }
+
+    It "Change sslvpn-web-mode to disable" -skip:($fgt_version -lt "7.4.0") {
+        Set-FGTSystemSettings -gui_sslvpn
+        Set-FGTSystemGlobal -gui_sslvpn_web_mode:$false
+        $sg = Get-FGTSystemGlobal
+        $sg.'sslvpn-web-mode' | Should -Be "disable"
+        #Disable SSL VPN
+        Set-FGTSystemSettings -gui_sslvpn:$false
+    }
+
     <# Disable need some other change...
     It "Change wireless-controller to disable" {
         Set-FGTSystemGlobal -wireless_controller:$false
