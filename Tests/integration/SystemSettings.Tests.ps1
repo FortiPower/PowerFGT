@@ -240,6 +240,10 @@ Describe "Set System Settings" {
     }
 
     It "Change gui-sslvpn-personal-bookmarks to enable" {
+        #for FortiOS 7.4.x, you need to enable global setting sslvpn Web Mode
+        if ($DefaultFGTConnection.version -ge "7.4.0") {
+            Set-FGTSystemGlobal -sslvpn_web_mode
+        }
         Set-FGTSystemSettings -gui_sslvpn_personal_bookmarks
         $ss = Get-FGTSystemSettings
         $ss.'gui-sslvpn-personal-bookmarks' | Should -Be "enable"
@@ -249,6 +253,10 @@ Describe "Set System Settings" {
         Set-FGTSystemSettings -gui_sslvpn_personal_bookmarks:$false
         $ss = Get-FGTSystemSettings
         $ss.'gui-sslvpn-personal-bookmarks' | Should -Be "disable"
+        #Disable SSL VPN Web Mode
+        if ($DefaultFGTConnection.version -ge "7.4.0") {
+            Set-FGTSystemGlobal -sslvpn_web_mode:$false
+        }
     }
 
     It "Change gui-sslvpn-realms to enable" {
