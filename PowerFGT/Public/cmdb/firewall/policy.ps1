@@ -372,8 +372,16 @@ function Add-FGTFirewallPolicyMember {
         $_policy = new-Object -TypeName PSObject
 
         if ( $PsBoundParameters.ContainsKey('srcaddr') ) {
-            #Add member to existing source address
-            $members = $policy.srcaddr
+
+            if ($policy.srcaddr.name -eq "all") {
+                #all => create new empty array members
+                $members = @()
+            }
+            else {
+                #Add member to existing source address
+                $members = $policy.srcaddr
+            }
+
             foreach ( $member in $srcaddr ) {
                 $member_name = @{ }
                 $member_name.add( 'name', $member)
@@ -383,8 +391,16 @@ function Add-FGTFirewallPolicyMember {
         }
 
         if ( $PsBoundParameters.ContainsKey('dstaddr') ) {
-            #Add member to existing destination address
-            $members = $policy.dstaddr
+
+            if ($policy.dstaddr.name -eq "all") {
+                #all => create new empty array members
+                $members = @()
+            }
+            else {
+                #Add member to existing destination address
+                $members = $policy.dstaddr
+            }
+
             foreach ( $member in $dstaddr ) {
                 $member_name = @{ }
                 $member_name.add( 'name', $member)
