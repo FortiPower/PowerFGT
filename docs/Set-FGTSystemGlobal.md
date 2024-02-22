@@ -15,8 +15,8 @@ Configure a FortiGate System Global
 ```
 Set-FGTSystemGlobal [[-admintimeout] <Int32>] [[-admin_port] <Int32>] [[-admin_sport] <Int32>]
  [[-admin_ssh_port] <Int32>] [[-alias] <String>] [-dst] [-fortiextender] [[-hostname] <String>]
- [-gui_certificates] [-gui_wireless_opensecurity] [-lldp_reception] [-lldp_transmission] [-switch_controller]
- [[-timezone] <Int32>] [-wireless_controller] [[-data] <Hashtable>] [[-vdom] <String[]>]
+ [-gui_certificates] [-gui_wireless_opensecurity] [-lldp_reception] [-lldp_transmission] [-sslvpn_web_mode]
+ [-switch_controller] [[-timezone] <Int32>] [-wireless_controller] [[-data] <Hashtable>] [[-vdom] <String[]>]
  [[-connection] <PSObject>] [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
@@ -215,6 +215,21 @@ Accept wildcard characters: False
 
 ### -lldp_transmission
 {{ Fill lldp_transmission Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -sslvpn_web_mode
+{{ Fill sslvpn_web_mode Description }}
 
 ```yaml
 Type: SwitchParameter
