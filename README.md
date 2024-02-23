@@ -42,6 +42,7 @@ With this module (version 0.7.0) you can manage:
 - System Admin (Get)
 - [System Global](#settings) (Get/Set)
 - [System Settings](#settings) (Get/Set)
+- [Security Profiles](#security-Profiles) (Get)
 - User LDAP (Get)
 - User Local (Get)
 - User Group (Get)
@@ -1049,6 +1050,19 @@ modify its properties `Set-FGTSystemInterface` or delete it `Remove-FGTSystemInt
     Performing the operation "Remove interface" on target "PowerFGT_vlan23".
     [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): Y
 ```
+
+### Security Profiles
+
+You can change System Settings and System Global (settings) using `Set-FGTSystemSettings` and `Set-FGTSystemGlobal`
+
+It is possible to Get Security Profiles (Antivirus, Application Control, DNS Filter, ISDB, SSL/SSH, IPS)
+
+* `Get-FGTAntivirusProfile` List and Settings of Antivirus
+* `Get-FGTApplicationList` List and Settings of Application (List)
+* `Get-FGTDnsfilterProfile` List and Settings of DNS Filter Profile
+* `Get-FGTFirewallInternetServiceName` List of Internet Service Name (ISDB)
+* `Get-FGTFirewallSSLSSHProfile` List and Settings of SSL/SSH Profile
+* `Get-FGTIpsSensor` List and Settings of IPS Sensor
 
 ### Settings
 
