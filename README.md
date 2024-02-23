@@ -1372,6 +1372,8 @@ you can also get some extra info using -extra parameter :
 * country_id to get country of IP Address
 
 You can also select the 'timeline' using -since parameter 1h(our), 1d(ay), 7d(ays), 30(days), only for Fortiguard type
+
+You can use also `Get-FGTLogSetting` for get setting for Log (Syslogd, FortiAnalyzer...)
 ```
 ### Invoke API
 for example to get Fortigate System Global Info
