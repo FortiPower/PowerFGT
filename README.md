@@ -42,7 +42,7 @@ With this module (version 0.7.0) you can manage:
 - System Admin (Get)
 - [System Global](#settings) (Get/Set)
 - [System Settings](#settings) (Get/Set)
-- [Security Profiles](#security-Profiles) (Get)
+- [Security Profiles](#security-profiles) (Get)
 - User LDAP (Get)
 - User Local (Get)
 - User Group (Get)
@@ -663,7 +663,7 @@ or delete it `Remove-FGTFirewallVIPGroup`.
 
 You can create a new Policy `Add-FGTFirewallPolicy`, retrieve its information `Get-FGTFirewallPolicy`
 Add member to source or destinationn address `Add-FGTFirewallPolicyMember` and remove member `Add-FGTFirewallPolicyMember`,
-or delete it `Remove-FGTFirewallPolicy`.
+set it `Set-FGTFirewallPolicy` or delete it `Remove-FGTFirewallPolicy`.
 
 ```powershell
 # Get information about ALL Policies (using Format Table)
@@ -787,6 +787,20 @@ or delete it `Remove-FGTFirewallPolicy`.
     uuid                      : d7d0fa66-3352-51ec-52cf-a215389b0ddb
     [...]
 
+
+# Change a Policy Settings (Security Profiles with default profiles)
+    Get-FGTFirewallPolicy -name MyFGTPolicy3 | Set-FGTFirewallPolicy -avprofile default -webfilterprofile default -dnsfilterprofile default -applicationlist default -ipssensor default
+
+    q_origin_key              : 3
+    policyid                  : 3
+    name                      : MyFGTPolicy3
+    uuid                      : d7d0fa66-3352-51ec-52cf-a215389b0ddb
+    [...]
+    av-profile                : default
+    webfilter-profile         : default
+    dnsfilter-profile         : default
+    application-list          : default
+    ips-sensor                : default
 
 # Remove a Policy
     Get-FGTFirewallPolicy -name MyFGTPolicy2 | Remove-FGTFirewallPolicy
