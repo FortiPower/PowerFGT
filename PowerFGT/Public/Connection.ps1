@@ -182,9 +182,9 @@ function Connect-FGT {
             $url = "https://${Server}:${port}/"
         }
 
-        $headers = @{}
+        $headers = @{ "content-type" = "application/json" }
         if ($ApiToken) {
-            $headers = @{ "Authorization" = "Bearer $ApiToken" }
+            $headers += @{ "Authorization" = "Bearer $ApiToken" }
         }
         else {
             #If there is a password (and a user), create a credentials
@@ -261,7 +261,7 @@ function Connect-FGT {
             #Remove extra "quote"
             $cookie_csrf = $cookie_csrf -replace '["]', ''
             #Add csrf cookie to header (X-CSRFTOKEN)
-            $headers = @{"X-CSRFTOKEN" = $cookie_csrf }
+            $headers += @{"X-CSRFTOKEN" = $cookie_csrf }
 
             $uri = $url + "logindisclaimer"
             if ($iwrResponse.Content -match '/logindisclaimer') {
