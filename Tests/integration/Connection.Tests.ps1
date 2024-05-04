@@ -202,6 +202,9 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get System Admin(istrator)" {
             { Get-FGTSystemAdmin -connection $fgt } | Should -Not -Throw
         }
+        It "Use Multi connection for call Get System DHCP Server" {
+            { Get-FGTSystemDHCPServer -connection $fgt } | Should -Not -Throw
+        }
         It "Use Multi connection for call Get System DNS" {
             { Get-FGTSystemDns -connection $fgt } | Should -Not -Throw
         }
