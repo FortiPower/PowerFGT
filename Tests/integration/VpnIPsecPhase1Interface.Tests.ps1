@@ -278,7 +278,9 @@ Describe "Add VPN Ipsec Phase 1 Interface" -ForEach $type {
 
         It "Add VPN Ipsec Phase 1 Interface with auto-discovery-sender enabled" {
             $p = $_.param
-            Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -interface $pester_port1 -psksecret MySecret @p -autodiscoverysender
+            #FortiOS 7.6 need to force transport to udp for support auto discovery with IKEv2 Dynamic
+            $data = @{ "transport" = "udp" }
+            Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -interface $pester_port1 -psksecret MySecret @p -autodiscoverysender -data $data
             $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
             $vpn.name | Should -Be $pester_vpn1
             $vpn.'ike-version' | Should -Be $_.param.ikeversion
@@ -296,7 +298,9 @@ Describe "Add VPN Ipsec Phase 1 Interface" -ForEach $type {
 
         It "Add VPN Ipsec Phase 1 Interface with auto-discovery-receiver enabled" {
             $p = $_.param
-            Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -interface $pester_port1 -psksecret MySecret @p -autodiscoveryreceiver
+            #FortiOS 7.6 need to force transport to udp for support auto discovery with IKEv2 Dynamic
+            $data = @{ "transport" = "udp" }
+            Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -interface $pester_port1 -psksecret MySecret @p -autodiscoveryreceiver -data $data
             $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
             $vpn.name | Should -Be $pester_vpn1
             $vpn.'ike-version' | Should -Be $_.param.ikeversion
@@ -725,7 +729,13 @@ Describe "Configure VPN Ipsec Phase 1 Interface" -ForEach $type {
         }
 
         It "Set VPN Ipsec Phase 1 Interface with auto-discovery-sender enabled" {
-            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Set-FGTVpnIpsecPhase1Interface -autodiscoverysender
+            if ($_.param.type -eq "dynamic" -and $_.param.ikeversion -eq "2") {
+                #FortiOS 7.6 need to force transport to udp for support auto discovery with IKEv2 Dynamic
+                $data = @{ "transport" = "udp" }
+            } else {
+                $data = @{ }
+            }
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Set-FGTVpnIpsecPhase1Interface -autodiscoverysender -data $data
             $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
             $vpn.name | Should -Be $pester_vpn1
             $vpn.'ike-version' | Should -Be $_.param.ikeversion
