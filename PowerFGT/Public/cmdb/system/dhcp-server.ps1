@@ -19,6 +19,11 @@ function Get-FGTSystemDHCPServer {
         Display DHCP Server configured on the FortiGate
 
         .EXAMPLE
+        Get-FGTSystemDHCPServer -id 2
+
+        Get System DHCP Server with id 2
+
+        .EXAMPLE
         Get-FGTSystemDHCPServer -filter_attribute 'default-gateway' -filter_value 92.2.0.254
 
         Get System DHCP Server with default-gateway equal 192.2.0.254
@@ -46,6 +51,8 @@ function Get-FGTSystemDHCPServer {
 
     [CmdletBinding(DefaultParameterSetName = "default")]
     Param(
+        [Parameter (Mandatory = $false, Position = 1, ParameterSetName = "id")]
+        [int]$id,
         [Parameter (Mandatory = $false)]
         [Parameter (ParameterSetName = "filter")]
         [string]$filter_attribute,
@@ -83,6 +90,14 @@ function Get-FGTSystemDHCPServer {
         }
 
         #Filtering
+        switch ( $PSCmdlet.ParameterSetName ) {
+            "id" {
+                $filter_value = $id
+                $filter_attribute = "id"
+            }
+            default { }
+        }
+
         #if filter value and filter_attribute, add filter (by default filter_type is equal)
         if ( $filter_value -and $filter_attribute ) {
             $invokeParams.add( 'filter_value', $filter_value )
