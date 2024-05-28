@@ -27,6 +27,7 @@ With this module (version 0.8.1) you can manage:
 
 - [Address](#address) (Add/Get/Copy/Set/Remove object type ipmask/subnet, FQDN, iprange, geo and mac)
 - [AddressGroup](#address-group) (Add/Get/Copy/Set/Remove and Add/Remove Member)
+- DHCPServer (Get)
 - DNS (Get)
 - HA (Get)
 - [Interface](#interface) (Add/Get/Set/Remove Vlan, aggregate, loopback and Add/Remove Member)
@@ -1675,6 +1676,7 @@ Get-FGTMonitorWebfilterCategories
 Get-FGTRouterPolicy
 Get-FGTRouterStatic
 Get-FGTSystemAdmin
+Get-FGTSystemDHCPServer
 Get-FGTSystemDns
 Get-FGTSystemDnsServer
 Get-FGTSystemGlobal
