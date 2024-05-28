@@ -38,6 +38,9 @@ stages:
             FortiOS74:
               name: "FortiOS 7.4"
               IPADDRESS: $(IPADDRESS_74)
+            FortiOS76:
+              name: "FortiOS 7.6"
+              IPADDRESS: $(IPADDRESS_76)
         steps:
           - task: PowerShell@2
             displayName: "Test PowerShell Core $(name)"
@@ -91,6 +94,9 @@ stages:
             FortiOS74:
               name: "FortiOS 7.4"
               IPADDRESS: $(IPADDRESS_74)
+            FortiOS76:
+              name: "FortiOS 7.6"
+              IPADDRESS: $(IPADDRESS_76)
         steps:
           - task: PowerShell@2
             displayName: "Test PowerShell Core $(name)"
@@ -163,6 +169,9 @@ stages:
 #         FortiOS74:
 #            name: "FortiOS 7.4"
 #            IPADDRESS: $(IPADDRESS_74)
+#         FortiOS76:
+#            name: "FortiOS 7.6"
+#            IPADDRESS: $(IPADDRESS_76)
 #     steps:
 #     - task: PowerShell@2
 #       displayName: "Test PowerShell Core $(name)"
