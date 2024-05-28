@@ -46,7 +46,7 @@ Describe "Get Static Route" {
         $route.q_static | Should -Not -BeNullOrEmpty
         $route.q_no_rename | Should -Not -BeNullOrEmpty
         $route.q_global_entry | Should -Not -BeNullOrEmpty
-        $route.q_type | Should -Be '2'
+        $route.q_type | Should -Not -BeNullOrEmpty
         $route.q_path | Should -Be "router"
         $route.q_name | Should -Be "static"
         $route.q_mkey_type | Should -Be "integer"

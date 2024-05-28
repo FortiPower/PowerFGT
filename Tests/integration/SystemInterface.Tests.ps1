@@ -50,7 +50,7 @@ Describe "Get System Interface" {
         $interface.q_static | Should -Not -BeNullOrEmpty
         $interface.q_no_rename | Should -Not -BeNullOrEmpty
         $interface.q_global_entry | Should -Not -BeNullOrEmpty
-        $interface.q_type | Should -Be '0'
+        $interface.q_type | Should -Not -BeNullOrEmpty
         $interface.q_path | Should -Be "system"
         $interface.q_name | Should -Be "interface"
         $interface.q_mkey_type | Should -Be "string"

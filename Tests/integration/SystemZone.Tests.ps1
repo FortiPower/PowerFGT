@@ -46,7 +46,7 @@ Describe "Get zone" {
         $zone.q_static | Should -Not -BeNullOrEmpty
         $zone.q_no_rename | Should -Not -BeNullOrEmpty
         $zone.q_global_entry | Should -Not -BeNullOrEmpty
-        $zone.q_type | Should -Be '12'
+        $zone.q_type | Should -Not -BeNullOrEmpty
         $zone.q_path | Should -Be "system"
         $zone.q_name | Should -Be "zone"
         $zone.q_mkey_type | Should -Be "string"

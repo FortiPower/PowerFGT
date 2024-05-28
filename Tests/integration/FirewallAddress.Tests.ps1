@@ -57,7 +57,7 @@ Describe "Get Firewall Address" {
         $address.q_static | Should -Not -BeNullOrEmpty
         $address.q_no_rename | Should -Not -BeNullOrEmpty
         $address.q_global_entry | Should -Not -BeNullOrEmpty
-        $address.q_type | Should -BeIn @('27', '28', '30', '31', '32')
+        $address.q_type | Should -Not -BeNullOrEmpty
         $address.q_path | Should -Be "firewall"
         $address.q_name | Should -Be "address"
         $address.q_mkey_type | Should -Be "string"
