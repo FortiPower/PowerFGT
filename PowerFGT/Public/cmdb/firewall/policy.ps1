@@ -478,18 +478,15 @@ function Get-FGTFirewallPolicy {
         [string]$uuid,
         [Parameter (Mandatory = $false, ParameterSetName = "policyid")]
         [string]$policyid,
-        [Parameter (Mandatory = $false)]
-        [Parameter (ParameterSetName = "filter")]
+        [Parameter (Mandatory = $false, ParameterSetName = "filter_build")]
         [string]$filter_attribute,
-        [Parameter (Mandatory = $false)]
-        [Parameter (ParameterSetName = "name")]
+        [Parameter (Mandatory = $false, ParameterSetName = "name")]
         [Parameter (ParameterSetName = "uuid")]
         [Parameter (ParameterSetName = "policyid")]
-        [Parameter (ParameterSetName = "filter")]
-        [ValidateSet('equal', 'contains')]
+        [Parameter (ParameterSetName = "filter_build")]
+        [ValidateSet('equal', 'notequal', 'contains', 'notcontains', 'less', 'lessorequal', 'greater', 'greaterorequal')]
         [string]$filter_type = "equal",
-        [Parameter (Mandatory = $false)]
-        [Parameter (ParameterSetName = "filter")]
+        [Parameter (Mandatory = $false, ParameterSetName = "filter_build")]
         [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
         [switch]$meta,
