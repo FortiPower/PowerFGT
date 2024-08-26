@@ -386,3 +386,34 @@ Function Confirm-FGTVpnIpsecPhase2Interface {
 
     $true
 }
+
+Function Confirm-FGTWebfilterUrlfilter {
+
+    Param (
+        [Parameter (Mandatory = $true)]
+        [object]$argument
+    )
+
+    #Check if it looks like a Web Filter URL Filter element
+
+    if ( -not ( $argument | get-member -name name -Membertype Properties)) {
+        throw "Element specified does not contain a name property."
+    }
+    if ( -not ( $argument | get-member -name comment -Membertype Properties)) {
+        throw "Element specified does not contain a comment property."
+    }
+    if ( -not ( $argument | get-member -name one-arm-ips-urlfilter -Membertype Properties)) {
+        throw "Element specified does not contain an one-arm-ips-urlfilter property."
+    }
+    if ( -not ( $argument | get-member -name ip-addr-block -Membertype Properties)) {
+        throw "Element specified does not contain an ip-addr-block property."
+    }
+    if ( -not ( $argument | get-member -name ip4-mapped-ip6  -Membertype Properties)) {
+        throw "Element specified does not contain an ip4-mapped-ip6  property."
+    }
+    if ( -not ( $argument | get-member -name entries -Membertype Properties)) {
+        throw "Element specified does not contain an entries property."
+    }
+
+    $true
+}

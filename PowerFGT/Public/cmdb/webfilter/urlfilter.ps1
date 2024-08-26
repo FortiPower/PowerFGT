@@ -39,17 +39,16 @@ function Add-FGTWebfilterUrlfilter {
         [Parameter (Mandatory = $false)]
         [string]$url_id,
         [Parameter (Mandatory = $false)]
+        [ValidateSet('simple', 'regex', 'wildcard')]
         [string]$url_type,
         [Parameter (Mandatory = $false)]
         [string]$url,
         [Parameter (Mandatory = $false)]
+        [ValidateSet("block", "allow", "monitor")]
         [string]$action,
         [Parameter (Mandatory = $false)]
+        [ValidateSet("enable", "disable")]
         [string]$status,
-        [Parameter (Mandatory = $false)]
-        [string]$exempt,
-        [Parameter (Mandatory = $false)]
-        [switch]$skip,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -62,15 +61,12 @@ function Add-FGTWebfilterUrlfilter {
     Process {
 
         $invokeParams = @{ }
-        if ( $PsBoundParameters.ContainsKey('skip') ) {
-            $invokeParams.add( 'skip', $skip )
-        }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
         }
 
         if ( Get-FGTWebfilterUrlfilter -connection $connection @invokeParams -name $name ) {
-            Throw "Already a URL profile object using the same name"
+            Throw "Already an URL profile object using the same name"
         }
 
         $uri = "api/v2/cmdb/webfilter/urlfilter"
@@ -107,14 +103,7 @@ function Add-FGTWebfilterUrlfilter {
             $_entry | add-member -name "status" -membertype NoteProperty -Value $status
         }
 
-        if ( $PsBoundParameters.ContainsKey('exempt') ) {
-            $_entry | add-member -name "exempt" -membertype NoteProperty -Value $exempt
-        }
-
-        $_entries = @()
-        $_entries += $_entry
-
-        $urlfilter | add-member -name "entries" -membertype NoteProperty -Value $_entries
+        $urlfilter | add-member -name "entries" -membertype NoteProperty -Value $_entry
 
         Invoke-FGTRestMethod -method "POST" -body $urlfilter -uri $uri -connection $connection @invokeParams | Out-Null
 
@@ -271,7 +260,7 @@ function Set-FGTWebfilterUrlfilter {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium', DefaultParameterSetName = 'default')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
-        #[ValidateScript({ Confirm-FGTWebfilterUrlfilter $_ })]
+        [ValidateScript({ Confirm-FGTWebfilterUrlfilter $_ })]
         [psobject]$urlfilter,
         [Parameter (Mandatory = $false)]
         [ValidateLength(0, 63)]
@@ -283,20 +272,17 @@ function Set-FGTWebfilterUrlfilter {
         [ValidateRange(0, 4294967295)]
         [string]$url_id,
         [Parameter (Mandatory = $false)]
-        [ValidateSet("simple","regex","wildcard")]
+        [ValidateSet("simple", "regex", "wildcard")]
         [string]$url_type,
         [Parameter (Mandatory = $false)]
         [ValidateLength(0, 511)]
         [string]$url,
         [Parameter (Mandatory = $false)]
-        [ValidateSet("block","allow","monitor")]
+        [ValidateSet("block", "allow", "monitor")]
         [string]$action,
         [Parameter (Mandatory = $false)]
-        [ValidateSet("enable","disable")]
+        [ValidateSet("enable", "disable")]
         [string]$status,
-        [Parameter (Mandatory = $false)]
-        [ValidateSet("av","web-content","activex-java-cookie","dlp","fortiguard","range-block","pass","antiphish","all")]
-        [string]$exempt,
         [Parameter (Mandatory = $false)]
         [boolean]$visibility,
         [Parameter (Mandatory = $false)]
@@ -349,10 +335,6 @@ function Set-FGTWebfilterUrlfilter {
 
         if ( $PsBoundParameters.ContainsKey('status') ) {
             $_entry | add-member -name "status" -membertype NoteProperty -Value $status
-        }
-
-        if ( $PsBoundParameters.ContainsKey('exempt') ) {
-            $_entry | add-member -name "exempt" -membertype NoteProperty -Value $exempt
         }
 
         $urlfilter.entries += $_entry
@@ -411,7 +393,7 @@ function Remove-FGTWebfilterUrlfilter {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'high')]
     Param(
         [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
-        #[ValidateScript({ Confirm-FGTWebfilterUrlfilter $_ })]
+        [ValidateScript({ Confirm-FGTWebfilterUrlfilter $_ })]
         [psobject]$url,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
