@@ -197,7 +197,7 @@ Describe "Add WebFilter UrlFilter" {
         #Add first URL Filter
         Add-FGTWebfilterUrlfilter -name $pester_url1 -url_id 1 -url_type simple -url powerfgt.com -action allow -status enable
         #Add Second URL
-        { Add-FGTWebfilterUrlfilter -name $pester_url1 -url_id 2 -url_type simple -url powerfgt2.com -action allow -status enable } | Should -Not -Throw 
+        { Add-FGTWebfilterUrlfilter -name $pester_url1 -url_id 2 -url_type simple -url powerfgt2.com -action allow -status enable } | Should -Not -Throw
     }
 
     AfterEach {
