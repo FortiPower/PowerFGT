@@ -1,4 +1,4 @@
-﻿#
+#
 # Copyright 2019, Alexis La Goutte <alexis dot lagoutte at gmail dot com>
 # Copyright 2019, Benjamin Perrier <ben dot perrier at outlook dot com>
 #
@@ -15,14 +15,21 @@ function Add-FGTUserLocal {
         Add a FortiGate Local User (Name, Password, MFA)
 
         .EXAMPLE
-        Add-FGTUserLocal -Name FGT -password MyFGT -status
+        Add-FGTUserLocal -Name FGT -passwd MyFGT -status
 
         Add Local User object name FGT, password MyFGT and enable it
 
         .EXAMPLE
-        Add-FGTUserLocal -Name FGT -password MyFGT -status -two_factor email -two_factor_authentication email -email_to powerfgt@fgt.power
+        $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
+        Add-FGTUserLocal -Name FGT -passwd $mypassword -status -two_factor email -two_factor_authentication email -email_to powerfgt@fgt.power
 
-        Add Local User object name FGT, password MyFGT and enable it, with two factor authentication by email
+        Add Local User object name FGT, password mypassword and enable it, with two factor authentication by email
+
+        .EXAMPLE
+        $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
+        Add-FGTUserLocal -Name FGT -passwd $mypassword -status -two_factor fortitoken -two_factor_authentication fortitoken -fortitoken XXXXXXXXXXXXXXXX -email_to powerfgt@fgt.power
+
+        Add Local User object name FGT, password mypassword and enable it, with two factor authentication by fortitoken
     #>
 
     Param(
@@ -31,7 +38,7 @@ function Add-FGTUserLocal {
         [Parameter (Mandatory = $false)]
         [switch]$status,
         [Parameter (Mandatory = $false, ParameterSetName = "local")]
-        [SecureString]$password,
+        [SecureString]$passwd,
         [Parameter (Mandatory = $false, ParameterSetName = "radius")]
         [string]$radius_server,
         [Parameter (Mandatory = $false, ParameterSetName = "tacacs")]
@@ -64,6 +71,10 @@ function Add-FGTUserLocal {
         $invokeParams = @{ }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ($PsBoundParameters.ContainsKey('passwd')) {
+            $password = ConvertFrom-SecureString -SecureString $passwd -AsPlainText
         }
 
         if ( Get-FGTUserLocal @invokeParams -name $name -connection $connection) {
@@ -257,7 +268,8 @@ function Set-FGTUserLocal {
 
         .EXAMPLE
         $MyFGTUserLocal = Get-FGTUserLocal -name MyFGTUserLocal
-        PS C:\>$MyFGTUserLocal | Set-FGTUserLocal -password MyFGTUserLocalPassword
+        $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
+        PS C:\>$MyFGTUserLocal | Set-FGTUserLocal -passwd $mypassword
 
         Change MyFGTUserLocal to value (Password) MyFGTUserLocalPassword
 
@@ -279,7 +291,7 @@ function Set-FGTUserLocal {
         [Parameter (Mandatory = $false)]
         [switch]$status,
         [Parameter (Mandatory = $false, ParameterSetName = "local")]
-        [SecureString]$password,
+        [SecureString]$passwd,
         [Parameter (Mandatory = $false, ParameterSetName = "radius")]
         [string]$radius_server,
         [Parameter (Mandatory = $false, ParameterSetName = "tacacs")]
@@ -324,6 +336,10 @@ function Set-FGTUserLocal {
             $userlocal.name = $name
         }
 
+        if ($PsBoundParameters.ContainsKey('passwd')) {
+            $password = ConvertFrom-SecureString -SecureString $passwd -AsPlainText
+        }
+
         if ( $PSCmdlet.ParameterSetName -ne "default" -and $userlocal.type -ne $PSCmdlet.ParameterSetName ) {
             throw "User type ($($userlocal.type)) need to be on the same type ($($PSCmdlet.ParameterSetName))"
         }
@@ -337,7 +353,7 @@ function Set-FGTUserLocal {
 
         switch ( $PSCmdlet.ParameterSetName ) {
             "local" {
-                    $_local | add-member -name "passwd" -membertype NoteProperty -Value $password
+                $_local | add-member -name "passwd" -membertype NoteProperty -Value $password
             }
             "radius" {
                 $_local | add-member -name "radius-server" -membertype NoteProperty -Value $radius_server
