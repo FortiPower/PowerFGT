@@ -67,7 +67,13 @@ function Get-FGTMonitorFirewallSession {
             $count = 1000
         }
 
-        $uri = "api/v2/monitor/firewall/session?count=${count}"
+        #before 7.6.x, it is session (and not sessions) (already available with 7.4.x) but session drop with 7.6.)
+        if ($connection.version -lt "7.6.0") {
+            $uri = "api/v2/monitor/firewall/session?count=${count}"
+        }
+        else {
+            $uri = "api/v2/monitor/firewall/sessions?count=${count}"
+        }
 
         if ( $PsBoundParameters.ContainsKey('summary') ) {
             $uri += "&summary=$true"
