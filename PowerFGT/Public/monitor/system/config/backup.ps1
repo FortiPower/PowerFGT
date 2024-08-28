@@ -50,8 +50,21 @@ function Get-FGTMonitorSystemConfigBackup {
             $invokeParams.add( 'vdom', $vdom )
         }
 
-        $uri = 'api/v2/monitor/system/config/backup?scope=global'
-        $response = Invoke-FGTRestMethod -uri $uri -method 'GET' -connection $connection @invokeParams
+        #before 7.6.x, config/backup is available with get method and using paramater
+        if ($connection.version -lt "7.6.0") {
+            $method = "get"
+            $uri = 'api/v2/monitor/system/config/backup?scope=global'
+            $body = @{ }
+        }
+        else {
+            $method = "post"
+            $uri = 'api/v2/monitor/system/config/backup'
+            $body = @{
+                "scope" = "global"
+            }
+        }
+
+        $response = Invoke-FGTRestMethod -uri $uri -method $method -body $body -connection $connection @invokeParams
         $response
     }
 
