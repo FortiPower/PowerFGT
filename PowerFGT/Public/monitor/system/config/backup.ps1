@@ -54,7 +54,7 @@ function Get-FGTMonitorSystemConfigBackup {
         if ($connection.version -lt "7.6.0") {
             $method = "get"
             $uri = 'api/v2/monitor/system/config/backup?scope=global'
-            $body = @{ }
+            $body = ""
         }
         else {
             $method = "post"
