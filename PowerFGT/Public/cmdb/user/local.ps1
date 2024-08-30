@@ -386,17 +386,17 @@ function Set-FGTUserLocal {
 
         if ( $PsBoundParameters.ContainsKey('two_factor') ) {
             if ( $two_factor -eq "fortitoken" -or $two_factor -eq "fortitoken-cloud" ) {
-                $local | add-member -name "two-factor" -membertype NoteProperty -Value $two_factor
-                $local | add-member -name "two-factor-authentication" -membertype NoteProperty -Value "fortitoken"
-                $local | add-member -name "fortitoken" -membertype NoteProperty -Value $fortitoken
+                $_local | add-member -name "two-factor" -membertype NoteProperty -Value $two_factor
+                $_local | add-member -name "two-factor-authentication" -membertype NoteProperty -Value "fortitoken"
+                $_local | add-member -name "fortitoken" -membertype NoteProperty -Value $fortitoken
             }
             elseif ( $two_factor -eq "email" ) {
-                $local | add-member -name "two-factor" -membertype NoteProperty -Value $two_factor
-                $local | add-member -name "two-factor-authentication" -membertype NoteProperty -Value "email"
+                $_local | add-member -name "two-factor" -membertype NoteProperty -Value $two_factor
+                $_local | add-member -name "two-factor-authentication" -membertype NoteProperty -Value $two_factor
             }
             elseif ( $two_factor -eq "sms" ) {
-                $local | add-member -name "two-factor" -membertype NoteProperty -Value $two_factor
-                $local | add-member -name "two-factor-authentication" -membertype NoteProperty -Value "sms"
+                $_local | add-member -name "two-factor" -membertype NoteProperty -Value $two_factor
+                $_local | add-member -name "two-factor-authentication" -membertype NoteProperty -Value $two_factor++
             }
         }
 

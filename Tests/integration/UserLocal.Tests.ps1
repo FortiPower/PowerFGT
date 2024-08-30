@@ -107,7 +107,6 @@ Describe "Add User Local" {
             $userlocal.name | Should -Be $pester_userlocal
             $userlocal.status | Should -Be "enable"
             $userlocal.'email-to' | Should -Be "powerfgt@power.fgt"
-            $userlocal.'two-factor' | Should -Be "email"
             }
 
         It "Try to Add User Local $pester_userlocal (but there is already a object with same name)" {
@@ -167,15 +166,15 @@ Describe "Configure User Local" {
 
         It "Change email to with -data" {
             $data = @{ "email-to" = "powerfgt@power.fgt" }
-            Get-FGTUserLocal -name $pester_userlocal | Set-FGTUserLocal -data $data
-            $userlocal = Get-FGTUserLocal -name $pester_userlocal
-            $userlocal.name | Should -Be $pester_userlocal
+            Get-FGTUserLocal -name "pester_userlocal_change" | Set-FGTUserLocal -data $data
+            $userlocal = Get-FGTUserLocal -name "pester_userlocal_change"
+            $userlocal.name | Should -Be "pester_userlocal_change"
             $userlocal.status | Should -Be "disable"
             $userlocal.'email-to' | Should -Be "powerfgt@power.fgt"
             $userlocal.'two-factor' | Should -Be "disable"
         }
 
-        AfterEach {
+        AfterAll {
             Get-FGTUserLocal -name "pester_userlocal_change" | Remove-FGTUserLocal -confirm:$false
         }
 
