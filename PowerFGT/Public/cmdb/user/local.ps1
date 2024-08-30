@@ -32,7 +32,7 @@ function Add-FGTUserLocal {
         Add Local User object name FGT, password mypassword and enable it, with two factor authentication by fortitoken
 
         .EXAMPLE
-        $data = @{ "sms_phone" = "XXXXXXXXXX" }
+        $data = @{ "sms-phone" = "XXXXXXXXXX" }
         $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
         PS C:\>Add-FGTUserLocal -Name FGT -passwd $mypassword -status -two_factor sms -data $data -email_to powerfgt@fgt.power
         Add Add Local User object name FGT, password mypassword and enable it, with email and two factor via SMS and SMS Phone via -data parameter
@@ -141,7 +141,7 @@ function Add-FGTUserLocal {
 
         if ( $PsBoundParameters.ContainsKey('data') ) {
             $data.GetEnumerator() | ForEach-Object {
-                $addrgrp | Add-member -name $_.key -membertype NoteProperty -Value $_.value
+                $local | Add-member -name $_.key -membertype NoteProperty -Value $_.value
             }
         }
 
@@ -295,7 +295,7 @@ function Set-FGTUserLocal {
         Change MyFGTUserLocal to set email to newpowerfgt@fgt.power
 
         .EXAMPLE
-        $data = @{ "sms_phone" = "XXXXXXXXXX" }
+        $data = @{ "sms-phone" = "XXXXXXXXXX" }
         PS C:\>$MyFGTUserLocal = Get-FGTUserLocal -name MyFGTUserLocal
         PS C:\>$MyFGTUserLocal | Set-FGTUserLocal -data $data
         Change MyFGTUserLocal to set SMS Phone
@@ -410,7 +410,7 @@ function Set-FGTUserLocal {
 
         if ( $PsBoundParameters.ContainsKey('data') ) {
             $data.GetEnumerator() | ForEach-Object {
-                $_addrgrp | Add-member -name $_.key -membertype NoteProperty -Value $_.value
+                $_local | Add-member -name $_.key -membertype NoteProperty -Value $_.value
             }
         }
 
