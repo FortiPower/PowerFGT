@@ -21,15 +21,21 @@ function Add-FGTUserLocal {
 
         .EXAMPLE
         $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
-        Add-FGTUserLocal -Name FGT -passwd $mypassword -status -two_factor email -two_factor_authentication email -email_to powerfgt@fgt.power
+        Add-FGTUserLocal -Name FGT -passwd $mypassword -status -two_factor email -email_to powerfgt@fgt.power
 
         Add Local User object name FGT, password mypassword and enable it, with two factor authentication by email
 
         .EXAMPLE
         $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
-        Add-FGTUserLocal -Name FGT -passwd $mypassword -status -two_factor fortitoken -two_factor_authentication fortitoken -fortitoken XXXXXXXXXXXXXXXX -email_to powerfgt@fgt.power
+        Add-FGTUserLocal -Name FGT -passwd $mypassword -status -two_factor fortitoken -fortitoken XXXXXXXXXXXXXXXX -email_to powerfgt@fgt.power
 
         Add Local User object name FGT, password mypassword and enable it, with two factor authentication by fortitoken
+
+        .EXAMPLE
+        $data = @{ "sms_phone" = "XXXXXXXXXX" }
+        $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
+        PS C:\>Add-FGTUserLocal -Name FGT -passwd $mypassword -status -two_factor sms -data $data -email_to powerfgt@fgt.power
+        Add Add Local User object name FGT, password mypassword and enable it, with email and two factor via SMS and SMS Phone via -data parameter
     #>
 
     Param(
@@ -53,7 +59,9 @@ function Add-FGTUserLocal {
         [Parameter (Mandatory = $false)]
         [string]$email_to,
         [Parameter (Mandatory = $false)]
-        [string]$sms_server,
+        [string]$sms_phone,
+        [Parameter (Mandatory = $false)]
+        [hashtable]$data,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -127,8 +135,14 @@ function Add-FGTUserLocal {
             $local | add-member -name "email-to" -membertype NoteProperty -Value $email_to
         }
 
-        if ( $PsBoundParameters.ContainsKey('sms_server') ) {
-            $local | add-member -name "sms-server" -membertype NoteProperty -Value $sms_server
+        if ( $PsBoundParameters.ContainsKey('sms_phone') ) {
+            $local | add-member -name "sms-phone" -membertype NoteProperty -Value $sms_phone
+        }
+
+        if ( $PsBoundParameters.ContainsKey('data') ) {
+            $data.GetEnumerator() | ForEach-Object {
+                $addrgrp | Add-member -name $_.key -membertype NoteProperty -Value $_.value
+            }
         }
 
         Invoke-FGTRestMethod -method "POST" -body $local -uri $uri -connection $connection @invokeParams | out-Null
@@ -280,6 +294,12 @@ function Set-FGTUserLocal {
 
         Change MyFGTUserLocal to set email to newpowerfgt@fgt.power
 
+        .EXAMPLE
+        $data = @{ "sms_phone" = "XXXXXXXXXX" }
+        PS C:\>$MyFGTUserLocal = Get-FGTUserLocal -name MyFGTUserLocal
+        PS C:\>$MyFGTUserLocal | Set-FGTUserLocal -data $data
+        Change MyFGTUserLocal to set SMS Phone
+
     #>
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium', DefaultParameterSetName = 'default')]
@@ -307,7 +327,9 @@ function Set-FGTUserLocal {
         [Parameter (Mandatory = $false)]
         [string]$email_to,
         [Parameter (Mandatory = $false)]
-        [string]$sms_server,
+        [string]$sms_phone,
+        [Parameter (Mandatory = $false)]
+        [hashtable]$data,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -382,8 +404,14 @@ function Set-FGTUserLocal {
             $_local | add-member -name "email-to" -membertype NoteProperty -Value $email_to
         }
 
-        if ( $PsBoundParameters.ContainsKey('sms_server') ) {
-            $_local | add-member -name "sms-server" -membertype NoteProperty -Value $sms_server
+        if ( $PsBoundParameters.ContainsKey('sms_phone') ) {
+            $_local | add-member -name "sms-phone" -membertype NoteProperty -Value $sms_phone
+        }
+
+        if ( $PsBoundParameters.ContainsKey('data') ) {
+            $data.GetEnumerator() | ForEach-Object {
+                $_addrgrp | Add-member -name $_.key -membertype NoteProperty -Value $_.value
+            }
         }
 
         if ($PSCmdlet.ShouldProcess($userlocal.name, 'Configure User Local')) {
