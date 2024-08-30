@@ -39,16 +39,13 @@ function Add-FGTUserLocal {
         [switch]$status,
         [Parameter (Mandatory = $false, ParameterSetName = "local")]
         [SecureString]$passwd,
-        [Parameter (Mandatory = $false, ParameterSetName = "radius")]
+        <#[Parameter (Mandatory = $false, ParameterSetName = "radius")]
         [string]$radius_server,
         [Parameter (Mandatory = $false, ParameterSetName = "tacacs")]
-        [string]$tacacs_server,
+        [string]$tacacs_server,#>
         [Parameter (Mandatory = $false)]
         [ValidateSet("fortitoken", "email", "sms", "disable", "fortitoken-cloud")]
         [string]$two_factor,
-        [Parameter (Mandatory = $false)]
-        [ValidateSet("fortitoken", "email", "sms")]
-        [string]$two_factor_authentication,
         [Parameter (Mandatory = $false)]
         [string]$two_factor_notification,
         [Parameter (Mandatory = $false)]
@@ -99,27 +96,31 @@ function Add-FGTUserLocal {
                 $local | add-member -name "type" -membertype NoteProperty -Value "password"
                 $local | add-member -name "passwd" -membertype NoteProperty -Value $password
             }
-            "radius" {
+<#            "radius" {
                 $local | add-member -name "type" -membertype NoteProperty -Value "radius"
                 $local | add-member -name "radius-server" -membertype NoteProperty -Value $radius_server
             }
             "tacacs" {
                 $local | add-member -name "type" -membertype NoteProperty -Value "tacacs"
                 $local | add-member -name "tacacs+-server" -membertype NoteProperty -Value $tacacs_server
-            }
+            }#>
             default { }
         }
 
         if ( $PsBoundParameters.ContainsKey('two_factor') ) {
-            $local | add-member -name "two-factor" -membertype NoteProperty -Value $two_factor
-        }
-
-        if ( $PsBoundParameters.ContainsKey('two_factor_authentication') ) {
-            $local | add-member -name "two-factor-authentication" -membertype NoteProperty -Value $two_factor_authentication
-        }
-
-        if ( $PsBoundParameters.ContainsKey('fortitoken') ) {
-            $local | add-member -name "fortitoken" -membertype NoteProperty -Value $fortitoken
+            if ( $two_factor -eq "fortitoken" -or $two_factor -eq "fortitoken-cloud" ) {
+                $local | add-member -name "two-factor" -membertype NoteProperty -Value $two_factor
+                $local | add-member -name "two-factor-authentication" -membertype NoteProperty -Value "fortitoken"
+                $local | add-member -name "fortitoken" -membertype NoteProperty -Value $fortitoken
+            }
+            if ( $two_factor -eq "email" ) {
+                $local | add-member -name "two-factor" -membertype NoteProperty -Value $two_factor
+                $local | add-member -name "two-factor-authentication" -membertype NoteProperty -Value "email"
+            }
+            if ( $two_factor -eq "sms" ) {
+                $local | add-member -name "two-factor" -membertype NoteProperty -Value $two_factor
+                $local | add-member -name "two-factor-authentication" -membertype NoteProperty -Value "sms"
+            }
         }
 
         if ( $PsBoundParameters.ContainsKey('email_to') ) {
@@ -292,16 +293,13 @@ function Set-FGTUserLocal {
         [switch]$status,
         [Parameter (Mandatory = $false, ParameterSetName = "local")]
         [SecureString]$passwd,
-        [Parameter (Mandatory = $false, ParameterSetName = "radius")]
+        <#[Parameter (Mandatory = $false, ParameterSetName = "radius")]
         [string]$radius_server,
         [Parameter (Mandatory = $false, ParameterSetName = "tacacs")]
-        [string]$tacacs_server,
+        [string]$tacacs_server,#>
         [Parameter (Mandatory = $false)]
         [ValidateSet("fortitoken", "email", "sms", "disable", "fortitoken-cloud")]
         [string]$two_factor,
-        [Parameter (Mandatory = $false)]
-        [ValidateSet("fortitoken", "email", "sms")]
-        [string]$two_factor_authentication,
         [Parameter (Mandatory = $false)]
         [string]$two_factor_notification,
         [Parameter (Mandatory = $false)]
@@ -355,25 +353,29 @@ function Set-FGTUserLocal {
             "local" {
                 $_local | add-member -name "passwd" -membertype NoteProperty -Value $password
             }
-            "radius" {
+            <#"radius" {
                 $_local | add-member -name "radius-server" -membertype NoteProperty -Value $radius_server
             }
             "tacacs" {
                 $_local | add-member -name "tacacs+-server" -membertype NoteProperty -Value $tacacs_server
-            }
+            }#>
             default { }
         }
 
-         if ( $PsBoundParameters.ContainsKey('two_factor') ) {
-            $_local | add-member -name "two-factor" -membertype NoteProperty -Value $two_factor
-        }
-
-        if ( $PsBoundParameters.ContainsKey('two_factor_authentication') ) {
-            $_local | add-member -name "two-factor-authentication" -membertype NoteProperty -Value $two_factor_authentication
-        }
-
-        if ( $PsBoundParameters.ContainsKey('fortitoken') ) {
-            $_local | add-member -name "fortitoken" -membertype NoteProperty -Value $fortitoken
+        if ( $PsBoundParameters.ContainsKey('two_factor') ) {
+            if ( $two_factor -eq "fortitoken" -or $two_factor -eq "fortitoken-cloud" ) {
+                $local | add-member -name "two-factor" -membertype NoteProperty -Value $two_factor
+                $local | add-member -name "two-factor-authentication" -membertype NoteProperty -Value "fortitoken"
+                $local | add-member -name "fortitoken" -membertype NoteProperty -Value $fortitoken
+            }
+            elseif ( $two_factor -eq "email" ) {
+                $local | add-member -name "two-factor" -membertype NoteProperty -Value $two_factor
+                $local | add-member -name "two-factor-authentication" -membertype NoteProperty -Value "email"
+            }
+            elseif ( $two_factor -eq "sms" ) {
+                $local | add-member -name "two-factor" -membertype NoteProperty -Value $two_factor
+                $local | add-member -name "two-factor-authentication" -membertype NoteProperty -Value "sms"
+            }
         }
 
         if ( $PsBoundParameters.ContainsKey('email_to') ) {
