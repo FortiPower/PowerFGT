@@ -418,9 +418,6 @@ Function Confirm-FGTUserLocal {
     if ( -not ( $argument | get-member -name two-factor -Membertype Properties)) {
         throw "Element specified does not contain a two-factor property."
     }
-    if ( -not ( $argument | get-member -name two-factor-authentication -Membertype Properties)) {
-        throw "Element specified does not contain a two-factor-authentication property."
-    }
     if ( -not ( $argument | get-member -name fortitoken -Membertype Properties)) {
         throw "Element specified does not contain a fortitoken property."
     }
