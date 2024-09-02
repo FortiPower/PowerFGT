@@ -171,7 +171,7 @@ Describe "Configure User Local" {
             $userlocal.name | Should -Be "pester_userlocal_change"
             $userlocal.status | Should -Be "disable"
             $userlocal.'email-to' | Should -Be "powerfgt@power.fgt"
-            $userlocal.'two-factor' | Should -Be "disable"
+            $userlocal.'two-factor' | Should -Be "email"
         }
 
         AfterAll {
