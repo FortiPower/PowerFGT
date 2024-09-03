@@ -79,7 +79,13 @@ function Add-FGTUserLocal {
         }
 
         if ($PsBoundParameters.ContainsKey('passwd')) {
-            $password = ConvertFrom-SecureString -SecureString $passwd -AsPlainText
+            if (("Desktop" -eq $PSVersionTable.PsEdition) -or ($null -eq $PSVersionTable.PsEdition)) {
+                $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($passwd);
+                $password = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr);
+            }
+            else {
+                $password = ConvertFrom-SecureString -SecureString $passwd -AsPlainText
+            }
         }
 
         if ( Get-FGTUserLocal @invokeParams -name $name -connection $connection) {
