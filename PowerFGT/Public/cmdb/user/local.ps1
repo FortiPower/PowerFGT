@@ -15,27 +15,29 @@ function Add-FGTUserLocal {
         Add a FortiGate Local User (Name, Password, MFA)
 
         .EXAMPLE
-        Add-FGTUserLocal -Name FGT -passwd MyFGT -status
+        $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
+        PS > Add-FGTUserLocal -Name MyFGTUserLocal -passwd $mypassword -status:$false
 
-        Add Local User object name FGT, password MyFGT and enable it
+        Add Local User object name MyFGTUserLocal, password MyFGT and disabled it
 
         .EXAMPLE
         $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
-        Add-FGTUserLocal -Name FGT -passwd $mypassword -status -two_factor email -email_to powerfgt@fgt.power
+        PS > Add-FGTUserLocal -Name MyFGTUserLocal -passwd $mypassword -status -two_factor email -email_to powerfgt@fgt.power
 
-        Add Local User object name FGT, password mypassword and enable it, with two factor authentication by email
+        Add Local User object name MyFGTUserLocal, password mypassword with two factor authentication by email
 
         .EXAMPLE
         $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
-        Add-FGTUserLocal -Name FGT -passwd $mypassword -status -two_factor fortitoken -fortitoken XXXXXXXXXXXXXXXX -email_to powerfgt@fgt.power
+        PS > Add-FGTUserLocal -Name MyFGTUserLocal -passwd $mypassword -status -two_factor fortitoken -fortitoken XXXXXXXXXXXXXXXX -email_to powerfgt@fgt.power
 
-        Add Local User object name FGT, password mypassword and enable it, with two factor authentication by fortitoken
+        Add Local User object name MyFGTUserLocal, password mypassword, with two factor authentication by fortitoken
 
         .EXAMPLE
         $data = @{ "sms-phone" = "XXXXXXXXXX" }
-        $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
-        PS C:\>Add-FGTUserLocal -Name FGT -passwd $mypassword -status -two_factor sms -data $data -email_to powerfgt@fgt.power
-        Add Add Local User object name FGT, password mypassword and enable it, with email and two factor via SMS and SMS Phone via -data parameter
+        PS > $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
+        PS > Add-FGTUserLocal -Name MyFGTUserLocal -passwd $mypassword -status -two_factor sms -data $data -email_to powerfgt@fgt.power
+
+        Add Local User object name MyFGTUserLocal, password mypassword, with email and two factor via SMS and SMS Phone via -data parameter
     #>
 
     Param(
@@ -89,7 +91,7 @@ function Add-FGTUserLocal {
         }
 
         if ( Get-FGTUserLocal @invokeParams -name $name -connection $connection) {
-            Throw "Already an Local User object using the same name"
+            Throw "Already a Local User object using the same name"
         }
 
         $uri = "api/v2/cmdb/user/local"
@@ -284,27 +286,28 @@ function Set-FGTUserLocal {
 
         .EXAMPLE
         $MyFGTUserLocal = Get-FGTUserLocal -name MyFGTUserLocal
-        PS C:\>$MyFGTUserLocal | Set-FGTUserLocal -status $false
+        PS > $MyFGTUserLocal | Set-FGTUserLocal -status:$false
 
         Change MyFGTUserLocal to status disable
 
         .EXAMPLE
         $MyFGTUserLocal = Get-FGTUserLocal -name MyFGTUserLocal
         $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
-        PS C:\>$MyFGTUserLocal | Set-FGTUserLocal -passwd $mypassword
+        PS > $MyFGTUserLocal | Set-FGTUserLocal -passwd $mypassword
 
         Change MyFGTUserLocal to value (Password) MyFGTUserLocalPassword
 
         .EXAMPLE
         $MyFGTUserLocal = Get-FGTUserLocal -name MyFGTUserLocal
-        PS C:\>$MyFGTUserLocal | Set-FGTUserLocal -email_to newpowerfgt@fgt.power
+        PS > $MyFGTUserLocal | Set-FGTUserLocal -email_to newpowerfgt@fgt.power
 
         Change MyFGTUserLocal to set email to newpowerfgt@fgt.power
 
         .EXAMPLE
         $data = @{ "sms-phone" = "XXXXXXXXXX" }
-        PS C:\>$MyFGTUserLocal = Get-FGTUserLocal -name MyFGTUserLocal
-        PS C:\>$MyFGTUserLocal | Set-FGTUserLocal -data $data
+        PS > $MyFGTUserLocal = Get-FGTUserLocal -name MyFGTUserLocal
+        PS > $MyFGTUserLocal | Set-FGTUserLocal -data $data
+
         Change MyFGTUserLocal to set SMS Phone
 
     #>

@@ -34,7 +34,17 @@ Describe "Get User Local" {
         $userlocal.count | Should -Not -Be $NULL
     }
 
-    It "Get User Local with -name $pester_userlocal -meta" {
+    It "Get User Local ($pester_userlocal)" {
+        $userlocal = Get-FGTUserLocal -name $pester_userlocal
+        $userlocal.name | Should -Be $pester_userlocal
+    }
+
+    It "Get User Local ($pester_userlocal) and confirm (via Confirm-FGTUserLocal)" {
+        $userlocal = Get-FGTUserLocal -name $pester_userlocal
+        Confirm-FGTUserLocal ($userlocal) | Should -Be $true
+    }
+
+    It "Get User Local with meta" {
         $userlocal = Get-FGTUserLocal -name $pester_userlocal -meta
         $userlocal.q_ref | Should -Not -BeNullOrEmpty
         $userlocal.q_static | Should -Not -BeNullOrEmpty
@@ -48,16 +58,6 @@ Describe "Get User Local" {
             $userlocal.q_no_edit | Should -Not -BeNullOrEmpty
         }
         $userlocal.q_class | Should -Not -BeNullOrEmpty
-    }
-
-    It "Get User Local ($pester_userlocal)" {
-        $userlocal = Get-FGTUserLocal -name $pester_userlocal
-        $userlocal.name | Should -Be $pester_userlocal
-    }
-
-    It "Get User Local ($pester_userlocal) and confirm (via Confirm-FGTUserLocal)" {
-        $userlocal = Get-FGTUserLocal -name $pester_userlocal
-        Confirm-FGTUserLocal ($userlocal) | Should -Be $true
     }
 
     Context "Search" {
@@ -124,7 +124,7 @@ Describe "Add User Local" {
             #Add first userlocal
             Add-FGTUserLocal -Name $pester_userlocal -status -passwd $pester_userlocalpassword
             #Add Second userlocal with same name
-            { Add-FGTUserLocal -Name $pester_userlocal -status -passwd $pester_userlocalpassword } | Should -Throw "Already an Local User object using the same name"
+            { Add-FGTUserLocal -Name $pester_userlocal -status -passwd $pester_userlocalpassword } | Should -Throw "Already a Local User object using the same name"
         }
 
     }
@@ -139,7 +139,16 @@ Describe "Configure User Local" {
             Add-FGTUserLocal -Name $pester_userlocal -passwd $pester_userlocalpassword
         }
 
-        It "Change status User Local" {
+        It "Change status User Local to disable" {
+            Get-FGTUserLocal -name $pester_userlocal | Set-FGTUserLocal -status:$false
+            $userlocal = Get-FGTUserLocal -name $pester_userlocal
+            $userlocal.name | Should -Be $pester_userlocal
+            $userlocal.status | Should -Be "disable"
+            $userlocal.'email-to' | Should -BeNullOrEmpty
+            $userlocal.'two-factor' | Should -Be "disable"
+        }
+
+        It "Change status User Local to enable" {
             Get-FGTUserLocal -name $pester_userlocal | Set-FGTUserLocal -status
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
