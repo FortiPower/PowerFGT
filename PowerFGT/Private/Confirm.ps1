@@ -386,3 +386,48 @@ Function Confirm-FGTVpnIpsecPhase2Interface {
 
     $true
 }
+
+Function Confirm-FGTUserLocal {
+
+    Param (
+        [Parameter (Mandatory = $true)]
+        [object]$argument
+    )
+
+    if ( -not ( $argument | get-member -name name -Membertype Properties)) {
+        throw "Element specified does not contain a name property."
+    }
+    if ( -not ( $argument | get-member -name status -Membertype Properties)) {
+        throw "Element specified does not contain a status property."
+    }
+    if ( -not ( $argument | get-member -name type -Membertype Properties)) {
+        throw "Element specified does not contain a type property."
+    }
+    if ( -not ( $argument | get-member -name passwd -Membertype Properties)) {
+        throw "Element specified does not contain a passwd property."
+    }
+    if ( -not ( $argument | get-member -name ldap-server -Membertype Properties)) {
+        throw "Element specified does not contain a ldap-server property."
+    }
+    if ( -not ( $argument | get-member -name radius-server -Membertype Properties)) {
+        throw "Element specified does not contain a radius-server property."
+    }
+    if ( -not ( $argument | get-member -name tacacs+-server -Membertype Properties)) {
+        throw "Element specified does not contain a tacacs+-server property."
+    }
+    if ( -not ( $argument | get-member -name two-factor -Membertype Properties)) {
+        throw "Element specified does not contain a two-factor property."
+    }
+    if ( -not ( $argument | get-member -name fortitoken -Membertype Properties)) {
+        throw "Element specified does not contain a fortitoken property."
+    }
+    if ( -not ( $argument | get-member -name email-to -Membertype Properties)) {
+        throw "Element specified does not contain an email-to property."
+    }
+    if ( -not ( $argument | get-member -name sms-server -Membertype Properties)) {
+        throw "Element specified does not contain a sms-server property."
+    }
+
+    $true
+
+}
