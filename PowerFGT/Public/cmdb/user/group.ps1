@@ -198,3 +198,58 @@ function Get-FGTUserGroup {
     End {
     }
 }
+
+function Remove-FGTUserGroup {
+
+    <#
+        .SYNOPSIS
+        Remove a FortiGate User
+
+        .DESCRIPTION
+        Remove an User Group object on the FortiGate
+
+        .EXAMPLE
+        $MyFGTUserGroup = Get-FGTUserGroup -name MyFGTUserGroup
+        PS C:\>$MyFGTUserGroup | Remove-FGTUserGroup
+
+        Remove User Group object $MyFGTUserGroup
+
+        .EXAMPLE
+        $MyFGTUserGroup = Get-FGTUserGroup -name MyFGTUserGroup
+        PS C:\>$MyFGTUserGroup | Remove-FGTUserGroup -confirm:$false
+
+        Remove User object $MyFGTUserGroup with no confirmation
+
+    #>
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'high')]
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [ValidateScript( { Confirm-FGTUserGroup $_ })]
+        [psobject]$usergroup,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/user/group"
+
+        if ($PSCmdlet.ShouldProcess($usergroup.name, 'Remove User Group')) {
+            $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -uri_escape $usergroup.name -connection $connection @invokeParams
+        }
+    }
+
+    End {
+    }
+}
