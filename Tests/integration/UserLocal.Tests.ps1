@@ -35,7 +35,7 @@ Describe "Get User Local" {
     }
 
     It "Get User Local with -name $pester_userlocal -meta" {
-        $userlocal = Get-FGTUserLocal -meta
+        $userlocal = Get-FGTUserLocal -meta -name $pester_userlocal
         $userlocal.count | Should -Not -Be $NULL
         $userlocal.q_ref | Should -Not -BeNullOrEmpty
         $userlocal.q_static | Should -Not -BeNullOrEmpty
