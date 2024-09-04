@@ -4,6 +4,89 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+function Add-FGTUserGroup {
+
+    <#
+        .SYNOPSIS
+        Add a FortiGate User Group
+
+        .DESCRIPTION
+        Add a FortiGate User Group
+
+        .EXAMPLE
+        Add-FGTUserGroup -name MyUserGroup -member MyUser1
+
+        Add User Group with member MyUser1
+
+        .EXAMPLE
+        Add-FGTUserGroup -name MyUserGroup -member MyUser1, MyUser2
+
+        Add User Group with members MyUser1 and MyUser2
+
+        .EXAMPLE
+        $data = @{ "authtimeout" = 23 }
+        PS C:\>Add-FGTUserGroup -name MyUserGroup -member MyUser1 -data $data
+
+        Add User Group with member MyUser1and authtimeout (23) via -data parameter
+    #>
+
+    Param(
+        [Parameter (Mandatory = $true)]
+        [string]$name,
+        [Parameter (Mandatory = $true)]
+        [string[]]$member,
+        [Parameter (Mandatory = $false)]
+        [hashtable]$data,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( Get-FGTUserGroup @invokeParams -name $name -connection $connection) {
+            Throw "Already an User Group object using the same name"
+        }
+
+        $uri = "api/v2/cmdb/user/group"
+
+        $usergroup = new-Object -TypeName PSObject
+
+        $usergroup | add-member -name "name" -membertype NoteProperty -Value $name
+
+        #Add member to members Array
+        $members = @( )
+        foreach ( $m in $member ) {
+            $member_name = @{ }
+            $member_name.add( 'name', $m)
+            $members += $member_name
+        }
+        $usergroup | add-member -name "member" -membertype NoteProperty -Value $members
+
+        if ( $PsBoundParameters.ContainsKey('data') ) {
+            $data.GetEnumerator() | ForEach-Object {
+                $usergroup | Add-member -name $_.key -membertype NoteProperty -Value $_.value
+            }
+        }
+
+        Invoke-FGTRestMethod -method "POST" -body $usergroup -uri $uri -connection $connection @invokeParams | Out-Null
+
+        Get-FGTUserGroup -connection $connection @invokeParams -name $name
+    }
+
+    End {
+    }
+}
+
 function Get-FGTUserGroup {
 
     <#
