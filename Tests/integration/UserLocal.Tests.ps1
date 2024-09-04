@@ -34,9 +34,21 @@ Describe "Get User Local" {
         $userlocal.count | Should -Not -Be $NULL
     }
 
-    It "Get ALL User Local with -meta" {
+    It "Get User Local with -name $pester_userlocal -meta" {
         $userlocal = Get-FGTUserLocal -meta
         $userlocal.count | Should -Not -Be $NULL
+        $userlocal.q_ref | Should -Not -BeNullOrEmpty
+        $userlocal.q_static | Should -Not -BeNullOrEmpty
+        $userlocal.q_no_rename | Should -Not -BeNullOrEmpty
+        $userlocal.q_global_entry | Should -Not -BeNullOrEmpty
+        $userlocal.q_type | Should -Not -BeNullOrEmpty
+        $userlocal.q_path | Should -Be "user"
+        $userlocal.q_name | Should -Be "local"
+        $userlocal.q_mkey_type | Should -Be "string"
+        if ($DefaultFGTConnection.version -ge "6.2.0") {
+            $userlocal.q_no_edit | Should -Not -BeNullOrEmpty
+        }
+        $userlocal.q_class | Should -Not -BeNullOrEmpty
     }
 
     It "Get User Local ($pester_userlocal)" {
@@ -98,16 +110,16 @@ Describe "Add User Local" {
             $userlocal.status | Should -Be "enable"
             $userlocal.'email-to' | Should -Be "powerfgt@power.fgt"
             $userlocal.'two-factor' | Should -Be "email"
-            }
+        }
 
-            It "Add User Local $pester_userlocal email with -data" {
+        It "Add User Local $pester_userlocal email with -data" {
             $data = @{ "email-to" = "powerfgt@power.fgt" }
             Add-FGTUserLocal -Name $pester_userlocal -status -data $data -passwd $pester_userlocalpassword
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
             $userlocal.status | Should -Be "enable"
             $userlocal.'email-to' | Should -Be "powerfgt@power.fgt"
-            }
+        }
 
         It "Try to Add User Local $pester_userlocal (but there is already a object with same name)" {
             #Add first userlocal

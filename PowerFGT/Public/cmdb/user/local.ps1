@@ -110,7 +110,8 @@ function Add-FGTUserLocal {
                 $local | add-member -name "type" -membertype NoteProperty -Value "password"
                 $local | add-member -name "passwd" -membertype NoteProperty -Value $password
             }
-<#            "radius" {
+            <#
+            "radius" {
                 $local | add-member -name "type" -membertype NoteProperty -Value "radius"
                 $local | add-member -name "radius-server" -membertype NoteProperty -Value $radius_server
             }
