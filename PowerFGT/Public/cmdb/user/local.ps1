@@ -45,7 +45,7 @@ function Add-FGTUserLocal {
         [string]$name,
         [Parameter (Mandatory = $false)]
         [switch]$status,
-        [Parameter (Mandatory = $false, ParameterSetName = "local")]
+        [Parameter (Mandatory = $false, ParameterSetName = "password")]
         [SecureString]$passwd,
         <#[Parameter (Mandatory = $false, ParameterSetName = "radius")]
         [string]$radius_server,
@@ -108,7 +108,7 @@ function Add-FGTUserLocal {
         }
 
         switch ( $PSCmdlet.ParameterSetName ) {
-            "local" {
+            "password" {
                 $local | add-member -name "type" -membertype NoteProperty -Value "password"
                 $local | add-member -name "passwd" -membertype NoteProperty -Value $password
             }
@@ -321,7 +321,7 @@ function Set-FGTUserLocal {
         [string]$name,
         [Parameter (Mandatory = $false)]
         [switch]$status,
-        [Parameter (Mandatory = $false, ParameterSetName = "local")]
+        [Parameter (Mandatory = $false, ParameterSetName = "password")]
         [SecureString]$passwd,
         <#[Parameter (Mandatory = $false, ParameterSetName = "radius")]
         [string]$radius_server,
@@ -382,7 +382,7 @@ function Set-FGTUserLocal {
         }
 
         switch ( $PSCmdlet.ParameterSetName ) {
-            "local" {
+            "password" {
                 $_local | add-member -name "passwd" -membertype NoteProperty -Value $password
             }
             <#"radius" {
