@@ -175,6 +175,15 @@ Describe "Configure User Local" {
             $userlocal.'two-factor' | Should -Be "email"
         }
 
+        It "Change Password" {
+            Get-FGTUserLocal -name $pester_userlocal | Set-FGTUserLocal -passwd $mywrongpassword
+            $userlocal = Get-FGTUserLocal -name $pester_userlocal
+            $userlocal.name | Should -Be $pester_userlocal
+            $userlocal.status | Should -Be "disable"
+            $userlocal.'email-to' | Should -Be "powerfgt@power.fgt"
+            $userlocal.'two-factor' | Should -Be "email"
+        }
+
         It "Change Name" {
             Get-FGTUserLocal -name $pester_userlocal | Set-FGTUserLocal -name "pester_userlocal_change"
             $userlocal = Get-FGTUserLocal -name "pester_userlocal_change"
