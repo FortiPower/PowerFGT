@@ -257,9 +257,6 @@ Function Confirm-FGTUserLDAP {
     if ( -not ( $argument | get-member -name source-ip -Membertype Properties)) {
         throw "Element specified does not contain a source-ip property."
     }
-    if ( -not ( $argument | get-member -name source-port -Membertype Properties)) {
-        throw "Element specified does not contain a source-port property."
-    }
     if ( -not ( $argument | get-member -name cnid -Membertype Properties)) {
         throw "Element specified does not contain a cnid property."
     }

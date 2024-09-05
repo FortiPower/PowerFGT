@@ -130,25 +130,24 @@ function Add-FGTUserLDAP {
         }
 
         if ( $PsBoundParameters.ContainsKey('type') ) {
-            if ($type -eq "regular") {
-                if ($Null -eq $username -or $Null -eq $password) {
-                    Throw "You need to specify an username and a passord !"
+            if ($type -eq "regular" -and ($Null -eq $username -or $Null -eq $password)) {
+                Throw "You need to specify an username and a passord !"
+            }
+            elseif ($type -eq "regular") {
+                $ldap | add-member -name "type" -membertype NoteProperty -Value $type
+                $ldap | add-member -name "username" -membertype NoteProperty -Value $username
+                if (("Desktop" -eq $PSVersionTable.PsEdition) -or ($null -eq $PSVersionTable.PsEdition)) {
+                    $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($password);
+                    $passwd = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr);
+                    $ldap | add-member -name "password" -membertype NoteProperty -Value $passwd
                 }
                 else {
-                    $ldap | add-member -name "type" -membertype NoteProperty -Value $type
-                    $ldap | add-member -name "username" -membertype NoteProperty -Value $username
-                    if (("Desktop" -eq $PSVersionTable.PsEdition) -or ($null -eq $PSVersionTable.PsEdition)) {
-                        $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($password);
-                        $passwd = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr);
-                        $ldap | add-member -name "password" -membertype NoteProperty -Value $passwd
-                    }
-                    else {
-                        $passwd = ConvertFrom-SecureString -SecureString $password -AsPlainText
-                        $ldap | add-member -name "password" -membertype NoteProperty -Value $passwd
-                    }
+                    $passwd = ConvertFrom-SecureString -SecureString $password -AsPlainText
+                    $ldap | add-member -name "password" -membertype NoteProperty -Value $passwd
                 }
             }
             else {
+                #$type is equal to simple or anonymous (Doesn't need username and password)
                 $ldap | add-member -name "type" -membertype NoteProperty -Value $type
             }
         }
