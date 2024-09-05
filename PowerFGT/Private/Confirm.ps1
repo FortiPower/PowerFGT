@@ -480,3 +480,24 @@ Function Confirm-FGTUserLocal {
     $true
 
 }
+
+Function Confirm-FGTUserGroup {
+
+    Param (
+        [Parameter (Mandatory = $true)]
+        [object]$argument
+    )
+
+    if ( -not ( $argument | get-member -name name -Membertype Properties)) {
+        throw "Element specified does not contain a name property."
+    }
+    if ( -not ( $argument | get-member -name id -Membertype Properties)) {
+        throw "Element specified does not contain an id property."
+    }
+    if ( -not ( $argument | get-member -name group-type -Membertype Properties)) {
+        throw "Element specified does not contain a group-type property."
+    }
+
+    $true
+
+}
