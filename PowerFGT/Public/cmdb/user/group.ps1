@@ -87,6 +87,75 @@ function Add-FGTUserGroup {
     }
 }
 
+function Add-FGTUserGroupMember {
+
+    <#
+        .SYNOPSIS
+        Add a FortiGate User Group Member
+
+        .DESCRIPTION
+        Add a FortiGate User Group Member
+
+        .EXAMPLE
+        $MyFGTUserGroup = Get-FGTUserGroup -name MyFGTUserGroup
+        PS C:\>$MyFGTUserGroup | Add-FGTUserGroupMember -member MyUser1
+
+        Add MyUser1 member to MyFGTUserGroup
+
+        .EXAMPLE
+        $MyFGTUserGroup = Get-FGTUserGroup -name MyFGTUserGroup
+        PS C:\>$MyFGTUserGroup | Add-FGTUserGroupMember -member MyUser1, MyUser2
+
+        Add MyUser1 and MyUser2 member to MyFGTUserGroup
+
+    #>
+
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [ValidateScript( { Confirm-FGTUserGroup $_ })]
+        [psobject]$usergroup,
+        [Parameter(Mandatory = $false)]
+        [string[]]$member,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/user/group"
+
+        $_usergroup = new-Object -TypeName PSObject
+
+        if ( $PsBoundParameters.ContainsKey('member') ) {
+            #Add member to existing usergroup member
+            $members = $usergroup.member
+            foreach ( $m in $member ) {
+                $member_name = @{ }
+                $member_name.add( 'name', $m)
+                $members += $member_name
+            }
+            $_usergroup | add-member -name "member" -membertype NoteProperty -Value $members
+        }
+
+        Invoke-FGTRestMethod -method "PUT" -body $_usergroup -uri $uri -uri_escape $usergroup.name -connection $connection @invokeParams | out-Null
+
+        Get-FGTUserGroup -connection $connection @invokeParams -name $usergroup.name
+    }
+
+    End {
+    }
+}
+
 function Get-FGTUserGroup {
 
     <#
