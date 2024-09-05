@@ -233,6 +233,58 @@ Function Confirm-FGTFirewallProxyPolicy {
 
 }
 
+Function Confirm-FGTUserLDAP {
+
+    Param (
+        [Parameter (Mandatory = $true)]
+        [object]$argument
+    )
+
+    #Check if it looks like a LDAP Server element
+
+    if ( -not ( $argument | get-member -name name -Membertype Properties)) {
+        throw "Element specified does not contain a name property."
+    }
+    if ( -not ( $argument | get-member -name secondary-server -Membertype Properties)) {
+        throw "Element specified does not contain a secondary-server property."
+    }
+    if ( -not ( $argument | get-member -name tertiary-server -Membertype Properties)) {
+        throw "Element specified does not contain a tertiary-server property."
+    }
+    if ( -not ( $argument | get-member -name server-identity-check -Membertype Properties)) {
+        throw "Element specified does not contain a server-identity-check property."
+    }
+    if ( -not ( $argument | get-member -name source-ip -Membertype Properties)) {
+        throw "Element specified does not contain a source-ip property."
+    }
+    if ( -not ( $argument | get-member -name source-port -Membertype Properties)) {
+        throw "Element specified does not contain a source-port property."
+    }
+    if ( -not ( $argument | get-member -name cnid -Membertype Properties)) {
+        throw "Element specified does not contain a cnid property."
+    }
+    if ( -not ( $argument | get-member -name dn -Membertype Properties)) {
+        throw "Element specified does not contain a dn property."
+    }
+    if ( -not ( $argument | get-member -name type -Membertype Properties)) {
+        throw "Element specified does not contain a type property."
+    }
+    if ( -not ( $argument | get-member -name username -Membertype Properties)) {
+        throw "Element specified does not contain a username property."
+    }
+    if ( -not ( $argument | get-member -name password -Membertype Properties)) {
+        throw "Element specified does not contain a password property."
+    }
+    if ( -not ( $argument | get-member -name secure -Membertype Properties)) {
+        throw "Element specified does not contain a secure property."
+    }
+    if ( -not ( $argument | get-member -name port -Membertype Properties)) {
+        throw "Element specified does not contain a port property."
+    }
+
+    $true
+}
+
 Function Confirm-FGTVip {
 
     Param (
