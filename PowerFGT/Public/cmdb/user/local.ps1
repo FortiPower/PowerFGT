@@ -295,7 +295,7 @@ function Set-FGTUserLocal {
         $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
         PS > $MyFGTUserLocal | Set-FGTUserLocal -passwd $mypassword
 
-        Change MyFGTUserLocal to value (Password) MyFGTUserLocalPassword
+        Change Password for MyFGTUserLocal local user
 
         .EXAMPLE
         $MyFGTUserLocal = Get-FGTUserLocal -name MyFGTUserLocal
