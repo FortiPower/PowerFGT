@@ -272,7 +272,7 @@ function Set-FGTUserGroup {
 
     <#
         .SYNOPSIS
-        Configure a FortiGate Address Group
+        Configure a FortiGate User Group
 
         .DESCRIPTION
         Change a FortiGate User Group (name, member...)
