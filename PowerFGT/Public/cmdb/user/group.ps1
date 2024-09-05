@@ -199,6 +199,106 @@ function Get-FGTUserGroup {
     }
 }
 
+function Set-FGTUserGroup {
+
+    <#
+        .SYNOPSIS
+        Configure a FortiGate Address Group
+
+        .DESCRIPTION
+        Change a FortiGate User Group (name, member...)
+
+        .EXAMPLE
+        $MyFGTUserGroup = Get-FGTUserGroup -name MyFGTUserGroup
+        PS C:\>$MyFGTUserGroup | Set-FGTUserGroup -member MyUser1
+
+        Change MyFGTUserGroup member to MyUser1
+
+        .EXAMPLE
+        $MyFGTUserGroup = Get-FGTUserGroup -name MyFGTUserGroup
+        PS C:\>$MyFGTUserGroup | Set-FGTUserGroup -member MyUser1, MyUser2
+
+        Change MyFGTUserGroup member to MyUser1 and MyUser2
+
+        .EXAMPLE
+        $MyFGTUserGroup = Get-FGTUserGroup -name MyFGTUserGroup
+        PS C:\>$MyFGTUserGroup | Set-FGTUserGroup -name MyFGTUserGroup2
+
+        Rename MyFGTUserGroup member to MyFGTUserGroup2
+
+        .EXAMPLE
+        $data = @{ "authtimeout" = 23 }
+        PS C:\>$MyFGTUserGroup = Get-FGTUserGroup -name MyFGTUserGroup
+        PS C:\>$MyFGTUserGroup | Set-FGTUserGroup -data $data
+
+        Change MyFGTUserGroup to set authtimeout (23) using -data
+    #>
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [ValidateScript( { Confirm-FGTUserGroup $_ })]
+        [psobject]$usergroup,
+        [Parameter (Mandatory = $false)]
+        [string]$name,
+        [Parameter (Mandatory = $false)]
+        [string[]]$member,
+        [Parameter (Mandatory = $false)]
+        [hashtable]$data,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/user/group"
+        $old_name = $usergroup.name
+        $_usergroup = new-Object -TypeName PSObject
+
+        if ( $PsBoundParameters.ContainsKey('name') ) {
+            #TODO check if there is no already a object with this name ?
+            $_usergroup | add-member -name "name" -membertype NoteProperty -Value $name
+            $usergroup.name = $name
+        }
+
+        if ( $PsBoundParameters.ContainsKey('member') ) {
+            #Add member to Member Array
+            $members = @( )
+            foreach ( $m in $member ) {
+                $member_name = @{ }
+                $member_name.add( 'name', $m)
+                $members += $member_name
+            }
+            $_usergroup | add-member -name "member" -membertype NoteProperty -Value $members
+        }
+
+        if ( $PsBoundParameters.ContainsKey('data') ) {
+            $data.GetEnumerator() | ForEach-Object {
+                $_usergroup | Add-member -name $_.key -membertype NoteProperty -Value $_.value
+            }
+        }
+
+        if ($PSCmdlet.ShouldProcess($usergroup.name, 'Configure User Group')) {
+            Invoke-FGTRestMethod -method "PUT" -body $_usergroup -uri $uri -uri_escape $old_name -connection $connection @invokeParams | out-Null
+
+            Get-FGTUserGroup -connection $connection @invokeParams -name $usergroup.name
+        }
+    }
+
+    End {
+    }
+}
+
 function Remove-FGTUserGroup {
 
     <#
