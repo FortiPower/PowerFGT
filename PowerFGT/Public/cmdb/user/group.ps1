@@ -543,10 +543,10 @@ function Remove-FGTUserGroupMember {
                 $members = $members | Where-Object { $_.name -ne $remove_member }
             }
 
-            #check if there is always a member... (it is not possible don't have member on User Group)
-            #if ( $members.count -eq 0 ) {
-            #    Throw "You can't remove all members. Use Remove-FGTUserGroup to remove User Group"
-            #}
+            #check if there is always a member... (and force array)
+            if ( $members.count -eq 0 ) {
+                $members = @()
+            }
 
             #if there is only One member force to be an array
             if ( $members.count -eq 1 ) {
