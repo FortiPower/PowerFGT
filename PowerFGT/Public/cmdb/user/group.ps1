@@ -156,6 +156,61 @@ function Add-FGTUserGroupMember {
     }
 }
 
+function Copy-FGTUserGroup {
+
+    <#
+        .SYNOPSIS
+        Copy/Clone a FortiGate User Group
+
+        .DESCRIPTION
+        Copy/Clone a FortiGate User Group (name, member...)
+
+        .EXAMPLE
+        $MyFGTUserGroup = Get-FGTUserGroup -name MyFGTUserGroup
+        PS C:\>$MyFGTUserGroup | Copy-FGTUserGroup -name MyFGTUserGroup_copy
+
+        Copy / Clone MyFGTUserGroup and name MyFGTUser_copy
+
+    #>
+
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [ValidateScript( { Confirm-FGTUserGroup $_ })]
+        [psobject]$usergroup,
+        [Parameter (Mandatory = $true)]
+        [string]$name,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( Get-FGTUserGroup @invokeParams -name $name -connection $connection) {
+            Throw "Already an User Group object using the same name"
+        }
+
+        $uri = "api/v2/cmdb/user/group"
+        $extra = "action=clone&nkey=$($name)"
+
+        Invoke-FGTRestMethod -method "POST" -uri $uri -uri_escape $usergroup.name -extra $extra -connection $connection @invokeParams | Out-Null
+
+        Get-FGTUserGroup -connection $connection @invokeParams -name $name
+    }
+
+    End {
+    }
+}
+
 function Get-FGTUserGroup {
 
     <#
