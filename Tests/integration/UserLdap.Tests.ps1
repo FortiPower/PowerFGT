@@ -25,12 +25,12 @@ Describe "Get User Ldap" {
 
     It "Get ALL User Ldap" {
         $userldap = Get-FGTUserLDAP
-        $userldap.count | Should -Not -Be $NULL
+        @($userldap).count | Should -Not -Be $NULL
     }
 
     It "Get ALL User Ldap with -skip" {
         $userldap = Get-FGTUserLDAP -skip
-        $userldap.count | Should -Not -Be $NULL
+        @($userldap).count | Should -Not -Be $NULL
     }
 
     It "Get User Ldap with -name $pester_userldap -meta" {
