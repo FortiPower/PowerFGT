@@ -376,6 +376,15 @@ Describe "Configure User Ldap" {
             $userldap.port | Should -Be "389"
         }
 
+        It "Change secure connection with -data" {
+            $data = @{ "secure" = "ldaps" }
+            Get-FGTUserLDAP -name $pester_userldap | Set-FGTuserldap -data $data
+            $userldap = Get-FGTUserLDAP -name $pester_userldap
+            $userldap.name | Should -Be $pester_userldap
+            $userldap.secure | Should -Be "ldaps"
+            $userldap.port | Should -Be "636"
+        }
+
         AfterAll {
             Get-FGTUserLDAP -name $pester_userldap | Remove-FGTUserLDAP -confirm:$false
         }
