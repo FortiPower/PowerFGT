@@ -367,6 +367,9 @@ function Set-FGTUserLocal {
         }
 
         if ($PsBoundParameters.ContainsKey('passwd')) {
+            if ($connection.version -ge "7.4.0") {
+                Throw "Can't change passwd with FortiOS > 7.4.0 (Need to use Set-FGTMonitorUserLocalChangePassword)"
+            }
             $password = ConvertFrom-SecureString -SecureString $passwd -AsPlainText
         }
 
