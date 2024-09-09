@@ -175,7 +175,7 @@ Describe "Configure User Local" {
             $userlocal.'two-factor' | Should -Be "email"
         }
 
-        It "Change Password" {
+        It "Change Password (Before 7.4.0)" -skip:($fgt_version -ge "7.4.0") {
             Get-FGTUserLocal -name $pester_userlocal | Set-FGTUserLocal -passwd $mywrongpassword
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
