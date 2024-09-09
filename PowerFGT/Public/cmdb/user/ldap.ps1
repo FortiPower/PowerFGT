@@ -286,6 +286,200 @@ function Get-FGTUserLDAP {
     }
 }
 
+function Set-FGTUserLDAP {
+
+    <#
+        .SYNOPSIS
+        Change a FortiGate LDAP Server
+
+        .DESCRIPTION
+        Change a FortiGate LDAP Server
+
+        .EXAMPLE
+        $MyFGTUserLDAP = Get-FGTUserLDAP -name MyFGTUserLDAP
+        PS C:\>$MyFGTUserLDAP | Set-FGTUserLDAP -server mynewldapserver
+
+        Change server of MyFGTUserLDAP to mynewldapserver
+
+        .EXAMPLE
+        $MyFGTUserLDAP = Get-FGTUserLDAP -name MyFGTUserLDAP
+        $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
+        PS C:\>$MyFGTUserLDAP | Set-FGTUserLDAP -username myusername -password $mypassword -type regular
+
+        Change type to regular and change username and password
+
+        .EXAMPLE
+        $MyFGTUserLDAP = Get-FGTUserLDAP -name MyFGTUserLDAP
+        PS C:\>$MyFGTUserLDAP | Set-FGTUserLDAP -secure ldaps
+
+        Change MyFGTUserLDAP to user secure connection (LDAPS and port 636)
+
+        .EXAMPLE
+        $data = @{ "cnid" = "UserPrincipalName" }
+        PS C:\>$MyFGTUserLDAP = Get-FGTUserLDAP -name MyFGTUserLDAP
+        PS C:\>$MyFGTUserLDAP | Set-FGTUserLDAP -data $data
+        Change MyFGTUserLDAP to user UPN as CNID
+
+    #>
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium', DefaultParameterSetName = 'default')]
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [ValidateScript( { Confirm-FGTUserLDAP $_ })]
+        [psobject]$userldap,
+        [Parameter (Mandatory = $false)]
+        [ValidateLength(1, 35)]
+        [string]$name,
+        [Parameter (Mandatory = $false)]
+        [ValidateLength(1, 63)]
+        [string]$server,
+        [Parameter (Mandatory = $false)]
+        [ValidateLength(1, 63)]
+        [string]$secondary_server,
+        [Parameter (Mandatory = $false)]
+        [ValidateLength(1, 63)]
+        [string]$tertiary_server,
+        [Parameter (Mandatory = $false)]
+        [ValidateLength(0, 20)]
+        [string]$cnid,
+        [Parameter (Mandatory = $false)]
+        [ValidateLength(0, 511)]
+        [string]$dn,
+        [Parameter (Mandatory = $false)]
+        [ValidateSet("simple", "regular", "anonymous")]
+        [string]$type,
+        [Parameter (Mandatory = $false)]
+        [ValidateLength(0, 511)]
+        [string]$username,
+        [Parameter (Mandatory = $false)]
+        [SecureString]$password,
+        [Parameter (Mandatory = $false)]
+        [ValidateSet("disable", "starttls", "ldaps")]
+        [string]$secure,
+        [Parameter (Mandatory = $false)]
+        [hashtable]$data,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/user/ldap/$($userldap.name)"
+
+        $_ldap = New-Object -TypeName PSObject
+
+        if ( $PsBoundParameters.ContainsKey('name') ) {
+            #TODO check if there is no already an object with this name ?
+            $_ldap | add-member -name "name" -membertype NoteProperty -Value $name
+            $userldap.name = $name
+        }
+
+        if ( $PsBoundParameters.ContainsKey('server') ) {
+            $_ldap | add-member -name "server" -membertype NoteProperty -Value $server
+        }
+
+        if ( $PsBoundParameters.ContainsKey('secondary_server') ) {
+            $_ldap | add-member -name "secondary-server" -membertype NoteProperty -Value $secondary_server
+        }
+
+        if ( $PsBoundParameters.ContainsKey('tertiary_server') ) {
+            $_ldap | add-member -name "tertiary-server" -membertype NoteProperty -Value $tertiary_server
+        }
+
+        if ( $PsBoundParameters.ContainsKey('cnid') ) {
+            $_ldap | add-member -name "cnid" -membertype NoteProperty -Value $cnid
+        }
+
+        if ( $PsBoundParameters.ContainsKey('dn') ) {
+            $_ldap | add-member -name "dn" -membertype NoteProperty -Value $dn
+        }
+
+        if ( $PsBoundParameters.ContainsKey('secure') ) {
+            $_ldap | add-member -name "secure" -membertype NoteProperty -Value $secure
+        }
+
+        if ( ($PsBoundParameters.ContainsKey('username') -or $PsBoundParameters.ContainsKey('password')) -and -Not $PsBoundParameters.ContainsKey('type') ) {
+            if ($userldap.type -eq "regular" -and $PsBoundParameters.ContainsKey('username') -and -Not $PsBoundParameters.ContainsKey('password')) {
+                $_ldap | add-member -name "username" -membertype NoteProperty -Value $username
+            }
+            elseif ($userldap.type -eq "regular" -and $PsBoundParameters.ContainsKey('password') -and -Not $PsBoundParameters.ContainsKey('username')) {
+                if (("Desktop" -eq $PSVersionTable.PsEdition) -or ($null -eq $PSVersionTable.PsEdition)) {
+                    $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($password);
+                    $passwd = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr);
+                    $_ldap | add-member -name "password" -membertype NoteProperty -Value $passwd
+                }
+                else {
+                    $passwd = ConvertFrom-SecureString -SecureString $password -AsPlainText
+                    $_ldap | add-member -name "password" -membertype NoteProperty -Value $passwd
+                }
+            }
+            elseif ($userldap.type -eq "regular" -and $PsBoundParameters.ContainsKey('password') -and $PsBoundParameters.ContainsKey('username')) {
+                $_ldap | add-member -name "username" -membertype NoteProperty -Value $username
+                if (("Desktop" -eq $PSVersionTable.PsEdition) -or ($null -eq $PSVersionTable.PsEdition)) {
+                    $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($password);
+                    $passwd = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr);
+                    $_ldap | add-member -name "password" -membertype NoteProperty -Value $passwd
+                }
+                else {
+                    $passwd = ConvertFrom-SecureString -SecureString $password -AsPlainText
+                    $_ldap | add-member -name "password" -membertype NoteProperty -Value $passwd
+                }
+            }
+            else {
+                Throw "The type need to be regular to specify username or password"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('type') ) {
+            if ($type -eq "regular" -and (-Not $PsBoundParameters.ContainsKey('username') -or -Not $PsBoundParameters.ContainsKey('password'))) {
+                Throw "You need to specify an username and a password !"
+            }
+            elseif ($type -eq "regular") {
+                $_ldap | add-member -name "type" -membertype NoteProperty -Value $type
+                $_ldap | add-member -name "username" -membertype NoteProperty -Value $username
+                if (("Desktop" -eq $PSVersionTable.PsEdition) -or ($null -eq $PSVersionTable.PsEdition)) {
+                    $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($password);
+                    $passwd = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr);
+                    $_ldap | add-member -name "password" -membertype NoteProperty -Value $passwd
+                }
+                else {
+                    $passwd = ConvertFrom-SecureString -SecureString $password -AsPlainText
+                    $_ldap | add-member -name "password" -membertype NoteProperty -Value $passwd
+                }
+            }
+            else {
+                #$type is equal to simple or anonymous (Doesn't need username and password)
+                $_ldap | add-member -name "type" -membertype NoteProperty -Value $type
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('data') ) {
+            $data.GetEnumerator() | ForEach-Object {
+                $_ldap | Add-member -name $_.key -membertype NoteProperty -Value $_.value
+            }
+        }
+
+        if ($PSCmdlet.ShouldProcess($userldap.name, 'Configure User Local')) {
+            Invoke-FGTRestMethod -method "PUT" -body $_ldap -uri $uri -connection $connection @invokeParams | out-Null
+
+            Get-FGTUserLDAP -connection $connection @invokeParams -name $userldap.name
+        }
+    }
+
+    End {
+    }
+}
+
 function Remove-FGTUserLDAP {
 
     <#

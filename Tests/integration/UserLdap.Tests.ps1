@@ -196,67 +196,193 @@ Describe "Add User Ldap" {
 
 }
 
-<#Describe "Configure User Ldap" {
+Describe "Configure User Ldap" {
 
-    Context "Change name, email, MFA, etc" {
+    Context "Change server, CNID, DN, etc..." {
 
         BeforeAll {
-            Add-FGTUserLDAP -Name $pester_userldap -passwd $pester_userldappassword
+            Add-FGTUserLDAP -Name $pester_userldap -server $pester_userldapserver1 -dn "dc=fgt,dc=power,dc=powerfgt"
         }
 
-        It "Change status User Ldap" {
-            Get-FGTUserLDAP -name $pester_userldap | Set-FGTuserldap -status
+        It "Change name of LDAP Server" {
+            Get-FGTUserLDAP -name $pester_userldap | Set-FGTuserldap -name "pester_ldapserver_renamed"
+            $userldap = Get-FGTUserLDAP -name "pester_ldapserver_renamed"
+            $userldap.name | Should -Be "pester_ldapserver_renamed"
+            $userldap.server | Should -Be $pester_userldapserver1
+        }
+
+        It "Change name of LDAP Server back to initial value" {
+            Get-FGTUserLDAP -name "pester_ldapserver_renamed" | Set-FGTuserldap -name $pester_userldap
             $userldap = Get-FGTUserLDAP -name $pester_userldap
             $userldap.name | Should -Be $pester_userldap
-            $userldap.status | Should -Be "enable"
-            $userldap.'email-to' | Should -BeNullOrEmpty
-            $userldap.'two-factor' | Should -Be "disable"
         }
 
-        It "Change email to" {
-            Get-FGTUserLDAP -name $pester_userldap | Set-FGTuserldap -email_to "powerfgt@power.fgt"
+        It "Change server" {
+            Get-FGTUserLDAP -name $pester_userldap | Set-FGTuserldap -server $pester_userldapserver2
             $userldap = Get-FGTUserLDAP -name $pester_userldap
             $userldap.name | Should -Be $pester_userldap
-            $userldap.status | Should -Be "disable"
-            $userldap.'email-to' | Should -Be "powerfgt@power.fgt"
-            $userldap.'two-factor' | Should -Be "disable"
+            $userldap.server | Should -Be $pester_userldapserver2
         }
 
-        It "Enable MFA by email" {
-            Get-FGTUserLDAP -name $pester_userldap | Set-FGTuserldap -two_factor email
+        It "Change secondary-server" {
+            Get-FGTUserLDAP -name $pester_userldap | Set-FGTuserldap -secondary_server $pester_userldapserver3
             $userldap = Get-FGTUserLDAP -name $pester_userldap
             $userldap.name | Should -Be $pester_userldap
-            $userldap.status | Should -Be "disable"
-            $userldap.'email-to' | Should -Be "powerfgt@power.fgt"
-            $userldap.'two-factor' | Should -Be "email"
+            $userldap.server | Should -Be $pester_userldapserver2
+            $userldap."secondary-server" | Should -Be $pester_userldapserver3
         }
 
-        It "Change Name" {
-            Get-FGTUserLDAP -name $pester_userldap | Set-FGTuserldap -name "pester_userldap_change"
-            $userldap = Get-FGTUserLDAP -name "pester_userldap_change"
-            $userldap.name | Should -Be "pester_userldap_change"
-            $userldap.status | Should -Be "disable"
-            $userldap.'email-to' | Should -Be "powerfgt@power.fgt"
-            $userldap.'two-factor' | Should -Be "email"
+        It "Change tertiary-server" {
+            Get-FGTUserLDAP -name $pester_userldap | Set-FGTuserldap -tertiary_server $pester_userldapserver1
+            $userldap = Get-FGTUserLDAP -name $pester_userldap
+            $userldap.name | Should -Be $pester_userldap
+            $userldap.server | Should -Be $pester_userldapserver2
+            $userldap."secondary-server" | Should -Be $pester_userldapserver3
+            $userldap."tertiary-server" | Should -Be $pester_userldapserver1
         }
 
-        It "Change email to with -data" {
-            $data = @{ "email-to" = "powerfgt@power.fgt" }
-            Get-FGTUserLDAP -name "pester_userldap_change" | Set-FGTuserldap -data $data
-            $userldap = Get-FGTUserLDAP -name "pester_userldap_change"
-            $userldap.name | Should -Be "pester_userldap_change"
-            $userldap.status | Should -Be "disable"
-            $userldap.'email-to' | Should -Be "powerfgt@power.fgt"
-            $userldap.'two-factor' | Should -Be "email"
+        It "Change CNID" {
+            Get-FGTUserLDAP -name $pester_userldap | Set-FGTuserldap -cnid sAMAccountName
+            $userldap = Get-FGTUserLDAP -name $pester_userldap
+            $userldap.name | Should -Be $pester_userldap
+            $userldap.cnid | Should -Be "sAMAccountName"
+        }
+
+        It "Change DN" {
+            Get-FGTUserLDAP -name $pester_userldap | Set-FGTuserldap -dn "dc=newfgt,dc=power,dc=powerfgt"
+            $userldap = Get-FGTUserLDAP -name $pester_userldap
+            $userldap.name | Should -Be $pester_userldap
+            $userldap.dn | Should -Be "dc=newfgt,dc=power,dc=powerfgt"
         }
 
         AfterAll {
-            Get-FGTUserLDAP -name "pester_userldap_change" | Remove-FGTUserLDAP -confirm:$false
+            Get-FGTUserLDAP -name $pester_userldap | Remove-FGTUserLDAP -confirm:$false
+        }
+
+    }
+
+    Context "Change type" {
+
+        BeforeAll {
+            Add-FGTUserLDAP -Name $pester_userldap -server $pester_userldapserver1 -dn "dc=fgt,dc=power,dc=powerfgt"
+        }
+
+        It "Change type (Regular)" {
+            Get-FGTUserLDAP -name $pester_userldap | Set-FGTuserldap -type regular -username powerfgt -password $pester_userldappassword
+            $userldap = Get-FGTUserLDAP -name $pester_userldap
+            $userldap.name | Should -Be $pester_userldap
+            $userldap.type | Should -Be "regular"
+            $userldap.username | Should -Be "powerfgt"
+            $userldap.password | Should -Not -Be $Null
+        }
+
+        It "Change only username when type is already regular" {
+            Get-FGTUserLDAP -name $pester_userldap | Set-FGTuserldap -username powerfgtchanged
+            $userldap = Get-FGTUserLDAP -name $pester_userldap
+            $userldap.name | Should -Be $pester_userldap
+            $userldap.type | Should -Be "regular"
+            $userldap.username | Should -Be "powerfgtchanged"
+        }
+
+        It "Change only password when type is already regular" {
+            {
+                Get-FGTUserLDAP -name $pester_userldap | Set-FGTuserldap -password $pester_userldappasswordchanged
+            } | Should -Not -Throw
+        }
+
+        It "Change type (Anonymous)" {
+            Get-FGTUserLDAP -name $pester_userldap | Set-FGTuserldap -type anonymous
+            $userldap = Get-FGTUserLDAP -name $pester_userldap
+            $userldap.name | Should -Be $pester_userldap
+            $userldap.type | Should -Be "anonymous"
+        }
+
+        It "Change type (Simple)" {
+            Get-FGTUserLDAP -name $pester_userldap | Set-FGTuserldap -type simple
+            $userldap = Get-FGTUserLDAP -name $pester_userldap
+            $userldap.name | Should -Be $pester_userldap
+            $userldap.type | Should -Be "simple"
+        }
+
+        It "Change only username when type is not regular" {
+            {
+                Get-FGTUserLDAP -name $pester_userldap | Set-FGTuserldap -username powerfgt
+            } | Should -Throw "The type need to be regular to specify username or password"
+        }
+
+        It "Change only password when type is not regular" {
+            {
+                Get-FGTUserLDAP -name $pester_userldap | Set-FGTuserldap -password $pester_userldappassword
+            } | Should -Throw "The type need to be regular to specify username or password"
+        }
+
+        It "Change username and password when type is not regular" {
+            {
+                Get-FGTUserLDAP -name $pester_userldap | Set-FGTuserldap -username powerfgt -password $pester_userldappassword
+            } | Should -Throw "The type need to be regular to specify username or password"
+        }
+
+        It "Change type to regular without username" {
+            {
+                Get-FGTUserLDAP -name $pester_userldap | Set-FGTuserldap -type regular -password $pester_userldappassword
+            } | Should -Throw "You need to specify an username and a password !"
+        }
+
+        It "Change type to regular without password" {
+            {
+                Get-FGTUserLDAP -name $pester_userldap | Set-FGTuserldap -type regular -username powerfgt
+            } | Should -Throw "You need to specify an username and a password !"
+        }
+
+        It "Change type to regular without username and password" {
+            {
+                Get-FGTUserLDAP -name $pester_userldap | Set-FGTuserldap -type regular
+            } | Should -Throw "You need to specify an username and a password !"
+        }
+
+        AfterAll {
+            Get-FGTUserLDAP -name $pester_userldap | Remove-FGTUserLDAP -confirm:$false
+        }
+
+    }
+
+    Context "Change secure connection" {
+
+        BeforeAll {
+            Add-FGTUserLDAP -Name $pester_userldap -server $pester_userldapserver1 -dn "dc=fgt,dc=power,dc=powerfgt"
+        }
+
+        It "Change secure connection to ldaps" {
+            Get-FGTUserLDAP -name $pester_userldap | Set-FGTuserldap -secure ldaps
+            $userldap = Get-FGTUserLDAP -name $pester_userldap
+            $userldap.name | Should -Be $pester_userldap
+            $userldap.secure | Should -Be "ldaps"
+            $userldap.port | Should -Be "636"
+        }
+
+        It "Change secure connection to starttls" {
+            Get-FGTUserLDAP -name $pester_userldap | Set-FGTuserldap -secure starttls
+            $userldap = Get-FGTUserLDAP -name $pester_userldap
+            $userldap.name | Should -Be $pester_userldap
+            $userldap.secure | Should -Be "starttls"
+            $userldap.port | Should -Be "389"
+        }
+
+        It "Change secure connection to disable" {
+            Get-FGTUserLDAP -name $pester_userldap | Set-FGTuserldap -secure disable
+            $userldap = Get-FGTUserLDAP -name $pester_userldap
+            $userldap.name | Should -Be $pester_userldap
+            $userldap.secure | Should -Be "disable"
+            $userldap.port | Should -Be "389"
+        }
+
+        AfterAll {
+            Get-FGTUserLDAP -name $pester_userldap | Remove-FGTUserLDAP -confirm:$false
         }
 
     }
 }
-#>
+
 Describe "Remove User Ldap" {
 
     Context "local" {

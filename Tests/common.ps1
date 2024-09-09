@@ -51,8 +51,9 @@ $script:pester_userldapserver1 = "pesterldapserver1.powerfgt"
 $script:pester_userldapserver2 = "pesterldapserver2.powerfgt"
 $script:pester_userldapserver3 = "pesterldapserver3.powerfgt"
 $script:pester_userldappassword = ConvertTo-SecureString "pester_userldappassword" -AsPlainText -Force
+$script:pester_userldappasswordchanged = ConvertTo-SecureString "pester_userldappasswordchanged" -AsPlainText -Force
 
-. ../credential.ps1
+#. ../credential.ps1
 #TODO: Add check if no ipaddress/login/password info...
 
 $script:mysecpassword = ConvertTo-SecureString $password -AsPlainText -Force
