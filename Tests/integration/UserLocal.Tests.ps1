@@ -184,6 +184,10 @@ Describe "Configure User Local" {
             $userlocal.'two-factor' | Should -Be "email"
         }
 
+        It "Try to Change Password (With FortiOS > 7.4.0)" {
+            { Get-FGTUserLocal -name $pester_userlocal | Set-FGTUserLocal -passwd $mywrongpassword } | Should -Throw "Can't change passwd with FortiOS > 7.4.0 (Need to use Set-FGTMonitorUserLocalChangePassword)"
+        }
+
         It "Change Name" {
             Get-FGTUserLocal -name $pester_userlocal | Set-FGTUserLocal -name "pester_userlocal_change"
             $userlocal = Get-FGTUserLocal -name "pester_userlocal_change"
