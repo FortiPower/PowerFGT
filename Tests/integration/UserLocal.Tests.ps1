@@ -175,7 +175,7 @@ Describe "Configure User Local" {
             $userlocal.'two-factor' | Should -Be "email"
         }
 
-        It "Change Password (Before 7.4.0)" -skip:($fgt_version -ge "7.4.0") {
+        It "Change Password (With FortiOS > 7.4.0)" -skip:($fgt_version -ge "7.4.0") {
             Get-FGTUserLocal -name $pester_userlocal | Set-FGTUserLocal -passwd $mywrongpassword
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
@@ -184,8 +184,18 @@ Describe "Configure User Local" {
             $userlocal.'two-factor' | Should -Be "email"
         }
 
-        It "Try to Change Password (With FortiOS > 7.4.0)" {
+        It "Try to Change Password (With FortiOS >= 7.4.0)" -skip:($fgt_version -lt "7.4.0") {
             { Get-FGTUserLocal -name $pester_userlocal | Set-FGTUserLocal -passwd $mywrongpassword } | Should -Throw "Can't change passwd with FortiOS > 7.4.0 (Need to use Set-FGTMonitorUserLocalChangePassword)"
+        }
+
+        It "Change Password (With FortiOS >= 7.4.0) with Set-FGTMonitorUserLocalChangePassword" -skip:($fgt_version -lt "7.4.0") {
+            Get-FGTUserLocal -name $pester_userlocal | Set-FGTMonitorUserLocalChangePassword -new_password $mywrongpassword
+            $userlocal = Get-FGTUserLocal -name $pester_userlocal
+            $userlocal.name | Should -Be $pester_userlocal
+        }
+
+        It "Try to Change Password (with FortiOS < 7.4.0) with Set-FGTMonitorUserLocalChangePassword" -skip:($fgt_version -ge "7.4.0") {
+            { Get-FGTUserLocal -name $pester_userlocal | Set-FGTMonitorUserLocalChangePassword -new_password $mywrongpassword } | Should -Throw "You need to use Set-FGTLocalUser -passwd..."
         }
 
         It "Change Name" {
