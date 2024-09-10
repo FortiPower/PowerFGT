@@ -308,3 +308,57 @@ function Get-FGTUserRADIUS {
     End {
     }
 }
+
+function Remove-FGTUserRADIUS {
+
+    <#
+        .SYNOPSIS
+        Remove a FortiGate RADIUS Server
+
+        .DESCRIPTION
+        Remove a RADIUS Server on the FortiGate
+
+        .EXAMPLE
+        $MyFGTUserRADIUS = Get-FGTUserRADIUS -name PowerFGT
+        PS C:\>$MyFGTUserRADIUS | Remove-FGTUserRADIUS
+
+        Remove user object $MyFGTUserRADIUS
+
+        .EXAMPLE
+        $MyFGTUserRADIUS = Get-FGTUserRADIUS -name MyFGTUserRADIUS
+        PS C:\>$MyFGTUserRADIUS | Remove-FGTUserRADIUS -confirm:$false
+
+        Remove UserRADIUS object $MyFGTUserRADIUS with no confirmation
+    #>
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'high')]
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [ValidateScript( { Confirm-FGTUserRADIUS $_ })]
+        [psobject]$userradius,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/user/radius/$($userradius.name)"
+
+        if ($PSCmdlet.ShouldProcess($userradius.name, 'Remove User Radius')) {
+            $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -connection $connection @invokeParams
+        }
+    }
+
+    End {
+    }
+}
