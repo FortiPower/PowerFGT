@@ -370,7 +370,13 @@ function Set-FGTUserLocal {
             if ($connection.version -ge "7.4.0") {
                 Throw "Can't change passwd with FortiOS > 7.4.0 (Need to use Set-FGTMonitorUserLocalChangePassword)"
             }
-            $password = ConvertFrom-SecureString -SecureString $passwd -AsPlainText
+            if (("Desktop" -eq $PSVersionTable.PsEdition) -or ($null -eq $PSVersionTable.PsEdition)) {
+                $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($passwd);
+                $password = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr);
+            }
+            else {
+                $password = ConvertFrom-SecureString -SecureString $passwd -AsPlainText
+            }
         }
 
         if ( $PSCmdlet.ParameterSetName -ne "default" -and $userlocal.type -ne $PSCmdlet.ParameterSetName ) {
