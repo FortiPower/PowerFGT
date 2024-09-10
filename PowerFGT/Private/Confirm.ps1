@@ -386,6 +386,52 @@ Function Confirm-FGTInterface {
     $true
 }
 
+Function Confirm-FGTUserRADIUS {
+
+    Param (
+        [Parameter (Mandatory = $true)]
+        [object]$argument
+    )
+
+    #Check if it looks like a RADIUS Server element
+
+    if ( -not ( $argument | get-member -name name -Membertype Properties)) {
+        throw "Element specified does not contain a name property."
+    }
+    if ( -not ( $argument | get-member -name server -Membertype Properties)) {
+        throw "Element specified does not contain a server property."
+    }
+    if ( -not ( $argument | get-member -name secret -Membertype Properties)) {
+        throw "Element specified does not contain a secret property."
+    }
+    if ( -not ( $argument | get-member -name secondary-server -Membertype Properties)) {
+        throw "Element specified does not contain a secondary-server property."
+    }
+    if ( -not ( $argument | get-member -name secondary-secret -Membertype Properties)) {
+        throw "Element specified does not contain a secondary-secret property."
+    }
+    if ( -not ( $argument | get-member -name tertiary-server -Membertype Properties)) {
+        throw "Element specified does not contain a tertiary-server property."
+    }
+    if ( -not ( $argument | get-member -name tertiary-secret -Membertype Properties)) {
+        throw "Element specified does not contain a tertiary-secret property."
+    }
+    if ( -not ( $argument | get-member -name timeout -Membertype Properties)) {
+        throw "Element specified does not contain a timeout property."
+    }
+    if ( -not ( $argument | get-member -name nas-ip -Membertype Properties)) {
+        throw "Element specified does not contain a nas-ip property."
+    }
+    if ( -not ( $argument | get-member -name nas-id -Membertype Properties)) {
+        throw "Element specified does not contain a nas-id property."
+    }
+    if ( -not ( $argument | get-member -name auth-type -Membertype Properties)) {
+        throw "Element specified does not contain a auth-type property."
+    }
+
+    $true
+}
+
 Function Confirm-FGTVpnIpsecPhase1Interface {
 
     Param (
