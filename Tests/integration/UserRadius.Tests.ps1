@@ -205,21 +205,21 @@ Describe "Add User Radius" {
 
 Describe "Configure User RADIUS" {
 
-    Context "Change server, CNID, DN, etc..." {
+    Context "Change server, secondary-server, timeout, etc ..." {
 
         BeforeAll {
-            Add-FGTUserRADIUS -Name $pester_userradius -server $pester_userradiusserver1 -dn "dc=fgt,dc=power,dc=powerfgt"
+            Add-FGTUserRADIUS -Name $pester_userradius -server $pester_userradiusserver1 -secret $pester_userradius_secret
         }
 
         It "Change name of RADIUS Server" {
-            Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -name "pester_RADIUSserver_renamed"
-            $userradius = Get-FGTUserRADIUS -name "pester_RADIUSserver_renamed"
-            $userradius.name | Should -Be "pester_RADIUSserver_renamed"
+            Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -name "pester_radiusserver_renamed"
+            $userradius = Get-FGTUserRADIUS -name "pester_radiusserver_renamed"
+            $userradius.name | Should -Be "pester_radiusserver_renamed"
             $userradius.server | Should -Be $pester_userradiusserver1
         }
 
         It "Change name of RADIUS Server back to initial value" {
-            Get-FGTUserRADIUS -name "pester_RADIUSserver_renamed" | Set-FGTuserRADIUS -name $pester_userradius
+            Get-FGTUserRADIUS -name "pester_radiusserver_renamed" | Set-FGTuserRADIUS -name $pester_userradius
             $userradius = Get-FGTUserRADIUS -name $pester_userradius
             $userradius.name | Should -Be $pester_userradius
         }
@@ -229,37 +229,48 @@ Describe "Configure User RADIUS" {
             $userradius = Get-FGTUserRADIUS -name $pester_userradius
             $userradius.name | Should -Be $pester_userradius
             $userradius.server | Should -Be $pester_userradiusserver2
+            $userradius.secret | Should -Not -Be $Null
         }
 
         It "Change secondary-server" {
-            Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -secondary_server $pester_userradiusserver3
+            Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -secondary_server $pester_userradiusserver3 -secondary_secret $pester_userradius_secret
             $userradius = Get-FGTUserRADIUS -name $pester_userradius
             $userradius.name | Should -Be $pester_userradius
             $userradius.server | Should -Be $pester_userradiusserver2
             $userradius."secondary-server" | Should -Be $pester_userradiusserver3
+            $userradius."secondary-secret" | Should -Not -Be $Null
         }
 
         It "Change tertiary-server" {
-            Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -tertiary_server $pester_userradiusserver1
+            Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -tertiary_server $pester_userradiusserver1 -tertiary_secret $pester_userradius_secret
             $userradius = Get-FGTUserRADIUS -name $pester_userradius
             $userradius.name | Should -Be $pester_userradius
             $userradius.server | Should -Be $pester_userradiusserver2
             $userradius."secondary-server" | Should -Be $pester_userradiusserver3
+            $userradius."secondary-secret" | Should -Not -Be $Null
             $userradius."tertiary-server" | Should -Be $pester_userradiusserver1
+            $userradius."tertiary-secret" | Should -Not -Be $Null
         }
 
-        It "Change CNID" {
-            Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -cnid sAMAccountName
+        It "Change timeout" {
+            Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -timeout 200
             $userradius = Get-FGTUserRADIUS -name $pester_userradius
             $userradius.name | Should -Be $pester_userradius
-            $userradius.cnid | Should -Be "sAMAccountName"
+            $userradius.timeout | Should -Be "200"
         }
 
-        It "Change DN" {
-            Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -dn "dc=newfgt,dc=power,dc=powerfgt"
+        It "Change NAS IP" {
+            Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -nas_ip "192.2.0.2"
             $userradius = Get-FGTUserRADIUS -name $pester_userradius
             $userradius.name | Should -Be $pester_userradius
-            $userradius.dn | Should -Be "dc=newfgt,dc=power,dc=powerfgt"
+            $userradius."nas-ip" | Should -Be "192.2.0.2"
+        }
+
+        It "Change NAS ID" {
+            Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -nas_id "PowerFGT"
+            $userradius = Get-FGTUserRADIUS -name $pester_userradius
+            $userradius.name | Should -Be $pester_userradius
+            $userradius."nas-id" | Should -Be "PowerFGT"
         }
 
         AfterAll {
@@ -268,83 +279,45 @@ Describe "Configure User RADIUS" {
 
     }
 
-    Context "Change type" {
+    Context "Change auth-type" {
 
         BeforeAll {
-            Add-FGTUserRADIUS -Name $pester_userradius -server $pester_userradiusserver1 -dn "dc=fgt,dc=power,dc=powerfgt"
+            Add-FGTUserRADIUS -Name $pester_userradius -server $pester_userradiusserver1 -secret $pester_userradius_secret
         }
 
-        It "Change type (Regular)" {
-            Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -type regular -username powerfgt -password $pester_userradiuspassword
+        It "Change type ms_chap_v2" {
+            Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -auth_type ms_chap_v2
             $userradius = Get-FGTUserRADIUS -name $pester_userradius
             $userradius.name | Should -Be $pester_userradius
-            $userradius.type | Should -Be "regular"
-            $userradius.username | Should -Be "powerfgt"
-            $userradius.password | Should -Not -Be $Null
+            $userradius."auth-type" | Should -Be "ms_chap_v2"
         }
 
-        It "Change only username when type is already regular" {
-            Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -username powerfgtchanged
+        It "Change type ms_chap" {
+            Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -auth_type ms_chap
             $userradius = Get-FGTUserRADIUS -name $pester_userradius
             $userradius.name | Should -Be $pester_userradius
-            $userradius.type | Should -Be "regular"
-            $userradius.username | Should -Be "powerfgtchanged"
+            $userradius."auth-type" | Should -Be "ms_chap"
         }
 
-        It "Change only password when type is already regular" {
-            {
-                Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -password $pester_userradiuspasswordchanged
-            } | Should -Not -Throw
-        }
-
-        It "Change type (Anonymous)" {
-            Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -type anonymous
+        It "Change type chap" {
+            Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -auth_type chap
             $userradius = Get-FGTUserRADIUS -name $pester_userradius
             $userradius.name | Should -Be $pester_userradius
-            $userradius.type | Should -Be "anonymous"
+            $userradius."auth-type" | Should -Be "chap"
         }
 
-        It "Change type (Simple)" {
-            Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -type simple
+        It "Change type pap" {
+            Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -auth_type pap
             $userradius = Get-FGTUserRADIUS -name $pester_userradius
             $userradius.name | Should -Be $pester_userradius
-            $userradius.type | Should -Be "simple"
+            $userradius."auth-type" | Should -Be "pap"
         }
 
-        It "Change only username when type is not regular" {
-            {
-                Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -username powerfgt
-            } | Should -Throw "The type need to be regular to specify username or password"
-        }
-
-        It "Change only password when type is not regular" {
-            {
-                Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -password $pester_userradiuspassword
-            } | Should -Throw "The type need to be regular to specify username or password"
-        }
-
-        It "Change username and password when type is not regular" {
-            {
-                Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -username powerfgt -password $pester_userradiuspassword
-            } | Should -Throw "The type need to be regular to specify username or password"
-        }
-
-        It "Change type to regular without username" {
-            {
-                Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -type regular -password $pester_userradiuspassword
-            } | Should -Throw "You need to specify an username and a password !"
-        }
-
-        It "Change type to regular without password" {
-            {
-                Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -type regular -username powerfgt
-            } | Should -Throw "You need to specify an username and a password !"
-        }
-
-        It "Change type to regular without username and password" {
-            {
-                Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -type regular
-            } | Should -Throw "You need to specify an username and a password !"
+        It "Change type auto" {
+            Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -auth_type auto
+            $userradius = Get-FGTUserRADIUS -name $pester_userradius
+            $userradius.name | Should -Be $pester_userradius
+            $userradius."auth-type" | Should -Be "auto"
         }
 
         AfterAll {
@@ -353,50 +326,6 @@ Describe "Configure User RADIUS" {
 
     }
 
-    Context "Change secure connection" {
-
-        BeforeAll {
-            Add-FGTUserRADIUS -Name $pester_userradius -server $pester_userradiusserver1 -dn "dc=fgt,dc=power,dc=powerfgt"
-        }
-
-        It "Change secure connection to RADIUSs" {
-            Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -secure RADIUSs
-            $userradius = Get-FGTUserRADIUS -name $pester_userradius
-            $userradius.name | Should -Be $pester_userradius
-            $userradius.secure | Should -Be "RADIUSs"
-            $userradius.port | Should -Be "636"
-        }
-
-        It "Change secure connection to starttls" {
-            Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -secure starttls
-            $userradius = Get-FGTUserRADIUS -name $pester_userradius
-            $userradius.name | Should -Be $pester_userradius
-            $userradius.secure | Should -Be "starttls"
-            $userradius.port | Should -Be "389"
-        }
-
-        It "Change secure connection to disable" {
-            Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -secure disable
-            $userradius = Get-FGTUserRADIUS -name $pester_userradius
-            $userradius.name | Should -Be $pester_userradius
-            $userradius.secure | Should -Be "disable"
-            $userradius.port | Should -Be "389"
-        }
-
-        It "Change secure connection with -data" {
-            $data = @{ "secure" = "RADIUSs" }
-            Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -data $data
-            $userradius = Get-FGTUserRADIUS -name $pester_userradius
-            $userradius.name | Should -Be $pester_userradius
-            $userradius.secure | Should -Be "RADIUSs"
-            $userradius.port | Should -Be "636"
-        }
-
-        AfterAll {
-            Get-FGTUserRADIUS -name $pester_userradius | Remove-FGTUserRADIUS -confirm:$false
-        }
-
-    }
 }
 
 Describe "Remove User RADIUS" {
