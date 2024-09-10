@@ -309,6 +309,186 @@ function Get-FGTUserRADIUS {
     }
 }
 
+function Set-FGTUserRADIUS {
+
+    <#
+        .SYNOPSIS
+        Change a FortiGate RADIUS Server
+
+        .DESCRIPTION
+        Change a FortiGate RADIUS Server
+
+        .EXAMPLE
+        $MyFGTUserRADIUS = Get-FGTUserRADIUS -name MyFGTUserRADIUS
+        PS C:\>$MyFGTUserRADIUS | Set-FGTUserRADIUS -server mynewRADIUSserver
+
+        Change server name from MyFGTUserRADIUS to mynewRADIUSserver
+
+        .EXAMPLE
+        $MyFGTUserRADIUS = Get-FGTUserRADIUS -name MyFGTUserRADIUS
+        PS C:\>$mysecret = ConvertTo-SecureString mysecret -AsPlainText -Force
+        PS C:\>$MyFGTUserRADIUS | Set-FGTUserRADIUS -secondary_server radius2.powerfgt -secondary_secret $mysecret
+
+        Change secondary server and secret
+
+        .EXAMPLE
+        $MyFGTUserRADIUS = Get-FGTUserRADIUS -name MyFGTUserRADIUS
+        PS C:\>$mysecret = ConvertTo-SecureString mysecret -AsPlainText -Force
+        PS C:\>$MyFGTUserRADIUS | Set-FGTUserRADIUS -tertiary_server radius2.powerfgt -tertiary_secret $mysecret
+
+        Change tertiary server and secret
+
+        .EXAMPLE
+        $data = @{ "timeout" = "200" }
+        PS C:\>$MyFGTUserRADIUS = Get-FGTUserRADIUS -name MyFGTUserRADIUS
+        PS C:\>$MyFGTUserRADIUS | Set-FGTUserRADIUS -data $data
+
+        Change timeout to 200sec
+    #>
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium', DefaultParameterSetName = 'default')]
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [ValidateScript( { Confirm-FGTUserRADIUS $_ })]
+        [psobject]$userradius,
+        [Parameter (Mandatory = $false)]
+        [ValidateLength(1, 35)]
+        [string]$name,
+        [Parameter (Mandatory = $false)]
+        [ValidateLength(1, 63)]
+        [string]$server,
+        [Parameter (Mandatory = $false)]
+        [SecureString]$secret,
+        [Parameter (Mandatory = $false)]
+        [ValidateLength(1, 63)]
+        [string]$secondary_server,
+        [Parameter (Mandatory = $false)]
+        [SecureString]$secondary_secret,
+        [Parameter (Mandatory = $false)]
+        [ValidateLength(1, 63)]
+        [string]$tertiary_server,
+        [Parameter (Mandatory = $false)]
+        [SecureString]$tertiary_secret,
+        [Parameter (Mandatory = $false)]
+        [ValidateRange(0, 300)]
+        [int]$timeout,
+        [Parameter (Mandatory = $false)]
+        [string]$nas_ip,
+        [Parameter (Mandatory = $false)]
+        [ValidateSet("ms_chap_v2", "ms_chap", "chap", "pap", "auto")]
+        [string]$auth_type,
+        [Parameter (Mandatory = $false)]
+        [ValidateLength(0, 255)]
+        [string]$nas_id,
+        [Parameter (Mandatory = $false)]
+        [hashtable]$data,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/user/radius/$($userradius.name)"
+
+        $_radius = New-Object -TypeName PSObject
+
+        if ( $PsBoundParameters.ContainsKey('name') ) {
+            #TODO check if there is no already an object with this name ?
+            $_radius | add-member -name "name" -membertype NoteProperty -Value $name
+            $userradius.name = $name
+        }
+
+        if ( $PsBoundParameters.ContainsKey('server') ) {
+            $_radius | add-member -name "server" -membertype NoteProperty -Value $server
+        }
+
+        if ( $PsBoundParameters.ContainsKey('secret') ) {
+            if (("Desktop" -eq $PSVersionTable.PsEdition) -or ($null -eq $PSVersionTable.PsEdition)) {
+                $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($secret);
+                $sec = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr);
+                $_radius | add-member -name "secret" -membertype NoteProperty -Value $sec
+            }
+            else {
+                $sec = ConvertFrom-SecureString -SecureString $secret -AsPlainText
+                $_radius | add-member -name "secret" -membertype NoteProperty -Value $sec
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('secondary_server') ) {
+            $_radius | add-member -name "secondary-server" -membertype NoteProperty -Value $secondary_server
+        }
+
+        if ( $PsBoundParameters.ContainsKey('secondary_secret') ) {
+            if (("Desktop" -eq $PSVersionTable.PsEdition) -or ($null -eq $PSVersionTable.PsEdition)) {
+                $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($secret);
+                $secondary_sec = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr);
+                $_radius | add-member -name "secondary-secret" -membertype NoteProperty -Value $secondary_sec
+            }
+            else {
+                $secondary_sec = ConvertFrom-SecureString -SecureString $secret -AsPlainText
+                $_radius | add-member -name "secondary-secret" -membertype NoteProperty -Value $secondary_sec
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('tertiary_server') ) {
+            $_radius | add-member -name "tertiary-server" -membertype NoteProperty -Value $tertiary_server
+        }
+
+        if ( $PsBoundParameters.ContainsKey('tertiary_secret') ) {
+            if (("Desktop" -eq $PSVersionTable.PsEdition) -or ($null -eq $PSVersionTable.PsEdition)) {
+                $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($secret);
+                $tertiary_sec = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr);
+                $_radius | add-member -name "tertiary-secret" -membertype NoteProperty -Value $tertiary_sec
+            }
+            else {
+                $tertiary_sec = ConvertFrom-SecureString -SecureString $secret -AsPlainText
+                $_radius | add-member -name "tertiary-secret" -membertype NoteProperty -Value $tertiary_sec
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('timeout') ) {
+            $_radius | add-member -name "timeout" -membertype NoteProperty -Value $timeout
+        }
+
+        if ( $PsBoundParameters.ContainsKey('nas_ip') ) {
+            $_radius | add-member -name "nas-ip" -membertype NoteProperty -Value $nas_ip
+        }
+
+        if ( $PsBoundParameters.ContainsKey('nas_id') ) {
+            $_radius | add-member -name "nas-id" -membertype NoteProperty -Value $nas_id
+        }
+
+        if ( $PsBoundParameters.ContainsKey('auth_type') ) {
+            $_radius | add-member -name "auth-type" -membertype NoteProperty -Value $auth_type
+        }
+
+        if ( $PsBoundParameters.ContainsKey('data') ) {
+            $data.GetEnumerator() | ForEach-Object {
+                $_radius | Add-member -name $_.key -membertype NoteProperty -Value $_.value
+            }
+        }
+
+        if ($PSCmdlet.ShouldProcess($userradius.name, 'Configure User Radius')) {
+            Invoke-FGTRestMethod -method "PUT" -body $_radius -uri $uri -connection $connection @invokeParams | out-Null
+
+            Get-FGTUserRADIUS -connection $connection @invokeParams -name $userradius.name
+        }
+    }
+
+    End {
+    }
+}
+
 function Remove-FGTUserRADIUS {
 
     <#
