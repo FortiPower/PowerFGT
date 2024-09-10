@@ -404,7 +404,7 @@ Describe "Remove User RADIUS" {
     Context "local" {
 
         BeforeEach {
-            Add-FGTUserRADIUS -Name $pester_userradius -server $pester_userradiusserver1 -dn "dc=fgt,dc=power,dc=powerfgt"
+            Add-FGTUserRADIUS -Name $pester_userradius -server $pester_userradiusserver1 -secret $pester_userradius_secret
         }
 
         It "Remove User RADIUS $pester_userradius by pipeline" {
