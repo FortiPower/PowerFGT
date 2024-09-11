@@ -475,3 +475,57 @@ function Set-FGTUserTACACS {
     End {
     }
 }
+
+function Remove-FGTUserTACACS {
+
+    <#
+        .SYNOPSIS
+        Remove a FortiGate TACACS Server
+
+        .DESCRIPTION
+        Remove a TACACS Server on the FortiGate
+
+        .EXAMPLE
+        $MyFGTUserTACACS = Get-FGTUserTACACS -name PowerFGT
+        PS C:\>$MyFGTUserTACACS | Remove-FGTUserTACACS
+
+        Remove user object $MyFGTUserTACACS
+
+        .EXAMPLE
+        $MyFGTUserTACACS = Get-FGTUserTACACS -name MyFGTUserTACACS
+        PS C:\>$MyFGTUserTACACS | Remove-FGTUserTACACS -confirm:$false
+
+        Remove UserTACACS object $MyFGTUserTACACS with no confirmation
+    #>
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'high')]
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [ValidateScript( { Confirm-FGTUserTACACS $_ })]
+        [psobject]$usertacacs,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/user/tacacs+/$($usertacacs.name)"
+
+        if ($PSCmdlet.ShouldProcess($usertacacs.name, 'Remove User Tacacs')) {
+            $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -connection $connection @invokeParams
+        }
+    }
+
+    End {
+    }
+}
