@@ -68,7 +68,7 @@ $script:pester_userradiusserver2 = "pesterradiusserver2.powerfgt"
 $script:pester_userradiusserver3 = "pesterradiusserver3.powerfgt"
 $script:pester_userradius_secret = ConvertTo-SecureString "pester_userradiussecret" -AsPlainText -Force
 
-#. ../credential.ps1
+. ../credential.ps1
 #TODO: Add check if no ipaddress/login/password info...
 
 $script:mysecpassword = ConvertTo-SecureString $password -AsPlainText -Force
