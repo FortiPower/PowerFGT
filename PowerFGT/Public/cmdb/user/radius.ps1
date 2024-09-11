@@ -201,7 +201,7 @@ function Add-FGTUserRADIUS {
 
         Invoke-FGTRestMethod -method "POST" -body $radius -uri $uri -connection $connection @invokeParams | out-Null
 
-        Get-FGTUserRADIUS -connection $connection @invokeParams -name $name
+        Get-FGTUserRADIUS -name $name -connection $connection @invokeParams
     }
 
     End {
@@ -482,7 +482,7 @@ function Set-FGTUserRADIUS {
         if ($PSCmdlet.ShouldProcess($userradius.name, 'Configure User Radius')) {
             Invoke-FGTRestMethod -method "PUT" -body $_radius -uri $uri -connection $connection @invokeParams | out-Null
 
-            Get-FGTUserRADIUS -connection $connection @invokeParams -name $userradius.name
+            Get-FGTUserRADIUS -name $userradius.name -connection $connection @invokeParams
         }
     }
 
