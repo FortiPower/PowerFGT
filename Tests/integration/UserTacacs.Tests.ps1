@@ -14,7 +14,7 @@ BeforeAll {
 Describe "Get User Tacacs" {
 
     BeforeAll {
-        Add-FGTusertacacs -Name $pester_usertacacs -server $pester_usertacacsserver1 -key $pester_usertacacs_key
+        Add-FGTUserTACACS -Name $pester_usertacacs -server $pester_usertacacsserver1 -key $pester_usertacacs_key
     }
 
     It "Get User Tacacs Does not throw an error" {
@@ -69,7 +69,136 @@ Describe "Get User Tacacs" {
     }
 
     AfterAll {
-        Get-FGTuserTACACS -name $pester_usertacacs | Remove-FGTuserTACACS -confirm:$false
+        Get-FGTuserTACACS -name $pester_usertacacs | Remove-FGTUserTACACS -confirm:$false
+    }
+
+}
+
+Describe "Add User Tacacs" {
+
+    Context "Tacacs Server (Primary, secondary, tertiary servers, port, authentication type etc ...)" {
+
+        AfterEach {
+            Get-FGTuserTACACS -name $pester_usertacacs | Remove-FGTUserTACACS -confirm:$false
+        }
+
+        It "Add User Tacacs Server $pester_usertacacs" {
+            Add-FGTUserTACACS -Name $pester_usertacacs -server $pester_usertacacsserver1 -key $pester_usertacacs_key
+            $usertacacs = Get-FGTuserTACACS -name $pester_usertacacs
+            $usertacacs.name | Should -Be $pester_usertacacs
+            $usertacacs.server | Should -Be $pester_usertacacsserver1
+            $usertacacs.key | Should -Not -Be $Null
+        }
+
+        It "Add User Tacacs Server $pester_usertacacs with secondary-server" {
+            Add-FGTUserTACACS -Name $pester_usertacacs -server $pester_usertacacsserver1 -key $pester_usertacacs_key -secondary_server $pester_usertacacsserver2 -secondary_key $pester_usertacacs_key
+            $usertacacs = Get-FGTuserTACACS -name $pester_usertacacs
+            $usertacacs.name | Should -Be $pester_usertacacs
+            $usertacacs.server | Should -Be $pester_usertacacsserver1
+            $usertacacs.key | Should -Not -Be $Null
+            $usertacacs.'secondary-server' | Should -Be $pester_usertacacsserver2
+            $usertacacs.'secondary-key' | Should -Not -Be $Null
+        }
+
+        It "Add User Tacacs Server $pester_usertacacs with tertiary-server" {
+            Add-FGTUserTACACS -Name $pester_usertacacs -server $pester_usertacacsserver1 -key $pester_usertacacs_key -secondary_server $pester_usertacacsserver2 -secondary_key $pester_usertacacs_key -tertiary_server $pester_usertacacsserver3 -tertiary_key $pester_usertacacs_key
+            $usertacacs = Get-FGTuserTACACS -name $pester_usertacacs
+            $usertacacs.name | Should -Be $pester_usertacacs
+            $usertacacs.server | Should -Be $pester_usertacacsserver1
+            $usertacacs.key | Should -Not -Be $Null
+            $usertacacs.'secondary-server' | Should -Be $pester_usertacacsserver2
+            $usertacacs.'secondary-key' | Should -Not -Be $Null
+            $usertacacs.'tertiary-server' | Should -Be $pester_usertacacsserver3
+            $usertacacs.'tertiary-key' | Should -Not -Be $Null
+        }
+
+        It "Add User Tacacs Server $pester_usertacacs with port" {
+            Add-FGTUserTACACS -Name $pester_usertacacs -server $pester_usertacacsserver1 -key $pester_usertacacs_key -port 10049
+            $usertacacs = Get-FGTuserTACACS -name $pester_usertacacs
+            $usertacacs.name | Should -Be $pester_usertacacs
+            $usertacacs.server | Should -Be $pester_usertacacsserver1
+            $usertacacs.key | Should -Not -Be $Null
+            $usertacacs.timeout | Should -Be "10049"
+        }
+
+        It "Add User Tacacs Server $pester_usertacacs with authorization enabled" {
+            Add-FGTUserTACACS -Name $pester_usertacacs -server $pester_usertacacsserver1 -key $pester_usertacacs_key -authorization
+            $usertacacs = Get-FGTuserTACACS -name $pester_usertacacs
+            $usertacacs.name | Should -Be $pester_usertacacs
+            $usertacacs.server | Should -Be $pester_usertacacsserver1
+            $usertacacs.key | Should -Not -Be $Null
+            $usertacacs.authorization | Should -Be "enable"
+        }
+
+        It "Add User Tacacs Server $pester_usertacacs with authorization disabled" {
+            Add-FGTUserTACACS -Name $pester_usertacacs -server $pester_usertacacsserver1 -key $pester_usertacacs_key
+            $usertacacs = Get-FGTuserTACACS -name $pester_usertacacs
+            $usertacacs.name | Should -Be $pester_usertacacs
+            $usertacacs.server | Should -Be $pester_usertacacsserver1
+            $usertacacs.key | Should -Not -Be $Null
+            $usertacacs.authorization | Should -Be "disable"
+        }
+
+        It "Try to Add User Tacacs Server $pester_usertacacs (but there is already a object with same name)" {
+            #Add first userTacacs
+            Add-FGTUserTACACS -Name $pester_usertacacs -server $pester_usertacacsserver1 -key $pester_usertacacs_key
+            #Add Second userTacacs with same name
+            { Add-FGTUserTACACS -Name $pester_usertacacs -server $pester_usertacacsserver1 -key $pester_usertacacs_key } | Should -Throw "Already a Tacacs Server using the same name"
+        }
+
+    }
+
+    Context "Tacacs Server authen-type" {
+
+        AfterEach {
+            Get-FGTuserTACACS -name $pester_usertacacs | Remove-FGTUserTACACS -confirm:$false
+        }
+
+        It "Add User Tacacs Server $pester_usertacacs with authen_type as auto" {
+            Add-FGTUserTACACS -Name $pester_usertacacs -server $pester_usertacacsserver1 -key $pester_usertacacs_key -authen_type auto
+            $usertacacs = Get-FGTuserTACACS -name $pester_usertacacs
+            $usertacacs.name | Should -Be $pester_usertacacs
+            $usertacacs.server | Should -Be $pester_usertacacsserver1
+            $usertacacs.key | Should -Not -Be $Null
+            $usertacacs."authen-type" | Should -Be "auto"
+        }
+
+        It "Add User Tacacs Server $pester_usertacacs with authen_type as mschap" {
+            Add-FGTUserTACACS -Name $pester_usertacacs -server $pester_usertacacsserver1 -key $pester_usertacacs_key -authen_type mschap
+            $usertacacs = Get-FGTuserTACACS -name $pester_usertacacs
+            $usertacacs.name | Should -Be $pester_usertacacs
+            $usertacacs.server | Should -Be $pester_usertacacsserver1
+            $usertacacs.key | Should -Not -Be $Null
+            $usertacacs."authen-type" | Should -Be "mschap"
+        }
+
+        It "Add User Tacacs Server $pester_usertacacs with authen_type as ascii" {
+            Add-FGTUserTACACS -Name $pester_usertacacs -server $pester_usertacacsserver1 -key $pester_usertacacs_key -authen_type ascii
+            $usertacacs = Get-FGTuserTACACS -name $pester_usertacacs
+            $usertacacs.name | Should -Be $pester_usertacacs
+            $usertacacs.server | Should -Be $pester_usertacacsserver1
+            $usertacacs.key | Should -Not -Be $Null
+            $usertacacs."authen-type" | Should -Be "ascii"
+        }
+
+        It "Add User Tacacs Server $pester_usertacacs with authen_type as chap" {
+            Add-FGTUserTACACS -Name $pester_usertacacs -server $pester_usertacacsserver1 -key $pester_usertacacs_key -authen_type chap
+            $usertacacs = Get-FGTuserTACACS -name $pester_usertacacs
+            $usertacacs.name | Should -Be $pester_usertacacs
+            $usertacacs.server | Should -Be $pester_usertacacsserver1
+            $usertacacs.key | Should -Not -Be $Null
+            $usertacacs."authen-type" | Should -Be "chap"
+        }
+
+        It "Add User Tacacs Server $pester_usertacacs with authen_type as pap" {
+            Add-FGTUserTACACS -Name $pester_usertacacs -server $pester_usertacacsserver1 -key $pester_usertacacs_key -authen_type pap
+            $usertacacs = Get-FGTuserTACACS -name $pester_usertacacs
+            $usertacacs.name | Should -Be $pester_usertacacs
+            $usertacacs.server | Should -Be $pester_usertacacsserver1
+            $usertacacs.key | Should -Not -Be $Null
+            $usertacacs."authen-type" | Should -Be "pap"
+        }
+
     }
 
 }
