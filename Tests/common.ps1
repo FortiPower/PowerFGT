@@ -63,12 +63,12 @@ $script:pester_usertacacsserver2 = "pestertacacsserver2.powerfgt"
 $script:pester_usertacacsserver3 = "pestertacacsserver3.powerfgt"
 $script:pester_usertacacs_key = ConvertTo-SecureString "pester_usertacacskey" -AsPlainText -Force
 $script:pester_userradius = "pester_userradius"
-$script:pester_userradiusserver1 = "pester_userradiusserver1"
-$script:pester_userradiusserver2 = "pester_userradiusserver2"
-$script:pester_userradiusserver3 = "pester_userradiusserver3"
+$script:pester_userradiusserver1 = "pesterradiusserver1.powerfgt"
+$script:pester_userradiusserver2 = "pesterradiusserver2.powerfgt"
+$script:pester_userradiusserver3 = "pesterradiusserver3.powerfgt"
 $script:pester_userradius_secret = ConvertTo-SecureString "pester_userradiussecret" -AsPlainText -Force
 
-. ../credential.ps1
+#. ../credential.ps1
 #TODO: Add check if no ipaddress/login/password info...
 
 $script:mysecpassword = ConvertTo-SecureString $password -AsPlainText -Force
