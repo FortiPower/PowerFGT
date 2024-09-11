@@ -87,8 +87,6 @@ function Add-FGTUserRADIUS {
         [ValidateLength(0, 255)]
         [string]$nas_id,
         [Parameter (Mandatory = $false)]
-        [boolean]$visibility,
-        [Parameter (Mandatory = $false)]
         [hashtable]$data,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
@@ -176,21 +174,6 @@ function Add-FGTUserRADIUS {
         if ( $PsBoundParameters.ContainsKey('nas_id') ) {
             $radius | add-member -name "nas-id-type" -membertype NoteProperty -Value "custom"
             $radius | add-member -name "nas-id" -membertype NoteProperty -Value $nas_id
-        }
-
-        if ( $PsBoundParameters.ContainsKey('visibility') ) {
-            #with 6.4.x, there is no longer visibility parameter
-            if ($connection.version -ge "6.4.0") {
-                Write-Warning "-visibility parameter is no longer available with FortiOS 6.4.x and after"
-            }
-            else {
-                if ( $visibility ) {
-                    $radius | add-member -name "visibility" -membertype NoteProperty -Value "enable"
-                }
-                else {
-                    $radius | add-member -name "visibility" -membertype NoteProperty -Value "disable"
-                }
-            }
         }
 
         if ( $PsBoundParameters.ContainsKey('data') ) {
