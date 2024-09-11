@@ -134,12 +134,12 @@ function Add-FGTUserRADIUS {
         elseif ($PsBoundParameters.ContainsKey('secondary_server') -and $PsBoundParameters.ContainsKey('secondary_secret')) {
             $radius | add-member -name "secondary-server" -membertype NoteProperty -Value $secondary_server
             if (("Desktop" -eq $PSVersionTable.PsEdition) -or ($null -eq $PSVersionTable.PsEdition)) {
-                $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($secret);
+                $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($secondary_secret);
                 $sec = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr);
                 $radius | add-member -name "secondary-secret" -membertype NoteProperty -Value $sec
             }
             else {
-                $sec = ConvertFrom-SecureString -SecureString $secret -AsPlainText
+                $sec = ConvertFrom-SecureString -SecureString $secondary_secret -AsPlainText
                 $radius | add-member -name "secondary-secret" -membertype NoteProperty -Value $sec
             }
         }
@@ -150,12 +150,12 @@ function Add-FGTUserRADIUS {
         elseif ($PsBoundParameters.ContainsKey('tertiary_server') -and $PsBoundParameters.ContainsKey('tertiary_secret')) {
             $radius | add-member -name "tertiary-server" -membertype NoteProperty -Value $tertiary_server
             if (("Desktop" -eq $PSVersionTable.PsEdition) -or ($null -eq $PSVersionTable.PsEdition)) {
-                $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($secret);
+                $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($tertiary_secret);
                 $sec = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr);
                 $radius | add-member -name "tertiary-secret" -membertype NoteProperty -Value $sec
             }
             else {
-                $sec = ConvertFrom-SecureString -SecureString $secret -AsPlainText
+                $sec = ConvertFrom-SecureString -SecureString $tertiary_secret -AsPlainText
                 $radius | add-member -name "tertiary-secret" -membertype NoteProperty -Value $sec
             }
         }
@@ -430,12 +430,12 @@ function Set-FGTUserRADIUS {
 
         if ( $PsBoundParameters.ContainsKey('secondary_secret') ) {
             if (("Desktop" -eq $PSVersionTable.PsEdition) -or ($null -eq $PSVersionTable.PsEdition)) {
-                $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($secret);
+                $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($secondary_secret);
                 $secondary_sec = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr);
                 $_radius | add-member -name "secondary-secret" -membertype NoteProperty -Value $secondary_sec
             }
             else {
-                $secondary_sec = ConvertFrom-SecureString -SecureString $secret -AsPlainText
+                $secondary_sec = ConvertFrom-SecureString -SecureString $secondary_secret -AsPlainText
                 $_radius | add-member -name "secondary-secret" -membertype NoteProperty -Value $secondary_sec
             }
         }
@@ -446,12 +446,12 @@ function Set-FGTUserRADIUS {
 
         if ( $PsBoundParameters.ContainsKey('tertiary_secret') ) {
             if (("Desktop" -eq $PSVersionTable.PsEdition) -or ($null -eq $PSVersionTable.PsEdition)) {
-                $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($secret);
+                $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($tertiary_secret);
                 $tertiary_sec = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr);
                 $_radius | add-member -name "tertiary-secret" -membertype NoteProperty -Value $tertiary_sec
             }
             else {
-                $tertiary_sec = ConvertFrom-SecureString -SecureString $secret -AsPlainText
+                $tertiary_sec = ConvertFrom-SecureString -SecureString $tertiary_secret -AsPlainText
                 $_radius | add-member -name "tertiary-secret" -membertype NoteProperty -Value $tertiary_sec
             }
         }
