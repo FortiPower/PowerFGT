@@ -383,11 +383,13 @@ function Set-FGTUserLocal {
             throw "User type ($($userlocal.type)) need to be on the same type ($($PSCmdlet.ParameterSetName))"
         }
 
-        if ($status) {
-            $_local  | add-member -name "status" -membertype NoteProperty -Value "enable"
-        }
-        else {
-            $_local  | add-member -name "status" -membertype NoteProperty -Value "disable"
+        if ($PsBoundParameters.ContainsKey('status')) {
+            if ($status) {
+                $_local  | add-member -name "status" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_local  | add-member -name "status" -membertype NoteProperty -Value "disable"
+            }
         }
 
         switch ( $PSCmdlet.ParameterSetName ) {
