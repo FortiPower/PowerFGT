@@ -422,9 +422,6 @@ Function Confirm-FGTUserRADIUS {
     if ( -not ( $argument | get-member -name nas-ip -Membertype Properties)) {
         throw "Element specified does not contain a nas-ip property."
     }
-    if ( -not ( $argument | get-member -name nas-id -Membertype Properties)) {
-        throw "Element specified does not contain a nas-id property."
-    }
     if ( -not ( $argument | get-member -name auth-type -Membertype Properties)) {
         throw "Element specified does not contain an auth-type property."
     }
