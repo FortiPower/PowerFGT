@@ -452,11 +452,11 @@ function Set-FGTUserTACACS {
         }
 
         if ( $PsBoundParameters.ContainsKey('authen_type') ) {
-            $tacacs | add-member -name "authen-type" -membertype NoteProperty -Value $authen_type
+            $_tacacs | add-member -name "authen-type" -membertype NoteProperty -Value $authen_type
         }
 
         if ( $PsBoundParameters.ContainsKey('authorization') ) {
-            $tacacs | add-member -name "authorization" -membertype NoteProperty -Value $authorization
+            $_tacacs | add-member -name "authorization" -membertype NoteProperty -Value $authorization
         }
 
         if ( $PsBoundParameters.ContainsKey('data') ) {
