@@ -76,7 +76,7 @@ function Add-FGTUserTACACS {
         [ValidateSet("mschap", "chap", "pap", "ascii", "auto")]
         [string]$authen_type,
         [Parameter (Mandatory = $false)]
-        [string]$authorization,
+        [switch]$authorization,
         [Parameter (Mandatory = $false)]
         [boolean]$visibility,
         [Parameter (Mandatory = $false)]
@@ -160,10 +160,10 @@ function Add-FGTUserTACACS {
         }
 
         if ( $PsBoundParameters.ContainsKey('authorization') ) {
-            $tacacs | add-member -name "authorization" -membertype NoteProperty -Value $true
+            $tacacs | add-member -name "authorization" -membertype NoteProperty -Value "enable"
         }
         else {
-            $tacacs | add-member -name "authorization" -membertype NoteProperty -Value $false
+            $tacacs | add-member -name "authorization" -membertype NoteProperty -Value "disable"
         }
 
         if ( $PsBoundParameters.ContainsKey('visibility') ) {
