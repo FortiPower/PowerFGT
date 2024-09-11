@@ -330,3 +330,26 @@ Describe "Configure User TACACS" {
     }
 
 }
+
+Describe "Remove User TACACS" {
+
+    Context "local" {
+
+        BeforeEach {
+            Add-FGTUserTACACS -Name $pester_usertacacs -server $pester_usertacacsserver1 -secret $pester_usertacacs_key
+        }
+
+        It "Remove User TACACS $pester_usertacacs by pipeline" {
+            $usertacacs = Get-FGTUserTACACS -name $pester_usertacacs
+            $usertacacs | Remove-FGTUserTACACS -confirm:$false
+            $usertacacs = Get-FGTUserTACACS -name $pester_usertacacs
+            $usertacacs | Should -Be $NULL
+        }
+
+    }
+
+}
+
+AfterAll {
+    Disconnect-FGT -confirm:$false
+}
