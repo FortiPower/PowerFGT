@@ -202,3 +202,131 @@ Describe "Add User Tacacs" {
     }
 
 }
+
+Describe "Configure User TACACS" {
+
+    Context "Change server, secondary-server, port, etc ..." {
+
+        BeforeAll {
+            Add-FGTUserTACACS -Name $pester_usertacacs -server $pester_usertacacsserver1 -key $pester_usertacacs_key
+        }
+
+        It "Change name of TACACS Server" {
+            Get-FGTUserTACACS -name $pester_usertacacs | Set-FGTuserTACACS -name "pester_tacacsserver_renamed"
+            $usertacacs = Get-FGTUserTACACS -name "pester_tacacsserver_renamed"
+            $usertacacs.name | Should -Be "pester_tacacsserver_renamed"
+            $usertacacs.server | Should -Be $pester_usertacacsserver1
+            $usertacacs.key | Should -Not -Be $Null
+        }
+
+        It "Change name of TACACS Server back to initial value" {
+            Get-FGTUserTACACS -name "pester_tacacsserver_renamed" | Set-FGTuserTACACS -name $pester_usertacacs
+            $usertacacs = Get-FGTUserTACACS -name $pester_usertacacs
+            $usertacacs.name | Should -Be $pester_usertacacs
+        }
+
+        It "Change server" {
+            Get-FGTUserTACACS -name $pester_usertacacs | Set-FGTuserTACACS -server $pester_usertacacsserver2
+            $usertacacs = Get-FGTUserTACACS -name $pester_usertacacs
+            $usertacacs.name | Should -Be $pester_usertacacs
+            $usertacacs.server | Should -Be $pester_usertacacsserver2
+            $usertacacs.key | Should -Not -Be $Null
+        }
+
+        It "Change secondary-server" {
+            Get-FGTUserTACACS -name $pester_usertacacs | Set-FGTuserTACACS -secondary_server $pester_usertacacsserver3 -secondary_key $pester_usertacacs_key
+            $usertacacs = Get-FGTUserTACACS -name $pester_usertacacs
+            $usertacacs.name | Should -Be $pester_usertacacs
+            $usertacacs.server | Should -Be $pester_usertacacsserver2
+            $usertacacs.key | Should -Not -Be $Null
+            $usertacacs."secondary-server" | Should -Be $pester_usertacacsserver3
+            $usertacacs."secondary-key" | Should -Not -Be $Null
+        }
+
+        It "Change tertiary-server" {
+            Get-FGTUserTACACS -name $pester_usertacacs | Set-FGTuserTACACS -tertiary_server $pester_usertacacsserver1 -tertiary_key $pester_usertacacs_key
+            $usertacacs = Get-FGTUserTACACS -name $pester_usertacacs
+            $usertacacs.name | Should -Be $pester_usertacacs
+            $usertacacs.server | Should -Be $pester_usertacacsserver2
+            $usertacacs.key | Should -Not -Be $Null
+            $usertacacs."secondary-server" | Should -Be $pester_usertacacsserver3
+            $usertacacs."secondary-key" | Should -Not -Be $Null
+            $usertacacs."tertiary-server" | Should -Be $pester_usertacacsserver1
+            $usertacacs."tertiary-key" | Should -Not -Be $Null
+        }
+
+        It "Change port" {
+            Get-FGTUserTACACS -name $pester_usertacacs | Set-FGTuserTACACS -port 10049
+            $usertacacs = Get-FGTUserTACACS -name $pester_usertacacs
+            $usertacacs.name | Should -Be $pester_usertacacs
+            $usertacacs.port | Should -Be "10049"
+        }
+
+        It "Change authorization to enable" {
+            Get-FGTUserTACACS -name $pester_usertacacs | Set-FGTuserTACACS -authorization enable
+            $usertacacs = Get-FGTUserTACACS -name $pester_usertacacs
+            $usertacacs.name | Should -Be $pester_usertacacs
+            $usertacacs.authorization | Should -Be "enable"
+        }
+
+        It "Change authorization to disable" {
+            Get-FGTUserTACACS -name $pester_usertacacs | Set-FGTuserTACACS -authorization disable
+            $usertacacs = Get-FGTUserTACACS -name $pester_usertacacs
+            $usertacacs.name | Should -Be $pester_usertacacs
+            $usertacacs.authorization | Should -Be "disable"
+        }
+
+        AfterAll {
+            Get-FGTUserTACACS -name $pester_usertacacs | Remove-FGTUserTACACS -confirm:$false
+        }
+
+    }
+
+    Context "Change authen-type" {
+
+        BeforeAll {
+            Add-FGTUserTACACS -Name $pester_usertacacs -server $pester_usertacacsserver1 -key $pester_usertacacs_key
+        }
+
+        It "Change type mschap" {
+            Get-FGTUserTACACS -name $pester_usertacacs | Set-FGTuserTACACS -auth_type mschap
+            $usertacacs = Get-FGTUserTACACS -name $pester_usertacacs
+            $usertacacs.name | Should -Be $pester_usertacacs
+            $usertacacs."auth-type" | Should -Be "mschap"
+        }
+
+        It "Change type chap" {
+            Get-FGTUserTACACS -name $pester_usertacacs | Set-FGTuserTACACS -auth_type chap
+            $usertacacs = Get-FGTUserTACACS -name $pester_usertacacs
+            $usertacacs.name | Should -Be $pester_usertacacs
+            $usertacacs."auth-type" | Should -Be "chap"
+        }
+
+        It "Change type pap" {
+            Get-FGTUserTACACS -name $pester_usertacacs | Set-FGTuserTACACS -auth_type pap
+            $usertacacs = Get-FGTUserTACACS -name $pester_usertacacs
+            $usertacacs.name | Should -Be $pester_usertacacs
+            $usertacacs."auth-type" | Should -Be "pap"
+        }
+
+        It "Change type ascii" {
+            Get-FGTUserTACACS -name $pester_usertacacs | Set-FGTuserTACACS -auth_type ascii
+            $usertacacs = Get-FGTUserTACACS -name $pester_usertacacs
+            $usertacacs.name | Should -Be $pester_usertacacs
+            $usertacacs."auth-type" | Should -Be "ascii"
+        }
+
+        It "Change type auto" {
+            Get-FGTUserTACACS -name $pester_usertacacs | Set-FGTuserTACACS -auth_type auto
+            $usertacacs = Get-FGTUserTACACS -name $pester_usertacacs
+            $usertacacs.name | Should -Be $pester_usertacacs
+            $usertacacs."auth-type" | Should -Be "auto"
+        }
+
+        AfterAll {
+            Get-FGTUserTACACS -name $pester_usertacacs | Remove-FGTUserTACACS -confirm:$false
+        }
+
+    }
+
+}
