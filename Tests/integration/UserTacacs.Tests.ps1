@@ -336,7 +336,7 @@ Describe "Remove User TACACS" {
     Context "local" {
 
         BeforeEach {
-            Add-FGTUserTACACS -Name $pester_usertacacs -server $pester_usertacacsserver1 -secret $pester_usertacacs_key
+            Add-FGTUserTACACS -Name $pester_usertacacs -server $pester_usertacacsserver1 -key $pester_usertacacs_key
         }
 
         It "Remove User TACACS $pester_usertacacs by pipeline" {
