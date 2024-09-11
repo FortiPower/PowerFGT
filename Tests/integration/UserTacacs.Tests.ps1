@@ -118,7 +118,7 @@ Describe "Add User Tacacs" {
             $usertacacs.name | Should -Be $pester_usertacacs
             $usertacacs.server | Should -Be $pester_usertacacsserver1
             $usertacacs.key | Should -Not -Be $Null
-            $usertacacs.timeout | Should -Be "10049"
+            $usertacacs.port | Should -Be "10049"
         }
 
         It "Add User Tacacs Server $pester_usertacacs with authorization enabled" {
