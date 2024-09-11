@@ -165,9 +165,8 @@ function Add-FGTUserRADIUS {
         }
 
         if ( $PsBoundParameters.ContainsKey('nas_ip') ) {
-            $nasip = new-Object -TypeName PSObject
-            $nasip | add-member -name "Address" -membertype NoteProperty -Value $nas_ip
-            $radius | add-member -name "nas-ip" -membertype NoteProperty -Value $nasip
+            $radius | add-member -name "switch-controller-nas-ip-dynamic" -membertype NoteProperty -Value $true
+            $radius | add-member -name "nas-ip" -membertype NoteProperty -Value $nas_ip
         }
 
         if ( $PsBoundParameters.ContainsKey('auth_type') ) {
@@ -461,6 +460,7 @@ function Set-FGTUserRADIUS {
         }
 
         if ( $PsBoundParameters.ContainsKey('nas_ip') ) {
+            $_radius | add-member -name "switch-controller-nas-ip-dynamic" -membertype NoteProperty -Value $true
             $_radius | add-member -name "nas-ip" -membertype NoteProperty -Value $nas_ip
         }
 
