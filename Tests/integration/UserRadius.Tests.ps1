@@ -11,19 +11,19 @@ BeforeAll {
     Connect-FGT @invokeParams
 }
 
-Describe "Get User Radius" {
+Describe "Get User RADIUS" {
 
     BeforeAll {
         Add-FGTUserRADIUS -Name $pester_userradius -server $pester_userradiusserver1 -secret $pester_userradius_secret
     }
 
-    It "Get User Radius Does not throw an error" {
+    It "Get User RADIUS Does not throw an error" {
         {
             Get-FGTUserRADIUS
         } | Should -Not -Throw
     }
 
-    It "Get ALL User Radius" {
+    It "Get ALL User RADIUS" {
         $userradius = Get-FGTUserRADIUS
         @($userradius).count | Should -Not -Be $NULL
     }
@@ -33,7 +33,7 @@ Describe "Get User Radius" {
         @($userradius).count | Should -Not -Be $NULL
     }
 
-    It "Get User Radius with -name $pester_userradius -meta" {
+    It "Get User RADIUS with -name $pester_userradius -meta" {
         $userradius = Get-FGTUserRADIUS -name $pester_userradius -meta
         $userradius.q_ref | Should -Not -BeNullOrEmpty
         $userradius.q_static | Should -Not -BeNullOrEmpty
@@ -48,19 +48,19 @@ Describe "Get User Radius" {
         }
     }
 
-    It "Get User Radius ($pester_userradius)" {
+    It "Get User RADIUS ($pester_userradius)" {
         $userradius = Get-FGTUserRADIUS -name $pester_userradius
         $userradius.name | Should -Be $pester_userradius
     }
 
-    It "Get User Radius ($pester_userradius) and confirm (via Confirm-FGTUserRADIUS)" {
+    It "Get User RADIUS ($pester_userradius) and confirm (via Confirm-FGTUserRADIUS)" {
         $userradius = Get-FGTUserRADIUS -name $pester_userradius
         Confirm-FGTUserRADIUS ($userradius) | Should -Be $true
     }
 
     Context "Search" {
 
-        It "Search User Radius by name ($pester_userradius)" {
+        It "Search User RADIUS by name ($pester_userradius)" {
             $userradius = Get-FGTUserRADIUS -name $pester_userradius
             @($userradius).count | Should -be 1
             $userradius.name | Should -Be $pester_userradius
@@ -74,9 +74,9 @@ Describe "Get User Radius" {
 
 }
 
-Describe "Add User Radius" {
+Describe "Add User RADIUS" {
 
-    Context "Radius Server (Primary, secondary, tertiary servers, timeout, nas ID etc ...)" {
+    Context "RADIUS Server (Primary, secondary, tertiary servers, timeout, nas ID etc ...)" {
 
         AfterEach {
             Get-FGTUserRADIUS -name $pester_userradius | Remove-FGTUserRADIUS -confirm:$false
@@ -148,7 +148,7 @@ Describe "Add User Radius" {
 
     }
 
-    Context "Radius Server auth-type" {
+    Context "RADIUS Server auth-type" {
 
         AfterEach {
             Get-FGTUserRADIUS -name $pester_userradius | Remove-FGTUserRADIUS -confirm:$false
