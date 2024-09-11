@@ -143,7 +143,7 @@ Describe "Add User Tacacs" {
             #Add first userTacacs
             Add-FGTUserTACACS -Name $pester_usertacacs -server $pester_usertacacsserver1 -key $pester_usertacacs_key
             #Add Second userTacacs with same name
-            { Add-FGTUserTACACS -Name $pester_usertacacs -server $pester_usertacacsserver1 -key $pester_usertacacs_key } | Should -Throw "Already a Tacacs Server using the same name"
+            { Add-FGTUserTACACS -Name $pester_usertacacs -server $pester_usertacacsserver1 -key $pester_usertacacs_key } | Should -Throw "Already a TACACS+ Server using the same name"
         }
 
     }
@@ -289,35 +289,35 @@ Describe "Configure User TACACS" {
         }
 
         It "Change type mschap" {
-            Get-FGTUserTACACS -name $pester_usertacacs | Set-FGTuserTACACS -auth_type mschap
+            Get-FGTUserTACACS -name $pester_usertacacs | Set-FGTuserTACACS -authen_type mschap
             $usertacacs = Get-FGTUserTACACS -name $pester_usertacacs
             $usertacacs.name | Should -Be $pester_usertacacs
             $usertacacs."auth-type" | Should -Be "mschap"
         }
 
         It "Change type chap" {
-            Get-FGTUserTACACS -name $pester_usertacacs | Set-FGTuserTACACS -auth_type chap
+            Get-FGTUserTACACS -name $pester_usertacacs | Set-FGTuserTACACS -authen_type chap
             $usertacacs = Get-FGTUserTACACS -name $pester_usertacacs
             $usertacacs.name | Should -Be $pester_usertacacs
             $usertacacs."auth-type" | Should -Be "chap"
         }
 
         It "Change type pap" {
-            Get-FGTUserTACACS -name $pester_usertacacs | Set-FGTuserTACACS -auth_type pap
+            Get-FGTUserTACACS -name $pester_usertacacs | Set-FGTuserTACACS -authen_type pap
             $usertacacs = Get-FGTUserTACACS -name $pester_usertacacs
             $usertacacs.name | Should -Be $pester_usertacacs
             $usertacacs."auth-type" | Should -Be "pap"
         }
 
         It "Change type ascii" {
-            Get-FGTUserTACACS -name $pester_usertacacs | Set-FGTuserTACACS -auth_type ascii
+            Get-FGTUserTACACS -name $pester_usertacacs | Set-FGTuserTACACS -authen_type ascii
             $usertacacs = Get-FGTUserTACACS -name $pester_usertacacs
             $usertacacs.name | Should -Be $pester_usertacacs
             $usertacacs."auth-type" | Should -Be "ascii"
         }
 
         It "Change type auto" {
-            Get-FGTUserTACACS -name $pester_usertacacs | Set-FGTuserTACACS -auth_type auto
+            Get-FGTUserTACACS -name $pester_usertacacs | Set-FGTuserTACACS -authen_type auto
             $usertacacs = Get-FGTUserTACACS -name $pester_usertacacs
             $usertacacs.name | Should -Be $pester_usertacacs
             $usertacacs."auth-type" | Should -Be "auto"

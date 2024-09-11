@@ -63,7 +63,7 @@ $script:pester_usertacacsserver2 = "pestertacacsserver2.powerfgt"
 $script:pester_usertacacsserver3 = "pestertacacsserver3.powerfgt"
 $script:pester_usertacacs_key = ConvertTo-SecureString "pester_usertacacskey" -AsPlainText -Force
 
-. ../credential.ps1
+#. ../credential.ps1
 #TODO: Add check if no ipaddress/login/password info...
 
 $script:mysecpassword = ConvertTo-SecureString $password -AsPlainText -Force
