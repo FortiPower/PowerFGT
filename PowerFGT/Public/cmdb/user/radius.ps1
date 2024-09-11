@@ -465,6 +465,7 @@ function Set-FGTUserRADIUS {
         }
 
         if ( $PsBoundParameters.ContainsKey('nas_id') ) {
+            $_radius | add-member -name "nas-id-type" -membertype NoteProperty -Value "custom"
             $_radius | add-member -name "nas-id" -membertype NoteProperty -Value $nas_id
         }
 
