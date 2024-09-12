@@ -267,7 +267,7 @@ Function Confirm-FGTUserLDAP {
         throw "Element specified does not contain a type property."
     }
     if ( -not ( $argument | get-member -name username -Membertype Properties)) {
-        throw "Element specified does not contain a username property."
+        throw "Element specified does not contain an username property."
     }
     if ( -not ( $argument | get-member -name password -Membertype Properties)) {
         throw "Element specified does not contain a password property."
