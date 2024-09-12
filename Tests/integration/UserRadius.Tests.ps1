@@ -130,13 +130,15 @@ Describe "Add User RADIUS" {
             $userradius."nas-ip" | Should -Be "192.0.2.1"
         }
 
-        It "Add User RADIUS Server $pester_userradius with NAS ID" {
-            Add-FGTUserRADIUS -Name $pester_userradius -server $pester_userradiusserver1 -secret $pester_userradius_secret -nas_id PowerFGT
-            $userradius = Get-FGTUserRADIUS -name $pester_userradius
-            $userradius.name | Should -Be $pester_userradius
-            $userradius.server | Should -Be $pester_userradiusserver1
-            $userradius.secret | Should -Not -Be $Null
-            $userradius."nas-id" | Should -Be "PowerFGT"
+        if ($DefaultFGTConnection.version -ge "7.0.0") {
+            It "Add User RADIUS Server $pester_userradius with NAS ID" {
+                Add-FGTUserRADIUS -Name $pester_userradius -server $pester_userradiusserver1 -secret $pester_userradius_secret -nas_id PowerFGT
+                $userradius = Get-FGTUserRADIUS -name $pester_userradius
+                $userradius.name | Should -Be $pester_userradius
+                $userradius.server | Should -Be $pester_userradiusserver1
+                $userradius.secret | Should -Not -Be $Null
+                $userradius."nas-id" | Should -Be "PowerFGT"
+            }
         }
 
         It "Try to Add User RADIUS Server $pester_userradius (but there is already a object with same name)" {
@@ -266,11 +268,13 @@ Describe "Configure User RADIUS" {
             $userradius."nas-ip" | Should -Be "192.2.0.2"
         }
 
-        It "Change NAS ID" {
-            Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -nas_id "PowerFGT"
-            $userradius = Get-FGTUserRADIUS -name $pester_userradius
-            $userradius.name | Should -Be $pester_userradius
-            $userradius."nas-id" | Should -Be "PowerFGT"
+        if ($DefaultFGTConnection.version -ge "7.0.0") {
+            It "Change NAS ID" {
+                Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -nas_id "PowerFGT"
+                $userradius = Get-FGTUserRADIUS -name $pester_userradius
+                $userradius.name | Should -Be $pester_userradius
+                $userradius."nas-id" | Should -Be "PowerFGT"
+            }
         }
 
         AfterAll {
