@@ -172,8 +172,14 @@ function Add-FGTUserRADIUS {
         }
 
         if ( $PsBoundParameters.ContainsKey('nas_id') ) {
-            $radius | add-member -name "nas-id-type" -membertype NoteProperty -Value "custom"
-            $radius | add-member -name "nas-id" -membertype NoteProperty -Value $nas_id
+            #before 7.x.x, there is no nas-id parameter
+            if ($connection.version -lt "7.0.0") {
+                Write-Warning "-nas-id parameter is not available before FortiOS 7.0.x"
+            }
+            else {
+                $radius | add-member -name "nas-id-type" -membertype NoteProperty -Value "custom"
+                $radius | add-member -name "nas-id" -membertype NoteProperty -Value $nas_id
+            }
         }
 
         if ( $PsBoundParameters.ContainsKey('data') ) {
@@ -448,8 +454,14 @@ function Set-FGTUserRADIUS {
         }
 
         if ( $PsBoundParameters.ContainsKey('nas_id') ) {
-            $_radius | add-member -name "nas-id-type" -membertype NoteProperty -Value "custom"
-            $_radius | add-member -name "nas-id" -membertype NoteProperty -Value $nas_id
+            #before 7.x.x, there is no nas-id parameter
+            if ($connection.version -lt "7.0.0") {
+                Write-Warning "-nas-id parameter is not available before FortiOS 7.0.x"
+            }
+            else {
+                $radius | add-member -name "nas-id-type" -membertype NoteProperty -Value "custom"
+                $radius | add-member -name "nas-id" -membertype NoteProperty -Value $nas_id
+            }
         }
 
         if ( $PsBoundParameters.ContainsKey('auth_type') ) {
