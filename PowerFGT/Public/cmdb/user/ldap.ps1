@@ -11,44 +11,40 @@ function Add-FGTUserLDAP {
         Add a FortiGate LDAP Server
 
         .DESCRIPTION
-        Add a FortiGate LDAP Server
+        Add a FortiGate LDAP Server (Server, dc, cnid...)
 
         .EXAMPLE
-        Add-FGTUserLDAP -Name PowerFGT -server ldap.powerfgt -dn "dc=fgt,dc=power,dc=powerfgt"
+        Add-FGTUserLDAP -Name MyFGTUserLDAP -server ldap.powerfgt -dn "dc=fgt,dc=power,dc=powerfgt"
 
-        Add a LDAP Server named PowerFGT using ldap.powerfgt with Base DN dc=fgt,dc=power,dc=powerfgt
+        Add a LDAP Server named MyFGTUserLDAP using ldap.powerfgt with Base DN dc=fgt,dc=power,dc=powerfgt
 
         .EXAMPLE
-        Add-FGTUserLDAP -Name PowerFGT -server ldap.powerfgt -dn "dc=fgt,dc=power,dc=powerfgt" -cnid sAMAccountName
+        Add-FGTUserLDAP -Name MyFGTUserLDAP -server ldap.powerfgt -dn "dc=fgt,dc=power,dc=powerfgt" -cnid sAMAccountName
 
-        Add a LDAP Server named PowerFGT using ldap.powerfgt with Base DN dc=fgt,dc=power,dc=powerfgt and sAMAccountName as CNID
+        Add a LDAP Server named MyFGTUserLDAP using ldap.powerfgt with Base DN dc=fgt,dc=power,dc=powerfgt and sAMAccountName as CNID
 
         .EXAMPLE
         $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
-        PS C:\>Add-FGTUserLDAP -Name PowerFGT -server ldap.powerfgt -dn "dc=fgt,dc=power,dc=powerfgt" -type regular -username svc_powerfgt -password $mypassword
+        PS C:\>Add-FGTUserLDAP -Name MyFGTUserLDAP -server ldap.powerfgt -dn "dc=fgt,dc=power,dc=powerfgt" -type regular -username svc_powerfgt -password $mypassword
 
-        Add a LDAP Server named PowerFGT using ldap.powerfgt with Base DN dc=fgt,dc=power,dc=powerfgt of type regular with speciefied username and password for binding
-
-        .EXAMPLE
-        Add-FGTUserLDAP -Name PowerFGT -server ldap.powerfgt -dn "dc=fgt,dc=power,dc=powerfgt" -visibility:$false
-
-        Add a LDAP Server named PowerFGT using ldap.powerfgt with Base DN dc=fgt,dc=power,dc=powerfgt and disabled visibility
+        Add a LDAP Server named MyFGTUserLDAP using ldap.powerfgt with Base DN dc=fgt,dc=power,dc=powerfgt of type regular with specified username and password for binding
 
         .EXAMPLE
-        Add-FGTUserLDAP -Name PowerFGT -server ldap.powerfgt -dn "dc=fgt,dc=power,dc=powerfgt" -secure ldaps
+        Add-FGTUserLDAP -Name MyFGTUserLDAP -server ldap.powerfgt -dn "dc=fgt,dc=power,dc=powerfgt" -secure ldaps
 
-        Add a LDAP Server named PowerFGT using ldap.powerfgt with Base DN dc=fgt,dc=power,dc=powerfgt, and secure connection (LDAPS)
+        Add a LDAP Server named MyFGTUserLDAP using ldap.powerfgt with Base DN dc=fgt,dc=power,dc=powerfgt, and secure connection (LDAPS)
 
         .EXAMPLE
-        Add-FGTUserLDAP -Name PowerFGT -server ldap.powerfgt -dn "dc=fgt,dc=power,dc=powerfgt" -secondary_server ldap2.powerfgt -tertiary_server ldap3.powerfgt -cnid SAMAccountName -type simple -username svc_powerfgt -password $mypassword -secure ldaps
+        $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
+        Add-FGTUserLDAP -Name MyFGTUserLDAP -server ldap.powerfgt -dn "dc=fgt,dc=power,dc=powerfgt" -secondary_server ldap2.powerfgt -tertiary_server ldap3.powerfgt -cnid SAMAccountName -type simple -username svc_powerfgt -password $mypassword -secure ldaps
 
-        Add a LDAP Server named PowerFGT using ldap.powerfgt as primary server, ldap2.powerfgt as secondary server and ldap3.powerfgt as tertiary server with Base DN dc=fgt,dc=power,dc=powerfgt, SAMAccountName as CNID, a regular account and secure connection (LDAPS)
+        Add a LDAP Server named MyFGTUserLDAP using ldap.powerfgt as primary server, ldap2.powerfgt as secondary server and ldap3.powerfgt as tertiary server with Base DN dc=fgt,dc=power,dc=powerfgt, SAMAccountName as CNID, a regular account and secure connection (LDAPS)
 
         .EXAMPLE
         $data = @{ "port" = 10389 }
-        PS C:\>Add-FGTUserLDAP -Name PowerFGT -server ldap.powerfgt -dn "dc=fgt,dc=power,dc=powerfgt" -data $data
+        PS C:\>Add-FGTUserLDAP -Name MyFGTUserLDAP -server ldap.powerfgt -dn "dc=fgt,dc=power,dc=powerfgt" -data $data
 
-        Add a LDAP Server named PowerFGT using ldap.powerfgt with Base DN dc=fgt,dc=power,dc=powerfgt and port 10389 via -data parameter
+        Add a LDAP Server named MyFGTUserLDAP using ldap.powerfgt with Base DN dc=fgt,dc=power,dc=powerfgt and port 10389 via -data parameter
     #>
 
     Param(
@@ -81,8 +77,6 @@ function Add-FGTUserLDAP {
         [Parameter (Mandatory = $false)]
         [ValidateSet("disable", "starttls", "ldaps")]
         [string]$secure,
-        [Parameter (Mandatory = $false)]
-        [boolean]$visibility,
         [Parameter (Mandatory = $false)]
         [hashtable]$data,
         [Parameter(Mandatory = $false)]
@@ -156,21 +150,6 @@ function Add-FGTUserLDAP {
             $ldap | add-member -name "secure" -membertype NoteProperty -Value $secure
         }
 
-        if ( $PsBoundParameters.ContainsKey('visibility') ) {
-            #with 6.4.x, there is no longer visibility parameter
-            if ($connection.version -ge "6.4.0") {
-                Write-Warning "-visibility parameter is no longer available with FortiOS 6.4.x and after"
-            }
-            else {
-                if ( $visibility ) {
-                    $ldap | add-member -name "visibility" -membertype NoteProperty -Value "enable"
-                }
-                else {
-                    $ldap | add-member -name "visibility" -membertype NoteProperty -Value "disable"
-                }
-            }
-        }
-
         if ( $PsBoundParameters.ContainsKey('data') ) {
             $data.GetEnumerator() | ForEach-Object {
                 $ldap | Add-member -name $_.key -membertype NoteProperty -Value $_.value
@@ -179,7 +158,7 @@ function Add-FGTUserLDAP {
 
         Invoke-FGTRestMethod -method "POST" -body $ldap -uri $uri -connection $connection @invokeParams | out-Null
 
-        Get-FGTUserLDAP -connection $connection @invokeParams -name $name
+        Get-FGTUserLDAP -name $name -connection $connection @invokeParams
     }
 
     End {
@@ -293,7 +272,7 @@ function Set-FGTUserLDAP {
         Change a FortiGate LDAP Server
 
         .DESCRIPTION
-        Change a FortiGate LDAP Server
+        Set a FortiGate LDAP Server (Server, dc, cnid...)
 
         .EXAMPLE
         $MyFGTUserLDAP = Get-FGTUserLDAP -name MyFGTUserLDAP
@@ -315,10 +294,11 @@ function Set-FGTUserLDAP {
         Change MyFGTUserLDAP to user secure connection (LDAPS and port 636)
 
         .EXAMPLE
-        $data = @{ "cnid" = "UserPrincipalName" }
+        $data = @{ "port" = "10389" }
         PS C:\>$MyFGTUserLDAP = Get-FGTUserLDAP -name MyFGTUserLDAP
         PS C:\>$MyFGTUserLDAP | Set-FGTUserLDAP -data $data
-        Change MyFGTUserLDAP to user UPN as CNID
+
+        Change MyFGTUserLDAP to port 10389
 
     #>
 
@@ -472,7 +452,7 @@ function Set-FGTUserLDAP {
         if ($PSCmdlet.ShouldProcess($userldap.name, 'Configure User Local')) {
             Invoke-FGTRestMethod -method "PUT" -body $_ldap -uri $uri -connection $connection @invokeParams | out-Null
 
-            Get-FGTUserLDAP -connection $connection @invokeParams -name $userldap.name
+            Get-FGTUserLDAP -name $userldap.name -connection $connection @invokeParams
         }
     }
 
