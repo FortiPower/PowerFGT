@@ -11,29 +11,29 @@ BeforeAll {
     Connect-FGT @invokeParams
 }
 
-Describe "Get User Ldap" {
+Describe "Get User LDAP" {
 
     BeforeAll {
         Add-FGTUserLDAP -name $pester_userldap -server $pester_userldapserver1 -dn "dc=fgt,dc=power,dc=powerfgt"
     }
 
-    It "Get User Ldap Does not throw an error" {
+    It "Get User LDAP Does not throw an error" {
         {
             Get-FGTUserLDAP
         } | Should -Not -Throw
     }
 
-    It "Get ALL User Ldap" {
+    It "Get ALL User LDAP" {
         $userldap = Get-FGTUserLDAP
         @($userldap).count | Should -Not -Be $NULL
     }
 
-    It "Get ALL User Ldap with -skip" {
+    It "Get ALL User LDAP with -skip" {
         $userldap = Get-FGTUserLDAP -skip
         @($userldap).count | Should -Not -Be $NULL
     }
 
-    It "Get User Ldap with -name $pester_userldap -meta" {
+    It "Get User LDAP with -name $pester_userldap -meta" {
         $userldap = Get-FGTUserLDAP -name $pester_userldap -meta
         $userldap.q_ref | Should -Not -BeNullOrEmpty
         $userldap.q_static | Should -Not -BeNullOrEmpty
@@ -48,19 +48,19 @@ Describe "Get User Ldap" {
         }
     }
 
-    It "Get User Ldap ($pester_userldap)" {
+    It "Get User LDAP ($pester_userldap)" {
         $userldap = Get-FGTUserLDAP -name $pester_userldap
         $userldap.name | Should -Be $pester_userldap
     }
 
-    It "Get User Ldap ($pester_userldap) and confirm (via Confirm-FGTUserLDAP)" {
+    It "Get User LDAP ($pester_userldap) and confirm (via Confirm-FGTUserLDAP)" {
         $userldap = Get-FGTUserLDAP -name $pester_userldap
         Confirm-FGTUserLDAP ($userldap) | Should -Be $true
     }
 
     Context "Search" {
 
-        It "Search User Ldap by name ($pester_userldap)" {
+        It "Search User LDAP by name ($pester_userldap)" {
             $userldap = Get-FGTUserLDAP -name $pester_userldap
             @($userldap).count | Should -be 1
             $userldap.name | Should -Be $pester_userldap
@@ -74,7 +74,7 @@ Describe "Get User Ldap" {
 
 }
 
-Describe "Add User Ldap" {
+Describe "Add User LDAP" {
 
     Context "LDAP Server (Primary, secondary, tertiary servers, type, secure connection etc ...)" {
 
@@ -153,6 +153,7 @@ Describe "Add User Ldap" {
             $userldap.server | Should -Be $pester_userldapserver1
             $userldap.dn | Should -Be "dc=fgt,dc=power,dc=powerfgt"
             $userldap.secure | Should -Be "disable"
+            $userldap.port | Should -Be "389"
         }
 
         It "Add User LDAP Server $pester_userldap with secure connection starttls" {
@@ -162,6 +163,7 @@ Describe "Add User Ldap" {
             $userldap.server | Should -Be $pester_userldapserver1
             $userldap.dn | Should -Be "dc=fgt,dc=power,dc=powerfgt"
             $userldap.secure | Should -Be "starttls"
+            $userldap.port | Should -Be "389"
         }
 
         It "Add User LDAP Server $pester_userldap with secure connection ldaps" {
@@ -196,7 +198,7 @@ Describe "Add User Ldap" {
 
 }
 
-Describe "Configure User Ldap" {
+Describe "Configure User LDAP" {
 
     Context "Change server, CNID, DN, etc..." {
 
@@ -392,7 +394,7 @@ Describe "Configure User Ldap" {
     }
 }
 
-Describe "Remove User Ldap" {
+Describe "Remove User LDAP" {
 
     Context "local" {
 
@@ -400,7 +402,7 @@ Describe "Remove User Ldap" {
             Add-FGTUserLDAP -Name $pester_userldap -server $pester_userldapserver1 -dn "dc=fgt,dc=power,dc=powerfgt"
         }
 
-        It "Remove User Ldap $pester_userldap by pipeline" {
+        It "Remove User LDAP $pester_userldap by pipeline" {
             $userldap = Get-FGTUserLDAP -name $pester_userldap
             $userldap | Remove-FGTUserLDAP -confirm:$false
             $userldap = Get-FGTUserLDAP -name $pester_userldap
