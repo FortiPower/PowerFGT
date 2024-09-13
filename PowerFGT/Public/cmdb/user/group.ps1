@@ -33,7 +33,7 @@ function Add-FGTUserGroup {
     Param(
         [Parameter (Mandatory = $true)]
         [string]$name,
-        [Parameter (Mandatory = $true)]
+        [Parameter (Mandatory = $false)]
         [string[]]$member,
         [Parameter (Mandatory = $false)]
         [hashtable]$data,
@@ -63,14 +63,16 @@ function Add-FGTUserGroup {
 
         $usergroup | add-member -name "name" -membertype NoteProperty -Value $name
 
-        #Add member to members Array
-        $members = @( )
-        foreach ( $m in $member ) {
-            $member_name = @{ }
-            $member_name.add( 'name', $m)
-            $members += $member_name
+        if ( $PsBoundParameters.ContainsKey('member') ) {
+            #Add member to members Array
+            $members = @( )
+            foreach ( $m in $member ) {
+                $member_name = @{ }
+                $member_name.add( 'name', $m)
+                $members += $member_name
+            }
+            $usergroup | add-member -name "member" -membertype NoteProperty -Value $members
         }
-        $usergroup | add-member -name "member" -membertype NoteProperty -Value $members
 
         if ( $PsBoundParameters.ContainsKey('data') ) {
             $data.GetEnumerator() | ForEach-Object {
