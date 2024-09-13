@@ -260,14 +260,14 @@ Describe "Configure User RADIUS" {
         }
 
         It "Change NAS IP" {
-            Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -nas_ip "192.2.0.2"
+            Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -nas_ip 192.2.0.2
             $userradius = Get-FGTUserRADIUS -name $pester_userradius
             $userradius.name | Should -Be $pester_userradius
             $userradius."nas-ip" | Should -Be "192.2.0.2"
         }
 
         It "Change NAS ID" -skip:($fgt_version -lt "7.2.0") {
-            Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -nas_id "PowerFGT"
+            Get-FGTUserRADIUS -name $pester_userradius | Set-FGTuserRADIUS -nas_id PowerFGT
             $userradius = Get-FGTUserRADIUS -name $pester_userradius
             $userradius.name | Should -Be $pester_userradius
             $userradius."nas-id" | Should -Be "PowerFGT"
