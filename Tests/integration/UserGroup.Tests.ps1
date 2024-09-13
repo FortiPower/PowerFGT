@@ -98,6 +98,13 @@ Describe "Add User Group" {
         Get-FGTUserGroup -name $pester_usergroup1 | Remove-FGTUserGroup -confirm:$false
     }
 
+    It "Add User Group $pester_usergroup1 (with 0 member)" {
+        Add-FGTUserGroup -Name $pester_usergroup1
+        $usergroup = Get-FGTUserGroup -name $pester_usergroup1
+        $usergroup.name | Should -Be $pester_usergroup1
+        ($usergroup.member).count | Should -Be "0"
+    }
+
     It "Add User Group $pester_usergroup1 (with 1 member)" {
         Add-FGTUserGroup -Name $pester_usergroup1 -member $pester_userlocal
         $usergroup = Get-FGTUserGroup -name $pester_usergroup1
