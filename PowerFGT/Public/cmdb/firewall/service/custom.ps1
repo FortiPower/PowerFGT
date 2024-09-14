@@ -109,3 +109,43 @@ function Get-FGTFirewallServiceCustom {
     End {
     }
 }
+
+
+function Add-FGTFirewallServiceCustom {
+    param (
+        [Parameter(Mandatory)]
+        [string]
+        $name,
+        [Parameter()]
+        [string]
+        $tcprange,
+        [Parameter()]
+        [string]
+        $udprange,
+        [Parameter()]
+        [string]
+        $category,
+        [Parameter()]
+        [string]
+        $vdom = 'root'
+        
+    )
+
+
+
+    $data = @{
+        name = $name
+    }
+    if (![string]::IsNullOrEmpty($tcprange)) { 
+        $data.'tcp-portrange' = $tcprange
+    }
+    if (![string]::IsNullOrEmpty($udprange)) { 
+        $data.'udp-portrange' = $udprange
+    }
+    if (![string]::IsNullOrEmpty($category)) { 
+        $data.category = @{
+            q_origin_key = $category
+        }
+    }
+    Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall.service/custom' -vdom $vdom -method POST -body $data
+}
