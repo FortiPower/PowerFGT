@@ -163,7 +163,6 @@ function Add-FGTUserRADIUS {
         }
 
         if ( $PsBoundParameters.ContainsKey('nas_ip') ) {
-            $radius | add-member -name "switch-controller-nas-ip-dynamic" -membertype NoteProperty -Value $true
             $radius | add-member -name "nas-ip" -membertype NoteProperty -Value $nas_ip
         }
 
