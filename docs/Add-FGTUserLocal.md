@@ -26,34 +26,36 @@ Add a FortiGate Local User (Name, Password, MFA)
 
 ### EXAMPLE 1
 ```
-Add-FGTUserLocal -Name FGT -passwd MyFGT -status
+$mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
+PS > Add-FGTUserLocal -Name MyFGTUserLocal -passwd $mypassword -status:$false
 ```
 
-Add Local User object name FGT, password MyFGT and enable it
+Add Local User object name MyFGTUserLocal, password MyFGT and disabled it
 
 ### EXAMPLE 2
 ```
 $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
-Add-FGTUserLocal -Name FGT -passwd $mypassword -status -two_factor email -email_to powerfgt@fgt.power
+PS > Add-FGTUserLocal -Name MyFGTUserLocal -passwd $mypassword -status -two_factor email -email_to powerfgt@fgt.power
 ```
 
-Add Local User object name FGT, password mypassword and enable it, with two factor authentication by email
+Add Local User object name MyFGTUserLocal, password mypassword with two factor authentication by email
 
 ### EXAMPLE 3
 ```
 $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
-Add-FGTUserLocal -Name FGT -passwd $mypassword -status -two_factor fortitoken -fortitoken XXXXXXXXXXXXXXXX -email_to powerfgt@fgt.power
+PS > Add-FGTUserLocal -Name MyFGTUserLocal -passwd $mypassword -status -two_factor fortitoken -fortitoken XXXXXXXXXXXXXXXX -email_to powerfgt@fgt.power
 ```
 
-Add Local User object name FGT, password mypassword and enable it, with two factor authentication by fortitoken
+Add Local User object name MyFGTUserLocal, password mypassword, with two factor authentication by fortitoken
 
 ### EXAMPLE 4
 ```
 $data = @{ "sms-phone" = "XXXXXXXXXX" }
-$mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
-PS C:\>Add-FGTUserLocal -Name FGT -passwd $mypassword -status -two_factor sms -data $data -email_to powerfgt@fgt.power
-Add Add Local User object name FGT, password mypassword and enable it, with email and two factor via SMS and SMS Phone via -data parameter
+PS > $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
+PS > Add-FGTUserLocal -Name MyFGTUserLocal -passwd $mypassword -status -two_factor sms -data $data -email_to powerfgt@fgt.power
 ```
+
+Add Local User object name MyFGTUserLocal, password mypassword, with email and two factor via SMS and SMS Phone via -data parameter
 
 ## PARAMETERS
 

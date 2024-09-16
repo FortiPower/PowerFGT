@@ -20,7 +20,7 @@ Set-FGTUserLocal [-userlocal] <PSObject> [-name <String>] [-status] [-two_factor
  [-Confirm] [<CommonParameters>]
 ```
 
-### local
+### password
 ```
 Set-FGTUserLocal [-userlocal] <PSObject> [-name <String>] [-status] [-passwd <SecureString>]
  [-two_factor <String>] [-two_factor_notification <String>] [-fortitoken <String>] [-email_to <String>]
@@ -36,7 +36,7 @@ Change a FortiGate Local User
 ### EXAMPLE 1
 ```
 $MyFGTUserLocal = Get-FGTUserLocal -name MyFGTUserLocal
-PS C:\>$MyFGTUserLocal | Set-FGTUserLocal -status $false
+PS > $MyFGTUserLocal | Set-FGTUserLocal -status:$false
 ```
 
 Change MyFGTUserLocal to status disable
@@ -45,15 +45,15 @@ Change MyFGTUserLocal to status disable
 ```
 $MyFGTUserLocal = Get-FGTUserLocal -name MyFGTUserLocal
 $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
-PS C:\>$MyFGTUserLocal | Set-FGTUserLocal -passwd $mypassword
+PS > $MyFGTUserLocal | Set-FGTUserLocal -passwd $mypassword
 ```
 
-Change MyFGTUserLocal to value (Password) MyFGTUserLocalPassword
+Change Password for MyFGTUserLocal local user
 
 ### EXAMPLE 3
 ```
 $MyFGTUserLocal = Get-FGTUserLocal -name MyFGTUserLocal
-PS C:\>$MyFGTUserLocal | Set-FGTUserLocal -email_to newpowerfgt@fgt.power
+PS > $MyFGTUserLocal | Set-FGTUserLocal -email_to newpowerfgt@fgt.power
 ```
 
 Change MyFGTUserLocal to set email to newpowerfgt@fgt.power
@@ -61,10 +61,11 @@ Change MyFGTUserLocal to set email to newpowerfgt@fgt.power
 ### EXAMPLE 4
 ```
 $data = @{ "sms-phone" = "XXXXXXXXXX" }
-PS C:\>$MyFGTUserLocal = Get-FGTUserLocal -name MyFGTUserLocal
-PS C:\>$MyFGTUserLocal | Set-FGTUserLocal -data $data
-Change MyFGTUserLocal to set SMS Phone
+PS > $MyFGTUserLocal = Get-FGTUserLocal -name MyFGTUserLocal
+PS > $MyFGTUserLocal | Set-FGTUserLocal -data $data
 ```
+
+Change MyFGTUserLocal to set SMS Phone
 
 ## PARAMETERS
 
@@ -118,7 +119,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: SecureString
-Parameter Sets: local
+Parameter Sets: password
 Aliases:
 
 Required: False
