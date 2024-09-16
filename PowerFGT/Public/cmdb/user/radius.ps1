@@ -448,7 +448,6 @@ function Set-FGTUserRADIUS {
         }
 
         if ( $PsBoundParameters.ContainsKey('nas_ip') ) {
-            $_radius | add-member -name "switch-controller-nas-ip-dynamic" -membertype NoteProperty -Value $true
             $_radius | add-member -name "nas-ip" -membertype NoteProperty -Value $nas_ip
         }
 
@@ -458,8 +457,8 @@ function Set-FGTUserRADIUS {
                 Write-Warning "-nas-id parameter is not available before FortiOS 7.0.x"
             }
             else {
-                $radius | add-member -name "nas-id-type" -membertype NoteProperty -Value "custom"
-                $radius | add-member -name "nas-id" -membertype NoteProperty -Value $nas_id
+                $_radius | add-member -name "nas-id-type" -membertype NoteProperty -Value "custom"
+                $_radius | add-member -name "nas-id" -membertype NoteProperty -Value $nas_id
             }
         }
 
