@@ -10,12 +10,12 @@ function Get-FGTMonitorSystemInterfaceDHCPStatus {
         Get Interface DHCP Status
 
         .DESCRIPTION
-        Get Client DHCP Status for an interface (Fortiguard, forticare....)
+        Get Client DHCP Status for an interface
 
         .EXAMPLE
-        Get-FGTMonitorSystemInterfaceDHCPStatus
+        Get-FGTMonitorSystemInterfaceDHCPStatus -interface wan
 
-        Get License Status with status, version and last_update
+        Get DHCP Client status for the specified interface wan
 
     #>
 
