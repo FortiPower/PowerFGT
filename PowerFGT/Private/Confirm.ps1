@@ -481,6 +481,48 @@ Function Confirm-FGTUserLocal {
 
 }
 
+Function Confirm-FGTUserTACACS {
+
+    Param (
+        [Parameter (Mandatory = $true)]
+        [object]$argument
+    )
+
+    #Check if it looks like a TACACS Server element
+
+    if ( -not ( $argument | get-member -name name -Membertype Properties)) {
+        throw "Element specified does not contain a name property."
+    }
+    if ( -not ( $argument | get-member -name server -Membertype Properties)) {
+        throw "Element specified does not contain a server property."
+    }
+    if ( -not ( $argument | get-member -name key -Membertype Properties)) {
+        throw "Element specified does not contain a key property."
+    }
+    if ( -not ( $argument | get-member -name secondary-server -Membertype Properties)) {
+        throw "Element specified does not contain a secondary-server property."
+    }
+    if ( -not ( $argument | get-member -name secondary-key -Membertype Properties)) {
+        throw "Element specified does not contain a secondary-key property."
+    }
+    if ( -not ( $argument | get-member -name tertiary-server -Membertype Properties)) {
+        throw "Element specified does not contain a tertiary-server property."
+    }
+    if ( -not ( $argument | get-member -name tertiary-key -Membertype Properties)) {
+        throw "Element specified does not contain a tertiary-key property."
+    }
+    if ( -not ( $argument | get-member -name port -Membertype Properties)) {
+        throw "Element specified does not contain a port property."
+    }
+    if ( -not ( $argument | get-member -name authorization -Membertype Properties)) {
+        throw "Element specified does not contain a authorization property."
+    }
+    if ( -not ( $argument | get-member -name authen-type -Membertype Properties)) {
+        throw "Element specified does not contain a authen-type property."
+    }
+
+    $true
+}
 Function Confirm-FGTUserGroup {
 
     Param (

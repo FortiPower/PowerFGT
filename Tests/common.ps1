@@ -57,6 +57,11 @@ $script:pester_userlocal3 = "pester_userlocal3"
 $script:pester_userlocal4 = "pester_userlocal4"
 $script:pester_usergroup1 = "pester_usergroup1"
 $script:pester_usergroup2 = "pester_usergroup2"
+$script:pester_usertacacs = "pester_usertacacs"
+$script:pester_usertacacsserver1 = "pestertacacsserver1.powerfgt"
+$script:pester_usertacacsserver2 = "pestertacacsserver2.powerfgt"
+$script:pester_usertacacsserver3 = "pestertacacsserver3.powerfgt"
+$script:pester_usertacacs_key = ConvertTo-SecureString "pester_usertacacskey" -AsPlainText -Force
 
 . ../credential.ps1
 #TODO: Add check if no ipaddress/login/password info...
