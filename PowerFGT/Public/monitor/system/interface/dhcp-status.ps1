@@ -23,6 +23,8 @@ function Get-FGTMonitorSystemInterfaceDHCPStatus {
         [Parameter (Mandatory = $true, Position = 1)]
         [string]$interface,
         [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
     )
 
@@ -30,6 +32,10 @@ function Get-FGTMonitorSystemInterfaceDHCPStatus {
     }
 
     Process {
+
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
 
         $uri = "api/v2/monitor/system/interface/dhcp-status?mkey=$($interface)"
         $response = Invoke-FGTRestMethod -uri $uri -method 'GET' -connection $connection
