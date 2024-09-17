@@ -311,6 +311,10 @@ Describe "Add User Local" {
             { Add-FGTUserLocal -Name $pester_userlocal -status -passwd $pester_userlocalpassword } | Should -Throw "Already a Local User object using the same name"
         }
 
+        AfterAll {
+            Get-FGTUserLocal -name $pester_userlocal | Remove-FGTUserLocal -confirm:$false
+        }
+
     }
 
 }
@@ -652,6 +656,13 @@ Describe "Configure User Local" {
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
             $userlocal.type | Should -Be "password"
+        }
+
+        AfterAll {
+            Get-FGTUserLocal -name $pester_userlocal  | Remove-FGTUserLocal -confirm:$false
+            Get-FGTUserRADIUS -name $pester_userradius | Remove-FGTUserRADIUS -confirm:$false
+            Get-FGTUserTACACS -name $pester_usertacacs | Remove-FGTUserTACACS -confirm:$false
+            Get-FGTUserLDAP -name $pester_userldap | Remove-FGTUserLDAP -confirm:$false
         }
 
     }
