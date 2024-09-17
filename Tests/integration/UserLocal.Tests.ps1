@@ -614,7 +614,7 @@ Describe "Configure User Local" {
 
     }
 
-    Context "Change name, email, MFA, etc as LDAP User" {
+    Context "Change type" {
 
         BeforeAll {
             Add-FGTUserRADIUS -Name $pester_userradius -server $pester_userradiusserver1 -secret $pester_userradius_secret
@@ -655,26 +655,27 @@ Describe "Configure User Local" {
         }
 
     }
+}
 
-    Describe "Remove User Local" {
+Describe "Remove User Local" {
 
-        Context "local" {
+    Context "local" {
 
-            BeforeEach {
-                Add-FGTUserLocal -Name $pester_userlocal -passwd $pester_userlocalpassword
-            }
+        BeforeEach {
+            Add-FGTUserLocal -Name $pester_userlocal -passwd $pester_userlocalpassword
+        }
 
-            It "Remove User Local $pester_userlocal by pipeline" {
-                $userlocal = Get-FGTUserLocal -name $pester_userlocal
-                $userlocal | Remove-FGTUserLocal -confirm:$false
-                $userlocal = Get-FGTUserLocal -name $pester_userlocal
-                $userlocal | Should -Be $NULL
-            }
-
+        It "Remove User Local $pester_userlocal by pipeline" {
+            $userlocal = Get-FGTUserLocal -name $pester_userlocal
+            $userlocal | Remove-FGTUserLocal -confirm:$false
+            $userlocal = Get-FGTUserLocal -name $pester_userlocal
+            $userlocal | Should -Be $NULL
         }
 
     }
 
-    AfterAll {
-        Disconnect-FGT -confirm:$false
-    }
+}
+
+AfterAll {
+    Disconnect-FGT -confirm:$false
+}
