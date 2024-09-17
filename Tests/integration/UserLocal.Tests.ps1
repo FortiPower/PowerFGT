@@ -133,7 +133,7 @@ Describe "Add User Local" {
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
             $userlocal.type | Should -Be "radius"
-            $userlocal.'radius-server' | Should $pester_userradius
+            $userlocal.'radius-server' | Should -Be $pester_userradius
         }
 
         It "Add User Local $pester_userlocal as RADIUS user enable" {
@@ -193,7 +193,7 @@ Describe "Add User Local" {
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
             $userlocal.type | Should -Be "tacacs+"
-            $userlocal.'tacacs+-server' | Should $pester_usertacacs
+            $userlocal.'tacacs+-server' | Should -Be $pester_usertacacs
         }
 
         It "Add User Local $pester_userlocal as TACACS user enable" {
@@ -253,7 +253,7 @@ Describe "Add User Local" {
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
             $userlocal.type | Should -Be "ldap"
-            $userlocal.'ldap-server' | Should $pester_userldap
+            $userlocal.'ldap-server' | Should -Be $pester_userldap
         }
 
         It "Add User Local $pester_userlocal as TACACS user enable" {
