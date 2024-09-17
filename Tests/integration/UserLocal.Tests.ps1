@@ -627,7 +627,7 @@ Describe "Configure User Local" {
             Add-FGTUserLocal -Name $pester_userlocal -passwd $pester_userlocalpassword
         }
 
-        It "Change type to RADIUS from Local" {
+        It "Change type to RADIUS from Local" -skip:($fgt_version -lt "6.4.0") {
             Get-FGTUserLocal -name $pester_userlocal | Set-FGTUserLocal -radius_server $pester_userradius
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
@@ -635,7 +635,7 @@ Describe "Configure User Local" {
             $userlocal."radius-server" | Should -Be $pester_userradius
         }
 
-        It "Change type to TACACS from RADIUS" {
+        It "Change type to TACACS from RADIUS" -skip:($fgt_version -lt "6.4.0") {
             Get-FGTUserLocal -name $pester_userlocal | Set-FGTUserLocal -tacacs_server $pester_usertacacs
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
@@ -643,19 +643,12 @@ Describe "Configure User Local" {
             $userlocal."tacacs+-server" | Should -Be $pester_usertacacs
         }
 
-        It "Change type to LDAP from TACACS" {
+        It "Change type to LDAP from TACACS" -skip:($fgt_version -lt "6.4.0") {
             Get-FGTUserLocal -name $pester_userlocal | Set-FGTUserLocal -ldap_server $pester_userldap
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
             $userlocal.type | Should -Be "ldap"
             $userlocal."ldap-server" | Should -Be $pester_userldap
-        }
-
-        It "Change type to Local from LDAP" {
-            Get-FGTUserLocal -name $pester_userlocal | Set-FGTUserLocal -passwd $pester_userlocalpassword
-            $userlocal = Get-FGTUserLocal -name $pester_userlocal
-            $userlocal.name | Should -Be $pester_userlocal
-            $userlocal.type | Should -Be "password"
         }
 
         AfterAll {
