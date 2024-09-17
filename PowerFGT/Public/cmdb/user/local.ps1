@@ -349,10 +349,15 @@ function Set-FGTUserLocal {
         [switch]$status,
         [Parameter (Mandatory = $false, ParameterSetName = "password")]
         [SecureString]$passwd,
-        <#[Parameter (Mandatory = $false, ParameterSetName = "radius")]
+        [Parameter (Mandatory = $false, ParameterSetName = "radius")]
+        [ValidateLength(1, 35)]
         [string]$radius_server,
         [Parameter (Mandatory = $false, ParameterSetName = "tacacs")]
-        [string]$tacacs_server,#>
+        [ValidateLength(1, 35)]
+        [string]$tacacs_server,
+        [Parameter (Mandatory = $false, ParameterSetName = "ldap")]
+        [ValidateLength(1, 35)]
+        [string]$ldap_server,
         [Parameter (Mandatory = $false)]
         [ValidateSet("fortitoken", "email", "sms", "disable", "fortitoken-cloud")]
         [string]$two_factor,
@@ -382,6 +387,24 @@ function Set-FGTUserLocal {
             $invokeParams.add( 'vdom', $vdom )
         }
 
+        if ( $PsBoundParameters.ContainsKey('radius_server') ) {
+            if ( -Not (Get-FGTUserRADIUS @invokeParams -name $radius_server -connection $connection)) {
+                Throw "There is no RADIUS Server existing using this name"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('tacacs_server') ) {
+            if ( -Not (Get-FGTUserTACACS @invokeParams -name $tacacs_server -connection $connection)) {
+                Throw "There is no TACACS Server existing using this name"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('ldap_server') ) {
+            if ( -Not (Get-FGTUserLDAP @invokeParams -name $ldap_server -connection $connection)) {
+                Throw "There is no LDAP Server existing using this name"
+            }
+        }
+
         $uri = "api/v2/cmdb/user/local/$($userlocal.name)"
 
         $_local = New-Object -TypeName PSObject
@@ -405,10 +428,6 @@ function Set-FGTUserLocal {
             }
         }
 
-        if ( $PSCmdlet.ParameterSetName -ne "default" -and $userlocal.type -ne $PSCmdlet.ParameterSetName ) {
-            throw "User type ($($userlocal.type)) need to be on the same type ($($PSCmdlet.ParameterSetName))"
-        }
-
         if ($PsBoundParameters.ContainsKey('status')) {
             if ($status) {
                 $_local  | add-member -name "status" -membertype NoteProperty -Value "enable"
@@ -420,14 +439,21 @@ function Set-FGTUserLocal {
 
         switch ( $PSCmdlet.ParameterSetName ) {
             "password" {
+                $_local | add-member -name "type" -membertype NoteProperty -Value "password"
                 $_local | add-member -name "passwd" -membertype NoteProperty -Value $password
             }
-            <#"radius" {
+            "radius" {
+                $_local | add-member -name "type" -membertype NoteProperty -Value "radius"
                 $_local | add-member -name "radius-server" -membertype NoteProperty -Value $radius_server
             }
             "tacacs" {
+                $_local | add-member -name "type" -membertype NoteProperty -Value "tacacs+"
                 $_local | add-member -name "tacacs+-server" -membertype NoteProperty -Value $tacacs_server
-            }#>
+            }
+            "ldap" {
+                $_local | add-member -name "type" -membertype NoteProperty -Value "ldap"
+                $_local | add-member -name "ldap-server" -membertype NoteProperty -Value $ldap_server
+            }
             default { }
         }
 
@@ -443,7 +469,7 @@ function Set-FGTUserLocal {
             }
             elseif ( $two_factor -eq "sms" ) {
                 $_local | add-member -name "two-factor" -membertype NoteProperty -Value $two_factor
-                $_local | add-member -name "two-factor-authentication" -membertype NoteProperty -Value $two_factor++
+                $_local | add-member -name "two-factor-authentication" -membertype NoteProperty -Value $two_factor
             }
         }
 
