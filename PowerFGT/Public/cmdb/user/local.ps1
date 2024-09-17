@@ -47,10 +47,15 @@ function Add-FGTUserLocal {
         [switch]$status,
         [Parameter (Mandatory = $false, ParameterSetName = "password")]
         [SecureString]$passwd,
-        <#[Parameter (Mandatory = $false, ParameterSetName = "radius")]
+        [Parameter (Mandatory = $false, ParameterSetName = "radius")]
+        [ValidateLength(1, 35)]
         [string]$radius_server,
         [Parameter (Mandatory = $false, ParameterSetName = "tacacs")]
-        [string]$tacacs_server,#>
+        [ValidateLength(1, 35)]
+        [string]$tacacs_server,
+        [Parameter (Mandatory = $false, ParameterSetName = "ldap")]
+        [ValidateLength(1, 35)]
+        [string]$ldap_server,
         [Parameter (Mandatory = $false)]
         [ValidateSet("fortitoken", "email", "sms", "disable", "fortitoken-cloud")]
         [string]$two_factor,
@@ -94,6 +99,24 @@ function Add-FGTUserLocal {
             Throw "Already a Local User object using the same name"
         }
 
+        if ( $PsBoundParameters.ContainsKey('radius_server') ) {
+            if ( -Not (Get-FGTUserRADIUS @invokeParams -name $radius_server -connection $connection)) {
+                Throw "There is no RADIUS Server existing using this name"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('tacacs_server') ) {
+            if ( -Not (Get-FGTUserTACACS @invokeParams -name $tacacs_server -connection $connection)) {
+                Throw "There is no TACACS Server existing using this name"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('ldap_server') ) {
+            if ( -Not (Get-FGTUserLDAP @invokeParams -name $ldap_server -connection $connection)) {
+                Throw "There is no LDAP Server existing using this name"
+            }
+        }
+
         $uri = "api/v2/cmdb/user/local"
 
         $local = New-Object -TypeName PSObject
@@ -112,15 +135,18 @@ function Add-FGTUserLocal {
                 $local | add-member -name "type" -membertype NoteProperty -Value "password"
                 $local | add-member -name "passwd" -membertype NoteProperty -Value $password
             }
-            <#
             "radius" {
                 $local | add-member -name "type" -membertype NoteProperty -Value "radius"
                 $local | add-member -name "radius-server" -membertype NoteProperty -Value $radius_server
             }
             "tacacs" {
-                $local | add-member -name "type" -membertype NoteProperty -Value "tacacs"
+                $local | add-member -name "type" -membertype NoteProperty -Value "tacacs+"
                 $local | add-member -name "tacacs+-server" -membertype NoteProperty -Value $tacacs_server
-            }#>
+            }
+            "ldap" {
+                $local | add-member -name "type" -membertype NoteProperty -Value "ldap"
+                $local | add-member -name "ldap-server" -membertype NoteProperty -Value $ldap_server
+            }
             default { }
         }
 
