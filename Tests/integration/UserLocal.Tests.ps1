@@ -91,6 +91,7 @@ Describe "Add User Local" {
             $userlocal.status | Should -Be "enable"
             $userlocal.'email-to' | Should -BeNullOrEmpty
             $userlocal.'two-factor' | Should -Be "disable"
+            $userlocal.type | Should -Be "password"
         }
 
         It "Add User Local $pester_userlocal email to" {
@@ -100,6 +101,7 @@ Describe "Add User Local" {
             $userlocal.status | Should -Be "disable"
             $userlocal.'email-to' | Should -Be "powerfgt@power.fgt"
             $userlocal.'two-factor' | Should -Be "disable"
+            $userlocal.type | Should -Be "password"
         }
 
         It "Add User Local $pester_userlocal MFA by email" {
@@ -109,6 +111,7 @@ Describe "Add User Local" {
             $userlocal.status | Should -Be "enable"
             $userlocal.'email-to' | Should -Be "powerfgt@power.fgt"
             $userlocal.'two-factor' | Should -Be "email"
+            $userlocal.type | Should -Be "password"
         }
 
         It "Add User Local $pester_userlocal email with -data" {
@@ -118,6 +121,7 @@ Describe "Add User Local" {
             $userlocal.name | Should -Be $pester_userlocal
             $userlocal.status | Should -Be "enable"
             $userlocal.'email-to' | Should -Be "powerfgt@power.fgt"
+            $userlocal.type | Should -Be "password"
         }
 
     }
@@ -143,6 +147,7 @@ Describe "Add User Local" {
             $userlocal.status | Should -Be "enable"
             $userlocal.'email-to' | Should -BeNullOrEmpty
             $userlocal.'two-factor' | Should -Be "disable"
+            $userlocal.'radius-server' | Should -Be $pester_userradius
         }
 
         It "Add User Local $pester_userlocal as RADIUS user email to" {
@@ -152,6 +157,7 @@ Describe "Add User Local" {
             $userlocal.status | Should -Be "disable"
             $userlocal.'email-to' | Should -Be "powerfgt@power.fgt"
             $userlocal.'two-factor' | Should -Be "disable"
+            $userlocal.'radius-server' | Should -Be $pester_userradius
         }
 
         It "Add User Local $pester_userlocal as RADIUS user MFA by email" {
@@ -161,6 +167,7 @@ Describe "Add User Local" {
             $userlocal.status | Should -Be "enable"
             $userlocal.'email-to' | Should -Be "powerfgt@power.fgt"
             $userlocal.'two-factor' | Should -Be "email"
+            $userlocal.'radius-server' | Should -Be $pester_userradius
         }
 
         It "Add User Local $pester_userlocal as RADIUS user email with -data" {
@@ -170,6 +177,7 @@ Describe "Add User Local" {
             $userlocal.name | Should -Be $pester_userlocal
             $userlocal.status | Should -Be "enable"
             $userlocal.'email-to' | Should -Be "powerfgt@power.fgt"
+            $userlocal.'radius-server' | Should -Be $pester_userradius
         }
 
         AfterEach {
@@ -203,6 +211,7 @@ Describe "Add User Local" {
             $userlocal.status | Should -Be "enable"
             $userlocal.'email-to' | Should -BeNullOrEmpty
             $userlocal.'two-factor' | Should -Be "disable"
+            $userlocal.'tacacs+-server' | Should -Be $pester_usertacacs
         }
 
         It "Add User Local $pester_userlocal as TACACS user email to" {
@@ -212,6 +221,7 @@ Describe "Add User Local" {
             $userlocal.status | Should -Be "disable"
             $userlocal.'email-to' | Should -Be "powerfgt@power.fgt"
             $userlocal.'two-factor' | Should -Be "disable"
+            $userlocal.'tacacs+-server' | Should -Be $pester_usertacacs
         }
 
         It "Add User Local $pester_userlocal as TACACS user MFA by email" {
@@ -221,6 +231,7 @@ Describe "Add User Local" {
             $userlocal.status | Should -Be "enable"
             $userlocal.'email-to' | Should -Be "powerfgt@power.fgt"
             $userlocal.'two-factor' | Should -Be "email"
+            $userlocal.'tacacs+-server' | Should -Be $pester_usertacacs
         }
 
         It "Add User Local $pester_userlocal as TACACS user email with -data" {
@@ -230,6 +241,7 @@ Describe "Add User Local" {
             $userlocal.name | Should -Be $pester_userlocal
             $userlocal.status | Should -Be "enable"
             $userlocal.'email-to' | Should -Be "powerfgt@power.fgt"
+            $userlocal.'tacacs+-server' | Should -Be $pester_usertacacs
         }
 
         AfterEach {
@@ -263,6 +275,7 @@ Describe "Add User Local" {
             $userlocal.status | Should -Be "enable"
             $userlocal.'email-to' | Should -BeNullOrEmpty
             $userlocal.'two-factor' | Should -Be "disable"
+            $userlocal.'ldap-server' | Should -Be $pester_userldap
         }
 
         It "Add User Local $pester_userlocal as TACACS user email to" {
@@ -272,6 +285,7 @@ Describe "Add User Local" {
             $userlocal.status | Should -Be "disable"
             $userlocal.'email-to' | Should -Be "powerfgt@power.fgt"
             $userlocal.'two-factor' | Should -Be "disable"
+            $userlocal.'ldap-server' | Should -Be $pester_userldap
         }
 
         It "Add User Local $pester_userlocal as TACACS user MFA by email" {
@@ -281,6 +295,7 @@ Describe "Add User Local" {
             $userlocal.status | Should -Be "enable"
             $userlocal.'email-to' | Should -Be "powerfgt@power.fgt"
             $userlocal.'two-factor' | Should -Be "email"
+            $userlocal.'ldap-server' | Should -Be $pester_userldap
         }
 
         It "Add User Local $pester_userlocal as TACACS user email with -data" {
@@ -290,6 +305,7 @@ Describe "Add User Local" {
             $userlocal.name | Should -Be $pester_userlocal
             $userlocal.status | Should -Be "enable"
             $userlocal.'email-to' | Should -Be "powerfgt@power.fgt"
+            $userlocal.'ldap-server' | Should -Be $pester_userldap
         }
 
         AfterEach {
