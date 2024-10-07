@@ -28,6 +28,30 @@ Set-FGTUserLocal [-userlocal] <PSObject> [-name <String>] [-status] [-passwd <Se
  [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
+### radius
+```
+Set-FGTUserLocal [-userlocal] <PSObject> [-name <String>] [-status] [-radius_server <String>]
+ [-two_factor <String>] [-two_factor_notification <String>] [-fortitoken <String>] [-email_to <String>]
+ [-sms_phone <String>] [-data <Hashtable>] [-vdom <String[]>] [-connection <PSObject>]
+ [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
+### tacacs
+```
+Set-FGTUserLocal [-userlocal] <PSObject> [-name <String>] [-status] [-tacacs_server <String>]
+ [-two_factor <String>] [-two_factor_notification <String>] [-fortitoken <String>] [-email_to <String>]
+ [-sms_phone <String>] [-data <Hashtable>] [-vdom <String[]>] [-connection <PSObject>]
+ [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
+### ldap
+```
+Set-FGTUserLocal [-userlocal] <PSObject> [-name <String>] [-status] [-ldap_server <String>]
+ [-two_factor <String>] [-two_factor_notification <String>] [-fortitoken <String>] [-email_to <String>]
+ [-sms_phone <String>] [-data <Hashtable>] [-vdom <String[]>] [-connection <PSObject>]
+ [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Change a FortiGate Local User
 
@@ -129,11 +153,53 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -radius_server
+{{ Fill radius_server Description }}
+
+```yaml
+Type: String
+Parameter Sets: radius
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -tacacs_server
+{{ Fill tacacs_server Description }}
+
+```yaml
+Type: String
+Parameter Sets: tacacs
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ldap_server
+{{ Fill ldap_server Description }}
+
+```yaml
+Type: String
+Parameter Sets: ldap
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -two_factor
-\[Parameter (Mandatory = $false, ParameterSetName = "radius")\]
-        \[string\]$radius_server,
-        \[Parameter (Mandatory = $false, ParameterSetName = "tacacs")\]
-        \[string\]$tacacs_server,
+{{ Fill two_factor Description }}
 
 ```yaml
 Type: String
