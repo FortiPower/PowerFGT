@@ -15,27 +15,29 @@ function Add-FGTUserLocal {
         Add a FortiGate Local User (Name, Password, MFA)
 
         .EXAMPLE
-        Add-FGTUserLocal -Name FGT -passwd MyFGT -status
+        $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
+        PS > Add-FGTUserLocal -Name MyFGTUserLocal -passwd $mypassword -status:$false
 
-        Add Local User object name FGT, password MyFGT and enable it
+        Add Local User object name MyFGTUserLocal, password MyFGT and disabled it
 
         .EXAMPLE
         $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
-        Add-FGTUserLocal -Name FGT -passwd $mypassword -status -two_factor email -email_to powerfgt@fgt.power
+        PS > Add-FGTUserLocal -Name MyFGTUserLocal -passwd $mypassword -status -two_factor email -email_to powerfgt@fgt.power
 
-        Add Local User object name FGT, password mypassword and enable it, with two factor authentication by email
+        Add Local User object name MyFGTUserLocal, password mypassword with two factor authentication by email
 
         .EXAMPLE
         $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
-        Add-FGTUserLocal -Name FGT -passwd $mypassword -status -two_factor fortitoken -fortitoken XXXXXXXXXXXXXXXX -email_to powerfgt@fgt.power
+        PS > Add-FGTUserLocal -Name MyFGTUserLocal -passwd $mypassword -status -two_factor fortitoken -fortitoken XXXXXXXXXXXXXXXX -email_to powerfgt@fgt.power
 
-        Add Local User object name FGT, password mypassword and enable it, with two factor authentication by fortitoken
+        Add Local User object name MyFGTUserLocal, password mypassword, with two factor authentication by fortitoken
 
         .EXAMPLE
         $data = @{ "sms-phone" = "XXXXXXXXXX" }
-        $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
-        PS C:\>Add-FGTUserLocal -Name FGT -passwd $mypassword -status -two_factor sms -data $data -email_to powerfgt@fgt.power
-        Add Add Local User object name FGT, password mypassword and enable it, with email and two factor via SMS and SMS Phone via -data parameter
+        PS > $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
+        PS > Add-FGTUserLocal -Name MyFGTUserLocal -passwd $mypassword -status -two_factor sms -data $data -email_to powerfgt@fgt.power
+
+        Add Local User object name MyFGTUserLocal, password mypassword, with email and two factor via SMS and SMS Phone via -data parameter
     #>
 
     Param(
@@ -43,12 +45,17 @@ function Add-FGTUserLocal {
         [string]$name,
         [Parameter (Mandatory = $false)]
         [switch]$status,
-        [Parameter (Mandatory = $false, ParameterSetName = "local")]
+        [Parameter (Mandatory = $false, ParameterSetName = "password")]
         [SecureString]$passwd,
-        <#[Parameter (Mandatory = $false, ParameterSetName = "radius")]
+        [Parameter (Mandatory = $false, ParameterSetName = "radius")]
+        [ValidateLength(1, 35)]
         [string]$radius_server,
         [Parameter (Mandatory = $false, ParameterSetName = "tacacs")]
-        [string]$tacacs_server,#>
+        [ValidateLength(1, 35)]
+        [string]$tacacs_server,
+        [Parameter (Mandatory = $false, ParameterSetName = "ldap")]
+        [ValidateLength(1, 35)]
+        [string]$ldap_server,
         [Parameter (Mandatory = $false)]
         [ValidateSet("fortitoken", "email", "sms", "disable", "fortitoken-cloud")]
         [string]$two_factor,
@@ -89,7 +96,25 @@ function Add-FGTUserLocal {
         }
 
         if ( Get-FGTUserLocal @invokeParams -name $name -connection $connection) {
-            Throw "Already an Local User object using the same name"
+            Throw "Already a Local User object using the same name"
+        }
+
+        if ( $PsBoundParameters.ContainsKey('radius_server') ) {
+            if ( -Not (Get-FGTUserRADIUS @invokeParams -name $radius_server -connection $connection)) {
+                Throw "There is no RADIUS Server existing using this name"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('tacacs_server') ) {
+            if ( -Not (Get-FGTUserTACACS @invokeParams -name $tacacs_server -connection $connection)) {
+                Throw "There is no TACACS Server existing using this name"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('ldap_server') ) {
+            if ( -Not (Get-FGTUserLDAP @invokeParams -name $ldap_server -connection $connection)) {
+                Throw "There is no LDAP Server existing using this name"
+            }
         }
 
         $uri = "api/v2/cmdb/user/local"
@@ -106,19 +131,22 @@ function Add-FGTUserLocal {
         }
 
         switch ( $PSCmdlet.ParameterSetName ) {
-            "local" {
+            "password" {
                 $local | add-member -name "type" -membertype NoteProperty -Value "password"
                 $local | add-member -name "passwd" -membertype NoteProperty -Value $password
             }
-            <#
             "radius" {
                 $local | add-member -name "type" -membertype NoteProperty -Value "radius"
                 $local | add-member -name "radius-server" -membertype NoteProperty -Value $radius_server
             }
             "tacacs" {
-                $local | add-member -name "type" -membertype NoteProperty -Value "tacacs"
+                $local | add-member -name "type" -membertype NoteProperty -Value "tacacs+"
                 $local | add-member -name "tacacs+-server" -membertype NoteProperty -Value $tacacs_server
-            }#>
+            }
+            "ldap" {
+                $local | add-member -name "type" -membertype NoteProperty -Value "ldap"
+                $local | add-member -name "ldap-server" -membertype NoteProperty -Value $ldap_server
+            }
             default { }
         }
 
@@ -284,27 +312,28 @@ function Set-FGTUserLocal {
 
         .EXAMPLE
         $MyFGTUserLocal = Get-FGTUserLocal -name MyFGTUserLocal
-        PS C:\>$MyFGTUserLocal | Set-FGTUserLocal -status $false
+        PS > $MyFGTUserLocal | Set-FGTUserLocal -status:$false
 
         Change MyFGTUserLocal to status disable
 
         .EXAMPLE
         $MyFGTUserLocal = Get-FGTUserLocal -name MyFGTUserLocal
         $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
-        PS C:\>$MyFGTUserLocal | Set-FGTUserLocal -passwd $mypassword
+        PS > $MyFGTUserLocal | Set-FGTUserLocal -passwd $mypassword
 
-        Change MyFGTUserLocal to value (Password) MyFGTUserLocalPassword
+        Change Password for MyFGTUserLocal local user
 
         .EXAMPLE
         $MyFGTUserLocal = Get-FGTUserLocal -name MyFGTUserLocal
-        PS C:\>$MyFGTUserLocal | Set-FGTUserLocal -email_to newpowerfgt@fgt.power
+        PS > $MyFGTUserLocal | Set-FGTUserLocal -email_to newpowerfgt@fgt.power
 
         Change MyFGTUserLocal to set email to newpowerfgt@fgt.power
 
         .EXAMPLE
         $data = @{ "sms-phone" = "XXXXXXXXXX" }
-        PS C:\>$MyFGTUserLocal = Get-FGTUserLocal -name MyFGTUserLocal
-        PS C:\>$MyFGTUserLocal | Set-FGTUserLocal -data $data
+        PS > $MyFGTUserLocal = Get-FGTUserLocal -name MyFGTUserLocal
+        PS > $MyFGTUserLocal | Set-FGTUserLocal -data $data
+
         Change MyFGTUserLocal to set SMS Phone
 
     #>
@@ -318,12 +347,17 @@ function Set-FGTUserLocal {
         [string]$name,
         [Parameter (Mandatory = $false)]
         [switch]$status,
-        [Parameter (Mandatory = $false, ParameterSetName = "local")]
+        [Parameter (Mandatory = $false, ParameterSetName = "password")]
         [SecureString]$passwd,
-        <#[Parameter (Mandatory = $false, ParameterSetName = "radius")]
+        [Parameter (Mandatory = $false, ParameterSetName = "radius")]
+        [ValidateLength(1, 35)]
         [string]$radius_server,
         [Parameter (Mandatory = $false, ParameterSetName = "tacacs")]
-        [string]$tacacs_server,#>
+        [ValidateLength(1, 35)]
+        [string]$tacacs_server,
+        [Parameter (Mandatory = $false, ParameterSetName = "ldap")]
+        [ValidateLength(1, 35)]
+        [string]$ldap_server,
         [Parameter (Mandatory = $false)]
         [ValidateSet("fortitoken", "email", "sms", "disable", "fortitoken-cloud")]
         [string]$two_factor,
@@ -353,6 +387,24 @@ function Set-FGTUserLocal {
             $invokeParams.add( 'vdom', $vdom )
         }
 
+        if ( $PsBoundParameters.ContainsKey('radius_server') ) {
+            if ( -Not (Get-FGTUserRADIUS @invokeParams -name $radius_server -connection $connection)) {
+                Throw "There is no RADIUS Server existing using this name"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('tacacs_server') ) {
+            if ( -Not (Get-FGTUserTACACS @invokeParams -name $tacacs_server -connection $connection)) {
+                Throw "There is no TACACS Server existing using this name"
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('ldap_server') ) {
+            if ( -Not (Get-FGTUserLDAP @invokeParams -name $ldap_server -connection $connection)) {
+                Throw "There is no LDAP Server existing using this name"
+            }
+        }
+
         $uri = "api/v2/cmdb/user/local/$($userlocal.name)"
 
         $_local = New-Object -TypeName PSObject
@@ -364,30 +416,44 @@ function Set-FGTUserLocal {
         }
 
         if ($PsBoundParameters.ContainsKey('passwd')) {
-            $password = ConvertFrom-SecureString -SecureString $passwd -AsPlainText
+            if ($connection.version -ge "7.4.0") {
+                Throw "Can't change passwd with FortiOS > 7.4.0 (Need to use Set-FGTMonitorUserLocalChangePassword)"
+            }
+            if (("Desktop" -eq $PSVersionTable.PsEdition) -or ($null -eq $PSVersionTable.PsEdition)) {
+                $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($passwd);
+                $password = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr);
+            }
+            else {
+                $password = ConvertFrom-SecureString -SecureString $passwd -AsPlainText
+            }
         }
 
-        if ( $PSCmdlet.ParameterSetName -ne "default" -and $userlocal.type -ne $PSCmdlet.ParameterSetName ) {
-            throw "User type ($($userlocal.type)) need to be on the same type ($($PSCmdlet.ParameterSetName))"
-        }
-
-        if ($status) {
-            $_local  | add-member -name "status" -membertype NoteProperty -Value "enable"
-        }
-        else {
-            $_local  | add-member -name "status" -membertype NoteProperty -Value "disable"
+        if ($PsBoundParameters.ContainsKey('status')) {
+            if ($status) {
+                $_local  | add-member -name "status" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $_local  | add-member -name "status" -membertype NoteProperty -Value "disable"
+            }
         }
 
         switch ( $PSCmdlet.ParameterSetName ) {
-            "local" {
+            "password" {
+                $_local | add-member -name "type" -membertype NoteProperty -Value "password"
                 $_local | add-member -name "passwd" -membertype NoteProperty -Value $password
             }
-            <#"radius" {
+            "radius" {
+                $_local | add-member -name "type" -membertype NoteProperty -Value "radius"
                 $_local | add-member -name "radius-server" -membertype NoteProperty -Value $radius_server
             }
             "tacacs" {
+                $_local | add-member -name "type" -membertype NoteProperty -Value "tacacs+"
                 $_local | add-member -name "tacacs+-server" -membertype NoteProperty -Value $tacacs_server
-            }#>
+            }
+            "ldap" {
+                $_local | add-member -name "type" -membertype NoteProperty -Value "ldap"
+                $_local | add-member -name "ldap-server" -membertype NoteProperty -Value $ldap_server
+            }
             default { }
         }
 
@@ -403,7 +469,7 @@ function Set-FGTUserLocal {
             }
             elseif ( $two_factor -eq "sms" ) {
                 $_local | add-member -name "two-factor" -membertype NoteProperty -Value $two_factor
-                $_local | add-member -name "two-factor-authentication" -membertype NoteProperty -Value $two_factor++
+                $_local | add-member -name "two-factor-authentication" -membertype NoteProperty -Value $two_factor
             }
         }
 

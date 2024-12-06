@@ -386,6 +386,49 @@ Function Confirm-FGTInterface {
     $true
 }
 
+Function Confirm-FGTUserRADIUS {
+
+    Param (
+        [Parameter (Mandatory = $true)]
+        [object]$argument
+    )
+
+    #Check if it looks like a RADIUS Server element
+
+    if ( -not ( $argument | get-member -name name -Membertype Properties)) {
+        throw "Element specified does not contain a name property."
+    }
+    if ( -not ( $argument | get-member -name server -Membertype Properties)) {
+        throw "Element specified does not contain a server property."
+    }
+    if ( -not ( $argument | get-member -name secret -Membertype Properties)) {
+        throw "Element specified does not contain a secret property."
+    }
+    if ( -not ( $argument | get-member -name secondary-server -Membertype Properties)) {
+        throw "Element specified does not contain a secondary-server property."
+    }
+    if ( -not ( $argument | get-member -name secondary-secret -Membertype Properties)) {
+        throw "Element specified does not contain a secondary-secret property."
+    }
+    if ( -not ( $argument | get-member -name tertiary-server -Membertype Properties)) {
+        throw "Element specified does not contain a tertiary-server property."
+    }
+    if ( -not ( $argument | get-member -name tertiary-secret -Membertype Properties)) {
+        throw "Element specified does not contain a tertiary-secret property."
+    }
+    if ( -not ( $argument | get-member -name timeout -Membertype Properties)) {
+        throw "Element specified does not contain a timeout property."
+    }
+    if ( -not ( $argument | get-member -name nas-ip -Membertype Properties)) {
+        throw "Element specified does not contain a nas-ip property."
+    }
+    if ( -not ( $argument | get-member -name auth-type -Membertype Properties)) {
+        throw "Element specified does not contain an auth-type property."
+    }
+
+    $true
+}
+
 Function Confirm-FGTVpnIpsecPhase1Interface {
 
     Param (
@@ -475,6 +518,69 @@ Function Confirm-FGTUserLocal {
     }
     if ( -not ( $argument | get-member -name sms-server -Membertype Properties)) {
         throw "Element specified does not contain a sms-server property."
+    }
+
+    $true
+
+}
+
+Function Confirm-FGTUserTACACS {
+
+    Param (
+        [Parameter (Mandatory = $true)]
+        [object]$argument
+    )
+
+    #Check if it looks like a TACACS Server element
+
+    if ( -not ( $argument | get-member -name name -Membertype Properties)) {
+        throw "Element specified does not contain a name property."
+    }
+    if ( -not ( $argument | get-member -name server -Membertype Properties)) {
+        throw "Element specified does not contain a server property."
+    }
+    if ( -not ( $argument | get-member -name key -Membertype Properties)) {
+        throw "Element specified does not contain a key property."
+    }
+    if ( -not ( $argument | get-member -name secondary-server -Membertype Properties)) {
+        throw "Element specified does not contain a secondary-server property."
+    }
+    if ( -not ( $argument | get-member -name secondary-key -Membertype Properties)) {
+        throw "Element specified does not contain a secondary-key property."
+    }
+    if ( -not ( $argument | get-member -name tertiary-server -Membertype Properties)) {
+        throw "Element specified does not contain a tertiary-server property."
+    }
+    if ( -not ( $argument | get-member -name tertiary-key -Membertype Properties)) {
+        throw "Element specified does not contain a tertiary-key property."
+    }
+    if ( -not ( $argument | get-member -name port -Membertype Properties)) {
+        throw "Element specified does not contain a port property."
+    }
+    if ( -not ( $argument | get-member -name authorization -Membertype Properties)) {
+        throw "Element specified does not contain a authorization property."
+    }
+    if ( -not ( $argument | get-member -name authen-type -Membertype Properties)) {
+        throw "Element specified does not contain a authen-type property."
+    }
+
+    $true
+}
+Function Confirm-FGTUserGroup {
+
+    Param (
+        [Parameter (Mandatory = $true)]
+        [object]$argument
+    )
+
+    if ( -not ( $argument | get-member -name name -Membertype Properties)) {
+        throw "Element specified does not contain a name property."
+    }
+    if ( -not ( $argument | get-member -name id -Membertype Properties)) {
+        throw "Element specified does not contain an id property."
+    }
+    if ( -not ( $argument | get-member -name group-type -Membertype Properties)) {
+        throw "Element specified does not contain a group-type property."
     }
 
     $true

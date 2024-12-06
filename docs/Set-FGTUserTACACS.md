@@ -5,96 +5,73 @@ online version:
 schema: 2.0.0
 ---
 
-# Set-FGTUserLocal
+# Set-FGTUserTACACS
 
 ## SYNOPSIS
-Configure a FortiGate Local User
+Change a FortiGate TACACS Server
 
 ## SYNTAX
 
-### default (Default)
 ```
-Set-FGTUserLocal [-userlocal] <PSObject> [-name <String>] [-status] [-two_factor <String>]
- [-two_factor_notification <String>] [-fortitoken <String>] [-email_to <String>] [-sms_phone <String>]
+Set-FGTUserTACACS [-usertacacs] <PSObject> [-name <String>] [-server <String>] [-key <SecureString>]
+ [-secondary_server <String>] [-secondary_key <SecureString>] [-tertiary_server <String>]
+ [-tertiary_key <SecureString>] [-port <Int32>] [-authen_type <String>] [-authorization <String>]
  [-data <Hashtable>] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [-WhatIf]
  [-Confirm] [<CommonParameters>]
 ```
 
-### password
-```
-Set-FGTUserLocal [-userlocal] <PSObject> [-name <String>] [-status] [-passwd <SecureString>]
- [-two_factor <String>] [-two_factor_notification <String>] [-fortitoken <String>] [-email_to <String>]
- [-sms_phone <String>] [-data <Hashtable>] [-vdom <String[]>] [-connection <PSObject>]
- [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
-```
-
-### radius
-```
-Set-FGTUserLocal [-userlocal] <PSObject> [-name <String>] [-status] [-radius_server <String>]
- [-two_factor <String>] [-two_factor_notification <String>] [-fortitoken <String>] [-email_to <String>]
- [-sms_phone <String>] [-data <Hashtable>] [-vdom <String[]>] [-connection <PSObject>]
- [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
-```
-
-### tacacs
-```
-Set-FGTUserLocal [-userlocal] <PSObject> [-name <String>] [-status] [-tacacs_server <String>]
- [-two_factor <String>] [-two_factor_notification <String>] [-fortitoken <String>] [-email_to <String>]
- [-sms_phone <String>] [-data <Hashtable>] [-vdom <String[]>] [-connection <PSObject>]
- [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
-```
-
-### ldap
-```
-Set-FGTUserLocal [-userlocal] <PSObject> [-name <String>] [-status] [-ldap_server <String>]
- [-two_factor <String>] [-two_factor_notification <String>] [-fortitoken <String>] [-email_to <String>]
- [-sms_phone <String>] [-data <Hashtable>] [-vdom <String[]>] [-connection <PSObject>]
- [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
-```
-
 ## DESCRIPTION
-Change a FortiGate Local User
+Change a FortiGate TACACS Server
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-$MyFGTUserLocal = Get-FGTUserLocal -name MyFGTUserLocal
-PS > $MyFGTUserLocal | Set-FGTUserLocal -status:$false
+$MyFGTUserTACACS = Get-FGTUserTACACS -name MyFGTUserTACACS
+PS C:\>$MyFGTUserTACACS | Set-FGTUserTACACS -server mynewTACACSserver
 ```
 
-Change MyFGTUserLocal to status disable
+Change server name from MyFGTUserTACACS to mynewTACACSserver
 
 ### EXAMPLE 2
 ```
-$MyFGTUserLocal = Get-FGTUserLocal -name MyFGTUserLocal
-$mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
-PS > $MyFGTUserLocal | Set-FGTUserLocal -passwd $mypassword
+$MyFGTUserTACACS = Get-FGTUserTACACS -name MyFGTUserTACACS
+PS C:\>$mykey = ConvertTo-SecureString mykey -AsPlainText -Force
+PS C:\>$MyFGTUserTACACS | Set-FGTUserTACACS -secondary_server tacacs2.powerfgt -secondary_key $mykey
 ```
 
-Change Password for MyFGTUserLocal local user
+Change secondary server and key
 
 ### EXAMPLE 3
 ```
-$MyFGTUserLocal = Get-FGTUserLocal -name MyFGTUserLocal
-PS > $MyFGTUserLocal | Set-FGTUserLocal -email_to newpowerfgt@fgt.power
+$MyFGTUserTACACS = Get-FGTUserTACACS -name MyFGTUserTACACS
+PS C:\>$mykey = ConvertTo-SecureString mykey -AsPlainText -Force
+PS C:\>$MyFGTUserTACACS | Set-FGTUserTACACS -tertiary_server tacacs3.powerfgt -tertiary_key $mykey
 ```
 
-Change MyFGTUserLocal to set email to newpowerfgt@fgt.power
+Change tertiary server and key
 
 ### EXAMPLE 4
 ```
-$data = @{ "sms-phone" = "XXXXXXXXXX" }
-PS > $MyFGTUserLocal = Get-FGTUserLocal -name MyFGTUserLocal
-PS > $MyFGTUserLocal | Set-FGTUserLocal -data $data
+$MyFGTUserTACACS = Get-FGTUserTACACS -name MyFGTUserTACACS
+PS C:\>$MyFGTUserTACACS | Set-FGTUserTACACS -authorization disable
 ```
 
-Change MyFGTUserLocal to set SMS Phone
+Change authorization to disable
+
+### EXAMPLE 5
+```
+$data = @{ "port" = "10049" }
+PS C:\>$MyFGTUserTACACS = Get-FGTUserTACACS -name MyFGTUserTACACS
+PS C:\>$MyFGTUserTACACS | Set-FGTUserTACACS -data $data
+```
+
+Change port to 10049
 
 ## PARAMETERS
 
-### -userlocal
-{{ Fill userlocal Description }}
+### -usertacacs
+{{ Fill usertacacs Description }}
 
 ```yaml
 Type: PSObject
@@ -123,27 +100,27 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -status
-{{ Fill status Description }}
+### -server
+{{ Fill server Description }}
 
 ```yaml
-Type: SwitchParameter
+Type: String
 Parameter Sets: (All)
 Aliases:
 
 Required: False
 Position: Named
-Default value: False
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -passwd
-{{ Fill passwd Description }}
+### -key
+{{ Fill key Description }}
 
 ```yaml
 Type: SecureString
-Parameter Sets: password
+Parameter Sets: (All)
 Aliases:
 
 Required: False
@@ -153,53 +130,8 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -radius_server
-{{ Fill radius_server Description }}
-
-```yaml
-Type: String
-Parameter Sets: radius
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -tacacs_server
-{{ Fill tacacs_server Description }}
-
-```yaml
-Type: String
-Parameter Sets: tacacs
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ldap_server
-{{ Fill ldap_server Description }}
-
-```yaml
-Type: String
-Parameter Sets: ldap
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -two_factor
-{{ Fill two_factor Description }}
+### -secondary_server
+{{ Fill secondary_server Description }}
 
 ```yaml
 Type: String
@@ -213,8 +145,23 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -two_factor_notification
-{{ Fill two_factor_notification Description }}
+### -secondary_key
+{{ Fill secondary_key Description }}
+
+```yaml
+Type: SecureString
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -tertiary_server
+{{ Fill tertiary_server Description }}
 
 ```yaml
 Type: String
@@ -228,8 +175,38 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -fortitoken
-{{ Fill fortitoken Description }}
+### -tertiary_key
+{{ Fill tertiary_key Description }}
+
+```yaml
+Type: SecureString
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -port
+{{ Fill port Description }}
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: 0
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -authen_type
+{{ Fill authen_type Description }}
 
 ```yaml
 Type: String
@@ -243,23 +220,8 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -email_to
-{{ Fill email_to Description }}
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -sms_phone
-{{ Fill sms_phone Description }}
+### -authorization
+{{ Fill authorization Description }}
 
 ```yaml
 Type: String

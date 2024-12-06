@@ -12,8 +12,33 @@ Add a FortiGate Local User
 
 ## SYNTAX
 
+### password
 ```
 Add-FGTUserLocal -name <String> [-status] [-passwd <SecureString>] [-two_factor <String>]
+ [-two_factor_notification <String>] [-fortitoken <String>] [-email_to <String>] [-sms_phone <String>]
+ [-data <Hashtable>] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
+### radius
+```
+Add-FGTUserLocal -name <String> [-status] [-radius_server <String>] [-two_factor <String>]
+ [-two_factor_notification <String>] [-fortitoken <String>] [-email_to <String>] [-sms_phone <String>]
+ [-data <Hashtable>] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
+### tacacs
+```
+Add-FGTUserLocal -name <String> [-status] [-tacacs_server <String>] [-two_factor <String>]
+ [-two_factor_notification <String>] [-fortitoken <String>] [-email_to <String>] [-sms_phone <String>]
+ [-data <Hashtable>] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
+### ldap
+```
+Add-FGTUserLocal -name <String> [-status] [-ldap_server <String>] [-two_factor <String>]
  [-two_factor_notification <String>] [-fortitoken <String>] [-email_to <String>] [-sms_phone <String>]
  [-data <Hashtable>] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
  [<CommonParameters>]
@@ -26,34 +51,36 @@ Add a FortiGate Local User (Name, Password, MFA)
 
 ### EXAMPLE 1
 ```
-Add-FGTUserLocal -Name FGT -passwd MyFGT -status
+$mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
+PS > Add-FGTUserLocal -Name MyFGTUserLocal -passwd $mypassword -status:$false
 ```
 
-Add Local User object name FGT, password MyFGT and enable it
+Add Local User object name MyFGTUserLocal, password MyFGT and disabled it
 
 ### EXAMPLE 2
 ```
 $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
-Add-FGTUserLocal -Name FGT -passwd $mypassword -status -two_factor email -email_to powerfgt@fgt.power
+PS > Add-FGTUserLocal -Name MyFGTUserLocal -passwd $mypassword -status -two_factor email -email_to powerfgt@fgt.power
 ```
 
-Add Local User object name FGT, password mypassword and enable it, with two factor authentication by email
+Add Local User object name MyFGTUserLocal, password mypassword with two factor authentication by email
 
 ### EXAMPLE 3
 ```
 $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
-Add-FGTUserLocal -Name FGT -passwd $mypassword -status -two_factor fortitoken -fortitoken XXXXXXXXXXXXXXXX -email_to powerfgt@fgt.power
+PS > Add-FGTUserLocal -Name MyFGTUserLocal -passwd $mypassword -status -two_factor fortitoken -fortitoken XXXXXXXXXXXXXXXX -email_to powerfgt@fgt.power
 ```
 
-Add Local User object name FGT, password mypassword and enable it, with two factor authentication by fortitoken
+Add Local User object name MyFGTUserLocal, password mypassword, with two factor authentication by fortitoken
 
 ### EXAMPLE 4
 ```
 $data = @{ "sms-phone" = "XXXXXXXXXX" }
-$mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
-PS C:\>Add-FGTUserLocal -Name FGT -passwd $mypassword -status -two_factor sms -data $data -email_to powerfgt@fgt.power
-Add Add Local User object name FGT, password mypassword and enable it, with email and two factor via SMS and SMS Phone via -data parameter
+PS > $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
+PS > Add-FGTUserLocal -Name MyFGTUserLocal -passwd $mypassword -status -two_factor sms -data $data -email_to powerfgt@fgt.power
 ```
+
+Add Local User object name MyFGTUserLocal, password mypassword, with email and two factor via SMS and SMS Phone via -data parameter
 
 ## PARAMETERS
 
@@ -92,7 +119,52 @@ Accept wildcard characters: False
 
 ```yaml
 Type: SecureString
-Parameter Sets: (All)
+Parameter Sets: password
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -radius_server
+{{ Fill radius_server Description }}
+
+```yaml
+Type: String
+Parameter Sets: radius
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -tacacs_server
+{{ Fill tacacs_server Description }}
+
+```yaml
+Type: String
+Parameter Sets: tacacs
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ldap_server
+{{ Fill ldap_server Description }}
+
+```yaml
+Type: String
+Parameter Sets: ldap
 Aliases:
 
 Required: False
@@ -103,10 +175,7 @@ Accept wildcard characters: False
 ```
 
 ### -two_factor
-\[Parameter (Mandatory = $false, ParameterSetName = "radius")\]
-        \[string\]$radius_server,
-        \[Parameter (Mandatory = $false, ParameterSetName = "tacacs")\]
-        \[string\]$tacacs_server,
+{{ Fill two_factor Description }}
 
 ```yaml
 Type: String
