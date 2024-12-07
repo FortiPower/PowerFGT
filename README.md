@@ -1305,6 +1305,7 @@ It is possible to `monitor` FortiGate
 * `Get-FGTMonitorNetworkARP` Get IPv4 ARP table
 * `Get-FGTMonitorSystemConfigBackup` Backup system config
 * `Get-FGTMonitorSystemFirmware` Retrieve a list of firmware images available to use for upgrade on this device
+* `Get-FGTMonitorSystemInterface` Retrieve statistics for all system interfaces
 * `Get-FGTMonitorSystemHAChecksum` List of checksums for members of HA cluster
 * `Get-FGTMonitorSystemHAPeer` Get configuration of peer(s) in HA cluster
 * `Get-FGTMonitorUtmApplicationCategories` Get list of (UTM) Application Categories
