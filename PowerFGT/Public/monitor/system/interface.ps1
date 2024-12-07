@@ -17,9 +17,22 @@ function Get-FGTMonitorSystemInterface {
 
         Get System Interface
 
+        .EXAMPLE
+        Get-FGTMonitorSystemInterface -include_vlan
+
+        Get System Interface with vlan information
+
+        .EXAMPLE
+        Get-FGTMonitorSystemInterface -include_aggregate
+
+        Get System Interface with aggregate interface information
     #>
 
     Param(
+        [Parameter(Mandatory = $false)]
+        [switch]$include_vlan,
+        [Parameter(Mandatory = $false)]
+        [switch]$include_aggregate,
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
     )
@@ -29,7 +42,13 @@ function Get-FGTMonitorSystemInterface {
 
     Process {
 
-        $uri = 'api/v2/monitor/system/interface'
+        $uri = 'api/v2/monitor/system/interface?'
+        if ($include_vlan) {
+            $uri += "&include_vlan=true"
+        }
+        if ($include_aggregate) {
+            $uri += "&include_aggregate=true"
+        }
 
         $response = Invoke-FGTRestMethod -uri $uri -method 'GET' -connection $connection
         $response.results
