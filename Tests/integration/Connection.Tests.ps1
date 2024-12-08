@@ -274,6 +274,9 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Webfilter Profile" {
             { Get-FGTWebfilterProfile -connection $fgt } | Should -Not -Throw
         }
+        It "Use Multi connection for call Get Monitor Firewall Address FQDN" {
+            { Get-FGTMonitorFirewallAddressFQDN -connection $fgt } | Should -Not -Throw
+        }
         It "Use Multi connection for call Get Monitor Firewall Policy" {
             { Get-FGTMonitorFirewallPolicy -connection $fgt } | Should -Not -Throw
         }
