@@ -18,6 +18,11 @@ function Get-FGTMonitorFirewallAddressFQDN {
         Get ALL Firewall Address FQDN
 
         .EXAMPLE
+        Get-FGTMonitorFirewallAddressFQDN -fqdn github.com
+
+        Get Firewall Address FQDN of github.com
+
+        .EXAMPLE
         Get-FGTMonitorFirewallAddressFQDN -vdom vdomX
 
         Get Firewall Address FQDN of vdomX
@@ -25,6 +30,8 @@ function Get-FGTMonitorFirewallAddressFQDN {
     #>
 
     Param(
+        [Parameter (Mandatory = $false, Position = 1)]
+        [string]$fqdn,
         [Parameter (Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
@@ -47,6 +54,10 @@ function Get-FGTMonitorFirewallAddressFQDN {
         }
 
         $uri = 'api/v2/monitor/firewall/address-fqdns?'
+
+        if ($fqdn) {
+            $uri += "mkey=$($fqdn)"
+        }
 
         $response = Invoke-FGTRestMethod -uri $uri -method 'GET' -connection $connection @invokeParams
         $response.results
