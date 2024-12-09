@@ -289,6 +289,9 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Monitor System Firmware" {
             { Get-FGTMonitorSystemFirmware -connection $fgt } | Should -Not -Throw
         }
+        It "Use Multi connection for call Get Monitor System Interface" {
+            { Get-FGTMonitorSystemInterface -connection $fgt } | Should -Not -Throw
+        }
         It "Use Multi connection for call Get Monitor System HA Peer (>= 6.2.0 or < 6.2.0 with HA enable)" -skip:($VersionIs60WithNoHA) {
             { Get-FGTMonitorSystemHAPeer -connection $fgt } | Should -Not -Throw
         }
