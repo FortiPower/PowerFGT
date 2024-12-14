@@ -274,6 +274,9 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Webfilter Profile" {
             { Get-FGTWebfilterProfile -connection $fgt } | Should -Not -Throw
         }
+        It "Use Multi connection for call Get Monitor Firewall Address FQDN" {
+            { Get-FGTMonitorFirewallAddressFQDN -connection $fgt } | Should -Not -Throw
+        }
         It "Use Multi connection for call Get Monitor Firewall Policy" {
             { Get-FGTMonitorFirewallPolicy -connection $fgt } | Should -Not -Throw
         }
@@ -303,6 +306,9 @@ Describe "Connect to a FortiGate (using multi connection)" {
         }
         It "Use Multi connection for call Get Monitor System HA Checksum (< 6.2.0 with no HA)" -skip:( -Not $VersionIs60WithNoHA) {
             { Get-FGTMonitorSystemHAChecksum -connection $fgt } | Should -Throw "You can't check HA Checksum with FortiOS < 6.2.0"
+        }
+        It "Use Multi connection for call Get Monitor System Interface DHCP Status" {
+            { Get-FGTMonitorSystemInterfaceDHCPStatus -interface $pester_port1 -connection $fgt } | Should -Not -Throw
         }
         It "Use Multi connection for call Get Monitor License Status" {
             { Get-FGTMonitorLicenseStatus -connection $fgt } | Should -Not -Throw
