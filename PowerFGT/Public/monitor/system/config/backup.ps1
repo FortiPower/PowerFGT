@@ -1,4 +1,4 @@
-﻿#
+#
 # Copyright 2022, Alexis La Goutte <alexis dot lagoutte at gmail dot com>
 #
 # SPDX-License-Identifier: Apache-2.0
@@ -26,6 +26,11 @@ function Get-FGTMonitorSystemConfigBackup {
         Get-FGTMonitorSystemConfigBackup -vdom vdomX
 
         Get System Config Backup on vdomX
+
+        .EXAMPLE
+        Get-FGTMonitorSystemConfigBackup -scope global -vdom vdomX
+
+        Get System Config Backup in global scope even if vdom is specified
     #>
 
     Param(
@@ -34,6 +39,9 @@ function Get-FGTMonitorSystemConfigBackup {
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
+        [ValidateSet("global", "vdom")]
+        [string]$scope = "global",  # Scope parameter with default "global"
+        [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
     )
 
@@ -41,26 +49,33 @@ function Get-FGTMonitorSystemConfigBackup {
     }
 
     Process {
-
         $invokeParams = @{ }
+
         if ( $PsBoundParameters.ContainsKey('skip') ) {
-            $invokeParams.add( 'skip', $skip )
-        }
-        if ( $PsBoundParameters.ContainsKey('vdom') ) {
-            $invokeParams.add( 'vdom', $vdom )
+            $invokeParams.add('skip', $skip)
         }
 
-        #before 7.6.x, config/backup is available with get method and using paramater
+        # Add vdom to invokeParams if provided
+        if ($PsBoundParameters.ContainsKey('vdom')) {
+            $invokeParams.add('vdom', $vdom)
+
+            # Only change scope to "vdom" if vdom is provided and scope was not explicitly set to "global"
+            if (-not $PsBoundParameters.ContainsKey('scope') -or $scope -eq "vdom") {
+                $scope = "vdom"
+            }
+        }
+
+        # Prepare URI and request method based on connection version
         if ($connection.version -lt "7.6.0") {
             $method = "get"
-            $uri = 'api/v2/monitor/system/config/backup?scope=global'
+            $uri = "api/v2/monitor/system/config/backup?scope=$scope"
             $body = ""
         }
         else {
             $method = "post"
             $uri = 'api/v2/monitor/system/config/backup'
             $body = @{
-                "scope" = "global"
+                "scope" = "$scope"
             }
         }
 
