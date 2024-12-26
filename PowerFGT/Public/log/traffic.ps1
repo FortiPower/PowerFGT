@@ -81,6 +81,9 @@ function Get-FGTLogTraffic {
         [Parameter (ParameterSetName = "poluuid")]
         [string]$poluuid,
         [Parameter (Mandatory = $false)]
+        [Parameter (ParameterSetName = "duration")]
+        [int]$duration,
+        [Parameter (Mandatory = $false)]
         [ValidateSet('country_id', 'reverse_lookup', IgnoreCase = $false)]
         [string[]]$extra,
         [Parameter (Mandatory = $false)]
@@ -100,6 +103,7 @@ function Get-FGTLogTraffic {
         [Parameter (ParameterSetName = "action")]
         [Parameter (ParameterSetName = "policyid")]
         [Parameter (ParameterSetName = "poluuid")]
+        [Parameter (ParameterSetName = "duration")]
         [Parameter (ParameterSetName = "filter")]
         [ValidateSet('equal', 'contains')]
         [string]$filter_type = "equal",
@@ -159,6 +163,10 @@ function Get-FGTLogTraffic {
             "poluuid" {
                 $filter_value = $poluuid
                 $filter_attribute = "poluuid"
+            }
+            "duration" {
+                $filter_value = [string]$duration
+                $filter_attribute = "duration"
             }
             default { }
         }
