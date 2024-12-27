@@ -322,6 +322,9 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Monitor Network ARP (< 6.4.0)" -skip:($fgt_version -ge "6.4.0") {
             { Get-FGTMonitorNetworkARP -connection $fgt } | Should -Throw "Monitor Network ARP is not available before Forti OS 6.4"
         }
+        It "Use Multi connection for call Get Monitor User Fortitoken" {
+            { Get-FGTMonitorUserFortitoken -connection $fgt } | Should -Not -Throw
+        }
         It "Use Multi connection for call Get Monitor UTM Application Categories" {
             { Get-FGTMonitorUtmApplicationCategories -connection $fgt } | Should -Not -Throw
         }
