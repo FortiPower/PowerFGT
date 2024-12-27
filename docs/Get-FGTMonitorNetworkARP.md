@@ -13,7 +13,8 @@ Get Network ARP
 ## SYNTAX
 
 ```
-Get-FGTMonitorNetworkARP [[-connection] <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-FGTMonitorNetworkARP [[-vdom] <String[]>] [[-connection] <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -28,7 +29,29 @@ Get-FGTMonitorNetworkARP
 
 Get Network ARP
 
+### EXAMPLE 2
+```
+Get-FGTMonitorNetworkARP -vdom vdomX
+```
+
+Get Network ARP of vdomX
+
 ## PARAMETERS
+
+### -vdom
+{{ Fill vdom Description }}
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ### -connection
 {{ Fill connection Description }}
@@ -39,7 +62,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 1
+Position: 2
 Default value: $DefaultFGTConnection
 Accept pipeline input: False
 Accept wildcard characters: False
