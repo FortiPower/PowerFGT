@@ -40,7 +40,7 @@ With this module (version 0.8.1) you can manage:
 - Service (Get)
 - Service Group (Get)
 - [Static Route](#static-route) (Add/Get/Remove)
-- System Admin (Get)
+- System Admin / Virtual Switch (Get)
 - [System Global](#settings) (Get/Set)
 - [System Settings](#settings) (Get/Set)
 - [Security Profiles](#security-profiles) (Get)

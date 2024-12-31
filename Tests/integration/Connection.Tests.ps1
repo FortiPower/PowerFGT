@@ -223,6 +223,9 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get System Vdom" {
             { Get-FGTSystemVdom -connection $fgt } | Should -Not -Throw
         }
+        It "Use Multi connection for call Get System Virtual Switch" {
+            { Get-FGTSystemVirtualSwitch -connection $fgt } | Should -Not -Throw
+        }
         It "Use Multi connection for call Get System Virtual WAN Link (SD-WAN)" {
             { Get-FGTSystemVirtualWANLink -connection $fgt } | Should -Not -Throw
         }
