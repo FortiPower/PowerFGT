@@ -46,11 +46,12 @@ With this module (version 0.8.1) you can manage:
 - [System Global](#settings) (Get/Set)
 - [System Settings](#settings) (Get/Set)
 - [Security Profiles](#security-profiles) (Get)
-- User LDAP (Get)
-- User Local (Get)
-- User Group (Get)
+- [User LDAP](#user-ldap) (Add/Get/Set/Remove)
+- [User Local](#user-local) (Add/Get/Set/Remove)
+- [User Group](#user-group) (Add/Get/Copy/Set/Remove and Add/Remove Member)
 - User SAML (Get)
-- User RADIUS (Get)
+- [User RADIUS](#user-radius) (Add/Get/Set/Remove)
+- [User TACACS](#user-tacacs) (Add/Get/Set/Remove)
 - [VDOM](#vdom) (Get)
 - [Virtual IP](#virtual-ip) (Add/Get/Remove object type static-nat)
 - [Virtual IP Group](#virtual-ip-group) (Add/Get/Copy/Set/Remove and Add/Remove Member)
@@ -1265,6 +1266,20 @@ You can change System Settings and System Global (settings) using `Set-FGTSystem
     [...]
 
 ```
+
+### User
+
+You can manage user (Local, LDAP, RADIUS, TACACS) on FortiGate and also manage user directory (AD, RADIUS, TACACS) and group.
+
+#### User Local
+
+#### User LDAP
+
+#### User RADIUS
+
+#### User TACACS
+
+#### User Group
 
 ### VPN IPsec
 
