@@ -13,7 +13,7 @@ Get System Config Backup
 ## SYNTAX
 
 ```
-Get-FGTMonitorSystemConfigBackup [-skip] [[-vdom] <String[]>] [[-connection] <PSObject>]
+Get-FGTMonitorSystemConfigBackup [-skip] [[-vdom] <String[]>] [[-scope] <String>] [[-connection] <PSObject>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
@@ -42,6 +42,13 @@ Get-FGTMonitorSystemConfigBackup -vdom vdomX
 ```
 
 Get System Config Backup on vdomX
+
+### EXAMPLE 4
+```
+Get-FGTMonitorSystemConfigBackup -scope global -vdom vdomX
+```
+
+Get System Config Backup in global scope even if vdom is specified
 
 ## PARAMETERS
 
@@ -76,8 +83,23 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -scope
+{{ Fill scope Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: Global
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -connection
-{{ Fill connection Description }}
+Scope parameter with default "global"
 
 ```yaml
 Type: PSObject
@@ -85,7 +107,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 2
+Position: 3
 Default value: $DefaultFGTConnection
 Accept pipeline input: False
 Accept wildcard characters: False
