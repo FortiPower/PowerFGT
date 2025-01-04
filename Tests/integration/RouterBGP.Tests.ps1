@@ -23,12 +23,12 @@ Describe "Get Router BGP" {
 
     It "Get ALL Router BGP" {
         $rb = Get-FGTRouterBGP
-        $rb.count | Should -Not -Be $NULL
+        @($rb).count | Should -Not -Be $NULL
     }
 
     It "Get ALL Router BGP with -skip" {
         $rb = Get-FGTRouterBGP -skip
-        $rb.count | Should -Not -Be $NULL
+        @($rb).count | Should -Not -Be $NULL
     }
 
 }
