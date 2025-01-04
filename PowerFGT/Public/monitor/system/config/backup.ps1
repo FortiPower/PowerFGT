@@ -15,7 +15,7 @@ function Get-FGTMonitorSystemConfigBackup {
         .EXAMPLE
         Get-FGTMonitorSystemConfigBackup
 
-        Get System Config Backup
+        Get System Config Backup on global scope
 
         .EXAMPLE
         Get-FGTMonitorSystemConfigBackup -skip
@@ -23,14 +23,9 @@ function Get-FGTMonitorSystemConfigBackup {
         Get System Config Backup (but only relevant attributes)
 
         .EXAMPLE
-        Get-FGTMonitorSystemConfigBackup -vdom vdomX
+        Get-FGTMonitorSystemConfigBackup -scope vdom -vdom vdomX
 
         Get System Config Backup on vdomX
-
-        .EXAMPLE
-        Get-FGTMonitorSystemConfigBackup -scope global -vdom vdomX
-
-        Get System Config Backup in global scope even if vdom is specified
     #>
 
     Param(
@@ -40,7 +35,7 @@ function Get-FGTMonitorSystemConfigBackup {
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
         [ValidateSet("global", "vdom")]
-        [string]$scope = "global",  # Scope parameter with default "global"
+        [string]$scope = "global",
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
     )
@@ -49,23 +44,16 @@ function Get-FGTMonitorSystemConfigBackup {
     }
 
     Process {
-        $invokeParams = @{ }
 
+        $invokeParams = @{ }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add('skip', $skip)
         }
-
-        # Add vdom to invokeParams if provided
         if ($PsBoundParameters.ContainsKey('vdom')) {
             $invokeParams.add('vdom', $vdom)
-
-            # Only change scope to "vdom" if vdom is provided and scope was not explicitly set to "global"
-            if (-not $PsBoundParameters.ContainsKey('scope') -or $scope -eq "vdom") {
-                $scope = "vdom"
-            }
         }
 
-        # Prepare URI and request method based on connection version
+        #before 7.6.x, config/backup is available with get method and using paramater
         if ($connection.version -lt "7.6.0") {
             $method = "get"
             $uri = "api/v2/monitor/system/config/backup?scope=$scope"
