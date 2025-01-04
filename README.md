@@ -36,6 +36,7 @@ With this module (version 0.8.1) you can manage:
 - [Monitor](#monitor) (Get)
 - [Policy](#policy) (Add/Get/Remove)
 - [Proxy Address/Address Group/ Policy](#proxy) (Add/Get/Set/Remove)
+- [Router BGP](#bgp) (Get/Set)
 - RoutePolicy (Get)
 - Service (Get)
 - Service Group (Get)
@@ -878,7 +879,9 @@ or delete it `Remove-SystemZone`.
     [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): Y
 ```
 
-### Static Route
+### Routing
+
+#### Static Route
 
 You can create a new Static Route `Add-FGTRouterStatic`, retrieve its information `Get-FGTRouterStatic`,
 or delete it `Remove-FGTRouterStatic`.
@@ -946,6 +949,50 @@ or delete it `Remove-FGTRouterStatic`.
     Are you sure you want to perform this action?
     Performing the operation "Remove Router Static" on target "2".
     [Y] Yes  [N] No  [?] Help (default is "N"): y
+```
+
+## Routing
+
+#### BGP
+
+You can retrieve BGP information `Get-FGTRouterBGP` or configure it `Get-FGTRouterBGP`.
+
+```powershell
+# Get information about BGP
+    Get-FGTRouterBGP
+
+    as                                 :
+    router-id                          :
+    keepalive-timer                    : 60
+    holdtime-timer                     : 180
+    always-compare-med                 : disable
+    bestpath-as-path-ignore            : disable
+    bestpath-cmp-confed-aspath         : disable
+    bestpath-cmp-routerid              : disable
+    bestpath-med-confed                : disable
+    bestpath-med-missing-as-worst      : disable
+    client-to-client-reflection        : enable
+    dampening                          : disable
+    deterministic-med                  : disable
+    ebgp-multipath                     : enable
+    ibgp-multipath                     : disable
+    [...]
+
+# Configure BGP (AS and router-id)
+    Set-FGTRouterBGP -as 65001 -router_id 192.0.2.1
+
+    as                                 : 65001
+    router-id                          : 192.0.2.1
+    [...]
+
+# for configure BGP extra value, you need to use -data (for example holdtime and ebgp-multipath)
+    $data = @{ "holdtime-timer" = 120 ; "ebgp-multipath" = "enable" }
+    Set-FGTRouterBGP -data $data
+    [...]
+    holdtime-timer                     : 120
+    [...]
+    ebgp-multipath                     : enable
+    [...]
 ```
 
 ### Interface
@@ -1678,6 +1725,7 @@ Get-FGTMonitorVpnIPsec
 Get-FGTMonitorVpnSsl
 Get-FGTMonitorWebfilterCategories
 Get-FGTRouterPolicy
+Get-FGTRouterBGP
 Get-FGTRouterStatic
 Get-FGTSystemAdmin
 Get-FGTSystemDHCPServer
@@ -1730,6 +1778,7 @@ Set-FGTFirewallAddressGroup
 Set-FGTFirewallPolicy
 Set-FGTFirewallProxyAddressGroup
 Set-FGTFirewallVipGroup
+Set-FGTRouterBGP
 Set-FGTSystemGlobal
 Set-FGTSystemInterface
 Set-FGTSystemSettings
