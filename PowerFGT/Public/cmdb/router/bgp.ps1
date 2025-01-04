@@ -68,3 +68,78 @@ function Get-FGTRouterBGP {
     End {
     }
 }
+
+function Set-FGTRouterBGP {
+
+    <#
+        .SYNOPSIS
+        Configure Router BGP Configuration
+
+        .DESCRIPTION
+        Configure BGP configuration (as, router id...)
+
+        .EXAMPLE
+        Set-FGTRouterBGP -as 65000 -router_id "192.0.2.1"
+
+        Set BGP AS to 65000 and Router ID to 192.0.2.1
+
+        .EXAMPLE
+        $data = @{ "ebgp-multipath" = "enable" }
+        PS C> Set-FGTRouterBGP -data $data
+
+        Change ebgp-multipath settings using -data parameter
+
+    #>
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
+    Param(
+        [Parameter (Mandatory = $false)]
+        [int]$as,
+        [Parameter (Mandatory = $false)]
+        [string]$router_id,
+        [Parameter (Mandatory = $false)]
+        [hashtable]$data,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $_bgp = new-Object -TypeName PSObject
+
+        if ( $PsBoundParameters.ContainsKey('as') ) {
+            $_bgp | add-member -name "as" -membertype NoteProperty -Value $as
+        }
+
+        if ( $PsBoundParameters.ContainsKey('router_id') ) {
+            $_bgp | add-member -name "router-id" -membertype NoteProperty -Value $router_id
+        }
+
+        if ( $PsBoundParameters.ContainsKey('data') ) {
+            $data.GetEnumerator() | ForEach-Object {
+                $_bgp | Add-member -name $_.key -membertype NoteProperty -Value $_.value
+            }
+        }
+
+        $uri = 'api/v2/cmdb/router/bgp'
+
+        if ($PSCmdlet.ShouldProcess("BGP", 'Configure Router BGP')) {
+            Invoke-FGTRestMethod -uri $uri -method 'PUT' -body $_bgp -connection $connection @invokeParams | Out-Null
+        }
+
+        Get-FGTRouterBGP -connection $connection @invokeParams
+    }
+
+    End {
+    }
+}
