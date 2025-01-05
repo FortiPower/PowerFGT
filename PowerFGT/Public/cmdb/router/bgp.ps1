@@ -16,22 +16,22 @@ function Get-FGTRouterBGP {
         .EXAMPLE
         Get-FGTRouterBGP
 
-        Get list of all route BGP object
+        Get list of all router BGP object
 
         .EXAMPLE
         Get-FGTRouterBGP -meta
 
-        Get list of all route BGP object with metadata (q_...) like usage (q_ref)
+        Get list of all router BGP object with metadata (q_...) like usage (q_ref)
 
         .EXAMPLE
         Get-FGTRouterBGP -skip
 
-        Get list of all route BGP object (but only relevant attributes)
+        Get list of all router BGP object (but only relevant attributes)
 
         .EXAMPLE
         Get-FGTRouterBGP -vdom vdomX
 
-        Get list of all route BGP object on vdomX
+        Get list of all router BGP object on vdomX
     #>
 
     [CmdletBinding(DefaultParameterSetName = "default")]
