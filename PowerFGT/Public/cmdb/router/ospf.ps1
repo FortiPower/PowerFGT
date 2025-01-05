@@ -16,22 +16,22 @@ function Get-FGTRouterOSPF {
         .EXAMPLE
         Get-FGTRouterOSPF
 
-        Get list of all route OSPF object
+        Get list of all router OSPF object
 
         .EXAMPLE
         Get-FGTRouterOSPF -meta
 
-        Get list of all route OSPF object with metadata (q_...) like usage (q_ref)
+        Get list of all router OSPF object with metadata (q_...) like usage (q_ref)
 
         .EXAMPLE
         Get-FGTRouterOSPF -skip
 
-        Get list of all route OSPF object (but only relevant attributes)
+        Get list of all router OSPF object (but only relevant attributes)
 
         .EXAMPLE
         Get-FGTRouterOSPF -vdom vdomX
 
-        Get list of all route OSPF object on vdomX
+        Get list of all router OSPF object on vdomX
     #>
 
     [CmdletBinding(DefaultParameterSetName = "default")]
