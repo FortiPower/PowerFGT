@@ -196,6 +196,9 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Router BGP" {
             { Get-FGTRouterBGP -connection $fgt } | Should -Not -Throw
         }
+        It "Use Multi connection for call Get Router OSPF" {
+            { Get-FGTRouterOSPF -connection $fgt } | Should -Not -Throw
+        }
         It "Use Multi connection for call Get Router Policy" {
             { Get-FGTRouterPolicy -connection $fgt } | Should -Not -Throw
         }
