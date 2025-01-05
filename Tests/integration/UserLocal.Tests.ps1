@@ -84,11 +84,21 @@ Describe "Add User Local" {
             Get-FGTUserLocal -name $pester_userlocal | Remove-FGTUserLocal -confirm:$false
         }
 
-        It "Add User Local $pester_userlocal enable" {
-            Add-FGTUserLocal -Name $pester_userlocal -status -passwd $pester_userlocalpassword
+        It "Add User Local $pester_userlocal status enable" {
+            Add-FGTUserLocal -Name $pester_userlocal -passwd $pester_userlocalpassword
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
             $userlocal.status | Should -Be "enable"
+            $userlocal.'email-to' | Should -BeNullOrEmpty
+            $userlocal.'two-factor' | Should -Be "disable"
+            $userlocal.type | Should -Be "password"
+        }
+
+        It "Add User Local $pester_userlocal status disable" {
+            Add-FGTUserLocal -Name $pester_userlocal -status:$false -passwd $pester_userlocalpassword
+            $userlocal = Get-FGTUserLocal -name $pester_userlocal
+            $userlocal.name | Should -Be $pester_userlocal
+            $userlocal.status | Should -Be "disable"
             $userlocal.'email-to' | Should -BeNullOrEmpty
             $userlocal.'two-factor' | Should -Be "disable"
             $userlocal.type | Should -Be "password"
@@ -98,14 +108,14 @@ Describe "Add User Local" {
             Add-FGTUserLocal -Name $pester_userlocal -email_to "powerfgt@power.fgt" -passwd $pester_userlocalpassword
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
-            $userlocal.status | Should -Be "disable"
+            $userlocal.status | Should -Be "enable"
             $userlocal.'email-to' | Should -Be "powerfgt@power.fgt"
             $userlocal.'two-factor' | Should -Be "disable"
             $userlocal.type | Should -Be "password"
         }
 
         It "Add User Local $pester_userlocal MFA by email" {
-            Add-FGTUserLocal -Name $pester_userlocal -status -two_factor email -email_to "powerfgt@power.fgt" -passwd $pester_userlocalpassword
+            Add-FGTUserLocal -Name $pester_userlocal -two_factor email -email_to "powerfgt@power.fgt" -passwd $pester_userlocalpassword
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
             $userlocal.status | Should -Be "enable"
@@ -116,7 +126,7 @@ Describe "Add User Local" {
 
         It "Add User Local $pester_userlocal email with -data" {
             $data = @{ "email-to" = "powerfgt@power.fgt" }
-            Add-FGTUserLocal -Name $pester_userlocal -status -data $data -passwd $pester_userlocalpassword
+            Add-FGTUserLocal -Name $pester_userlocal -data $data -passwd $pester_userlocalpassword
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
             $userlocal.status | Should -Be "enable"
@@ -140,11 +150,21 @@ Describe "Add User Local" {
             $userlocal.'radius-server' | Should -Be $pester_userradius
         }
 
-        It "Add User Local $pester_userlocal as RADIUS user enable" {
-            Add-FGTUserLocal -Name $pester_userlocal -status -radius_server $pester_userradius
+        It "Add User Local $pester_userlocal as RADIUS user status enable" {
+            Add-FGTUserLocal -Name $pester_userlocal -radius_server $pester_userradius
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
             $userlocal.status | Should -Be "enable"
+            $userlocal.'email-to' | Should -BeNullOrEmpty
+            $userlocal.'two-factor' | Should -Be "disable"
+            $userlocal.'radius-server' | Should -Be $pester_userradius
+        }
+
+        It "Add User Local $pester_userlocal as RADIUS user status enable" {
+            Add-FGTUserLocal -Name $pester_userlocal -status:$false -radius_server $pester_userradius
+            $userlocal = Get-FGTUserLocal -name $pester_userlocal
+            $userlocal.name | Should -Be $pester_userlocal
+            $userlocal.status | Should -Be "disable"
             $userlocal.'email-to' | Should -BeNullOrEmpty
             $userlocal.'two-factor' | Should -Be "disable"
             $userlocal.'radius-server' | Should -Be $pester_userradius
@@ -154,14 +174,14 @@ Describe "Add User Local" {
             Add-FGTUserLocal -Name $pester_userlocal -email_to "powerfgt@power.fgt" -radius_server $pester_userradius
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
-            $userlocal.status | Should -Be "disable"
+            $userlocal.status | Should -Be "enable"
             $userlocal.'email-to' | Should -Be "powerfgt@power.fgt"
             $userlocal.'two-factor' | Should -Be "disable"
             $userlocal.'radius-server' | Should -Be $pester_userradius
         }
 
         It "Add User Local $pester_userlocal as RADIUS user MFA by email" {
-            Add-FGTUserLocal -Name $pester_userlocal -status -two_factor email -email_to "powerfgt@power.fgt" -radius_server $pester_userradius
+            Add-FGTUserLocal -Name $pester_userlocal -two_factor email -email_to "powerfgt@power.fgt" -radius_server $pester_userradius
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
             $userlocal.status | Should -Be "enable"
@@ -172,7 +192,7 @@ Describe "Add User Local" {
 
         It "Add User Local $pester_userlocal as RADIUS user email with -data" {
             $data = @{ "email-to" = "powerfgt@power.fgt" }
-            Add-FGTUserLocal -Name $pester_userlocal -status -data $data -radius_server $pester_userradius
+            Add-FGTUserLocal -Name $pester_userlocal -data $data -radius_server $pester_userradius
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
             $userlocal.status | Should -Be "enable"
@@ -204,11 +224,21 @@ Describe "Add User Local" {
             $userlocal.'tacacs+-server' | Should -Be $pester_usertacacs
         }
 
-        It "Add User Local $pester_userlocal as TACACS user enable" {
-            Add-FGTUserLocal -Name $pester_userlocal -status -tacacs_server $pester_usertacacs
+        It "Add User Local $pester_userlocal as TACACS user status enable" {
+            Add-FGTUserLocal -Name $pester_userlocal -tacacs_server $pester_usertacacs
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
             $userlocal.status | Should -Be "enable"
+            $userlocal.'email-to' | Should -BeNullOrEmpty
+            $userlocal.'two-factor' | Should -Be "disable"
+            $userlocal.'tacacs+-server' | Should -Be $pester_usertacacs
+        }
+
+        It "Add User Local $pester_userlocal as TACACS user status disable" {
+            Add-FGTUserLocal -Name $pester_userlocal -status:$false -tacacs_server $pester_usertacacs
+            $userlocal = Get-FGTUserLocal -name $pester_userlocal
+            $userlocal.name | Should -Be $pester_userlocal
+            $userlocal.status | Should -Be "disable"
             $userlocal.'email-to' | Should -BeNullOrEmpty
             $userlocal.'two-factor' | Should -Be "disable"
             $userlocal.'tacacs+-server' | Should -Be $pester_usertacacs
@@ -218,14 +248,14 @@ Describe "Add User Local" {
             Add-FGTUserLocal -Name $pester_userlocal -email_to "powerfgt@power.fgt" -tacacs_server $pester_usertacacs
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
-            $userlocal.status | Should -Be "disable"
+            $userlocal.status | Should -Be "enable"
             $userlocal.'email-to' | Should -Be "powerfgt@power.fgt"
             $userlocal.'two-factor' | Should -Be "disable"
             $userlocal.'tacacs+-server' | Should -Be $pester_usertacacs
         }
 
         It "Add User Local $pester_userlocal as TACACS user MFA by email" {
-            Add-FGTUserLocal -Name $pester_userlocal -status -two_factor email -email_to "powerfgt@power.fgt" -tacacs_server $pester_usertacacs
+            Add-FGTUserLocal -Name $pester_userlocal -two_factor email -email_to "powerfgt@power.fgt" -tacacs_server $pester_usertacacs
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
             $userlocal.status | Should -Be "enable"
@@ -236,7 +266,7 @@ Describe "Add User Local" {
 
         It "Add User Local $pester_userlocal as TACACS user email with -data" {
             $data = @{ "email-to" = "powerfgt@power.fgt" }
-            Add-FGTUserLocal -Name $pester_userlocal -status -data $data -tacacs_server $pester_usertacacs
+            Add-FGTUserLocal -Name $pester_userlocal -data $data -tacacs_server $pester_usertacacs
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
             $userlocal.status | Should -Be "enable"
@@ -268,11 +298,21 @@ Describe "Add User Local" {
             $userlocal.'ldap-server' | Should -Be $pester_userldap
         }
 
-        It "Add User Local $pester_userlocal as TACACS user enable" {
-            Add-FGTUserLocal -Name $pester_userlocal -status -ldap_server $pester_userldap
+        It "Add User Local $pester_userlocal as TACACS user status enable" {
+            Add-FGTUserLocal -Name $pester_userlocal -ldap_server $pester_userldap
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
             $userlocal.status | Should -Be "enable"
+            $userlocal.'email-to' | Should -BeNullOrEmpty
+            $userlocal.'two-factor' | Should -Be "disable"
+            $userlocal.'ldap-server' | Should -Be $pester_userldap
+        }
+
+        It "Add User Local $pester_userlocal as TACACS user status disable" {
+            Add-FGTUserLocal -Name $pester_userlocal -status:$false -ldap_server $pester_userldap
+            $userlocal = Get-FGTUserLocal -name $pester_userlocal
+            $userlocal.name | Should -Be $pester_userlocal
+            $userlocal.status | Should -Be "disable"
             $userlocal.'email-to' | Should -BeNullOrEmpty
             $userlocal.'two-factor' | Should -Be "disable"
             $userlocal.'ldap-server' | Should -Be $pester_userldap
@@ -282,14 +322,14 @@ Describe "Add User Local" {
             Add-FGTUserLocal -Name $pester_userlocal -email_to "powerfgt@power.fgt" -ldap_server $pester_userldap
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
-            $userlocal.status | Should -Be "disable"
+            $userlocal.status | Should -Be "enable"
             $userlocal.'email-to' | Should -Be "powerfgt@power.fgt"
             $userlocal.'two-factor' | Should -Be "disable"
             $userlocal.'ldap-server' | Should -Be $pester_userldap
         }
 
         It "Add User Local $pester_userlocal as TACACS user MFA by email" {
-            Add-FGTUserLocal -Name $pester_userlocal -status -two_factor email -email_to "powerfgt@power.fgt" -ldap_server $pester_userldap
+            Add-FGTUserLocal -Name $pester_userlocal -two_factor email -email_to "powerfgt@power.fgt" -ldap_server $pester_userldap
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
             $userlocal.status | Should -Be "enable"
@@ -300,7 +340,7 @@ Describe "Add User Local" {
 
         It "Add User Local $pester_userlocal as TACACS user email with -data" {
             $data = @{ "email-to" = "powerfgt@power.fgt" }
-            Add-FGTUserLocal -Name $pester_userlocal -status -data $data -ldap_server $pester_userldap
+            Add-FGTUserLocal -Name $pester_userlocal -data $data -ldap_server $pester_userldap
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
             $userlocal.status | Should -Be "enable"
@@ -322,9 +362,9 @@ Describe "Add User Local" {
 
         It "Try to Add User Local $pester_userlocal (but there is already a object with same name)" {
             #Add first userlocal
-            Add-FGTUserLocal -Name $pester_userlocal -status -passwd $pester_userlocalpassword
+            Add-FGTUserLocal -Name $pester_userlocal -passwd $pester_userlocalpassword
             #Add Second userlocal with same name
-            { Add-FGTUserLocal -Name $pester_userlocal -status -passwd $pester_userlocalpassword } | Should -Throw "Already a Local User object using the same name"
+            { Add-FGTUserLocal -Name $pester_userlocal -passwd $pester_userlocalpassword } | Should -Throw "Already a Local User object using the same name"
         }
 
         AfterAll {
@@ -337,13 +377,13 @@ Describe "Add User Local" {
 
 Describe "Configure User Local" {
 
-    Context "Change name, email, MFA, etc" {
+    Context "Change name, email, MFA, etc as Local User" {
 
         BeforeAll {
             Add-FGTUserLocal -Name $pester_userlocal -passwd $pester_userlocalpassword
         }
 
-        It "Change status User Local to disable" {
+        It "Change status User Local to status disable" {
             Get-FGTUserLocal -name $pester_userlocal | Set-FGTUserLocal -status:$false
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
@@ -352,7 +392,7 @@ Describe "Configure User Local" {
             $userlocal.'two-factor' | Should -Be "disable"
         }
 
-        It "Change status User Local to enable" {
+        It "Change status User Local to status enable" {
             Get-FGTUserLocal -name $pester_userlocal | Set-FGTUserLocal -status
             $userlocal = Get-FGTUserLocal -name $pester_userlocal
             $userlocal.name | Should -Be $pester_userlocal
