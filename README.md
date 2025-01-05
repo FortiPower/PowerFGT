@@ -1327,6 +1327,72 @@ modify its properties `Set-FGTUserLocal` or delete it `Remove-FGTUserLocal`.
 
 #### User LDAP
 
+You can create a new User LDAP `Add-FGTUserLDAP`, retrieve its information `Get-FGTUserLDAP`,
+modify its properties `Set-FGTUserLDAP` or delete it `Remove-FGTUserLDAP`.
+
+```powershell
+
+# Create an User LDAP (using SecureString password) MyFGTUserLDAP
+
+    $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
+    Add-FGTUserLDAP -Name MyFGTUserLDAP -server ldap.powerfgt -dn "dc=fgt,dc=power,dc=powerfgt" -type regular -username svc_powerfgt -password $mypassword
+
+    name                      : MyFGTUserLDAP
+    q_origin_key              : MyFGTUserLDAP
+    server                    : ldap.powerfgt
+    secondary-server          :
+    tertiary-server           :
+    status-ttl                : 300
+    server-identity-check     : enable
+    source-ip                 :
+    source-port               : 0
+    cnid                      : cn
+    dn                        : dc=fgt,dc=power,dc=powerfgt
+    type                      : regular
+    two-factor                : disable
+    two-factor-authentication :
+    two-factor-notification   :
+    two-factor-filter         :
+    username                  : svc_powerfgt
+    password                  : ENC XXXX
+    [...]
+
+# Get information about ALL User LDAP (using Format Table)
+    Get-FGTUserLDAP | Format-Table
+
+    name          q_origin_key  server        secondary-server tertiary-server status-ttl server-identity-check source-ip source-port cnid
+    ----          ------------  ------        ---------------- --------------- ---------- --------------------- --------- ----------- ----
+    MyFGTUserLDAP MyFGTUserLDAP ldap.powerfgt                                         300 enable                                    0 cn
+
+# Modify an User LDAP (server...)
+    Get-FGTUserLDAP -name MyFGTUserLDAP | Set-FGTUserLDAP -server ldap2.powerfgt
+
+    name                      : MyFGTUserLDAP
+    q_origin_key              : MyFGTUserLDAP
+    server                    : ldap2.powerfgt
+    [...]
+
+# Create an User Local using this User LDAP
+    Add-FGTUserLocal -Name MyFGTUserLocalLDAP -ldap_server MyFGTUserLDAP
+
+    name                      : MyFGTUserLocalLDAP
+    q_origin_key              : MyFGTUserLocalLDAP
+    id                        : 16779240
+    status                    : disable
+    type                      : ldap
+    passwd                    :
+    ldap-server               : MyFGTUserLDAP
+    [...]
+
+# Remove an User LDAP
+    Get-FGTUserLDAP -name MyFGTUserLDAP | Remove-FGTUserLDAP
+
+    Confirm
+    Are you sure you want to perform this action?
+    Performing the operation "Remove User Ldap" on target "MyFGTUserLDAP".
+    [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): y
+```
+
 #### User RADIUS
 
 #### User TACACS
