@@ -37,6 +37,7 @@ With this module (version 0.8.1) you can manage:
 - [Policy](#policy) (Add/Get/Remove)
 - [Proxy Address/Address Group/ Policy](#proxy) (Add/Get/Set/Remove)
 - [Router BGP](#bgp) (Get/Set)
+- [Router OSPF](#ospf) (Get/Set)
 - RoutePolicy (Get)
 - Service (Get)
 - Service Group (Get)
@@ -951,8 +952,6 @@ or delete it `Remove-FGTRouterStatic`.
     [Y] Yes  [N] No  [?] Help (default is "N"): y
 ```
 
-## Routing
-
 #### BGP
 
 You can retrieve BGP information `Get-FGTRouterBGP` or configure it `Set-FGTRouterBGP`.
@@ -992,6 +991,49 @@ You can retrieve BGP information `Get-FGTRouterBGP` or configure it `Set-FGTRout
     holdtime-timer                     : 120
     [...]
     ebgp-multipath                     : enable
+    [...]
+```
+
+#### OSPF
+
+You can retrieve OSPF information `Get-FGTRouterOSPF` or configure it `Set-FGTRouterOSPF`.
+
+```powershell
+# Get information about Router OSPF
+    Get-FGTRouterOSPF
+
+    abr-type                          : standard
+    auto-cost-ref-bandwidth           : 1000
+    distance-external                 : 110
+    distance-inter-area               : 110
+    distance-intra-area               : 110
+    database-overflow                 : disable
+    database-overflow-max-lsas        : 10000
+    database-overflow-time-to-recover : 300
+    default-information-originate     : disable
+    default-information-metric        : 10
+    default-information-metric-type   : 2
+    default-information-route-map     :
+    default-metric                    : 10
+    distance                          : 110
+    rfc1583-compatible                : disable
+    router-id                         : 0.0.0.0
+    [...]
+
+# Configure OSPF (Arouter-id)
+    Set-FGTRouterOSPF -router_id 192.0.2.1
+
+    [...]
+    router-id                          : 192.0.2.1
+    [...]
+
+# for configure OSPF extra value, you need to use -data (for example b and bfd)
+    $data = @{ "distance" = 150 ; "bfd" = "enable" }
+    Set-FGTRouterOSPF -data $data
+    [...]
+    distance                          : 150
+    [...]
+    bfd                               : enable
     [...]
 ```
 
@@ -1726,6 +1768,7 @@ Get-FGTMonitorVpnSsl
 Get-FGTMonitorWebfilterCategories
 Get-FGTRouterPolicy
 Get-FGTRouterBGP
+Get-FGTRouterOSPF
 Get-FGTRouterStatic
 Get-FGTSystemAdmin
 Get-FGTSystemDHCPServer
@@ -1779,6 +1822,7 @@ Set-FGTFirewallPolicy
 Set-FGTFirewallProxyAddressGroup
 Set-FGTFirewallVipGroup
 Set-FGTRouterBGP
+Set-FGTRouterOSPF
 Set-FGTSystemGlobal
 Set-FGTSystemInterface
 Set-FGTSystemSettings
