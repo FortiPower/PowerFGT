@@ -123,11 +123,13 @@ function Add-FGTUserLocal {
 
         $local | add-member -name "name" -membertype NoteProperty -Value $name
 
-        if ($status) {
-            $local | add-member -name "status" -membertype NoteProperty -Value "enable"
-        }
-        else {
-            $local | add-member -name "status" -membertype NoteProperty -Value "disable"
+        if ($PsBoundParameters.ContainsKey('status')) {
+            if ($status) {
+                $local | add-member -name "status" -membertype NoteProperty -Value "enable"
+            }
+            else {
+                $local | add-member -name "status" -membertype NoteProperty -Value "disable"
+            }
         }
 
         switch ( $PSCmdlet.ParameterSetName ) {
