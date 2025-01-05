@@ -955,10 +955,10 @@ or delete it `Remove-FGTRouterStatic`.
 
 #### BGP
 
-You can retrieve BGP information `Get-FGTRouterBGP` or configure it `Get-FGTRouterBGP`.
+You can retrieve BGP information `Get-FGTRouterBGP` or configure it `Set-FGTRouterBGP`.
 
 ```powershell
-# Get information about BGP
+# Get information about Router BGP
     Get-FGTRouterBGP
 
     as                                 :
