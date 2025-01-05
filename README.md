@@ -133,7 +133,7 @@ You can also connect using API Token ([Documentation for Generate REST API ](htt
 
 ```powershell
 # Connect to the FortiGate Firewall with API Token
-    Connect-FGT 192.0.2.1 -api_token 79GyN89Q7w00rG6pj09yd7wGG3kmds
+    Connect-FGT 192.0.2.1 -apitoken 79GyN89Q7w00rG6pj09yd7wGG3kmds
 ```
 
 if you get a warning about `Unable to connect` Look [Issue](#issue)
