@@ -1522,6 +1522,107 @@ modify its properties `Set-FGTUserTACACS` or delete it `Remove-FGTUserTACACS`.
 
 #### User Group
 
+You can create a new User Group `Add-FGTUserGroup`, retrieve its information `Get-FGTUserGroup`,
+modify its properties `Set-FGTUserGroup`, copy/clone its properties `Copy-FGTUserGroup`,
+Add member to Address Group `Add-FGTUserGroupMember` and remove member `Remove-FGTUserGroupMember`,
+or delete it `Remove-FGTUserGroup`.  
+
+```powershell
+
+# Get information about ALL User Group (using Format Table)
+    Get-FGTUserGroup | Format-Table
+
+    name            q_origin_key          id group-type   authtimeout  member
+    ----            ------------          -- ----------   -----------  ------
+    Guest-group     Guest-group            1 firewall               0  {@{name=guest; q_origin_key=guest}}
+    SSO_Guest_Users SSO_Guest_Users 16777215 fsso-service           0  {}
+
+# Add an User Group with MyFGTUserLocal1 and MyFGTUserLocal2
+    Add-FGTUserGroup -name "My User Group" -member MyFGTUserLocal1, MyFGTUserLocal2
+
+    name                     : My User Group
+    q_origin_key             : My User Group
+    id                       : 848
+    group-type               : firewall
+    authtimeout              : 0
+    auth-concurrent-override : disable
+    auth-concurrent-value    : 0
+    http-digest-realm        :
+    sso-attribute-value      :
+    member                   : {@{name=MyFGTUserLocal1; q_origin_key=MyFGTUserLocal1}, @{name=MyFGTUserLocal2; q_origin_key=MyFGTUserLocal2}}
+    match                    : {}
+    user-id                  : email
+    [...]
+
+# Add MyFGTUserLocal3 member to existing User Group
+    Get-FGTUserGroup -name "My User Group" | Add-FGTUserGroupMember -member MyFGTUserLocal3
+
+    name                     : My User Group
+    q_origin_key             : My User Group
+    id                       : 848
+    group-type               : firewall
+    authtimeout              : 0
+    auth-concurrent-override : disable
+    auth-concurrent-value    : 0
+    http-digest-realm        :
+    sso-attribute-value      :
+    member                   : {@{name=MyFGTUserLocal1; q_origin_key=MyFGTUserLocal1}, @{name=MyFGTUserLocal2; q_origin_key=MyFGTUserLocal2}, @{name=MyFGTUserLocal3; 
+                            q_origin_key=MyFGTUserLocal3}}
+    [...]
+
+# Remove MyFGTUserLocal2 member to existing User Group
+    Get-FGTUserGroup -name "My User Group" | Remove-FGTUserGroupMember -member MyFGTUserLocal2
+
+    name                     : My User Group
+    q_origin_key             : My User Group
+    id                       : 848
+    group-type               : firewall
+    authtimeout              : 0
+    auth-concurrent-override : disable
+    auth-concurrent-value    : 0
+    http-digest-realm        :
+    sso-attribute-value      :
+    member                   : {@{name=MyFGTUserLocal1; q_origin_key=MyFGTUserLocal1}, @{name=MyFGTUserLocal3; q_origin_key=MyFGTUserLocal3}}
+    [...]
+
+# Modify an User Group (member...)
+    Get-FGTUserGroup -name "My User Group" | Set-FGTUserGroup -member MyFGTUserLocal2
+
+    name                     : My User Group
+    q_origin_key             : My User Group
+    id                       : 848
+    group-type               : firewall
+    authtimeout              : 0
+    auth-concurrent-override : disable
+    auth-concurrent-value    : 0
+    http-digest-realm        :
+    sso-attribute-value      :
+    member                   : {@{name=MyFGTUserLocal2; q_origin_key=MyFGTUserLocal2}}
+    [...]
+
+# Copy/Clone an User Group
+    Get-FGTUserGroup -name "My User Group" | Copy-FGTUserGroup -name "My New User Group"
+
+    name                     : My New User Group
+    q_origin_key             : My New User Group
+    id                       : 849
+    group-type               : firewall
+    authtimeout              : 0
+    auth-concurrent-override : disable
+    auth-concurrent-value    : 0
+    http-digest-realm        :
+    sso-attribute-value      :
+    member                   : {@{name=MyFGTUserLocal2; q_origin_key=MyFGTUserLocal2}}
+
+# Remove an User Group
+    Get-FGTUserGroup -name "My User Group" | Remove-FGTUserGroup
+
+    Confirm
+    Are you sure you want to perform this action?
+    Performing the operation "Remove User Group" on target "My User Group".
+    [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): Y
+```
+
 ### VPN IPsec
 
 #### VPN IPsec Interface Phase 1
