@@ -1273,6 +1273,58 @@ You can manage user (Local, LDAP, RADIUS, TACACS) on FortiGate and also manage u
 
 #### User Local
 
+You can create a new User Local `Add-FGTUserLocal`, retrieve its information `Get-FGTUserLocal`,
+modify its properties `Set-FGTUserLocal` or delete it `Remove-FGTUserLocal`.
+
+```powershell
+
+# Create an User Local (using SecureString password) MyFGTUserLocal
+
+    $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
+    Add-FGTUserLocal -Name MyFGTUserLocal -passwd $mypassword
+
+    name                      : MyFGTUserLocal
+    q_origin_key              : MyFGTUserLocal
+    id                        : 16779153
+    status                    : disable
+    type                      : password
+    passwd                    : ENC XXXX
+    ldap-server               :
+    radius-server             :
+    tacacs+-server            :
+    two-factor                : disable
+    two-factor-authentication :
+    two-factor-notification   :
+    fortitoken                :
+
+    [...]
+
+# Get information about ALL User Local (using Format Table)
+    Get-FGTUserLocal | Format-Table
+
+    name           q_origin_key         id status  type     passwd   ldap-server radius-server tacacs+-server two-factor
+    ----           ------------         -- ------  ----     ------   ----------- ------------- -------------- ----------
+    MyFGTUserLocal MyFGTUserLocal 16779153 disable password ENC XXXX                                          disable
+    guest          guest          16777217 enable  password ENC XXXX                                          disable
+
+# Modify an User Local (status...)
+    Get-FGTUserLocal -name MyFGTUserLocal | Set-FGTUserLocal -status
+
+    name                      : MyFGTUserLocal
+    q_origin_key              : MyFGTUserLocal
+    id                        : 16779153
+    status                    : enable
+    [...]
+
+# Remove an User Local
+    Get-FGTUserLocal -name MyFGTUserLocal | Remove-FGTUserLocal
+
+    Confirm
+    Are you sure you want to perform this action?
+    Performing the operation "Remove User Local" on target "MyFGTUserLocal".
+    [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): Y
+```
+
 #### User LDAP
 
 #### User RADIUS
