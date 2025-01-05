@@ -1460,6 +1460,66 @@ modify its properties `Set-FGTUserRADIUS` or delete it `Remove-FGTUserRADIUS`.
 
 #### User TACACS
 
+You can create a new User LDAP `Add-FGTUserTACACS`, retrieve its information `Get-FGTUserTACACS`,
+modify its properties `Set-FGTUserTACACS` or delete it `Remove-FGTUserTACACS`.
+
+```powershell
+
+# Create an User TACACS (using SecureString password) MyFGTUserTACACS
+
+    $mykey = ConvertTo-SecureString mykey -AsPlainText -Force
+    Add-FGTUserTACACS -Name MyFGTUserTACACS -server tacacs.powerfgt -key $mykey
+
+    name                    : MyFGTUserTACACS
+    q_origin_key            : MyFGTUserTACACS
+    server                  : tacacs.powerfgt
+    secondary-server        :
+    tertiary-server         :
+    port                    : 49
+    key                     : ENC XXXX
+    secondary-key           :
+    tertiary-key            :
+    status-ttl              : 300
+    [...]
+
+# Get information about ALL User TACACS (using Format Table)
+    Get-FGTUserTACACS | Format-Table
+
+    name            q_origin_key    server          secondary-server tertiary-server port key      secondary-key tertiary-key status-ttl
+    ----            ------------    ------          ---------------- --------------- ---- ---      ------------- ------------ ----------
+    MyFGTUserTACACS MyFGTUserTACACS tacacs.powerfgt                                    49 ENC XXXX                                   300
+
+# Modify an User TACACS (server...)
+    Get-FGTUserTACACS -name MyFGTUserTACACS | Set-FGTUserTACACS -server tacacs2.powerfgt
+
+    name                    : MyFGTUserTACACS
+    q_origin_key            : MyFGTUserTACACS
+    server                  : tacacs2.powerfgt
+    [...]
+
+# Create an User Local using this User TACACS
+    Add-FGTUserLocal -Name MyFGTUserLocalTACACS -tacacs_server MyFGTUserTACACS
+
+    name                      : MyFGTUserLocalTACACS
+    q_origin_key              : MyFGTUserLocalTACACS
+    id                        : 16779242
+    status                    : disable
+    type                      : tacacs+
+    passwd                    :
+    ldap-server               :
+    radius-server             :
+    tacacs+-server            : MyFGTUserTACACS
+    [...]
+
+# Remove an User TACACS
+    Get-FGTUserTACACS -name MyFGTUserTACACS | Remove-FGTUserTACACS
+
+    Confirm
+    Are you sure you want to perform this action?
+    Performing the operation "Remove User Tacacs" on target "MyFGTUserTACACS".
+    [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): Y
+```
+
 #### User Group
 
 ### VPN IPsec
