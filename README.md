@@ -1395,6 +1395,69 @@ modify its properties `Set-FGTUserLDAP` or delete it `Remove-FGTUserLDAP`.
 
 #### User RADIUS
 
+You can create a new User LDAP `Add-FGTUserRADIUS`, retrieve its information `Get-FGTUserRADIUS`,
+modify its properties `Set-FGTUserRADIUS` or delete it `Remove-FGTUserRADIUS`.
+
+```powershell
+
+# Create an User RADIUS (using SecureString password) MyFGTUserRADIUS
+
+    $secret = ConvertTo-SecureString mysecret -AsPlainText -Force
+    Add-FGTUserRADIUS -Name MyFGTUserRADIUS -server radius.powerfgt -secret $mysecret
+
+    name                                        : MyFGTUserRADIUS
+    q_origin_key                                : MyFGTUserRADIUS
+    server                                      : radius.powerfgt
+    secret                                      : ENC XXXX
+    secondary-server                            :
+    secondary-secret                            :
+    tertiary-server                             :
+    tertiary-secret                             :
+    timeout                                     : 5
+    status-ttl                                  : 300
+    all-usergroup                               : disable
+    use-management-vdom                         : disable
+    switch-controller-nas-ip-dynamic            : disable
+    nas-ip                                      : 0.0.0.0
+    [...]
+
+# Get information about ALL User RADIUS (using Format Table)
+    Get-FGTUserRADIUS | Format-Table
+
+    name            q_origin_key    server          secret   secondary-server secondary-secret tertiary-server tertiary-secret timeout status-ttl
+    ----            ------------    ------          ------   ---------------- ---------------- --------------- --------------- ------- ----------
+    MyFGTUserRADIUS MyFGTUserRADIUS radius.powerfgt ENC XXXX                                                                         5        300
+
+# Modify an User RADIUS (server...)
+    Get-FGTUserRADIUS -name MyFGTUserRADIUS | Set-FGTUserRADIUS -server radius2.powerfgt
+
+    name                      : MyFGTUserRADIUS
+    q_origin_key              : MyFGTUserRADIUS
+    server                    : radius2.powerfgt
+    [...]
+
+# Create an User Local using this User RADIUS
+    Add-FGTUserLocal -Name MyFGTUserLocalRADIUS -radius_server MyFGTUserRADIUS
+
+    name                      : MyFGTUserLocalRADIUS
+    q_origin_key              : MyFGTUserLocalRADIUS
+    id                        : 16779241
+    status                    : disable
+    type                      : radius
+    passwd                    :
+    ldap-server               :
+    radius-server             : MyFGTUserRADIUS
+    [...]
+
+# Remove an User RADIUS
+    Get-FGTUserRADIUS -name MyFGTUserRADIUS | Remove-FGTUserRADIUS
+
+    Confirm
+    Are you sure you want to perform this action?
+    Performing the operation "Remove User Radius" on target "MyFGTUserRADIUS".
+    [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): Y
+```
+
 #### User TACACS
 
 #### User Group
