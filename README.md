@@ -1286,7 +1286,7 @@ modify its properties `Set-FGTUserLocal` or delete it `Remove-FGTUserLocal`.
     name                      : MyFGTUserLocal
     q_origin_key              : MyFGTUserLocal
     id                        : 16779153
-    status                    : disable
+    status                    : enable
     type                      : password
     passwd                    : ENC XXXX
     ldap-server               :
@@ -1304,16 +1304,16 @@ modify its properties `Set-FGTUserLocal` or delete it `Remove-FGTUserLocal`.
 
     name           q_origin_key         id status  type     passwd   ldap-server radius-server tacacs+-server two-factor
     ----           ------------         -- ------  ----     ------   ----------- ------------- -------------- ----------
-    MyFGTUserLocal MyFGTUserLocal 16779153 disable password ENC XXXX                                          disable
+    MyFGTUserLocal MyFGTUserLocal 16779153 enable  password ENC XXXX                                          disable
     guest          guest          16777217 enable  password ENC XXXX                                          disable
 
 # Modify an User Local (status...)
-    Get-FGTUserLocal -name MyFGTUserLocal | Set-FGTUserLocal -status
+    Get-FGTUserLocal -name MyFGTUserLocal | Set-FGTUserLocal -status:$false
 
     name                      : MyFGTUserLocal
     q_origin_key              : MyFGTUserLocal
     id                        : 16779153
-    status                    : enable
+    status                    : disable
     [...]
 
 # Remove an User Local
@@ -1378,7 +1378,7 @@ modify its properties `Set-FGTUserLDAP` or delete it `Remove-FGTUserLDAP`.
     name                      : MyFGTUserLocalLDAP
     q_origin_key              : MyFGTUserLocalLDAP
     id                        : 16779240
-    status                    : disable
+    status                    : enable
     type                      : ldap
     passwd                    :
     ldap-server               : MyFGTUserLDAP
@@ -1442,7 +1442,7 @@ modify its properties `Set-FGTUserRADIUS` or delete it `Remove-FGTUserRADIUS`.
     name                      : MyFGTUserLocalRADIUS
     q_origin_key              : MyFGTUserLocalRADIUS
     id                        : 16779241
-    status                    : disable
+    status                    : enable
     type                      : radius
     passwd                    :
     ldap-server               :
@@ -1503,7 +1503,7 @@ modify its properties `Set-FGTUserTACACS` or delete it `Remove-FGTUserTACACS`.
     name                      : MyFGTUserLocalTACACS
     q_origin_key              : MyFGTUserLocalTACACS
     id                        : 16779242
-    status                    : disable
+    status                    : enable
     type                      : tacacs+
     passwd                    :
     ldap-server               :
