@@ -293,8 +293,14 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Monitor Firewall Session" {
             { Get-FGTMonitorFirewallSession -connection $fgt } | Should -Not -Throw
         }
+        It "Use Multi connection for call Get Monitor Router BGP Neighbors" {
+            { Get-FGTMonitorRouterBGPNeighbors -connection $fgt } | Should -Not -Throw
+        }
         It "Use Multi connection for call Get Monitor Router IPv4" {
             { Get-FGTMonitorRouterIPv4 -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get Monitor Router OSPF Neighbors" {
+            { Get-FGTMonitorRouterOSPFNeighbors -connection $fgt } | Should -Not -Throw
         }
         It "Use Multi connection for call Get Monitor System Config Backup" {
             { Get-FGTMonitorSystemConfigBackup -connection $fgt } | Should -Not -Throw
