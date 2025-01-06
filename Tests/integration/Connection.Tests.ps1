@@ -269,10 +269,10 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get VPN IPsec Phase 2 Interface" {
             { Get-FGTVpnIpsecPhase2Interface -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get VPN SSL Client" -skip:($fgt_version -lt "7.0.0") {
+        It "Use Multi connection for call Get VPN SSL Client (> 7.0.0)" -skip:($fgt_version -lt "7.0.0") {
             { Get-FGTVpnSSLClient -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get VPN SSL Client" -skip:($fgt_version -ge "7.0.0") {
+        It "Use Multi connection for call Get VPN SSL Client (< 7.0.0)" -skip:($fgt_version -ge "7.0.0") {
             { Get-FGTVpnSSLClient -connection $fgt } | Should -Throw "VPN SSL Client is not available before FortiOS 7.0.x"
         }
         It "Use Multi connection for call Get VPN SSL Portal" {
