@@ -293,14 +293,20 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Monitor Firewall Session" {
             { Get-FGTMonitorFirewallSession -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get Monitor Router BGP Neighbors" {
+        It "Use Multi connection for call Get Monitor Router BGP Neighbors (> 7.0.0)" -skip:($fgt_version -lt "7.0.0") {
             { Get-FGTMonitorRouterBGPNeighbors -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get Monitor Router BGP Neighbors (< 7.0.0)" -skip:($fgt_version -ge "7.0.0") {
+            { Get-FGTMonitorRouterBGPNeighbors -connection $fgt } | Should -Throw "Monitor Router BGP Neighbors is not available before FortiOS 7.0.x"
         }
         It "Use Multi connection for call Get Monitor Router IPv4" {
             { Get-FGTMonitorRouterIPv4 -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get Monitor Router OSPF Neighbors" {
+        It "Use Multi connection for call Get Monitor Router OSPF Neighbors (> 7.0.0)" -skip:($fgt_version -lt "7.0.0") {
             { Get-FGTMonitorRouterOSPFNeighbors -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get Monitor Router OSPF Neighbors (< 7.0.0)" -skip:($fgt_version -ge "7.0.0") {
+            { Get-FGTMonitorRouterOSPFNeighbors -connection $fgt } | Should -Throw "Monitor Router OSPF Neighbors is not available before FortiOS 7.0.x"
         }
         It "Use Multi connection for call Get Monitor System Config Backup" {
             { Get-FGTMonitorSystemConfigBackup -connection $fgt } | Should -Not -Throw
