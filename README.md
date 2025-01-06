@@ -1390,7 +1390,9 @@ It is possible to `monitor` FortiGate
 * `Get-FGTMonitorFirewallAddressFQDN` List of FQDN address objects and the IPs they resolved to
 * `Get-FGTMonitorFirewallPolicy` List traffic statistics for firewall policies
 * `Get-FGTMonitorFirewallSession` List all active firewall sessions
+* `Get-FGTMonitorRouterBGPNeighbors` List all discovered BGP neighbors
 * `Get-FGTMonitorRouterIPv4` List all active IPv4 routing table entries
+* `Get-FGTMonitorRouterOSPFNeighbors` List all discovered OSPF neighbors
 * `Get-FGTMonitorLicenseStatus` Get current license & registration status
 * `Get-FGTMonitorNetworkARP` Get IPv4 ARP table
 * `Get-FGTMonitorSystemConfigBackup` Backup system config
@@ -1757,7 +1759,9 @@ Get-FGTMonitorFirewallPolicy
 Get-FGTMonitorFirewallSession
 Get-FGTMonitorLicenseStatus
 Get-FGTMonitorNetworkARP
+Get-FGTMonitorRouterBGPNeighbors
 Get-FGTMonitorRouterIPv4
+Get-FGTMonitorRouterOSPFNeighbors
 Get-FGTMonitorSystemConfigBackup
 Get-FGTMonitorSystemFirmware
 Get-FGTMonitorSystemHAChecksum
