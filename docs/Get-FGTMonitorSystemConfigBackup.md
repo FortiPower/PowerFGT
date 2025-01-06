@@ -27,7 +27,7 @@ Get System Config Backup
 Get-FGTMonitorSystemConfigBackup
 ```
 
-Get System Config Backup
+Get System Config Backup on global scope
 
 ### EXAMPLE 2
 ```
@@ -38,17 +38,10 @@ Get System Config Backup (but only relevant attributes)
 
 ### EXAMPLE 3
 ```
-Get-FGTMonitorSystemConfigBackup -vdom vdomX
+Get-FGTMonitorSystemConfigBackup -scope vdom -vdom vdomX
 ```
 
 Get System Config Backup on vdomX
-
-### EXAMPLE 4
-```
-Get-FGTMonitorSystemConfigBackup -scope global -vdom vdomX
-```
-
-Get System Config Backup in global scope even if vdom is specified
 
 ## PARAMETERS
 
@@ -99,7 +92,7 @@ Accept wildcard characters: False
 ```
 
 ### -connection
-Scope parameter with default "global"
+{{ Fill connection Description }}
 
 ```yaml
 Type: PSObject
