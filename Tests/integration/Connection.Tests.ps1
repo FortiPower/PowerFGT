@@ -344,7 +344,7 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Monitor VPN IPsec" {
             { Get-FGTMonitorVpnIPsec -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get Monitor Webfilter Cateogries" {
+        It "Use Multi connection for call Get Monitor Webfilter Categories" {
             { Get-FGTMonitorWebfilterCategories -connection $fgt } | Should -Not -Throw
         }
     }
