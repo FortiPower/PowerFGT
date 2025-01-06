@@ -47,6 +47,11 @@ function Get-FGTMonitorRouterOSPFNeighbors {
             $invokeParams.add( 'vdom', $vdom )
         }
 
+        #before 7.0.x, it is not available !
+        if ($connection.version -lt "7.0.0") {
+            Throw "Monitor Router OSPF Neighbors is not available before FortiOS 7.0.x"
+        }
+
         $uri = 'api/v2/monitor/router/ospf/neighbors'
 
         $response = Invoke-FGTRestMethod -uri $uri -method 'GET' -connection $connection @invokeParams
