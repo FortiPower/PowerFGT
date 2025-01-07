@@ -2229,13 +2229,15 @@ Show-FGTException
 
 # Contributors
 
+- Alex Bush
 - Arthur Heijnen
 - Benjamin Perrier
 - Brett Pound
-- Dave Hope
 - Cédric Moreau
+- Dave Hope
 - Evan Chisholm
 - Jelmer Jaarsma
+- Johan Kummeneje
 - Kevin Shu
 - Sylvain Gomez
 
