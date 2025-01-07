@@ -350,6 +350,8 @@ function Add-FGTFirewallPolicyMember {
         [Parameter(Mandatory = $false)]
         [string[]]$srcaddr,
         [Parameter(Mandatory = $false)]
+        [string[]]$srcintf,
+        [Parameter(Mandatory = $false)]
         [string[]]$dstaddr,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
@@ -388,6 +390,25 @@ function Add-FGTFirewallPolicyMember {
                 $members += $member_name
             }
             $_policy | add-member -name "srcaddr" -membertype NoteProperty -Value $members
+        }
+
+        if ( $PsBoundParameters.ContainsKey('srcintf') ) {
+
+            if ($policy.srcintf.name -eq "all") {
+                #all => create new empty array members
+                $members = @()
+            }
+            else {
+                #Add member to existing source interface
+                $members = $policy.srcintf
+            }
+
+            foreach ( $member in $srcintf ) {
+                $member_name = @{ }
+                $member_name.add( 'name', $member)
+                $members += $member_name
+            }
+            $_policy | add-member -name "srcintf" -membertype NoteProperty -Value $members
         }
 
         if ( $PsBoundParameters.ContainsKey('dstaddr') ) {
