@@ -326,7 +326,7 @@ function Add-FGTFirewallPolicyMember {
         Add a FortiGate Policy Member
 
         .DESCRIPTION
-        Add a FortiGate Policy Member (source or destination address)
+        Add a FortiGate Policy Member (source or destination address/interface)
 
         .EXAMPLE
         $MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
@@ -340,6 +340,17 @@ function Add-FGTFirewallPolicyMember {
 
         Add MyAddress1 and MyAddress2 member to destination of MyFGTPolicy
 
+        .EXAMPLE
+        $MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
+        PS C:\>$MyFGTPolicy | Add-FGTFirewallPolicyMember -srcintf port1
+
+        Add port1 member to source interface of MyFGTPolicy
+
+        .EXAMPLE
+        $MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
+        PS C:\>$MyFGTPolicy | Add-FGTFirewallPolicyMember -dstintf port2
+
+        Add port2 member to destination interface of MyFGTPolicy
     #>
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'low')]
