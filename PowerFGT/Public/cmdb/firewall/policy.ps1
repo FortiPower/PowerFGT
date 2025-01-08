@@ -354,6 +354,8 @@ function Add-FGTFirewallPolicyMember {
         [Parameter(Mandatory = $false)]
         [string[]]$dstaddr,
         [Parameter(Mandatory = $false)]
+        [string[]]$dstintf,
+        [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
@@ -428,6 +430,25 @@ function Add-FGTFirewallPolicyMember {
                 $members += $member_name
             }
             $_policy | add-member -name "dstaddr" -membertype NoteProperty -Value $members
+        }
+
+        if ( $PsBoundParameters.ContainsKey('dstintf') ) {
+
+            if ($policy.dstintf.name -eq "all") {
+                #all => create new empty array members
+                $members = @()
+            }
+            else {
+                #Add member to existing source interface
+                $members = $policy.dstintf
+            }
+
+            foreach ( $member in $dstintf ) {
+                $member_name = @{ }
+                $member_name.add( 'name', $member)
+                $members += $member_name
+            }
+            $_policy | add-member -name "dstintf" -membertype NoteProperty -Value $members
         }
 
         if ($PSCmdlet.ShouldProcess($policy.name, 'Add Firewall Policy Group Member')) {
