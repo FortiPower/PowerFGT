@@ -476,6 +476,10 @@ function Set-FGTFirewallAddress {
         [string]$country,
         [Parameter (Mandatory = $false, ParameterSetName = "mac")]
         [string[]]$mac,
+        [Parameter (Mandatory = $false, ParameterSetName = "dynamic")]
+        [string]$sdn,
+        [Parameter (Mandatory = $false, ParameterSetName = "dynamic")]
+        [string]$filter,
         [Parameter (Mandatory = $false)]
         [string]$interface,
         [Parameter (Mandatory = $false)]
@@ -570,6 +574,15 @@ function Set-FGTFirewallAddress {
                         $mac_array += @{ 'macaddr' = $s }
                     }
                     $_address | add-member -name "macaddr" -membertype NoteProperty -Value @($mac_array)
+                }
+            }
+            "dynamic" {
+                if ( $PsBoundParameters.ContainsKey('sdn') ) {
+                    $_address | add-member -name "sdn" -membertype NoteProperty -Value $sdn
+                }
+
+                if ( $PsBoundParameters.ContainsKey('filter') ) {
+                    $_address | add-member -name "filter" -membertype NoteProperty -Value $filter
                 }
             }
             default { }
