@@ -82,9 +82,9 @@ function Add-FGTFirewallAddress {
         [string]$country,
         [Parameter (Mandatory = $false, ParameterSetName = "mac")]
         [string[]]$mac,
-        [Parameter (Mandatory = $true, ParameterSetName = "sdn")]
+        [Parameter (Mandatory = $true, ParameterSetName = "dynamic")]
         [string]$sdn,
-        [Parameter (Mandatory = $true, ParameterSetName = "sdn")]
+        [Parameter (Mandatory = $true, ParameterSetName = "dynamic")]
         [string]$filter,
         [Parameter (Mandatory = $false)]
         [string]$interface,
@@ -156,7 +156,7 @@ function Add-FGTFirewallAddress {
                 $address | add-member -name "type" -membertype NoteProperty -Value "mac"
                 $address | add-member -name "macaddr" -membertype NoteProperty -Value @($mac_array)
             }
-            "sdn" {
+            "dynamic" {
                 $address | add-member -name "type" -membertype NoteProperty -Value "dynamic"
                 $address | add-member -name "sdn" -membertype NoteProperty -Value $sdn
                 $address | add-member -name "filter" -membertype NoteProperty -Value $filter
