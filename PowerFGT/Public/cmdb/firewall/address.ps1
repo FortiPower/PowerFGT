@@ -56,7 +56,7 @@ function Add-FGTFirewallAddress {
         .EXAMPLE
         Add-FGTFirewallAddress -Name FGT-Dynamic-SDN-MyVM -sdn MyVcenter -filter VMNAME=MyVM
 
-        Add Address object type dynamic (SDN) MyVcenter with name FGT-Dynamic-SDN-MyVM and filter VMNAME=MyNAME
+        Add Address object type dynamic (SDN) MyVcenter with name FGT-Dynamic-SDN-MyVM and filter VMNAME=MyVM
 
         .EXAMPLE
         $data = @{ "color" = 23 }
@@ -444,6 +444,12 @@ function Set-FGTFirewallAddress {
         PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -mac 01:02:03:04:05:06
 
         Change MyFGTAddress to set a new mac address 01:02:03:04:05:06
+
+        .EXAMPLE
+        $MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
+        PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -filter VMNAME=MyVM
+
+        Change MyFGTAddress to set a new filter VMNANME=MyVM
 
         .EXAMPLE
         $data = @{ "color" = 23 }
