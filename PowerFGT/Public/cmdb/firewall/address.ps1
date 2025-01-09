@@ -54,6 +54,11 @@ function Add-FGTFirewallAddress {
         Add Address object type mac (macaddr) with name FGT-Mac and value 01:02:03:04:05:06
 
         .EXAMPLE
+        Add-FGTFirewallAddress -Name FGT-Dynamic-SDN-MyVM -sdn MyVcenter -filter VMNAME=MyVM
+
+        Add Address object type dynamic (SDN) MyVcenter with name FGT-Dynamic-SDN-MyVM and filter VMNAME=MyNAME
+
+        .EXAMPLE
         $data = @{ "color" = 23 }
         PS C:\>Add-FGTFirewallAddress -Name FGT -ip 192.0.2.0 -mask 255.255.255.0 -data $data
 
@@ -77,6 +82,10 @@ function Add-FGTFirewallAddress {
         [string]$country,
         [Parameter (Mandatory = $false, ParameterSetName = "mac")]
         [string[]]$mac,
+        [Parameter (Mandatory = $true, ParameterSetName = "sdn")]
+        [string]$sdn,
+        [Parameter (Mandatory = $true, ParameterSetName = "sdn")]
+        [string]$filter,
         [Parameter (Mandatory = $false)]
         [string]$interface,
         [Parameter (Mandatory = $false)]
@@ -146,6 +155,11 @@ function Add-FGTFirewallAddress {
                 }
                 $address | add-member -name "type" -membertype NoteProperty -Value "mac"
                 $address | add-member -name "macaddr" -membertype NoteProperty -Value @($mac_array)
+            }
+            "sdn" {
+                $address | add-member -name "type" -membertype NoteProperty -Value "dynamic"
+                $address | add-member -name "sdn" -membertype NoteProperty -Value $sdn
+                $address | add-member -name "filter" -membertype NoteProperty -Value $filter
             }
             default { }
         }
