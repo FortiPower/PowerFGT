@@ -718,7 +718,7 @@ Describe "Add Firewall Address" {
 
     }
 
-    Context "dynamic (SDN)" {
+    Context "dynamic (SDN)" -skip:($fgt_version -lt "6.2.0") {
 
         BeforeAll {
             #Add SDN Connector (manual, there is not yet Add-FGTSystemSDNConnector...)
@@ -1638,7 +1638,7 @@ Describe "Configure Firewall Address" {
 
     }
 
-    Context "dynamic" {
+    Context "Dynamic (SDN)" -skip:($fgt_version -lt "6.2.0") {
 
         BeforeAll {
 
