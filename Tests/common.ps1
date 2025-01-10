@@ -14,6 +14,7 @@ $script:pester_address2 = "pester_address2"
 $script:pester_address3 = "pester_address3"
 $script:pester_address4 = "pester_address4"
 $script:pester_address5 = "pester_address5"
+$script:pester_address6 = "pester_address6"
 $script:pester_addressgroup1 = "pester_addressgroup %/*?1"
 $script:pester_addressgroup2 = "pester_addressgroup2"
 $script:pester_vip1 = "pester_vip %/*?1"
@@ -67,6 +68,7 @@ $script:pester_userradiusserver1 = "pesterradiusserver1.powerfgt"
 $script:pester_userradiusserver2 = "pesterradiusserver2.powerfgt"
 $script:pester_userradiusserver3 = "pesterradiusserver3.powerfgt"
 $script:pester_userradius_secret = ConvertTo-SecureString "pester_userradiussecret" -AsPlainText -Force
+$script:pester_sdnconnector1 = "pester_sdnconnector1"
 
 . ../credential.ps1
 #TODO: Add check if no ipaddress/login/password info...
