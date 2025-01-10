@@ -1638,6 +1638,176 @@ Describe "Configure Firewall Address" {
 
     }
 
+    Context "dynamic" {
+
+        BeforeAll {
+
+            #Add SDN Connector (manual, there is not yet Add-FGTSystemSDNConnector...)
+            $data = @{
+                "name"               = $pester_sdnconnector1
+                "type"               = "vmware"
+                "verify-certificate" = "disable"
+                "server"             = "myServer"
+                "username"           = "MyUsername"
+                "password"           = "MyPassword"
+                "update-interval"    = "120"
+            }
+
+            Invoke-FGTRestMethod "api/v2/cmdb/system/sdn-connector" -method POST -body $data
+
+            $address = Add-FGTFirewallAddress -Name $pester_address6 -sdn $pester_sdnconnector1 -filter "VMNAME=MyVM"
+            $script:uuid = $address.uuid
+        }
+
+        It "Change Filter" {
+            Get-FGTFirewallAddress -name $pester_address6 | Set-FGTFirewallAddress -filter "VMNAME=MyFGTVM"
+            $address = Get-FGTFirewallAddress -name $pester_address6
+            $address.name | Should -Be $pester_address6
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "dynamic"
+            $address.subnet | Should -BeNullOrEmpty
+            $address.sdn | Should -Be $pester_sdnconnector1
+            $address.filter | Should -Be "VMNAME=MyFGTVM"
+            $address.'associated-interface' | Should -BeNullOrEmpty
+            $address.comment | Should -BeNullOrEmpty
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "enable"
+            }
+            $address.'allow-routing' | Should -Be "disable"
+            $address.color | Should -Be "0"
+        }
+
+        <#
+        It "Change SDN" {
+            Get-FGTFirewallAddress -name $pester_address6 | Set-FGTFirewallAddress -mac 01:02:03:04:05:07
+            $address = Get-FGTFirewallAddress -name $pester_address6
+            $address.name | Should -Be $pester_address6
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "dynamic"
+            $address.subnet | Should -BeNullOrEmpty
+            $address.sdn | Should -Be $pester_sdnconnector1
+            $address.filter | Should -Be "VMNAME=myVM"
+            $address.'associated-interface' | Should -BeNullOrEmpty
+            $address.comment | Should -BeNullOrEmpty
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "enable"
+            }
+        }
+        #>
+
+        It "Change (Associated) Interface" {
+            Get-FGTFirewallAddress -name $pester_address6 | Set-FGTFirewallAddress -interface port2
+            $address = Get-FGTFirewallAddress -name $pester_address6
+            $address.name | Should -Be $pester_address6
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "dynamic"
+            $address.subnet | Should -BeNullOrEmpty
+            $address.sdn | Should -Be $pester_sdnconnector1
+            $address.filter | Should -Be "VMNAME=MyFGTVM"
+            $address.'associated-interface' | Should -Be "port2"
+            $address.comment | Should -BeNullOrEmpty
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "enable"
+            }
+        }
+
+        It "Change comment" {
+            Get-FGTFirewallAddress -name $pester_address6 | Set-FGTFirewallAddress -comment "Modified by PowerFGT"
+            $address = Get-FGTFirewallAddress -name $pester_address6
+            $address.name | Should -Be $pester_address6
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "dynamic"
+            $address.subnet | Should -BeNullOrEmpty
+            $address.sdn | Should -Be $pester_sdnconnector1
+            $address.filter | Should -Be "VMNAME=MyFGTVM"
+            $address.'associated-interface' | Should -Be "port2"
+            $address.comment | Should -Be "Modified by PowerFGT"
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "enable"
+            }
+        }
+
+        It "Change visiblity" {
+            Get-FGTFirewallAddress -name $pester_address6 | Set-FGTFirewallAddress -visibility:$false
+            $address = Get-FGTFirewallAddress -name $pester_address6
+            $address.name | Should -Be $pester_address6
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "dynamic"
+            $address.subnet | Should -BeNullOrEmpty
+            $address.sdn | Should -Be $pester_sdnconnector1
+            $address.filter | Should -Be "VMNAME=MyFGTVM"
+            $address.'associated-interface' | Should -Be "port2"
+            $address.comment | Should -Be "Modified by PowerFGT"
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "disable"
+            }
+        }
+
+        It "Change -data (1 field)" {
+            $data = @{ "color" = 23 }
+            Get-FGTFirewallAddress -name $pester_address6 | Set-FGTFirewallAddress -data $data
+            $address = Get-FGTFirewallAddress -name $pester_address6
+            $address.name | Should -Be $pester_address6
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "dynamic"
+            $address.subnet | Should -BeNullOrEmpty
+            $address.sdn | Should -Be $pester_sdnconnector1
+            $address.filter | Should -Be "VMNAME=MyFGTVM"
+            $address.'associated-interface' | Should -Be "port2"
+            $address.comment | Should -Be "Modified by PowerFGT"
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "disable"
+            }
+            $address.'allow-routing' | Should -Be "disable"
+            $address.color | Should -Be "23"
+        }
+
+        It "Change -data (2 fields)" {
+            $data = @{ "color" = 4 ; comment = "Modified by PowerFGT via -data" }
+            Get-FGTFirewallAddress -name $pester_address6 | Set-FGTFirewallAddress -data $data
+            $address = Get-FGTFirewallAddress -name $pester_address6
+            $address.name | Should -Be $pester_address6
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "dynamic"
+            $address.subnet | Should -BeNullOrEmpty
+            $address.sdn | Should -Be $pester_sdnconnector1
+            $address.filter | Should -Be "VMNAME=MyFGTVM"
+            $address.'associated-interface' | Should -Be "port2"
+            $address.comment | Should -Be "Modified by PowerFGT via -data"
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "disable"
+            }
+            $address.'allow-routing' | Should -Be "disable"
+            $address.color | Should -Be "4"
+        }
+
+        It "Try to Configure Address $pester_address6 (but it is wrong type...)" {
+            { Get-FGTFirewallAddress -name $pester_address6 | Set-FGTFirewallAddress -fqdn "fortipower.github.io" } | Should -Throw "Address type (dynamic) need to be on the same type (fqdn)"
+        }
+
+        It "Change Name" {
+            Get-FGTFirewallAddress -name $pester_address6 | Set-FGTFirewallAddress -name "pester_address_change"
+            $address = Get-FGTFirewallAddress -name "pester_address_change"
+            $address.name | Should -Be "pester_address_change"
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "dynamic"
+            $address.subnet | Should -BeNullOrEmpty
+            $address.sdn | Should -Be $pester_sdnconnector1
+            $address.filter | Should -Be "VMNAME=MyFGTVM"
+            $address.'associated-interface' | Should -Be "port2"
+            $address.comment | Should -Be "Modified by PowerFGT via -data"
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "disable"
+            }
+        }
+        AfterAll {
+            Get-FGTFirewallAddress -uuid $script:uuid | Remove-FGTFirewallAddress -confirm:$false
+
+            #Delete SDN Connector (manual, there is not yet Remove-FGTSystemSDNConnector...)
+            Invoke-FGTRestMethod "api/v2/cmdb/system/sdn-connector/$($pester_sdnconnector1)" -method DELETE
+        }
+
+    }
 }
 
 Describe "Copy Firewall Address" {
