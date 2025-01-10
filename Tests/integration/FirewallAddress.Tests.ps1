@@ -718,6 +718,162 @@ Describe "Add Firewall Address" {
 
     }
 
+    Context "dynamic (SDN)" {
+
+        BeforeAll {
+            #Add SDN Connector (manual, there is not yet Add-FGTSystemSDNConnector...)
+            $data = @{
+                "name"               = $pester_sdnconnector1
+                "type"               = "vmware"
+                "verify-certificate" = "disable"
+                "server"             = "myServer"
+                "username"           = "MyUsername"
+                "password"           = "MyPassword"
+                "update-interval"    = "120"
+
+            }
+            Invoke-FGTRestMethod "api/v2/cmdb/system/sdn-connector" -method POST -body $data
+        }
+        AfterEach {
+            Get-FGTFirewallAddress -name $pester_address6 | Remove-FGTFirewallAddress -confirm:$false
+        }
+
+        It "Add Address $pester_address6 (type dynamic)" {
+            Add-FGTFirewallAddress -Name $pester_address6 -sdn $pester_sdnconnector1 -filter "VMNAME=myVM"
+            $address = Get-FGTFirewallAddress -name $pester_address6
+            $address.name | Should -Be $pester_address6
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "dynamic"
+            $address.subnet | Should -BeNullOrEmpty
+            $address.sdn | Should -Be $pester_sdnconnector1
+            $address.filter | Should -Be "VMNAME=myVM"
+            $address.'associated-interface' | Should -BeNullOrEmpty
+            $address.comment | Should -BeNullOrEmpty
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "enable"
+            }
+            $address.'allow-routing' | Should -Be "disable"
+            $address.color | Should -Be "0"
+        }
+
+        It "Add Address $pester_address6 (type dynamic and interface)" {
+            Add-FGTFirewallAddress -Name $pester_address6 -sdn $pester_sdnconnector1 -filter "VMNAME=myVM" -interface port2
+            $address = Get-FGTFirewallAddress -name $pester_address6
+            $address.name | Should -Be $pester_address6
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "dynamic"
+            $address.subnet | Should -BeNullOrEmpty
+            $address.sdn | Should -Be $pester_sdnconnector1
+            $address.filter | Should -Be "VMNAME=myVM"
+            $address.'associated-interface' | Should -Be "port2"
+            $address.comment | Should -BeNullOrEmpty
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "enable"
+            }
+        }
+
+        It "Add Address $pester_address6 (type dynamic and comment)" {
+            Add-FGTFirewallAddress -Name $pester_address6 -sdn $pester_sdnconnector1 -filter "VMNAME=myVM" -comment "Add via PowerFGT"
+            $address = Get-FGTFirewallAddress -name $pester_address6
+            $address.name | Should -Be $pester_address6
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "dynamic"
+            $address.subnet | Should -BeNullOrEmpty
+            $address.sdn | Should -Be $pester_sdnconnector1
+            $address.filter | Should -Be "VMNAME=myVM"
+            $address.'associated-interface' | Should -BeNullOrEmpty
+            $address.comment | Should -Be "Add via PowerFGT"
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "enable"
+            }
+        }
+
+        It "Add Address $pester_address6 (type dynamic and visiblity disable)" {
+            Add-FGTFirewallAddress -Name $pester_address6 -sdn $pester_sdnconnector1 -filter "VMNAME=myVM" -visibility:$false
+            $address = Get-FGTFirewallAddress -name $pester_address6
+            $address.name | Should -Be $pester_address6
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "dynamic"
+            $address.subnet | Should -BeNullOrEmpty
+            $address.sdn | Should -Be $pester_sdnconnector1
+            $address.filter | Should -Be "VMNAME=myVM"
+            $address.'associated-interface' | Should -BeNullOrEmpty
+            $address.comment | Should -BeNullOrEmpty
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "disable"
+            }
+        }
+
+        <# skip because can't enable allow routing with dynamic :)#>
+        It "Add Address $pester_address6 (type dynamic and allow routing)" -skip:$true {
+            Add-FGTFirewallAddress -Name $pester_address6 -sdn $pester_sdnconnector1 -filter "VMNAME=myVM" -allowrouting
+            $address = Get-FGTFirewallAddress -name $pester_address6
+            $address.name | Should -Be $pester_address6
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "dynamic"
+            $address.subnet | Should -BeNullOrEmpty
+            $address.sdn | Should -Be $pester_sdnconnector1
+            $address.filter | Should -Be "VMNAME=myVM"
+            $address.'associated-interface' | Should -BeNullOrEmpty
+            $address.comment | Should -BeNullOrEmpty
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "enable"
+            }
+            $address.'allow-routing' | Should -Be "enable"
+        }
+
+        It "Add Address $pester_address6 (type dynamic and data (1 field))" {
+            $data = @{ "color" = 23 }
+            Add-FGTFirewallAddress -Name $pester_address6 -sdn $pester_sdnconnector1 -filter "VMNAME=myVM" -data $data
+            $address = Get-FGTFirewallAddress -name $pester_address6
+            $address.name | Should -Be $pester_address6
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "dynamic"
+            $address.subnet | Should -BeNullOrEmpty
+            $address.sdn | Should -Be $pester_sdnconnector1
+            $address.filter | Should -Be "VMNAME=myVM"
+            $address.'associated-interface' | Should -BeNullOrEmpty
+            $address.comment | Should -BeNullOrEmpty
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "enable"
+            }
+            $address.'allow-routing' | Should -Be "disable"
+            $address.color | Should -Be "23"
+        }
+
+        It "Add Address $pester_address6 (type dynamic and data (2 fields))" {
+            $data = @{ "color" = 23 ; "comment" = "Add via PowerFGT and -data" }
+            Add-FGTFirewallAddress -Name $pester_address6 -sdn $pester_sdnconnector1 -filter "VMNAME=myVM" -data $data
+            $address = Get-FGTFirewallAddress -name $pester_address6
+            $address.name | Should -Be $pester_address6
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.type | Should -Be "dynamic"
+            $address.subnet | Should -BeNullOrEmpty
+            $address.sdn | Should -Be $pester_sdnconnector1
+            $address.filter | Should -Be "VMNAME=myVM"
+            $address.'associated-interface' | Should -BeNullOrEmpty
+            $address.comment | Should -Be "Add via PowerFGT and -data"
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "enable"
+            }
+            $address.'allow-routing' | Should -Be "disable"
+            $address.color | Should -Be "23"
+        }
+
+        It "Try to Add Address $pester_address6 (but there is already a object with same name)" {
+            #Add first address
+            Add-FGTFirewallAddress -Name $pester_address6 -sdn $pester_sdnconnector1 -filter "VMNAME=myVM"
+            #Add Second address with same name
+            { Add-FGTFirewallAddress -Name $pester_address6 -sdn $pester_sdnconnector1 -filter "VMNAME=myVM" } | Should -Throw "Already an address object using the same name"
+        }
+
+        AfterAll {
+            #Delete SDN Connector (manual, there is not yet Remove-FGTSystemSDNConnector...)
+
+            Invoke-FGTRestMethod "api/v2/cmdb/system/sdn-connector/$($pester_sdnconnector1)" -method DELETE
+        }
+    }
+
 }
 
 Describe "Configure Firewall Address" {
