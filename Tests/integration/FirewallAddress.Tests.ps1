@@ -1655,6 +1655,18 @@ Describe "Configure Firewall Address" {
 
             Invoke-FGTRestMethod "api/v2/cmdb/system/sdn-connector" -method POST -body $data
 
+            $data = @{
+                "name"               = $pester_sdnconnector2
+                "type"               = "vmware"
+                "verify-certificate" = "disable"
+                "server"             = "myServer2"
+                "username"           = "MyUsername"
+                "password"           = "MyPassword"
+                "update-interval"    = "120"
+            }
+
+            Invoke-FGTRestMethod "api/v2/cmdb/system/sdn-connector" -method POST -body $data
+
             $address = Add-FGTFirewallAddress -Name $pester_address6 -sdn $pester_sdnconnector1 -filter "VMNAME=MyVM"
             $script:uuid = $address.uuid
         }
@@ -1677,23 +1689,21 @@ Describe "Configure Firewall Address" {
             $address.color | Should -Be "0"
         }
 
-        <#
         It "Change SDN" {
-            Get-FGTFirewallAddress -name $pester_address6 | Set-FGTFirewallAddress -mac 01:02:03:04:05:07
+            Get-FGTFirewallAddress -name $pester_address6 | Set-FGTFirewallAddress -sdn $pester_sdnconnector2
             $address = Get-FGTFirewallAddress -name $pester_address6
             $address.name | Should -Be $pester_address6
             $address.uuid | Should -Not -BeNullOrEmpty
             $address.type | Should -Be "dynamic"
             $address.subnet | Should -BeNullOrEmpty
-            $address.sdn | Should -Be $pester_sdnconnector1
-            $address.filter | Should -Be "VMNAME=myVM"
+            $address.sdn | Should -Be $pester_sdnconnector2
+            $address.filter | Should -Be "VMNAME=MyFGTVM"
             $address.'associated-interface' | Should -BeNullOrEmpty
             $address.comment | Should -BeNullOrEmpty
             if ($DefaultFGTConnection.version -lt "6.4.0") {
                 $address.visibility | Should -Be "enable"
             }
         }
-        #>
 
         It "Change (Associated) Interface" {
             Get-FGTFirewallAddress -name $pester_address6 | Set-FGTFirewallAddress -interface port2
@@ -1702,7 +1712,7 @@ Describe "Configure Firewall Address" {
             $address.uuid | Should -Not -BeNullOrEmpty
             $address.type | Should -Be "dynamic"
             $address.subnet | Should -BeNullOrEmpty
-            $address.sdn | Should -Be $pester_sdnconnector1
+            $address.sdn | Should -Be $pester_sdnconnector2
             $address.filter | Should -Be "VMNAME=MyFGTVM"
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -BeNullOrEmpty
@@ -1718,7 +1728,7 @@ Describe "Configure Firewall Address" {
             $address.uuid | Should -Not -BeNullOrEmpty
             $address.type | Should -Be "dynamic"
             $address.subnet | Should -BeNullOrEmpty
-            $address.sdn | Should -Be $pester_sdnconnector1
+            $address.sdn | Should -Be $pester_sdnconnector2
             $address.filter | Should -Be "VMNAME=MyFGTVM"
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -Be "Modified by PowerFGT"
@@ -1734,7 +1744,7 @@ Describe "Configure Firewall Address" {
             $address.uuid | Should -Not -BeNullOrEmpty
             $address.type | Should -Be "dynamic"
             $address.subnet | Should -BeNullOrEmpty
-            $address.sdn | Should -Be $pester_sdnconnector1
+            $address.sdn | Should -Be $pester_sdnconnector2
             $address.filter | Should -Be "VMNAME=MyFGTVM"
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -Be "Modified by PowerFGT"
@@ -1751,7 +1761,7 @@ Describe "Configure Firewall Address" {
             $address.uuid | Should -Not -BeNullOrEmpty
             $address.type | Should -Be "dynamic"
             $address.subnet | Should -BeNullOrEmpty
-            $address.sdn | Should -Be $pester_sdnconnector1
+            $address.sdn | Should -Be $pester_sdnconnector2
             $address.filter | Should -Be "VMNAME=MyFGTVM"
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -Be "Modified by PowerFGT"
@@ -1770,7 +1780,7 @@ Describe "Configure Firewall Address" {
             $address.uuid | Should -Not -BeNullOrEmpty
             $address.type | Should -Be "dynamic"
             $address.subnet | Should -BeNullOrEmpty
-            $address.sdn | Should -Be $pester_sdnconnector1
+            $address.sdn | Should -Be $pester_sdnconnector2
             $address.filter | Should -Be "VMNAME=MyFGTVM"
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -Be "Modified by PowerFGT via -data"
@@ -1792,7 +1802,7 @@ Describe "Configure Firewall Address" {
             $address.uuid | Should -Not -BeNullOrEmpty
             $address.type | Should -Be "dynamic"
             $address.subnet | Should -BeNullOrEmpty
-            $address.sdn | Should -Be $pester_sdnconnector1
+            $address.sdn | Should -Be $pester_sdnconnector2
             $address.filter | Should -Be "VMNAME=MyFGTVM"
             $address.'associated-interface' | Should -Be "port2"
             $address.comment | Should -Be "Modified by PowerFGT via -data"
@@ -1805,6 +1815,7 @@ Describe "Configure Firewall Address" {
 
             #Delete SDN Connector (manual, there is not yet Remove-FGTSystemSDNConnector...)
             Invoke-FGTRestMethod "api/v2/cmdb/system/sdn-connector/$($pester_sdnconnector1)" -method DELETE
+            Invoke-FGTRestMethod "api/v2/cmdb/system/sdn-connector/$($pester_sdnconnector2)" -method DELETE
         }
 
     }
