@@ -1772,6 +1772,7 @@ You need to have VPN IPsec Interface Phase 1 created before
 
 It is possible to `monitor` FortiGate
 
+* `Get-FGTMonitorFirewallAddressDynamic` List of Fabric Connector address objects and the IPs they resolve to.
 * `Get-FGTMonitorFirewallAddressFQDN` List of FQDN address objects and the IPs they resolved to
 * `Get-FGTMonitorFirewallPolicy` List traffic statistics for firewall policies
 * `Get-FGTMonitorFirewallSession` List all active firewall sessions
@@ -2153,6 +2154,7 @@ Get-FGTIpsSensor
 Get-FGTLogSetting
 Get-FGTLogTraffic
 Get-FGTMonitorFirewallAddressFQDN
+Get-FGTMonitorFirewallAddressDynamic
 Get-FGTMonitorFirewallPolicy
 Get-FGTMonitorFirewallSession
 Get-FGTMonitorLicenseStatus
