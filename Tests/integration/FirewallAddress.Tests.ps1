@@ -718,7 +718,7 @@ Describe "Add Firewall Address" {
 
     }
 
-    Context "dynamic (SDN)" -skip:($fgt_version -lt "6.2.0") {
+    context "dynamic (SDN)" -skip:($fgt_version -lt "6.2.0") {
 
         BeforeAll {
             #Add SDN Connector (manual, there is not yet Add-FGTSystemSDNConnector...)
@@ -1638,7 +1638,7 @@ Describe "Configure Firewall Address" {
 
     }
 
-    Context "Dynamic (SDN)" -skip:($fgt_version -lt "6.2.0") {
+    context "dynamic (SDN)" -skip:($fgt_version -lt "6.2.0") {
 
         BeforeAll {
 
@@ -1974,7 +1974,7 @@ Describe "Copy Firewall Address" {
 
     }
 
-    Context "Dynamic (SDN)" -skip:($fgt_version -lt "6.2.0") {
+    context "dynamic (SDN)" -skip:($fgt_version -lt "6.2.0") {
 
         BeforeAll {
             #Add SDN Connector (manual, there is not yet Add-FGTSystemSDNConnector...)
@@ -2099,7 +2099,7 @@ Describe "Remove Firewall Address" {
 
     }
 
-    Context "Dynamic (SDN)" -skip:($fgt_version -lt "6.2.0") {
+    context "dynamic (SDN)" -skip:($fgt_version -lt "6.2.0") {
 
         BeforeEach {
             #Add SDN Connector (manual, there is not yet Add-FGTSystemSDNConnector...)
