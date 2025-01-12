@@ -1974,6 +1974,52 @@ Describe "Copy Firewall Address" {
 
     }
 
+    Context "Dynamic (SDN)" -skip:($fgt_version -lt "6.2.0") {
+
+        BeforeAll {
+            #Add SDN Connector (manual, there is not yet Add-FGTSystemSDNConnector...)
+            $data = @{
+                "name"               = $pester_sdnconnector1
+                "type"               = "vmware"
+                "verify-certificate" = "disable"
+                "server"             = "myServer"
+                "username"           = "MyUsername"
+                "password"           = "MyPassword"
+                "update-interval"    = "120"
+            }
+
+            Invoke-FGTRestMethod "api/v2/cmdb/system/sdn-connector" -method POST -body $data
+
+            Add-FGTFirewallAddress -Name $pester_address6 -sdn $pester_sdnconnector1 -filter "VMNAME=MyVM"
+        }
+
+        It "Copy Firewall Address ($pester_address6 => copy_pester_address6)" {
+            Get-FGTFirewallAddress -name $pester_address6 | Copy-FGTFirewallAddress -name copy_pester_address6
+            $address = Get-FGTFirewallAddress -name copy_pester_address6
+            $address.name | Should -Be copy_pester_address6
+            $address.uuid | Should -Not -BeNullOrEmpty
+            $address.subnet | Should -BeNullOrEmpty
+            $address.sdn | Should -Be $pester_sdnconnector1
+            $address.filter | Should -Be "VMNAME=MyVM"
+            $address.'associated-interface' | Should -BeNullOrEmpty
+            $address.comment | Should -BeNullOrEmpty
+            if ($DefaultFGTConnection.version -lt "6.4.0") {
+                $address.visibility | Should -Be "enable"
+            }
+        }
+
+        AfterAll {
+            #Remove copy_pester_address6
+            Get-FGTFirewallAddress -name copy_pester_address6 | Remove-FGTFirewallAddress -confirm:$false
+            #Remove $pester_address6
+            Get-FGTFirewallAddress -name $pester_address6 | Remove-FGTFirewallAddress -confirm:$false
+
+            #Delete SDN Connector (manual, there is not yet Remove-FGTSystemSDNConnector...)
+            Invoke-FGTRestMethod "api/v2/cmdb/system/sdn-connector/$($pester_sdnconnector1)" -method DELETE
+        }
+
+    }
+
 }
 
 Describe "Remove Firewall Address" {
