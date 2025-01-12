@@ -1269,7 +1269,7 @@ You can change System Settings and System Global (settings) using `Set-FGTSystem
 
 ### User
 
-You can manage user (Local, LDAP, RADIUS, TACACS) on FortiGate and also manage user directory (AD, RADIUS, TACACS) and group.
+You can manage user (Local, LDAP, RADIUS, TACACS) on FortiGate and also manage user directory (LDAP, RADIUS, TACACS) and group.
 
 #### User Local
 
