@@ -2099,6 +2099,39 @@ Describe "Remove Firewall Address" {
 
     }
 
+    Context "Dynamic (SDN)" -skip:($fgt_version -lt "6.2.0") {
+
+        BeforeEach {
+            #Add SDN Connector (manual, there is not yet Add-FGTSystemSDNConnector...)
+            $data = @{
+                "name"               = $pester_sdnconnector1
+                "type"               = "vmware"
+                "verify-certificate" = "disable"
+                "server"             = "myServer"
+                "username"           = "MyUsername"
+                "password"           = "MyPassword"
+                "update-interval"    = "120"
+            }
+
+            Invoke-FGTRestMethod "api/v2/cmdb/system/sdn-connector" -method POST -body $data
+
+            Add-FGTFirewallAddress -Name $pester_address6 -sdn $pester_sdnconnector1 -filter "VMNAME=MyVM"
+        }
+
+        It "Remove Address $pester_address6 by pipeline" {
+            $address = Get-FGTFirewallAddress -name $pester_address6
+            $address | Remove-FGTFirewallAddress -confirm:$false
+            $address = Get-FGTFirewallAddress -name $pester_address6
+            $address | Should -Be $NULL
+        }
+
+        AfterEach {
+            #Delete SDN Connector (manual, there is not yet Remove-FGTSystemSDNConnector...)
+            Invoke-FGTRestMethod "api/v2/cmdb/system/sdn-connector/$($pester_sdnconnector1)" -method DELETE
+        }
+
+    }
+
 }
 
 AfterAll {
