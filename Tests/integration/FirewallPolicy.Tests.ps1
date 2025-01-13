@@ -1769,7 +1769,7 @@ Describe "Remove Firewall Policy Member" {
         It "Try Remove 3 members to Policy Src Address $pester_address1, $pester_address2, $pester_address3 (with 3 members before)" {
             {
                 Get-FGTFirewallPolicy -Name $pester_policy1 | Remove-FGTFirewallPolicyMember -srcaddr $pester_address1, $pester_address2, $pester_address3
-            } | Should -Throw "You can't remove all members. Use Set-FGTFirewallPolicy to remove Address Group"
+            } | Should -Throw "You can't remove all members. Use Set-FGTFirewallPolicy to remove Source Address"
         }
 
     }
@@ -1870,7 +1870,7 @@ Describe "Remove Firewall Policy Member" {
         It "Try Remove 3 members to Policy Dst Address $pester_address1, $pester_address2, $pester_address3 (with 3 members before)" {
             {
                 Get-FGTFirewallPolicy -Name $pester_policy1 | Remove-FGTFirewallPolicyMember -dstaddr $pester_address1, $pester_address2, $pester_address3
-            } | Should -Throw "You can't remove all members. Use Set-FGTFirewallPolicy to remove Address Group"
+            } | Should -Throw "You can't remove all members. Use Set-FGTFirewallPolicy to remove Destination Address"
         }
 
     }

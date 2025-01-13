@@ -1019,16 +1019,16 @@ function Remove-FGTFirewallPolicyMember {
         Remove a FortiGate Policy Member (source or destination address/interface)
 
         .EXAMPLE
-        $MyFGTPolicy = Get-FGTFirewallPolicyGroup -name MyFGTPolicy
-        PS C:\>$MyFGTPolicy | Remove-FGTFirewallPolicyGroupMember -member MyAddress1
+        $MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
+        PS C:\>$MyFGTPolicy | Remove-FGTFirewallPolicyMember -srcaddr MyAddress1
 
-        Remove MyAddress1 member to MyFGTPolicy
+        Remove source MyAddress1 member to MyFGTPolicy
 
         .EXAMPLE
-        $MyFGTPolicy = Get-FGTFirewallPolicyGroup -name MyFGTPolicy
-        PS C:\>$MyFGTPolicy | Remove-FGTFirewallPolicyGroupMember -member MyAddress1, MyAddress2
+        $MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
+        PS C:\>$MyFGTPolicy | Remove-FGTFirewallPolicyMember -dstaddr MyAddress1, MyAddress2
 
-        Remove MyAddress1 and MyAddress2 member to MyFGTPolicy
+        Remove destination MyAddress1 and MyAddress2 member to MyFGTPolicy
 
         .EXAMPLE
         $MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
@@ -1094,7 +1094,7 @@ function Remove-FGTFirewallPolicyMember {
 
             #check if there is always a member... (it is not really (dependy of release...) possible don't have member on Policy)
             if ( $members.count -eq 0 ) {
-                Throw "You can't remove all members. Use Set-FGTFirewallPolicy to remove Address Group"
+                Throw "You can't remove all members. Use Set-FGTFirewallPolicy to remove Source Address"
             }
 
             #if there is only One or less member force to be an array
@@ -1122,7 +1122,7 @@ function Remove-FGTFirewallPolicyMember {
 
             #check if there is always a member... (it is not really (dependy of release...) possible don't have member on Policy)
             if ( $members.count -eq 0 ) {
-                Throw "You can't remove all members. Use Set-FGTFirewallPolicy to remove Address Group"
+                Throw "You can't remove all members. Use Set-FGTFirewallPolicy to remove Destination Address"
             }
 
             #if there is only One or less member force to be an array
