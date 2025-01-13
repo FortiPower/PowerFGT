@@ -1016,7 +1016,7 @@ function Remove-FGTFirewallPolicyMember {
         Remove a FortiGate Policy Member
 
         .DESCRIPTION
-        Remove a FortiGate Policy Member (source or destination address)
+        Remove a FortiGate Policy Member (source or destination address/interface)
 
         .EXAMPLE
         $MyFGTPolicy = Get-FGTFirewallPolicyGroup -name MyFGTPolicy
@@ -1030,6 +1030,18 @@ function Remove-FGTFirewallPolicyMember {
 
         Remove MyAddress1 and MyAddress2 member to MyFGTPolicy
 
+        .EXAMPLE
+        $MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
+        PS C:\>$MyFGTPolicy | Remove-FGTFirewallPolicyMember -srcintf port1
+
+        Remove port1 member to source interface of MyFGTPolicy
+
+        .EXAMPLE
+        $MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
+        PS C:\>$MyFGTPolicy | Remove-FGTFirewallPolicyMember -dstintf port2
+
+        Remove port2 member to destination interface of MyFGTPolicy
+
     #>
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium')]
@@ -1040,7 +1052,11 @@ function Remove-FGTFirewallPolicyMember {
         [Parameter(Mandatory = $false)]
         [string[]]$srcaddr,
         [Parameter(Mandatory = $false)]
+        [string[]]$srcintf,
+        [Parameter(Mandatory = $false)]
         [string[]]$dstaddr,
+        [Parameter(Mandatory = $false)]
+        [string[]]$dstintf,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -1116,6 +1132,63 @@ function Remove-FGTFirewallPolicyMember {
 
             $_policy | add-member -name "dstaddr" -membertype NoteProperty -Value $members
         }
+
+        if ( $PsBoundParameters.ContainsKey('srcintf') ) {
+            #Create a new source addrarray
+            $members = @()
+            foreach ($m in $policy.srcintf) {
+                $member_name = @{ }
+                $member_name.add( 'name', $m.name)
+                $members += $member_name
+            }
+
+            #Remove member
+            foreach ($remove_member in $srcintf) {
+                #May be a better (and faster) solution...
+                $members = $members | Where-Object { $_.name -ne $remove_member }
+            }
+
+            #check if there is always a member... (it is not really (dependy of release...) possible don't have member on Policy)
+            if ( $members.count -eq 0 ) {
+                Throw "You can't remove all members. Use Set-FGTFirewallPolicy to remove Source interface"
+            }
+
+            #if there is only One or less member force to be an array
+            if ( $members.count -le 1 ) {
+                $members = @($members)
+            }
+
+            $_policy | add-member -name "srcintf" -membertype NoteProperty -Value $members
+        }
+
+        if ( $PsBoundParameters.ContainsKey('dstintf') ) {
+            #Create a new source addrarray
+            $members = @()
+            foreach ($m in $policy.dstintf) {
+                $member_name = @{ }
+                $member_name.add( 'name', $m.name)
+                $members += $member_name
+            }
+
+            #Remove member
+            foreach ($remove_member in $dstintf) {
+                #May be a better (and faster) solution...
+                $members = $members | Where-Object { $_.name -ne $remove_member }
+            }
+
+            #check if there is always a member... (it is not really (dependy of release...) possible don't have member on Policy)
+            if ( $members.count -eq 0 ) {
+                Throw "You can't remove all members. Use Set-FGTFirewallPolicy to remove Destination Interface"
+            }
+
+            #if there is only One or less member force to be an array
+            if ( $members.count -le 1 ) {
+                $members = @($members)
+            }
+
+            $_policy | add-member -name "dstintf" -membertype NoteProperty -Value $members
+        }
+
 
         if ($PSCmdlet.ShouldProcess($policy.name, 'Remove Firewall Policy Group Member')) {
             Invoke-FGTRestMethod -method "PUT" -body $_policy -uri $uri -uri_escape $policy.policyid -connection $connection @invokeParams | Out-Null

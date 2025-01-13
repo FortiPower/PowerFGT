@@ -1774,6 +1774,57 @@ Describe "Remove Firewall Policy Member" {
 
     }
 
+    Context "Remove Member(s) to Source Interface" {
+        BeforeEach {
+            Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1, $pester_port2, $pester_port3 -dstintf $pester_port4 -srcaddr all -dstaddr all
+        }
+
+        It "Remove 1 member to Policy Src Interface $pester_port1 (with 3 members before)" {
+            Get-FGTFirewallPolicy -Name $pester_policy1 | Remove-FGTFirewallPolicyMember -srcintf $pester_port1
+            $policy = Get-FGTFirewallPolicy -name $pester_policy1
+            $policy.name | Should -Be $pester_policy1
+            $policy.uuid | Should -Not -BeNullOrEmpty
+            $policy.srcintf.name | Should -BeIn $pester_port2, $pester_port3
+            ($policy.srcintf.name).count | Should -Be "2"
+            $policy.dstintf.name | Should -Be $pester_port4
+            $policy.srcaddr.name | Should -Be "all"
+            $policy.dstaddr.name | Should -Be "all"
+            $policy.action | Should -Be "accept"
+            $policy.status | Should -Be "enable"
+            $policy.service.name | Should -Be "all"
+            $policy.schedule | Should -Be "always"
+            $policy.nat | Should -Be "disable"
+            $policy.logtraffic | Should -Be "utm"
+            $policy.comments | Should -BeNullOrEmpty
+        }
+
+        It "Remove 2 members to Policy Src Interface $pester_port1, $pester_port2 (with 3 members before)" {
+            Get-FGTFirewallPolicy -Name $pester_policy1 | Remove-FGTFirewallPolicyMember -srcintf $pester_port1, $pester_port2
+            $policy = Get-FGTFirewallPolicy -name $pester_policy1
+            $policy.name | Should -Be $pester_policy1
+            $policy.uuid | Should -Not -BeNullOrEmpty
+            $policy.srcintf.name | Should -BeIn $pester_port3
+            $policy.dstintf.name | Should -Be $pester_port4
+            ($policy.srcaddr.name).count | Should -Be "1"
+            $policy.srcaddr.name | Should -Be "all"
+            $policy.dstaddr.name | Should -Be "all"
+            $policy.action | Should -Be "accept"
+            $policy.status | Should -Be "enable"
+            $policy.service.name | Should -Be "all"
+            $policy.schedule | Should -Be "always"
+            $policy.nat | Should -Be "disable"
+            $policy.logtraffic | Should -Be "utm"
+            $policy.comments | Should -BeNullOrEmpty
+        }
+
+        It "Try Remove 3 members to Policy Src Address $pester_port1, $pester_port2, $pester_port3 (with 3 members before)" {
+            {
+                Get-FGTFirewallPolicy -Name $pester_policy1 | Remove-FGTFirewallPolicyMember -srcintf $pester_port1, $pester_port2, $pester_port3
+            } | Should -Throw "You can't remove all members. Use Set-FGTFirewallPolicy to remove Source interface"
+        }
+
+    }
+
     Context "Remove Member(s) to Destination Address" {
         BeforeEach {
             Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr $pester_address1, $pester_address2, $pester_address3
@@ -1820,6 +1871,57 @@ Describe "Remove Firewall Policy Member" {
             {
                 Get-FGTFirewallPolicy -Name $pester_policy1 | Remove-FGTFirewallPolicyMember -dstaddr $pester_address1, $pester_address2, $pester_address3
             } | Should -Throw "You can't remove all members. Use Set-FGTFirewallPolicy to remove Address Group"
+        }
+
+    }
+
+    Context "Remove Member(s) to Destination Interface" {
+        BeforeEach {
+            Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port4 -dstintf $pester_port1, $pester_port2, $pester_port3 -srcaddr all -dstaddr all
+        }
+
+        It "Remove 1 member to Policy Dst Interface $pester_port1 (with 3 members before)" {
+            Get-FGTFirewallPolicy -Name $pester_policy1 | Remove-FGTFirewallPolicyMember -dstintf $pester_port1
+            $policy = Get-FGTFirewallPolicy -name $pester_policy1
+            $policy.name | Should -Be $pester_policy1
+            $policy.uuid | Should -Not -BeNullOrEmpty
+            $policy.srcintf.name | Should -Be $pester_port4
+            $policy.dstintf.name | Should -BeIn $pester_port2, $pester_port3
+            ($policy.dstintf.name).count | Should -Be "2"
+            $policy.srcaddr.name | Should -Be "all"
+            $policy.dstaddr.name | Should -Be "all"
+            $policy.action | Should -Be "accept"
+            $policy.status | Should -Be "enable"
+            $policy.service.name | Should -Be "all"
+            $policy.schedule | Should -Be "always"
+            $policy.nat | Should -Be "disable"
+            $policy.logtraffic | Should -Be "utm"
+            $policy.comments | Should -BeNullOrEmpty
+        }
+
+        It "Remove 2 members to Policy Dst Address $pester_port1, $pester_port2 (with 3 members before)" {
+            Get-FGTFirewallPolicy -Name $pester_policy1 | Remove-FGTFirewallPolicyMember -dstintf $pester_port1, $pester_port2
+            $policy = Get-FGTFirewallPolicy -name $pester_policy1
+            $policy.name | Should -Be $pester_policy1
+            $policy.uuid | Should -Not -BeNullOrEmpty
+            $policy.srcintf.name | Should -Be $pester_port4
+            $policy.dstintf.name | Should -BeIn $pester_port3
+            ($policy.dstintf.name).count | Should -Be "1"
+            $policy.srcaddr.name | Should -Be "all"
+            $policy.dstaddr.name | Should -Be "all"
+            $policy.action | Should -Be "accept"
+            $policy.status | Should -Be "enable"
+            $policy.service.name | Should -Be "all"
+            $policy.schedule | Should -Be "always"
+            $policy.nat | Should -Be "disable"
+            $policy.logtraffic | Should -Be "utm"
+            $policy.comments | Should -BeNullOrEmpty
+        }
+
+        It "Try Remove 3 members to Policy Dst Address $pester_port1, $pester_port2, $pester_port3 (with 3 members before)" {
+            {
+                Get-FGTFirewallPolicy -Name $pester_policy1 | Remove-FGTFirewallPolicyMember -dstintf $pester_port1, $pester_port2, $pester_port3
+            } | Should -Throw "You can't remove all members. Use Set-FGTFirewallPolicy to remove Destination interface"
         }
 
     }
