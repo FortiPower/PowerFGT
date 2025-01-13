@@ -407,8 +407,8 @@ function Add-FGTFirewallPolicyMember {
 
         if ( $PsBoundParameters.ContainsKey('srcintf') ) {
 
-            if ($policy.srcintf.name -eq "all") {
-                #all => create new empty array members
+            if ($policy.srcintf.name -eq "any") {
+                #any => create new empty array members
                 $members = @()
             }
             else {
@@ -445,8 +445,8 @@ function Add-FGTFirewallPolicyMember {
 
         if ( $PsBoundParameters.ContainsKey('dstintf') ) {
 
-            if ($policy.dstintf.name -eq "all") {
-                #all => create new empty array members
+            if ($policy.dstintf.name -eq "any") {
+                #any => create new empty array members
                 $members = @()
             }
             else {
