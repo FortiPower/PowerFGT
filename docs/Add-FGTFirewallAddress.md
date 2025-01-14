@@ -47,6 +47,13 @@ Add-FGTFirewallAddress -name <String> [-mac <String[]>] [-interface <String>] [-
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
+### dynamic
+```
+Add-FGTFirewallAddress -name <String> -sdn <String> -filter <String> [-interface <String>] [-comment <String>]
+ [-visibility <Boolean>] [-allowrouting] [-data <Hashtable>] [-vdom <String[]>] [-connection <PSObject>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Add a FortiGate Address (ipmask, iprange, fqdn)
 
@@ -109,6 +116,13 @@ Add-FGTFirewallAddress -Name FGT-Mac -mac 01:02:03:04:05:06
 Add Address object type mac (macaddr) with name FGT-Mac and value 01:02:03:04:05:06
 
 ### EXAMPLE 9
+```
+Add-FGTFirewallAddress -Name FGT-Dynamic-SDN-MyVM -sdn MyVcenter -filter VMNAME=MyVM
+```
+
+Add Address object type dynamic (SDN) MyVcenter with name FGT-Dynamic-SDN-MyVM and filter VMNAME=MyVM
+
+### EXAMPLE 10
 ```
 $data = @{ "color" = 23 }
 PS C:\>Add-FGTFirewallAddress -Name FGT -ip 192.0.2.0 -mask 255.255.255.0 -data $data
@@ -232,6 +246,36 @@ Parameter Sets: mac
 Aliases:
 
 Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -sdn
+{{ Fill sdn Description }}
+
+```yaml
+Type: String
+Parameter Sets: dynamic
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -filter
+{{ Fill filter Description }}
+
+```yaml
+Type: String
+Parameter Sets: dynamic
+Aliases:
+
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False

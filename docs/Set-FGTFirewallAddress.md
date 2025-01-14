@@ -56,6 +56,14 @@ Set-FGTFirewallAddress [-address] <PSObject> [-name <String>] [-mac <String[]>] 
  [-connection <PSObject>] [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
+### dynamic
+```
+Set-FGTFirewallAddress [-address] <PSObject> [-name <String>] [-sdn <String>] [-filter <String>]
+ [-interface <String>] [-comment <String>] [-visibility <Boolean>] [-allowrouting] [-data <Hashtable>]
+ [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Change a FortiGate Address (ip, mask, comment, associated interface...
 )
@@ -135,6 +143,14 @@ PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -mac 01:02:03:04:05:06
 Change MyFGTAddress to set a new mac address 01:02:03:04:05:06
 
 ### EXAMPLE 10
+```
+$MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
+PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -filter VMNAME=MyVM
+```
+
+Change MyFGTAddress to set a new filter VMNANME=MyVM
+
+### EXAMPLE 11
 ```
 $data = @{ "color" = 23 }
 PS C:\>$MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
@@ -271,6 +287,36 @@ Accept wildcard characters: False
 ```yaml
 Type: String[]
 Parameter Sets: mac
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -sdn
+{{ Fill sdn Description }}
+
+```yaml
+Type: String
+Parameter Sets: dynamic
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -filter
+{{ Fill filter Description }}
+
+```yaml
+Type: String
+Parameter Sets: dynamic
 Aliases:
 
 Required: False
