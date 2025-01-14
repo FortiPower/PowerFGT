@@ -6,12 +6,11 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Publish
-      shell: pwsh
-      run: |
-        Publish-Module -Path ./PowerFGT -NuGetApiKey ${{ secrets.PSGALLERY_API_KEY }}
+      - uses: actions/checkout@v4
+      - name: Publish
+        shell: pwsh
+        run: |
+          Publish-Module -Path ./PowerFGT -NuGetApiKey ${{ secrets.PSGALLERY_API_KEY }}
