@@ -13,31 +13,47 @@ Remove a FortiGate Policy Member
 ## SYNTAX
 
 ```
-Remove-FGTFirewallPolicyMember [-policy] <PSObject> [-srcaddr <String[]>] [-dstaddr <String[]>]
- [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Remove-FGTFirewallPolicyMember [-policy] <PSObject> [-srcaddr <String[]>] [-srcintf <String[]>]
+ [-dstaddr <String[]>] [-dstintf <String[]>] [-vdom <String[]>] [-connection <PSObject>]
+ [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Remove a FortiGate Policy Member (source or destination address)
+Remove a FortiGate Policy Member (source or destination address/interface)
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-$MyFGTPolicy = Get-FGTFirewallPolicyGroup -name MyFGTPolicy
-PS C:\>$MyFGTPolicy | Remove-FGTFirewallPolicyGroupMember -member MyAddress1
+$MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
+PS C:\>$MyFGTPolicy | Remove-FGTFirewallPolicyMember -srcaddr MyAddress1
 ```
 
-Remove MyAddress1 member to MyFGTPolicy
+Remove source MyAddress1 member to MyFGTPolicy
 
 ### EXAMPLE 2
 ```
-$MyFGTPolicy = Get-FGTFirewallPolicyGroup -name MyFGTPolicy
-PS C:\>$MyFGTPolicy | Remove-FGTFirewallPolicyGroupMember -member MyAddress1, MyAddress2
+$MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
+PS C:\>$MyFGTPolicy | Remove-FGTFirewallPolicyMember -dstaddr MyAddress1, MyAddress2
 ```
 
-Remove MyAddress1 and MyAddress2 member to MyFGTPolicy
+Remove destination MyAddress1 and MyAddress2 member to MyFGTPolicy
+
+### EXAMPLE 3
+```
+$MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
+PS C:\>$MyFGTPolicy | Remove-FGTFirewallPolicyMember -srcintf port1
+```
+
+Remove port1 member to source interface of MyFGTPolicy
+
+### EXAMPLE 4
+```
+$MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
+PS C:\>$MyFGTPolicy | Remove-FGTFirewallPolicyMember -dstintf port2
+```
+
+Remove port2 member to destination interface of MyFGTPolicy
 
 ## PARAMETERS
 
@@ -71,8 +87,38 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -srcintf
+{{ Fill srcintf Description }}
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -dstaddr
 {{ Fill dstaddr Description }}
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -dstintf
+{{ Fill dstintf Description }}
 
 ```yaml
 Type: String[]
