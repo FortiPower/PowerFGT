@@ -386,6 +386,37 @@ Function Confirm-FGTInterface {
     $true
 }
 
+Function Confirm-FGTSDNConnector {
+
+    Param (
+        [Parameter (Mandatory = $true)]
+        [object]$argument
+    )
+
+    #Check if it looks like a SDN Connector element
+
+    if ( -not ( $argument | get-member -name name -Membertype Properties)) {
+        throw "Element specified does not contain a name property."
+    }
+    if ( -not ( $argument | get-member -name status -Membertype Properties)) {
+        throw "Element specified does not contain a status property."
+    }
+    if ( -not ( $argument | get-member -name type -Membertype Properties)) {
+        throw "Element specified does not contain a type property."
+    }
+    if ( -not ( $argument | get-member -name "ha-status" -Membertype Properties)) {
+        throw "Element specified does not contain a ha-status property."
+    }
+    if ( -not ( $argument | get-member -name "verify-certificate" -Membertype Properties)) {
+        throw "Element specified does not contain a verify-certificate property."
+    }
+    if ( -not ( $argument | get-member -name "server" -Membertype Properties)) {
+        throw "Element specified does not contain a server property."
+    }
+
+    $true
+}
+
 Function Confirm-FGTUserRADIUS {
 
     Param (
