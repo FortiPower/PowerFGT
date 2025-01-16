@@ -25,12 +25,12 @@ Describe "Get SDN Connector" -skip:($fgt_version -lt "6.2.0") {
 
     It "Get ALL SDN Connectors" {
         $sdnconnector = Get-FGTSystemSDNConnector
-        $sdnconnector.count | Should -Not -Be $NULL
+        @($sdnconnector).count | Should -Not -Be $NULL
     }
 
     It "Get ALL SDN Connector with -skip" {
         $sdnconnector = Get-FGTSystemSDNConnector -skip
-        $sdnconnector.count | Should -Not -Be $NULL
+        @($sdnconnector).count | Should -Not -Be $NULL
     }
 
     It "Get SDN Connector ($pester_sdnconnector1)" {
