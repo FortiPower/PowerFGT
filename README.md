@@ -39,6 +39,7 @@ With this module (version 0.9.0) you can manage:
 - [Router BGP](#bgp) (Get/Set)
 - [Router OSPF](#ospf) (Get/Set)
 - RoutePolicy (Get)
+- [SDN Connector](#sdn-connector) (Get)
 - Service (Get)
 - Service Group (Get)
 - [Static Route](#static-route) (Add/Get/Remove)
@@ -1651,6 +1652,61 @@ or delete it `Remove-FGTUserGroup`.
     [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): Y
 ```
 
+### SDN Connector
+
+You can create a new SDN Connector `Add-FGTSystemSDNConnector`,
+retrieve its information `Get-FGTSystemSDNConnector`, modify its properties `Set-FGTSystemSDNConnector`
+or delete it `Remove-FGTSystemSDNConnector`.
+
+```powershell
+
+# Create a new SDN Connector (only support type vmware for the moment)
+    $mypassword = ConvertTo-SecureString mysecret -AsPlainText -Force
+    Add-FGTSystemSDNConnector -name MySDNConnector -server MyVcenter -username powerfgt@vsphere.local -password $mypassword
+
+    name             : MySDNConnector
+    q_origin_key     : MySDNConnector
+    status           : enable
+    type             : vmware
+    ha-status        : disable
+    server           : MyVcenter
+    server-port      : 0
+    username         : powerfgt@vsphere.local
+    password         : ENC -1TqQaNbQElm4Ft0QrzPkZgYCt6K0=
+    [...]
+
+
+# Get information about ALL SDN connector (using Format Table)
+    Get-FGTSystemSDNConnector | Format-Table
+
+    name           q_origin_key   status type   ha-status server    server-port username               password
+    ----           ------------   ------ ----   --------- ------    ----------- --------               --------
+    MySDNConnector MySDNConnector enable vmware disable   MyVcenter           0 powerfgt@vsphere.local ENC -1TqQa
+
+# Modify a SDN connector (update-interval, status ...)
+     Get-FGTSystemSDNConnector -name MySDNConnector| Set-FGTSystemSDNConnector -update_interval 120
+
+    name             : MySDNConnector
+    q_origin_key     : MySDNConnector
+    status           : enable
+    type             : vmware
+    ha-status        : disable
+    server           : MyVcenter
+    server-port      : 0
+    username         : powerfgt@vsphere.local
+    password         : ENC -1TqQaNbQElm4Ft0QrzPkZgYCt6K0=
+    [...]
+    update-interval  : 120
+
+# Remove a SDN Connector
+    Get-FGTSystemSDNConnector -name MySDNConnector| Remove-FGTSystemSDNConnector
+
+    Confirm
+    Are you sure you want to perform this action?
+    Performing the operation "Remove SDN Connector" on target "MySDNConnector".
+    [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): y
+```
+
 ### VPN IPsec
 
 #### VPN IPsec Interface Phase 1
@@ -2097,6 +2153,7 @@ Add-FGTFirewallVipGroupMember
 Add-FGTRouterStatic
 Add-FGTSystemInterface
 Add-FGTSystemInterfaceMember
+Add-FGTSystemSDNConnector
 Add-FGTSystemZone
 Add-FGTSystemZoneMember
 Add-FGTUserGroup
@@ -2115,6 +2172,7 @@ Confirm-FGTInterface
 Confirm-FGTProxyAddress
 Confirm-FGTProxyAddressGroup
 Confirm-FGTRouterStatic
+Confirm-FGTSDNConnector
 Confirm-FGTUserGroup
 Confirm-FGTUserLDAP
 Confirm-FGTUserLocal
@@ -2153,8 +2211,8 @@ Get-FGTFirewallVipGroup
 Get-FGTIpsSensor
 Get-FGTLogSetting
 Get-FGTLogTraffic
-Get-FGTMonitorFirewallAddressFQDN
 Get-FGTMonitorFirewallAddressDynamic
+Get-FGTMonitorFirewallAddressFQDN
 Get-FGTMonitorFirewallPolicy
 Get-FGTMonitorFirewallSession
 Get-FGTMonitorLicenseStatus
@@ -2174,9 +2232,9 @@ Get-FGTMonitorUtmApplicationCategories
 Get-FGTMonitorVpnIPsec
 Get-FGTMonitorVpnSsl
 Get-FGTMonitorWebfilterCategories
-Get-FGTRouterPolicy
 Get-FGTRouterBGP
 Get-FGTRouterOSPF
+Get-FGTRouterPolicy
 Get-FGTRouterStatic
 Get-FGTSystemAdmin
 Get-FGTSystemDHCPServer
@@ -2185,6 +2243,7 @@ Get-FGTSystemDnsServer
 Get-FGTSystemGlobal
 Get-FGTSystemHA
 Get-FGTSystemInterface
+Get-FGTSystemSDNConnector
 Get-FGTSystemSDWAN
 Get-FGTSystemSettings
 Get-FGTSystemVdom
@@ -2220,6 +2279,7 @@ Remove-FGTFirewallVipGroupMember
 Remove-FGTRouterStatic
 Remove-FGTSystemInterface
 Remove-FGTSystemInterfaceMember
+Remove-FGTSystemSDNConnector
 Remove-FGTSystemZone
 Remove-FGTSystemZoneMember
 Remove-FGTUserGroup
@@ -2237,11 +2297,12 @@ Set-FGTFirewallAddressGroup
 Set-FGTFirewallPolicy
 Set-FGTFirewallProxyAddressGroup
 Set-FGTFirewallVipGroup
+Set-FGTMonitorUserLocalChangePassword
 Set-FGTRouterBGP
 Set-FGTRouterOSPF
-Set-FGTMonitorUserLocalChangePassword
 Set-FGTSystemGlobal
 Set-FGTSystemInterface
+Set-FGTSystemSDNConnector
 Set-FGTSystemSettings
 Set-FGTSystemZone
 Set-FGTUntrustedSSL
