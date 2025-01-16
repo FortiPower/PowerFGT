@@ -5,7 +5,7 @@ on:
     types: [published]
 
 jobs:
-  build:
+  publish-to-gallery:
     runs-on: ubuntu-latest
 
     steps:
