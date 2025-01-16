@@ -80,12 +80,12 @@ function Add-FGTSystemSDNConnector {
                 $_sdnconnector | add-member -name "username" -membertype NoteProperty -Value $username
 
                 if (("Desktop" -eq $PSVersionTable.PsEdition) -or ($null -eq $PSVersionTable.PsEdition)) {
-                    $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($secret);
+                    $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($password);
                     $sec = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr);
                     $_sdnconnector | add-member -name "password" -membertype NoteProperty -Value $sec
                 }
                 else {
-                    $sec = ConvertFrom-SecureString -SecureString $secret -AsPlainText
+                    $sec = ConvertFrom-SecureString -SecureString $password -AsPlainText
                     $_sdnconnector | add-member -name "password" -membertype NoteProperty -Value $sec
                 }
 
