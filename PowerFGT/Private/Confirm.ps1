@@ -407,9 +407,9 @@ Function Confirm-FGTSDNConnector {
     if ( -not ( $argument | get-member -name "ha-status" -Membertype Properties)) {
         throw "Element specified does not contain a ha-status property."
     }
-    if ( -not ( $argument | get-member -name "verify-certificate" -Membertype Properties)) {
-        throw "Element specified does not contain a verify-certificate property."
-    }
+    #if ( -not ( $argument | get-member -name "verify-certificate" -Membertype Properties)) {
+    #    throw "Element specified does not contain a verify-certificate property."
+    #}
     if ( -not ( $argument | get-member -name "server" -Membertype Properties)) {
         throw "Element specified does not contain a server property."
     }
