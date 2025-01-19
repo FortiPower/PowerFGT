@@ -721,18 +721,8 @@ Describe "Add Firewall Address" {
     context "dynamic (SDN)" -skip:($fgt_version -lt "6.2.0") {
 
         BeforeAll {
-            #Add SDN Connector (manual, there is not yet Add-FGTSystemSDNConnector...)
-            $data = @{
-                "name"               = $pester_sdnconnector1
-                "type"               = "vmware"
-                "verify-certificate" = "disable"
-                "server"             = "myServer"
-                "username"           = "MyUsername"
-                "password"           = "MyPassword"
-                "update-interval"    = "120"
-
-            }
-            Invoke-FGTRestMethod "api/v2/cmdb/system/sdn-connector" -method POST -body $data
+            #Add SDN Connector
+            Add-FGTSystemSDNConnector -name $pester_sdnconnector1 -server "myServer" -username MyUsername -password $pester_sdnconnectorpassword
         }
         AfterEach {
             Get-FGTFirewallAddress -name $pester_address6 | Remove-FGTFirewallAddress -confirm:$false
@@ -868,9 +858,8 @@ Describe "Add Firewall Address" {
         }
 
         AfterAll {
-            #Delete SDN Connector (manual, there is not yet Remove-FGTSystemSDNConnector...)
-
-            Invoke-FGTRestMethod "api/v2/cmdb/system/sdn-connector/$($pester_sdnconnector1)" -method DELETE
+            #Delete SDN Connector
+            Get-FGTSystemSDNConnector -name $pester_sdnconnector1 | Remove-FGTSystemSDNConnector -confirm:$false
         }
     }
 
@@ -1642,30 +1631,10 @@ Describe "Configure Firewall Address" {
 
         BeforeAll {
 
-            #Add SDN Connector (manual, there is not yet Add-FGTSystemSDNConnector...)
-            $data = @{
-                "name"               = $pester_sdnconnector1
-                "type"               = "vmware"
-                "verify-certificate" = "disable"
-                "server"             = "myServer"
-                "username"           = "MyUsername"
-                "password"           = "MyPassword"
-                "update-interval"    = "120"
-            }
+            #Add SDN Connector
+            Add-FGTSystemSDNConnector -name $pester_sdnconnector1 -server "myServer" -username MyUsername -password $pester_sdnconnectorpassword
 
-            Invoke-FGTRestMethod "api/v2/cmdb/system/sdn-connector" -method POST -body $data
-
-            $data = @{
-                "name"               = $pester_sdnconnector2
-                "type"               = "vmware"
-                "verify-certificate" = "disable"
-                "server"             = "myServer2"
-                "username"           = "MyUsername"
-                "password"           = "MyPassword"
-                "update-interval"    = "120"
-            }
-
-            Invoke-FGTRestMethod "api/v2/cmdb/system/sdn-connector" -method POST -body $data
+            Add-FGTSystemSDNConnector -name $pester_sdnconnector2 -server "myServer2" -username MyUsername -password $pester_sdnconnectorpassword
 
             $address = Add-FGTFirewallAddress -Name $pester_address6 -sdn $pester_sdnconnector1 -filter "VMNAME=MyVM"
             $script:uuid = $address.uuid
@@ -1813,9 +1782,9 @@ Describe "Configure Firewall Address" {
         AfterAll {
             Get-FGTFirewallAddress -uuid $script:uuid | Remove-FGTFirewallAddress -confirm:$false
 
-            #Delete SDN Connector (manual, there is not yet Remove-FGTSystemSDNConnector...)
-            Invoke-FGTRestMethod "api/v2/cmdb/system/sdn-connector/$($pester_sdnconnector1)" -method DELETE
-            Invoke-FGTRestMethod "api/v2/cmdb/system/sdn-connector/$($pester_sdnconnector2)" -method DELETE
+            #Delete SDN Connector
+            Get-FGTSystemSDNConnector -name $pester_sdnconnector1 | Remove-FGTSystemSDNConnector -confirm:$false
+            Get-FGTSystemSDNConnector -name $pester_sdnconnector2 | Remove-FGTSystemSDNConnector -confirm:$false
         }
 
     }
@@ -1977,18 +1946,8 @@ Describe "Copy Firewall Address" {
     context "dynamic (SDN)" -skip:($fgt_version -lt "6.2.0") {
 
         BeforeAll {
-            #Add SDN Connector (manual, there is not yet Add-FGTSystemSDNConnector...)
-            $data = @{
-                "name"               = $pester_sdnconnector1
-                "type"               = "vmware"
-                "verify-certificate" = "disable"
-                "server"             = "myServer"
-                "username"           = "MyUsername"
-                "password"           = "MyPassword"
-                "update-interval"    = "120"
-            }
-
-            Invoke-FGTRestMethod "api/v2/cmdb/system/sdn-connector" -method POST -body $data
+            #Add SDN Connector
+            Add-FGTSystemSDNConnector -name $pester_sdnconnector1 -server "myServer" -username MyUsername -password $pester_sdnconnectorpassword
 
             Add-FGTFirewallAddress -Name $pester_address6 -sdn $pester_sdnconnector1 -filter "VMNAME=MyVM"
         }
@@ -2014,8 +1973,8 @@ Describe "Copy Firewall Address" {
             #Remove $pester_address6
             Get-FGTFirewallAddress -name $pester_address6 | Remove-FGTFirewallAddress -confirm:$false
 
-            #Delete SDN Connector (manual, there is not yet Remove-FGTSystemSDNConnector...)
-            Invoke-FGTRestMethod "api/v2/cmdb/system/sdn-connector/$($pester_sdnconnector1)" -method DELETE
+            #Delete SDN Connector
+            Get-FGTSystemSDNConnector -name $pester_sdnconnector1 | Remove-FGTSystemSDNConnector -confirm:$false
         }
 
     }
@@ -2102,18 +2061,8 @@ Describe "Remove Firewall Address" {
     context "dynamic (SDN)" -skip:($fgt_version -lt "6.2.0") {
 
         BeforeEach {
-            #Add SDN Connector (manual, there is not yet Add-FGTSystemSDNConnector...)
-            $data = @{
-                "name"               = $pester_sdnconnector1
-                "type"               = "vmware"
-                "verify-certificate" = "disable"
-                "server"             = "myServer"
-                "username"           = "MyUsername"
-                "password"           = "MyPassword"
-                "update-interval"    = "120"
-            }
-
-            Invoke-FGTRestMethod "api/v2/cmdb/system/sdn-connector" -method POST -body $data
+            #Add SDN Connector
+            Add-FGTSystemSDNConnector -name $pester_sdnconnector1 -server "myServer" -username MyUsername -password $pester_sdnconnectorpassword
 
             Add-FGTFirewallAddress -Name $pester_address6 -sdn $pester_sdnconnector1 -filter "VMNAME=MyVM"
         }
@@ -2126,8 +2075,8 @@ Describe "Remove Firewall Address" {
         }
 
         AfterEach {
-            #Delete SDN Connector (manual, there is not yet Remove-FGTSystemSDNConnector...)
-            Invoke-FGTRestMethod "api/v2/cmdb/system/sdn-connector/$($pester_sdnconnector1)" -method DELETE
+            #Delete SDN Connector
+            Get-FGTSystemSDNConnector -name $pester_sdnconnector1 | Remove-FGTSystemSDNConnector -confirm:$false
         }
 
     }
