@@ -7,30 +7,30 @@ function Get-FGTWirelessGlobal {
 
     <#
         .SYNOPSIS
-        Get list of all Wireless Global
+        Get list of Wireless Global Settings
 
         .DESCRIPTION
-        Get list of all Wireless Global (Source, Destination, Protocol, Action...)
+        Get list of Wireless Global Settings (Name, Location, ...)
 
         .EXAMPLE
         Get-FGTWirelessGlobal
 
-        Get list of all Wireless Global object
+        Get list of Wireless Global object
 
         .EXAMPLE
         Get-FGTWirelessGlobal -meta
 
-        Get list of all Wireless Global object with metadata (q_...) like usage (q_ref)
+        Get list of Wireless Global object with metadata (q_...) like usage (q_ref)
 
         .EXAMPLE
         Get-FGTWirelessGlobal -skip
 
-        Get list of all Wireless Global object (but only relevant attributes)
+        Get list of Wireless Global object (but only relevant attributes)
 
         .EXAMPLE
         Get-FGTWirelessGlobal -vdom vdomX
 
-        Get list of all Wireless Global object on vdomX
+        Get list of Wireless Global object on vdomX
     #>
 
     [CmdletBinding(DefaultParameterSetName = "default")]
