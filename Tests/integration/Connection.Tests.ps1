@@ -368,6 +368,9 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Wireless Setting" {
             { Get-FGTWirelessSetting -connection $fgt } | Should -Not -Throw
         }
+        It "Use Multi connection for call Get Wireless SSID Policy" {
+            { Get-FGTWirelessSSIDPolicy -connection $fgt } | Should -Not -Throw
+        }
     }
 
     It "Disconnect to a FortiGate (Multi connection)" {
