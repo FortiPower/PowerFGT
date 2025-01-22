@@ -1881,6 +1881,7 @@ can also filter by
 * Action (-action)
 * Policy ID (-policyid)
 * Policy UUID (-poluuid)
+* Duration (-duration)
 
 for Example
 
