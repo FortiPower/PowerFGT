@@ -13,29 +13,29 @@ function Get-FGTWirelessVAPGroup {
         Get list of Wireless VAP (Virtual AP Profile) Group Settings (Name, comments, VAP ...)
 
         .EXAMPLE
-        Get-FGTWirelessVAP
+        Get-FGTWirelessVAPGroup
 
-        Get list of Wireless VAP (Virtual AP Profile) Group object
-
-        .EXAMPLE
-        Get-FGTWirelessVAP -name MyVAP
-
-        Get list of Wireless VAP (Virtual AP Profile) Group object named MyVAP
+        Get list of Wireless VAPGroup (Virtual AP Profile) Group object
 
         .EXAMPLE
-        Get-FGTWirelessVAP -meta
+        Get-FGTWirelessVAPGroup -name MyVAPGroup
 
-        Get list of Wireless VAP (Virtual AP Profile) Group object with metadata (q_...) like usage (q_ref)
-
-        .EXAMPLE
-        Get-FGTWirelessVAP -skip
-
-        Get list of Wireless VAP (Virtual AP Profile)  roup object (but only relevant attributes)
+        Get list of Wireless VAPGroup (Virtual AP Profile) Group object named MyVAPGroup
 
         .EXAMPLE
-        Get-FGTWirelessVAP -vdom vdomX
+        Get-FGTWirelessVAPGroup -meta
 
-        Get list of Wireless VAP (Virtual AP Profile) Group object on vdomX
+        Get list of Wireless VAPGroup (Virtual AP Profile) Group object with metadata (q_...) like usage (q_ref)
+
+        .EXAMPLE
+        Get-FGTWirelessVAPGroup -skip
+
+        Get list of Wireless VAPGroup (Virtual AP Profile)  roup object (but only relevant attributes)
+
+        .EXAMPLE
+        Get-FGTWirelessVAPGroup -vdom vdomX
+
+        Get list of Wireless VAPGroup (Virtual AP Profile) Group object on vdomX
     #>
 
     [CmdletBinding(DefaultParameterSetName = "default")]
