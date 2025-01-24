@@ -18,9 +18,9 @@ function Get-FGTWirelessWAGProfile {
         Get list of Wireless WAG (Wireless Access Gateway) Profile object
 
         .EXAMPLE
-        Get-FGTWirelessWAGProfile -name MyVAP
+        Get-FGTWirelessWAGProfile -name MyWAGProfile
 
-        Get list of Wireless WAG (Wireless Access Gateway) Profile object named MyVAP
+        Get list of Wireless WAG (Wireless Access Gateway) Profile object named MyWAGProfile
 
         .EXAMPLE
         Get-FGTWirelessWAGProfile -meta
