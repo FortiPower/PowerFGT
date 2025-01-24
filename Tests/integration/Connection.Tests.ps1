@@ -383,6 +383,9 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Wireless WTP (Wireless Termination Points)" {
             { Get-FGTWirelessWTP -connection $fgt } | Should -Not -Throw
         }
+        It "Use Multi connection for call Get Wireless WTP (Wireless Termination Points) Group" {
+            { Get-FGTWirelessWTPGroup -connection $fgt } | Should -Not -Throw
+        }
     }
 
     It "Disconnect to a FortiGate (Multi connection)" {
