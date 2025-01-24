@@ -374,6 +374,9 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Wireless VAP (Virtual AP Profile)" {
             { Get-FGTWirelessVAP -connection $fgt } | Should -Not -Throw
         }
+        It "Use Multi connection for call Get Wireless VAP (Virtual AP Profile) Group" {
+            { Get-FGTWirelessVAPGroup -connection $fgt } | Should -Not -Throw
+        }
     }
 
     It "Disconnect to a FortiGate (Multi connection)" {
