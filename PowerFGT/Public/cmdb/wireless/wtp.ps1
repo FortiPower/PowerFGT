@@ -13,14 +13,14 @@ function Get-FGTWirelessWTP {
         Get list of Wireless WTP (Wireless Termination Points) Settings (wtp-id, name, location ...)
 
         .EXAMPLE
-        Get-FGTWirelessVAP
+        Get-FGTWirelessWTP
 
         Get list of Wireless WTP (Wireless Termination Points) object
 
         .EXAMPLE
-        Get-FGTWirelessVAP -name MyVAP
+        Get-FGTWirelessWTP -name MyWTP
 
-        Get list of Wireless WTP (Wireless Termination Points) object named MyVAP
+        Get list of Wireless WTP (Wireless Termination Points) object named MyWTP
 
         .EXAMPLE
         Get-FGTWirelessWTP -uuid c205fed0-da29-51ef-6218-233026636d1f
@@ -33,17 +33,17 @@ function Get-FGTWirelessWTP {
         Get list of Wireless WTP (Wireless Termination Points) with wtp-id FP231FTF23026383
 
         .EXAMPLE
-        Get-FGTWirelessVAP -meta
+        Get-FGTWirelessWTP -meta
 
         Get list of Wireless WTP (Wireless Termination Points) object with metadata (q_...) like usage (q_ref)
 
         .EXAMPLE
-        Get-FGTWirelessVAP -skip
+        Get-FGTWirelessWTP -skip
 
         Get list of Wireless WTP (Wireless Termination Points) object (but only relevant attributes)
 
         .EXAMPLE
-        Get-FGTWirelessVAP -vdom vdomX
+        Get-FGTWirelessWTP -vdom vdomX
 
         Get list of Wireless WTP (Wireless Termination Points) object on vdomX
     #>
