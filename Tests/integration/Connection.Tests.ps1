@@ -380,6 +380,9 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Wireless WAG (Wireless Access Gateway) Profile" {
             { Get-FGTWirelessWAGProfile -connection $fgt } | Should -Not -Throw
         }
+        It "Use Multi connection for call Get Wireless WTP (Wireless Termination Points)" {
+            { Get-FGTWirelessWTP -connection $fgt } | Should -Not -Throw
+        }
     }
 
     It "Disconnect to a FortiGate (Multi connection)" {
