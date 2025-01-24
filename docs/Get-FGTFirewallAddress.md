@@ -39,7 +39,7 @@ Get-FGTFirewallAddress [-filter_attribute <String>] [-filter_type <String>] [-fi
 ```
 
 ## DESCRIPTION
-Get list of all "address" (ipmask, iprange, fqdn...)
+Get list of all "address" (ipmask, iprange, fqdn, mac, geo, dynamic/SDN...)
 
 ## EXAMPLES
 

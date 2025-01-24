@@ -55,7 +55,7 @@ Add-FGTFirewallAddress -name <String> -sdn <String> -filter <String> [-interface
 ```
 
 ## DESCRIPTION
-Add a FortiGate Address (ipmask, iprange, fqdn)
+Add a FortiGate Address (ipmask, iprange, fqdn, mac, geo, dynamic/SDN...)
 
 ## EXAMPLES
 
