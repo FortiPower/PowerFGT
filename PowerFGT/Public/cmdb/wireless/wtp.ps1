@@ -23,6 +23,16 @@ function Get-FGTWirelessWTP {
         Get list of Wireless WTP (Wireless Termination Points) object named MyVAP
 
         .EXAMPLE
+        Get-FGTWirelessWTP -uuid c205fed0-da29-51ef-6218-233026636d1f
+
+        Get list of Wireless WTP (Wireless Termination Points) object with uuid c205fed0-da29-51ef-6218-233026636d1f
+
+        .EXAMPLE
+        Get-FGTWirelessWTP -wtp_id FP231FTF23026383
+
+        Get list of Wireless WTP (Wireless Termination Points) with wtp-id FP231FTF23026383
+
+        .EXAMPLE
         Get-FGTWirelessVAP -meta
 
         Get list of Wireless WTP (Wireless Termination Points) object with metadata (q_...) like usage (q_ref)
@@ -42,6 +52,10 @@ function Get-FGTWirelessWTP {
     Param(
         [Parameter (Mandatory = $false, Position = 1, ParameterSetName = "name")]
         [string]$name,
+        [Parameter (Mandatory = $false, ParameterSetName = "wtpid")]
+        [string]$wtp_id,
+        [Parameter (Mandatory = $false, ParameterSetName = "uuid")]
+        [string]$uuid,
         [Parameter (Mandatory = $false)]
         [Parameter (ParameterSetName = "filter")]
         [string]$filter_attribute,
@@ -83,6 +97,14 @@ function Get-FGTWirelessWTP {
             "name" {
                 $filter_value = $name
                 $filter_attribute = "name"
+            }
+            "uuid" {
+                $filter_value = $uuid
+                $filter_attribute = "uuid"
+            }
+            "wtpid" {
+                $filter_value = $wtp_id
+                $filter_attribute = "wtp-id"
             }
             default { }
         }
