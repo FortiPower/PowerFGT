@@ -11,7 +11,7 @@ function Add-FGTFirewallAddress {
         Add a FortiGate Address
 
         .DESCRIPTION
-        Add a FortiGate Address (ipmask, iprange, fqdn)
+        Add a FortiGate Address (ipmask, iprange, fqdn, mac, geo, dynamic/SDN...)
 
         .EXAMPLE
         Add-FGTFirewallAddress -Name FGT -ip 192.0.2.0 -mask 255.255.255.0
@@ -269,7 +269,7 @@ function Get-FGTFirewallAddress {
         Get list of all "address"
 
         .DESCRIPTION
-        Get list of all "address" (ipmask, iprange, fqdn...)
+        Get list of all "address" (ipmask, iprange, fqdn, mac, geo, dynamic/SDN...)
 
         .EXAMPLE
         Get-FGTFirewallAddress
