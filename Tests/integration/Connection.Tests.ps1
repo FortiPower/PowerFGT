@@ -368,8 +368,11 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Wireless Setting" {
             { Get-FGTWirelessSetting -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get Wireless SSID Policy" {
+        It "Use Multi connection for call Get Wireless SSID Policy (> 7.0.0)" -skip:($fgt_version -lt "7.0.0") {
             { Get-FGTWirelessSSIDPolicy -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get Wireless SSID Policy (< 7.0.0)" -skip:($fgt_version -ge "7.0.0") {
+            { Get-FGTWirelessSSIDPolicy -connection $fgt } | Should -Throw "Wireless SSID Policy is not available before Forti OS 7.0"
         }
         It "Use Multi connection for call Get Wireless VAP (Virtual AP Profile)" {
             { Get-FGTWirelessVAP -connection $fgt } | Should -Not -Throw
