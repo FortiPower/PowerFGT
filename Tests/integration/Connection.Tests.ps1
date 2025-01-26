@@ -380,8 +380,11 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Wireless VAP (Virtual AP Profile) Group" {
             { Get-FGTWirelessVAPGroup -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get Wireless WAG (Wireless Access Gateway) Profile" {
+        It "Use Multi connection for call Get Wireless WAG (Wireless Access Gateway) Profile (> 6.2.0)" -skip:($fgt_version -lt "6.2.0") {
             { Get-FGTWirelessWAGProfile -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get Wireless WAG (Wireless Access Gateway) Profile (< 6.2.0)" -skip:($fgt_version -ge "6.2.0") {
+            { Get-FGTWirelessWAGProfile -connection $fgt } | Should  -Throw "Wireless WAG (Wireless Access Gateway is not available before Forti OS 6.2"
         }
         It "Use Multi connection for call Get Wireless WTP (Wireless Termination Points)" {
             { Get-FGTWirelessWTP -connection $fgt } | Should -Not -Throw
