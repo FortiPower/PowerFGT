@@ -362,6 +362,39 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Monitor Webfilter Categories" {
             { Get-FGTMonitorWebfilterCategories -connection $fgt } | Should -Not -Throw
         }
+        It "Use Multi connection for call Get Wireless Global" {
+            { Get-FGTWirelessGlobal -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get Wireless Setting" {
+            { Get-FGTWirelessSetting -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get Wireless SSID Policy (> 7.0.0)" -skip:($fgt_version -lt "7.0.0") {
+            { Get-FGTWirelessSSIDPolicy -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get Wireless SSID Policy (< 7.0.0)" -skip:($fgt_version -ge "7.0.0") {
+            { Get-FGTWirelessSSIDPolicy -connection $fgt } | Should -Throw "Wireless SSID Policy is not available before Forti OS 7.0"
+        }
+        It "Use Multi connection for call Get Wireless VAP (Virtual AP Profile)" {
+            { Get-FGTWirelessVAP -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get Wireless VAP (Virtual AP Profile) Group" {
+            { Get-FGTWirelessVAPGroup -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get Wireless WAG (Wireless Access Gateway) Profile (> 6.2.0)" -skip:($fgt_version -lt "6.2.0") {
+            { Get-FGTWirelessWAGProfile -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get Wireless WAG (Wireless Access Gateway) Profile (< 6.2.0)" -skip:($fgt_version -ge "6.2.0") {
+            { Get-FGTWirelessWAGProfile -connection $fgt } | Should  -Throw "Wireless WAG (Wireless Access Gateway is not available before Forti OS 6.2"
+        }
+        It "Use Multi connection for call Get Wireless WTP (Wireless Termination Points)" {
+            { Get-FGTWirelessWTP -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get Wireless WTP (Wireless Termination Points) Group" {
+            { Get-FGTWirelessWTPGroup -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get Wireless WTP (Wireless Termination Points) Profile" {
+            { Get-FGTWirelessWTPProfile -connection $fgt } | Should -Not -Throw
+        }
     }
 
     It "Disconnect to a FortiGate (Multi connection)" {
