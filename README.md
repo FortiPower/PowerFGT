@@ -60,6 +60,7 @@ With this module (version 0.9.0) you can manage:
 - [VPN IPsec](#vpn-ipsec) [Phase 1](#vpn-ipsec-interface-phase-1)/[Phase 2](#vpn-ipsec-interface-phase-2) Interface (Add/Get/Set/Remove)
 - VPN SSL (Get Client, Portal, Settings)
 - Web Filter (Get Profile)
+- [Wireless](#wireless) (Get)
 - [Zone](#zone) (Add/Get/Set/Remove and Add/Remove Member)
 
 There is some extra feature
@@ -1886,7 +1887,18 @@ You need to have VPN IPsec Interface Phase 1 created before
     Performing the operation "Remove Vpn IPsec Phase 2 Interface" on target "ph2_PowerFGT_VPN".
     [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): Y
 ```
+### Wireless
 
+It is possible to `Get` Wireless (-Controller) Configuration
+* `Get-FGTWirelessGlobal` Get Wireless Global Setting
+* `Get-FGTWirelessSetting` Get Wireless Setting
+* `Get-FGTWirelessSSIDPolicy` List Wireless SSID Policy
+* `Get-FGTWirelessVAP` List Wireless VAP (Virtual Access Points)
+* `Get-FGTWirelessVAPGroup` List Wireless VAP Group
+* `Get-FGTWirelessWAGProfile` List Wireless Wireless Access Gateway Profile
+* `Get-FGTWirelessWTP` List Wireless WTP (Wireless Termination Points)
+* `Get-FGTWirelessWTPGroup` List Wireless WTP Group
+* `Get-FGTWirelessWTPProfile` List Wireless WTP Profile
 
 ### Monitor
 
@@ -2328,6 +2340,15 @@ Get-FGTVpnSSLClient
 Get-FGTVpnSSLPortal
 Get-FGTVpnSSLSettings
 Get-FGTWebfilterProfile
+Get-FGTWirelessGlobal
+Get-FGTWirelessSetting
+Get-FGTWirelessSSIDPolicy
+Get-FGTWirelessVAP
+Get-FGTWirelessVAPGroup
+Get-FGTWirelessWAGProfile
+Get-FGTWirelessWTP
+Get-FGTWirelessWTPGroup
+Get-FGTWirelessWTPProfile
 Invoke-FGTRestMethod
 Move-FGTFirewallPolicy
 Remove-FGTFirewallAddress
