@@ -4,6 +4,144 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
+
+function Add-FGTFirewallServiceCustom {
+
+    <#
+        .SYNOPSIS
+        Add a FortiGate service object
+
+        .DESCRIPTION
+        Add a Fortigate service object (TCP/UDP/SCTP, IP, ICMP)
+
+        .EXAMPLE
+        Add-FGTFirewallServiceCustom -Name MyServiceCustomTCP8080 -tcp_port 8080 -comment "Service Custom using TCP 8080"
+
+        Add service object MyServiceCustomTCP8080 using TCP Port 8080 and a comment
+
+        .EXAMPLE
+        Add-FGTFirewallServiceCustom -Name MyServiceCustomUDP5353 -udp_port 5353 -comment "Service Custom using UDP 5353"
+
+        Add service object MyServiceCustomUDP5353 using TCP Port 5353 and a comment
+
+        .EXAMPLE
+        Add-FGTFirewallServiceCustom -Name MyServiceCustomTCPRange8000_9000 -tcp_port "8000-9000"
+
+        Add service object MyServiceCustomTCPRange8000_9000 using TCP Port Range 8000-9000
+
+        .EXAMPLE
+        Add-FGTFirewallServiceCustom -Name MyServiceCustomTCP8000_TCP8090 -tcp_port 8080,8090
+
+        Add service object MyServiceCustomTCP8000_TCP8090 using TCP Port 8080 and 8090
+
+        .EXAMPLE
+        Add-FGTFirewallServiceCustom -Name MyServiceCustomTCP_UDP_8080 -tcp_port 8080 -udp_port 8080
+
+
+        Add service object MyServiceCustomTCP_UDP_8080 using TCP Port 8080 and UDP Port 8080
+
+        .EXAMPLE
+        Add-FGTFirewallServiceCustom -Name MyServiceCustomICMP -icmpType 8 -icmpCode 0 -comment "service object for ping"
+
+        Add service object MyServiceCustomICMP with protocol type ICMP and ICMP type 8 (echo request), ICMP code 0
+
+        .EXAMPLE
+        Add-FGTFirewallServiceCustom -Name MyServiceCustomTCP -protocolNumber 6 -comment "default protocol number for tcp"
+
+        Add service object MyServiceCustomTCP with protocol type ip, protocol number 6 (tcp) and a comment
+   #>
+
+    param (
+        [Parameter (Mandatory = $true, Position = 0)]
+        [string]$name,
+        [Parameter(Mandatory = $false, ParameterSetName = "tcp/udp/sctp")]
+        [string[]]$tcp_port,
+        [Parameter(Mandatory = $false, ParameterSetName = "tcp/udp/sctp")]
+        [string[]]$udp_port,
+        [Parameter(Mandatory = $false, ParameterSetName = "tcp/udp/sctp")]
+        [string[]]$sctp_port,
+        [Parameter(ParameterSetName = "ip", Mandatory = $true)]
+        [int]$protocolNumber,
+        [Parameter(ParameterSetName = "icmp", Mandatory = $true)]
+        [ValidateRange(0, 255)]
+        [int]$icmpType,
+        [Parameter(ParameterSetName = "icmp", Mandatory = $true)]
+        [ValidateRange(0, 16)]
+        [int]$icmpCode,
+        [Parameter(Mandatory = $false)]
+        [ValidateLength(0, 255)]
+        [string]$comment,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/firewall.service/custom"
+
+        $_customervice = New-Object -TypeName PSObject
+
+        $_customervice | Add-Member -Name "name" -MemberType NoteProperty -Value $name
+
+        switch ( $PSCmdlet.ParameterSetName ) {
+            "tcp/udp/sctp" {
+                if ( $PsBoundParameters.ContainsKey('tcp_port') ) {
+                    $_customervice | add-member -name "tcp-portrange" -membertype NoteProperty -Value ($tcp_port -join " ")
+                }
+
+                if ( $PsBoundParameters.ContainsKey('udp_port') ) {
+                    $_customervice | add-member -name "udp-portrange" -membertype NoteProperty -Value ($udp_port -join " ")
+                }
+
+                if ( $PsBoundParameters.ContainsKey('sctp_port') ) {
+                    $_customervice | add-member -name "sctp-portrange" -membertype NoteProperty -Value ($udp_port -join " ")
+                }
+            }
+            "ip" {
+                $_customervice | Add-Member -Name "protocol" -MemberType NoteProperty -Value $protocol
+
+                $_customervice | Add-Member -Name "protocol-number" -MemberType NoteProperty -Value $protocolNumber
+
+            }
+            "icmp" {
+
+                $_customervice | Add-Member -Name "icmpcode" -MemberType NoteProperty -Value $icmpCode
+
+                $_customervice | Add-Member -Name "icmptype" -MemberType NoteProperty -Value $icmpType
+
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('comment') ) {
+            $_customervice | add-member -name "comment" -membertype NoteProperty -Value $comment
+        }
+
+        if ( $PsBoundParameters.ContainsKey('data') ) {
+            $data.GetEnumerator() | ForEach-Object {
+                $address | Add-member -name $_.key -membertype NoteProperty -Value $_.value
+            }
+        }
+
+        Invoke-FGTRestMethod -method "POST" -body $_customervice -uri $uri -connection $connection @invokeParams | Out-Null
+
+        Get-FGTFirewallServiceCustom -connection $connection @invokeParams -name $name
+    }
+
+    End {
+    }
+}
+
 function Get-FGTFirewallServiceCustom {
 
     <#
