@@ -142,6 +142,173 @@ function Add-FGTFirewallServiceCustom {
     }
 }
 
+function Set-FGTFirewallServiceCustom {
+
+    <#
+        .SYNOPSIS
+        Configure a FortiGate Service Custom
+
+        .DESCRIPTION
+        Change a FortiGate Service Custom (Name, TCP / UDP / SCTP Port, coments... )
+
+        .EXAMPLE
+        $MyFGTServiceCustom = Get-FGTFirewallServiceCustom -name MyFGTServiceCustom
+        PS C:\>$MyFGTServiceCustom | Set-FGTFirewallServiceCustom -tcp_port 8080
+
+        Change MyFGTServiceCustom tcp-port to 8080
+
+        .EXAMPLE
+        $MyFGTServiceCustom = Get-FGTFirewallServiceCustom -name MyFGTServiceCustom
+        PS C:\>$MyFGTServiceCustom | Set-FGTFirewallServiceCustom -tcp_port 8080-8090
+
+        Change MyFGTServiceCustom tcp-port (range) to 8080-8090
+
+        .EXAMPLE
+        $MyFGTServiceCustom = Get-FGTFirewallServiceCustom -name MyFGTServiceCustom
+        PS C:\>$MyFGTServiceCustom | Set-FGTFirewallServiceCustom -tcp_port 8080, 9090
+
+        Change MyFGTServiceCustom tcp-port to 8080 and 9090
+
+        .EXAMPLE
+        $MyFGTServiceCustom = Get-FGTFirewallServiceCustom -name MyFGTServiceCustom
+        PS C:\>$MyFGTServiceCustom | Set-FGTFirewallServiceCustom -udp_port 5353
+
+        Change MyFGTServiceCustom udp-port to 5353
+
+        .EXAMPLE
+        $MyFGTServiceCustom = Get-FGTFirewallServiceCustom -name MyFGTServiceCustom
+        PS C:\>$MyFGTServiceCustom | Set-FGTFirewallServiceCustom -name MyFGTServiceCustom2
+
+        Change MyFGTServiceCustom name to MyFGTServiceCustom2
+
+        .EXAMPLE
+        $MyFGTServiceCustom = Get-FGTFirewallServiceCustom -name MyFGTServiceCustom
+        PS C:\>$MyFGTServiceCustom | Set-FGTFirewallServiceCustom -comment "My New comment"
+
+        Change MyFGTServiceCustom commment "My New Comment"
+
+        .EXAMPLE
+        $data = @{ "color" = 23 }
+        PS C:\>$MyFGTServiceCustom = Get-FGTFirewallServiceCustom -name MyFGTServiceCustom
+        PS C:\>$MyFGTServiceCustom | Set-FGTFirewallServiceCustom -data $color
+
+        Change MyFGTServiceCustom to set a color (23) using -data
+
+
+    #>
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium', DefaultParameterSetName = 'default')]
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [ValidateScript( { Confirm-FGTServiceCustom $_ })]
+        [psobject]$servicecustom,
+        [Parameter (Mandatory = $false)]
+        [string]$name,
+        [Parameter(Mandatory = $false, ParameterSetName = "tcp/udp/sctp")]
+        [string[]]$tcp_port,
+        [Parameter(Mandatory = $false, ParameterSetName = "tcp/udp/sctp")]
+        [string[]]$udp_port,
+        [Parameter(Mandatory = $false, ParameterSetName = "tcp/udp/sctp")]
+        [string[]]$sctp_port,
+        [Parameter(ParameterSetName = "ip", Mandatory = $true)]
+        [int]$protocolNumber,
+        [Parameter(ParameterSetName = "icmp", Mandatory = $true)]
+        [ValidateRange(0, 255)]
+        [int]$icmpType,
+        [Parameter(ParameterSetName = "icmp", Mandatory = $true)]
+        [ValidateRange(0, 16)]
+        [int]$icmpCode,
+        [Parameter (Mandatory = $false)]
+        [ValidateLength(0, 255)]
+        [string]$comment,
+        [Parameter (Mandatory = $false)]
+        [boolean]$visibility,
+        [Parameter (Mandatory = $false)]
+        [switch]$allowrouting,
+        [Parameter (Mandatory = $false)]
+        [hashtable]$data,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/firewall.service/custom"
+        $old_name = $servicecustom.name
+
+        $_servicecustom = new-Object -TypeName PSObject
+
+        if ( $PsBoundParameters.ContainsKey('name') ) {
+            #TODO check if there is no already a object with this name ?
+            $_servicecustom | add-member -name "name" -membertype NoteProperty -Value $name
+            $servicecustom.name = $name
+        }
+
+        if ( $PSCmdlet.ParameterSetName -ne "default" -and $servicecustom.protocol -ne $PSCmdlet.ParameterSetName ) {
+            throw "Service Custom type ($($servicecustom.protocol)) need to be on the same protocol ($($PSCmdlet.ParameterSetName))"
+        }
+
+        switch ( $PSCmdlet.ParameterSetName ) {
+            "tcp/udp/sctp" {
+                if ( $PsBoundParameters.ContainsKey('tcp_port') ) {
+                    $_servicecustom | add-member -name "tcp-portrange" -membertype NoteProperty -Value ($tcp_port -join " ")
+                }
+
+                if ( $PsBoundParameters.ContainsKey('udp_port') ) {
+                    $_servicecustom | add-member -name "udp-portrange" -membertype NoteProperty -Value ($udp_port -join " ")
+                }
+
+                if ( $PsBoundParameters.ContainsKey('sctp_port') ) {
+                    $_servicecustom | add-member -name "sctp-portrange" -membertype NoteProperty -Value ($udp_port -join " ")
+                }
+            }
+            "ip" {
+                $_servicecustom | Add-Member -Name "protocol" -MemberType NoteProperty -Value $protocol
+
+                $_servicecustom | Add-Member -Name "protocol-number" -MemberType NoteProperty -Value $protocolNumber
+
+            }
+            "icmp" {
+
+                $_servicecustom | Add-Member -Name "icmpcode" -MemberType NoteProperty -Value $icmpCode
+
+                $_servicecustom | Add-Member -Name "icmptype" -MemberType NoteProperty -Value $icmpType
+
+            }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('comment') ) {
+            $_servicecustom | add-member -name "comment" -membertype NoteProperty -Value $comment
+        }
+
+
+        if ( $PsBoundParameters.ContainsKey('data') ) {
+            $data.GetEnumerator() | ForEach-Object {
+                $_servicecustom | Add-member -name $_.key -membertype NoteProperty -Value $_.value
+            }
+        }
+
+        if ($PSCmdlet.ShouldProcess($servicecustom.name, 'Configure Firewall Service Custom')) {
+            Invoke-FGTRestMethod -method "PUT" -body $_servicecustom -uri $uri -uri_escape $old_name -connection $connection @invokeParams | out-Null
+
+            Get-FGTFirewallServiceCustom -connection $connection @invokeParams -name $servicecustom.name
+        }
+    }
+
+    End {
+    }
+}
+
 function Get-FGTFirewallServiceCustom {
 
     <#
