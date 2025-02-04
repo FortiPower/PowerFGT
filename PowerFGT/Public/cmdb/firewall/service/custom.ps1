@@ -248,7 +248,8 @@ function Get-FGTFirewallServiceCustom {
     }
 }
 
-function Remove-FGTFirewalLServiceCustom {
+
+function Remove-FGTFirewallServiceCustom {
 
     <#
         .SYNOPSIS
@@ -258,14 +259,14 @@ function Remove-FGTFirewalLServiceCustom {
         Remove a Service Custom object on the FortiGate
 
         .EXAMPLE
-        $MyServiceCustom = Get-FGTFirewalLServiceCustom -name MyServiceCustom
-        PS C:\>$MyServiceCustom | Remove-FGTFirewalLServiceCustom
+        $MyServiceCustom = Get-FGTFirewallServiceCustom -name MyServiceCustom
+        PS C:\>$MyServiceCustom | Remove-FGTFirewallServiceCustom
 
         Remove Service Custom $MyServiceCustom
 
         .EXAMPLE
-        $MyServiceCustom = Get-FGTFirewalLServiceCustom -name MyServiceCustom
-        PS C:\>$MyServiceCustom | Remove-FGTFirewalLServiceCustom -confirm:$false
+        $MyServiceCustom = Get-FGTFirewallServiceCustom -name MyServiceCustom
+        PS C:\>$MyServiceCustom | Remove-FGTFirewallServiceCustom -confirm:$false
 
         Remove Service Custom $MyServiceCustom with no confirmation
 
