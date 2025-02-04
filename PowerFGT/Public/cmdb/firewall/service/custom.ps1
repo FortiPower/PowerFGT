@@ -90,50 +90,50 @@ function Add-FGTFirewallServiceCustom {
 
         $uri = "api/v2/cmdb/firewall.service/custom"
 
-        $_customervice = New-Object -TypeName PSObject
+        $_customservice = New-Object -TypeName PSObject
 
-        $_customervice | Add-Member -Name "name" -MemberType NoteProperty -Value $name
+        $_customservice | Add-Member -Name "name" -MemberType NoteProperty -Value $name
 
         switch ( $PSCmdlet.ParameterSetName ) {
             "tcp/udp/sctp" {
                 if ( $PsBoundParameters.ContainsKey('tcp_port') ) {
-                    $_customervice | add-member -name "tcp-portrange" -membertype NoteProperty -Value ($tcp_port -join " ")
+                    $_customservice | add-member -name "tcp-portrange" -membertype NoteProperty -Value ($tcp_port -join " ")
                 }
 
                 if ( $PsBoundParameters.ContainsKey('udp_port') ) {
-                    $_customervice | add-member -name "udp-portrange" -membertype NoteProperty -Value ($udp_port -join " ")
+                    $_customservice | add-member -name "udp-portrange" -membertype NoteProperty -Value ($udp_port -join " ")
                 }
 
                 if ( $PsBoundParameters.ContainsKey('sctp_port') ) {
-                    $_customervice | add-member -name "sctp-portrange" -membertype NoteProperty -Value ($udp_port -join " ")
+                    $_customservice | add-member -name "sctp-portrange" -membertype NoteProperty -Value ($udp_port -join " ")
                 }
             }
             "ip" {
-                $_customervice | Add-Member -Name "protocol" -MemberType NoteProperty -Value $protocol
+                $_customservice | Add-Member -Name "protocol" -MemberType NoteProperty -Value $protocol
 
-                $_customervice | Add-Member -Name "protocol-number" -MemberType NoteProperty -Value $protocolNumber
+                $_customservice | Add-Member -Name "protocol-number" -MemberType NoteProperty -Value $protocolNumber
 
             }
             "icmp" {
 
-                $_customervice | Add-Member -Name "icmpcode" -MemberType NoteProperty -Value $icmpCode
+                $_customservice | Add-Member -Name "icmpcode" -MemberType NoteProperty -Value $icmpCode
 
-                $_customervice | Add-Member -Name "icmptype" -MemberType NoteProperty -Value $icmpType
+                $_customservice | Add-Member -Name "icmptype" -MemberType NoteProperty -Value $icmpType
 
             }
         }
 
         if ( $PsBoundParameters.ContainsKey('comment') ) {
-            $_customervice | add-member -name "comment" -membertype NoteProperty -Value $comment
+            $_customservice | add-member -name "comment" -membertype NoteProperty -Value $comment
         }
 
         if ( $PsBoundParameters.ContainsKey('data') ) {
             $data.GetEnumerator() | ForEach-Object {
-                $address | Add-member -name $_.key -membertype NoteProperty -Value $_.value
+                $_customservice | Add-member -name $_.key -membertype NoteProperty -Value $_.value
             }
         }
 
-        Invoke-FGTRestMethod -method "POST" -body $_customervice -uri $uri -connection $connection @invokeParams | Out-Null
+        Invoke-FGTRestMethod -method "POST" -body $_customservice -uri $uri -connection $connection @invokeParams | Out-Null
 
         Get-FGTFirewallServiceCustom -connection $connection @invokeParams -name $name
     }
