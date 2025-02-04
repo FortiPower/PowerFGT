@@ -417,6 +417,37 @@ Function Confirm-FGTSDNConnector {
     $true
 }
 
+Function Confirm-FGTServiceCustom {
+
+    Param (
+        [Parameter (Mandatory = $true)]
+        [object]$argument
+    )
+
+    #Check if it looks like a service Custom element
+
+    if ( -not ( $argument | get-member -name name -Membertype Properties)) {
+        throw "Element specified does not contain a name property."
+    }
+    if ( -not ( $argument | get-member -name uuid -Membertype Properties)) {
+        throw "Element specified does not contain an uuid property."
+    }
+    if ( -not ( $argument | get-member -name proxy -Membertype Properties)) {
+        throw "Element specified does not contain a proxy property."
+    }
+    if ( -not ( $argument | get-member -name category -Membertype Properties)) {
+        throw "Element specified does not contain a category property."
+    }
+    if ( -not ( $argument | get-member -name protocol -Membertype Properties)) {
+        throw "Element specified does not contain a protocol property."
+    }
+    if ( -not ( $argument | get-member -name session-ttl -Membertype Properties)) {
+        throw "Element specified does not contain a session-ttl property."
+    }
+
+    $true
+
+}
 Function Confirm-FGTUserRADIUS {
 
     Param (
