@@ -247,3 +247,58 @@ function Get-FGTFirewallServiceCustom {
     End {
     }
 }
+
+function Remove-FGTFirewalLServiceCustom {
+
+    <#
+        .SYNOPSIS
+        Remove a FortiGate ServiceCustom
+
+        .DESCRIPTION
+        Remove a Service Custom object on the FortiGate
+
+        .EXAMPLE
+        $MyServiceCustom = Get-FGTFirewalLServiceCustom -name MyServiceCustom
+        PS C:\>$MyServiceCustom | Remove-FGTFirewalLServiceCustom
+
+        Remove Service Custom $MyServiceCustom
+
+        .EXAMPLE
+        $MyServiceCustom = Get-FGTFirewalLServiceCustom -name MyServiceCustom
+        PS C:\>$MyServiceCustom | Remove-FGTFirewalLServiceCustom -confirm:$false
+
+        Remove Service Custom $MyServiceCustom with no confirmation
+
+    #>
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'high')]
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [ValidateScript( { Confirm-FGTServiceCustom $_ })]
+        [psobject]$servicecustom,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/firewall.service/custom"
+
+        if ($PSCmdlet.ShouldProcess($servicecustom.name, 'Remove Firewall Service Custom')) {
+            $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -uri_escape $servicecustom.name -connection $connection @invokeParams
+        }
+    }
+
+    End {
+    }
+}
