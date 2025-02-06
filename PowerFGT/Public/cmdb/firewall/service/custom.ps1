@@ -52,7 +52,7 @@ function Add-FGTFirewallServiceCustom {
    #>
 
     param (
-        [Parameter (Mandatory = $true, Position = 0)]
+        [Parameter(Mandatory = $true, Position = 0)]
         [string]$name,
         [Parameter(Mandatory = $false, ParameterSetName = "tcp/udp/sctp")]
         [string[]]$tcp_port,
@@ -71,6 +71,8 @@ function Add-FGTFirewallServiceCustom {
         [Parameter(Mandatory = $false)]
         [ValidateLength(0, 255)]
         [string]$comment,
+        [Parameter(Mandatory = $false)]
+        [hashtable]$data,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -199,10 +201,10 @@ function Set-FGTFirewallServiceCustom {
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium', DefaultParameterSetName = 'default')]
     Param(
-        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [Parameter(Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript( { Confirm-FGTServiceCustom $_ })]
         [psobject]$servicecustom,
-        [Parameter (Mandatory = $false)]
+        [Parameter(Mandatory = $false)]
         [string]$name,
         [Parameter(Mandatory = $false, ParameterSetName = "tcp/udp/sctp")]
         [string[]]$tcp_port,
@@ -218,14 +220,10 @@ function Set-FGTFirewallServiceCustom {
         [Parameter(ParameterSetName = "icmp", Mandatory = $true)]
         [ValidateRange(0, 16)]
         [int]$icmpCode,
-        [Parameter (Mandatory = $false)]
+        [Parameter(Mandatory = $false)]
         [ValidateLength(0, 255)]
         [string]$comment,
-        [Parameter (Mandatory = $false)]
-        [boolean]$visibility,
-        [Parameter (Mandatory = $false)]
-        [switch]$allowrouting,
-        [Parameter (Mandatory = $false)]
+        [Parameter(Mandatory = $false)]
         [hashtable]$data,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
@@ -352,18 +350,18 @@ function Get-FGTFirewallServiceCustom {
 
     [CmdletBinding(DefaultParameterSetName = "default")]
     Param(
-        [Parameter (Mandatory = $false, Position = 1, ParameterSetName = "name")]
+        [Parameter(Mandatory = $false, Position = 1, ParameterSetName = "name")]
         [string]$name,
-        [Parameter (Mandatory = $false)]
-        [Parameter (ParameterSetName = "filter")]
+        [Parameter(Mandatory = $false)]
+        [Parameter(ParameterSetName = "filter")]
         [string]$filter_attribute,
-        [Parameter (Mandatory = $false)]
-        [Parameter (ParameterSetName = "name")]
-        [Parameter (ParameterSetName = "filter")]
+        [Parameter(Mandatory = $false)]
+        [Parameter(ParameterSetName = "name")]
+        [Parameter(ParameterSetName = "filter")]
         [ValidateSet('equal', 'contains')]
         [string]$filter_type = "equal",
-        [Parameter (Mandatory = $false)]
-        [Parameter (ParameterSetName = "filter")]
+        [Parameter(Mandatory = $false)]
+        [Parameter(ParameterSetName = "filter")]
         [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
         [switch]$meta,
@@ -441,7 +439,7 @@ function Remove-FGTFirewallServiceCustom {
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'high')]
     Param(
-        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [Parameter(Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
         [ValidateScript( { Confirm-FGTServiceCustom $_ })]
         [psobject]$servicecustom,
         [Parameter(Mandatory = $false)]
