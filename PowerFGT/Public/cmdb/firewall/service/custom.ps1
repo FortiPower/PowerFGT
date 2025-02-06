@@ -98,6 +98,8 @@ function Add-FGTFirewallServiceCustom {
 
         switch ( $PSCmdlet.ParameterSetName ) {
             "tcp/udp/sctp" {
+                $_customservice | Add-Member -Name "protocol" -MemberType NoteProperty -Value "TCP/UDP/SCTP"
+
                 if ( $PsBoundParameters.ContainsKey('tcp_port') ) {
                     $_customservice | add-member -name "tcp-portrange" -membertype NoteProperty -Value ($tcp_port -join " ")
                 }
@@ -111,12 +113,13 @@ function Add-FGTFirewallServiceCustom {
                 }
             }
             "ip" {
-                $_customservice | Add-Member -Name "protocol" -MemberType NoteProperty -Value $protocol
+                $_customservice | Add-Member -Name "protocol" -MemberType NoteProperty -Value "IP"
 
                 $_customservice | Add-Member -Name "protocol-number" -MemberType NoteProperty -Value $protocolNumber
 
             }
             "icmp" {
+                $_customservice | Add-Member -Name "protocol" -MemberType NoteProperty -Value "ICMP"
 
                 $_customservice | Add-Member -Name "icmpcode" -MemberType NoteProperty -Value $icmpCode
 
