@@ -107,7 +107,7 @@ function Add-FGTFirewallServiceCustom {
                 }
 
                 if ( $PsBoundParameters.ContainsKey('sctp_port') ) {
-                    $_customservice | add-member -name "sctp-portrange" -membertype NoteProperty -Value ($udp_port -join " ")
+                    $_customservice | add-member -name "sctp-portrange" -membertype NoteProperty -Value ($sctp_port -join " ")
                 }
             }
             "ip" {
@@ -267,7 +267,7 @@ function Set-FGTFirewallServiceCustom {
                 }
 
                 if ( $PsBoundParameters.ContainsKey('sctp_port') ) {
-                    $_servicecustom | add-member -name "sctp-portrange" -membertype NoteProperty -Value ($udp_port -join " ")
+                    $_servicecustom | add-member -name "sctp-portrange" -membertype NoteProperty -Value ($sctp_port -join " ")
                 }
             }
             "ip" {
