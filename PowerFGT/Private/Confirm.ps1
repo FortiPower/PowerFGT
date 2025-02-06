@@ -424,13 +424,10 @@ Function Confirm-FGTServiceCustom {
         [object]$argument
     )
 
-    #Check if it looks like a service Custom element
+    #Check if it looks like a Service Custom element
 
     if ( -not ( $argument | get-member -name name -Membertype Properties)) {
         throw "Element specified does not contain a name property."
-    }
-    if ( -not ( $argument | get-member -name uuid -Membertype Properties)) {
-        throw "Element specified does not contain an uuid property."
     }
     if ( -not ( $argument | get-member -name proxy -Membertype Properties)) {
         throw "Element specified does not contain a proxy property."
