@@ -98,7 +98,12 @@ function Add-FGTFirewallServiceCustom {
 
         switch ( $PSCmdlet.ParameterSetName ) {
             "tcp/udp/sctp" {
-                $_customservice | Add-Member -Name "protocol" -MemberType NoteProperty -Value "TCP/UDP/SCTP"
+                if ($connection.version -ge "7.6.0") {
+                    $_customservice | Add-Member -Name "protocol" -MemberType NoteProperty -Value "TCP/UDP/UDP-Lite/SCTP"
+                }
+                else {
+                    $_customservice | Add-Member -Name "protocol" -MemberType NoteProperty -Value "TCP/UDP/SCTP"
+                }
 
                 if ( $PsBoundParameters.ContainsKey('tcp_port') ) {
                     $_customservice | add-member -name "tcp-portrange" -membertype NoteProperty -Value ($tcp_port -join " ")
