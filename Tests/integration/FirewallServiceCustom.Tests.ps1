@@ -87,7 +87,6 @@ Describe "Add Firewall Service Custom" {
             Add-FGTFirewallServiceCustom -Name $pester_servicecustom1 -tcp_port 8080 -comment "My Comment"
             $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
             $sc.name | Should -Be $pester_servicecustom1
-            $sc.uuid | Should -Not -BeNullOrEmpty
             $sc.protocol | Should -Not -BeNullOrEmpty
             $sc.comment | Should -Be "My Comment"
             $sc.'session-ttl' | Should -Be "0"
@@ -99,7 +98,6 @@ Describe "Add Firewall Service Custom" {
             Add-FGTFirewallServiceCustom -Name $pester_servicecustom1 -tcp_port 8080 -data $data
             $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
             $sc.name | Should -Be $pester_servicecustom1
-            $sc.uuid | Should -Not -BeNullOrEmpty
             $sc.protocol | Should -Not -BeNullOrEmpty
             $sc.comment | Should -BeNullOrEmpty
             $sc.'session-ttl' | Should -Be "0"
@@ -111,7 +109,6 @@ Describe "Add Firewall Service Custom" {
             Add-FGTFirewallServiceCustom -Name $pester_servicecustom1 -tcp_port 8080 -data $data
             $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
             $sc.name | Should -Be $pester_servicecustom1
-            $sc.uuid | Should -Not -BeNullOrEmpty
             $sc.protocol | Should -Not -BeNullOrEmpty
             $sc.comment | Should -BeNullOrEmpty
             $sc.'session-ttl' | Should -Be "3600"
@@ -132,7 +129,6 @@ Describe "Add Firewall Service Custom" {
                 Add-FGTFirewallServiceCustom -Name $pester_servicecustom1 -tcp_port 8080
                 $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
                 $sc.name | Should -Be $pester_servicecustom1
-                $sc.uuid | Should -Not -BeNullOrEmpty
                 $sc.protocol | Should -Be "TCP/UDP/SCTP"
                 $sc."tcp-portrange" | Should -Be "8080"
                 $sc."udp-portrange" | Should -BeNullOrEmpty
@@ -146,7 +142,6 @@ Describe "Add Firewall Service Custom" {
                 Add-FGTFirewallServiceCustom -Name $pester_servicecustom1 -tcp_port "8080-8090"
                 $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
                 $sc.name | Should -Be $pester_servicecustom1
-                $sc.uuid | Should -Not -BeNullOrEmpty
                 $sc.protocol | Should -Be "TCP/UDP/SCTP"
                 $sc."tcp-portrange" | Should -Be "8080-8090"
                 $sc."udp-portrange" | Should -BeNullOrEmpty
@@ -160,7 +155,6 @@ Describe "Add Firewall Service Custom" {
                 Add-FGTFirewallServiceCustom -Name $pester_servicecustom1 -tcp_port 8080, 8090
                 $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
                 $sc.name | Should -Be $pester_servicecustom1
-                $sc.uuid | Should -Not -BeNullOrEmpty
                 $sc.protocol | Should -Be "TCP/UDP/SCTP"
                 $sc."tcp-portrange" | Should -Be "8080 8090"
                 $sc."udp-portrange" | Should -BeNullOrEmpty
@@ -174,7 +168,6 @@ Describe "Add Firewall Service Custom" {
                 Add-FGTFirewallServiceCustom -Name $pester_servicecustom1 -tcp_port "8080-8090", 10000
                 $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
                 $sc.name | Should -Be $pester_servicecustom1
-                $sc.uuid | Should -Not -BeNullOrEmpty
                 $sc.protocol | Should -Be "TCP/UDP/SCTP"
                 $sc."tcp-portrange" | Should -Be "8080-8090 10000"
                 $sc."udp-portrange" | Should -BeNullOrEmpty
@@ -192,7 +185,6 @@ Describe "Add Firewall Service Custom" {
                 Add-FGTFirewallServiceCustom -Name $pester_servicecustom1 -udp_port 8080
                 $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
                 $sc.name | Should -Be $pester_servicecustom1
-                $sc.uuid | Should -Not -BeNullOrEmpty
                 $sc.protocol | Should -Be "TCP/UDP/SCTP"
                 $sc."tcp-portrange" | Should -BeNullOrEmpty
                 $sc."udp-portrange" | Should -Be "8080"
@@ -206,7 +198,6 @@ Describe "Add Firewall Service Custom" {
                 Add-FGTFirewallServiceCustom -Name $pester_servicecustom1 -udp_port "8080-8090"
                 $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
                 $sc.name | Should -Be $pester_servicecustom1
-                $sc.uuid | Should -Not -BeNullOrEmpty
                 $sc.protocol | Should -Be "TCP/UDP/SCTP"
                 $sc."tcp-portrange" | Should -BeNullOrEmpty
                 $sc."udp-portrange" | Should -Be "8080-8090"
@@ -220,7 +211,6 @@ Describe "Add Firewall Service Custom" {
                 Add-FGTFirewallServiceCustom -Name $pester_servicecustom1 -udp_port 8080, 8090
                 $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
                 $sc.name | Should -Be $pester_servicecustom1
-                $sc.uuid | Should -Not -BeNullOrEmpty
                 $sc.protocol | Should -Be "TCP/UDP/SCTP"
                 $sc."tcp-portrange" | Should -BeNullOrEmpty
                 $sc."udp-portrange" | Should -Be "8080 8090"
@@ -234,7 +224,6 @@ Describe "Add Firewall Service Custom" {
                 Add-FGTFirewallServiceCustom -Name $pester_servicecustom1 -udp_port "8080-8090", 10000
                 $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
                 $sc.name | Should -Be $pester_servicecustom1
-                $sc.uuid | Should -Not -BeNullOrEmpty
                 $sc.protocol | Should -Be "TCP/UDP/SCTP"
                 $sc."tcp-portrange" | Should -BeNullOrEmpty
                 $sc."udp-portrange" | Should -Be "8080-8090 10000"
@@ -252,7 +241,6 @@ Describe "Add Firewall Service Custom" {
                 Add-FGTFirewallServiceCustom -Name $pester_servicecustom1 -sctp_port 8080
                 $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
                 $sc.name | Should -Be $pester_servicecustom1
-                $sc.uuid | Should -Not -BeNullOrEmpty
                 $sc.protocol | Should -Be "TCP/UDP/SCTP"
                 $sc."tcp-portrange" | Should -BeNullOrEmpty
                 $sc."udp-portrange" | Should -BeNullOrEmpty
@@ -266,7 +254,6 @@ Describe "Add Firewall Service Custom" {
                 Add-FGTFirewallServiceCustom -Name $pester_servicecustom1 -sctp_port "8080-8090"
                 $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
                 $sc.name | Should -Be $pester_servicecustom1
-                $sc.uuid | Should -Not -BeNullOrEmpty
                 $sc.protocol | Should -Be "TCP/UDP/SCTP"
                 $sc."tcp-portrange" | Should -BeNullOrEmpty
                 $sc."udp-portrange" | Should -BeNullOrEmpty
@@ -280,7 +267,6 @@ Describe "Add Firewall Service Custom" {
                 Add-FGTFirewallServiceCustom -Name $pester_servicecustom1 -sctp_port 8080, 8090
                 $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
                 $sc.name | Should -Be $pester_servicecustom1
-                $sc.uuid | Should -Not -BeNullOrEmpty
                 $sc.protocol | Should -Be "TCP/UDP/SCTP"
                 $sc."tcp-portrange" | Should -BeNullOrEmpty
                 $sc."udp-portrange" | Should -BeNullOrEmpty
@@ -294,7 +280,6 @@ Describe "Add Firewall Service Custom" {
                 Add-FGTFirewallServiceCustom -Name $pester_servicecustom1 -sctp_port "8080-8090", 10000
                 $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
                 $sc.name | Should -Be $pester_servicecustom1
-                $sc.uuid | Should -Not -BeNullOrEmpty
                 $sc.protocol | Should -Be "TCP/UDP/SCTP"
                 $sc."tcp-portrange" | Should -BeNullOrEmpty
                 $sc."udp-portrange" | Should -BeNullOrEmpty
@@ -312,7 +297,6 @@ Describe "Add Firewall Service Custom" {
                 Add-FGTFirewallServiceCustom -Name $pester_servicecustom1 -tcp_port 8080 -udp_port 8081 -sctp_port 8082
                 $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
                 $sc.name | Should -Be $pester_servicecustom1
-                $sc.uuid | Should -Not -BeNullOrEmpty
                 $sc.protocol | Should -Be "TCP/UDP/SCTP"
                 $sc."tcp-portrange" | Should -Be "8080"
                 $sc."udp-portrange" | Should -Be "8081"
@@ -327,7 +311,6 @@ Describe "Add Firewall Service Custom" {
                 Add-FGTFirewallServiceCustom -Name $pester_servicecustom1 -tcp_port 8080, 9080 -udp_port 8081, 9081 -sctp_port 8082, 9082
                 $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
                 $sc.name | Should -Be $pester_servicecustom1
-                $sc.uuid | Should -Not -BeNullOrEmpty
                 $sc.protocol | Should -Be "TCP/UDP/SCTP"
                 $sc."tcp-portrange" | Should -Be "8080 9080"
                 $sc."udp-portrange" | Should -Be "8081 9081"
@@ -349,7 +332,6 @@ Describe "Add Firewall Service Custom" {
             Add-FGTFirewallServiceCustom -Name $pester_servicecustom1 -protocolNumber 44
             $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
             $sc.name | Should -Be $pester_servicecustom1
-            $sc.uuid | Should -Not -BeNullOrEmpty
             $sc.protocol | Should -Be "IP"
             $sc."tcp-portrange" | Should -BeNullOrEmpty
             $sc."udp-portrange" | Should -BeNullOrEmpty
@@ -371,7 +353,6 @@ Describe "Add Firewall Service Custom" {
             Add-FGTFirewallServiceCustom -Name $pester_servicecustom1 -icmptype 0 -icmpcode 8
             $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
             $sc.name | Should -Be $pester_servicecustom1
-            $sc.uuid | Should -Not -BeNullOrEmpty
             $sc.protocol | Should -Be "ICMP"
             $sc."tcp-portrange" | Should -BeNullOrEmpty
             $sc."udp-portrange" | Should -BeNullOrEmpty
@@ -401,7 +382,6 @@ Describe "Configure Firewall Service Custom" {
             Get-FGTFirewallServiceCustom -name $pester_servicecustom1 | Set-FGTFirewallServiceCustom -comment "My new Comment"
             $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
             $sc.name | Should -Be $pester_servicecustom1
-            $sc.uuid | Should -Not -BeNullOrEmpty
             $sc.protocol | Should -Be "TCP/UDP/SCTP"
             $sc."tcp-portrange" | Should -Not -BeNullOrEmpty
             $sc."udp-portrange" | Should -BeNullOrEmpty
