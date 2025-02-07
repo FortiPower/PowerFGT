@@ -413,7 +413,7 @@ Describe "Add Firewall Service Custom" {
         }
     }
 
-    Context "Protocol: ICMP" {
+    Context "Protocol: ICMP" -skip:($fgt_version -lt "6.4.0") {
 
         AfterEach {
             Get-FGTFirewallServiceCustom -name $pester_servicecustom1 | Remove-FGTFirewallServiceCustom -confirm:$false
