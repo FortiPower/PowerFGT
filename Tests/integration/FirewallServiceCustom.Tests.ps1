@@ -469,9 +469,30 @@ Describe "Configure Firewall Service Custom" {
             $sc.color | Should -Be "0"
         }
 
+        It "Change Service Custom Name" {
+            Get-FGTFirewallServiceCustom -name $pester_servicecustom1 | Set-FGTFirewallServiceCustom -name pester_servicecustom2
+            $sc = Get-FGTFirewallServiceCustom -name pester_servicecustom2
+            $sc.name | Should -Be "pester_servicecustom2"
+            if ($DefaultFGTConnection.version -ge "7.6.0") {
+                $sc.protocol | Should -Be "TCP/UDP/UDP-Lite/SCTP"
+            }
+            else {
+                $sc.protocol | Should -Be "TCP/UDP/SCTP"
+            }
+            $sc."tcp-portrange" | Should -Not -BeNullOrEmpty
+            $sc."udp-portrange" | Should -BeNullOrEmpty
+            $sc."sctp-portrange" | Should -BeNullOrEmpty
+            $sc."protocol-number" | Should -BeNullOrEmpty
+            $sc.icmptype | Should -BeNullOrEmpty
+            $sc.icmpcode | Should -BeNullOrEmpty
+            $sc.comment | Should -Be "My new Comment"
+            $sc.'session-ttl' | Should -Be "0"
+            $sc.color | Should -Be "0"
+        }
+
         AfterAll {
             Get-FGTFirewallServiceCustom -name $pester_servicecustom1 | Remove-FGTFirewallServiceCustom -confirm:$false
-
+            Get-FGTFirewallServiceCustom -name pester_servicecustom2 | Remove-FGTFirewallServiceCustom -confirm:$false
         }
 
     }
