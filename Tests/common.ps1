@@ -71,6 +71,7 @@ $script:pester_userradius_secret = ConvertTo-SecureString "pester_userradiussecr
 $script:pester_sdnconnector1 = "pester_sdnconnector1"
 $script:pester_sdnconnector2 = "pester_sdnconnector2"
 $script:pester_sdnconnectorpassword = ConvertTo-SecureString "pester_sdnconnectorpassword" -AsPlainText -Force
+$script:pester_servicecustom1 = "pester_servicecustom1"
 
 . ../credential.ps1
 #TODO: Add check if no ipaddress/login/password info...
