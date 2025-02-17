@@ -469,6 +469,26 @@ Describe "Configure Firewall Service Custom" {
             $sc.color | Should -Be "0"
         }
 
+        It "Change Service Custom with data (1 field)" {
+            $data = @{ "color" = 12 }
+            Get-FGTFirewallServiceCustom -name $pester_servicecustom1 | Set-FGTFirewallServiceCustom -data $data
+            $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
+            $sc.name | Should -Be $pester_servicecustom1
+            $sc.protocol | Should -Not -BeNullOrEmpty
+            $sc.'session-ttl' | Should -Be "0"
+            $sc.color | Should -Be "12"
+        }
+
+        It "Change Service Custom with data (2 fields)" {
+            $data = @{ "color" = 23 ; "session-ttl" = 3600 }
+            Get-FGTFirewallServiceCustom -name $pester_servicecustom1 | Set-FGTFirewallServiceCustom -data $data
+            $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
+            $sc.name | Should -Be $pester_servicecustom1
+            $sc.protocol | Should -Not -BeNullOrEmpty
+            $sc.'session-ttl' | Should -Be "3600"
+            $sc.color | Should -Be "23"
+        }
+
         It "Change Service Custom Name" {
             Get-FGTFirewallServiceCustom -name $pester_servicecustom1 | Set-FGTFirewallServiceCustom -name pester_servicecustom2
             $sc = Get-FGTFirewallServiceCustom -name pester_servicecustom2
@@ -485,9 +505,6 @@ Describe "Configure Firewall Service Custom" {
             $sc."protocol-number" | Should -BeNullOrEmpty
             $sc.icmptype | Should -BeNullOrEmpty
             $sc.icmpcode | Should -BeNullOrEmpty
-            $sc.comment | Should -Be "My new Comment"
-            $sc.'session-ttl' | Should -Be "0"
-            $sc.color | Should -Be "0"
         }
 
         AfterAll {
