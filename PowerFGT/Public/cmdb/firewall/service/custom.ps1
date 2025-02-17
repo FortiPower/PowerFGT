@@ -49,6 +49,12 @@ function Add-FGTFirewallServiceCustom {
         Add-FGTFirewallServiceCustom -Name MyServiceCustomTCP -protocolNumber 6 -comment "default protocol number for tcp"
 
         Add service object MyServiceCustomTCP with protocol type ip, protocol number 6 (tcp) and a comment
+
+        .EXAMPLE
+        Add-FGTFirewallServiceCustom -Name MyServiceCustomTCP8081 -tcp_port 8081 -category "Web Access"
+
+        Add service object MyServiceCustomTCP8080 using TCP Port 8081 and the category "Web Access"
+
    #>
 
     param (
@@ -71,6 +77,8 @@ function Add-FGTFirewallServiceCustom {
         [Parameter(Mandatory = $false)]
         [ValidateLength(0, 255)]
         [string]$comment,
+        [Parameter(Mandatory = $false)]
+        [string]$category,
         [Parameter(Mandatory = $false)]
         [hashtable]$data,
         [Parameter(Mandatory = $false)]
@@ -137,6 +145,10 @@ function Add-FGTFirewallServiceCustom {
             $_customservice | add-member -name "comment" -membertype NoteProperty -Value $comment
         }
 
+        if ( $PsBoundParameters.ContainsKey('category') ) {
+            $_customservice | add-member -name "category" -membertype NoteProperty -Value $category
+        }
+
         if ( $PsBoundParameters.ContainsKey('data') ) {
             $data.GetEnumerator() | ForEach-Object {
                 $_customservice | Add-member -name $_.key -membertype NoteProperty -Value $_.value
@@ -198,6 +210,12 @@ function Set-FGTFirewallServiceCustom {
         Change MyFGTServiceCustom commment "My New Comment"
 
         .EXAMPLE
+        $MyFGTServiceCustom = Get-FGTFirewallServiceCustom -name MyFGTServiceCustom
+        PS C:\>$MyFGTServiceCustom | Set-FGTFirewallServiceCustom -category "email"
+
+        Change MyFGTServiceCustom category "email"
+
+        .EXAMPLE
         $data = @{ "color" = 23 }
         PS C:\>$MyFGTServiceCustom = Get-FGTFirewallServiceCustom -name MyFGTServiceCustom
         PS C:\>$MyFGTServiceCustom | Set-FGTFirewallServiceCustom -data $color
@@ -231,6 +249,8 @@ function Set-FGTFirewallServiceCustom {
         [Parameter(Mandatory = $false)]
         [ValidateLength(0, 255)]
         [string]$comment,
+        [Parameter(Mandatory = $false)]
+        [string]$category,
         [Parameter(Mandatory = $false)]
         [hashtable]$data,
         [Parameter(Mandatory = $false)]
@@ -303,6 +323,9 @@ function Set-FGTFirewallServiceCustom {
             $_servicecustom | add-member -name "comment" -membertype NoteProperty -Value $comment
         }
 
+        if ( $PsBoundParameters.ContainsKey('category') ) {
+            $_servicecustom | add-member -name "category" -membertype NoteProperty -Value $category
+        }
 
         if ( $PsBoundParameters.ContainsKey('data') ) {
             $data.GetEnumerator() | ForEach-Object {

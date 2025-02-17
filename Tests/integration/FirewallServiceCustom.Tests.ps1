@@ -93,6 +93,17 @@ Describe "Add Firewall Service Custom" {
             $sc.color | Should -Be "0"
         }
 
+        It "Add Service Custom $pester_servicecustom1 with category (Email)" {
+            Add-FGTFirewallServiceCustom -Name $pester_servicecustom1 -tcp_port 8080 -category Email
+            $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
+            $sc.name | Should -Be $pester_servicecustom1
+            $sc.protocol | Should -Not -BeNullOrEmpty
+            $sc.comment | Should -BeNullOrEmpty
+            $sc.'session-ttl' | Should -Be "0"
+            $sc.color | Should -Be "0"
+            $sc.category | Should -Be "Email"
+        }
+
         It "Add Service Custom $pester_servicecustom1 with data (1 field)" {
             $data = @{ "color" = 12 }
             Add-FGTFirewallServiceCustom -Name $pester_servicecustom1 -tcp_port 8080 -data $data
@@ -468,6 +479,26 @@ Describe "Configure Firewall Service Custom" {
             $sc.'session-ttl' | Should -Be "0"
             $sc.color | Should -Be "0"
         }
+
+        It "Change Service Custom Category (Email)" {
+            Get-FGTFirewallServiceCustom -name $pester_servicecustom1 | Set-FGTFirewallServiceCustom -category "Email"
+            $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
+            $sc.name | Should -Be $pester_servicecustom1
+            if ($DefaultFGTConnection.version -ge "7.6.0") {
+                $sc.protocol | Should -Be "TCP/UDP/UDP-Lite/SCTP"
+            }
+            else {
+                $sc.protocol | Should -Be "TCP/UDP/SCTP"
+            }
+            $sc."tcp-portrange" | Should -Not -BeNullOrEmpty
+            $sc."udp-portrange" | Should -BeNullOrEmpty
+            $sc."sctp-portrange" | Should -BeNullOrEmpty
+            $sc."protocol-number" | Should -BeNullOrEmpty
+            $sc.icmptype | Should -BeNullOrEmpty
+            $sc.icmpcode | Should -BeNullOrEmpty
+            $sc.category | Should -Be "Email"
+        }
+
 
         It "Change Service Custom with data (1 field)" {
             $data = @{ "color" = 12 }
