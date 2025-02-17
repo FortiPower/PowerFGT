@@ -494,6 +494,349 @@ Describe "Configure Firewall Service Custom" {
             Get-FGTFirewallServiceCustom -name $pester_servicecustom1 | Remove-FGTFirewallServiceCustom -confirm:$false
             Get-FGTFirewallServiceCustom -name pester_servicecustom2 | Remove-FGTFirewallServiceCustom -confirm:$false
         }
+    }
+    Context "Protocol : TCP/UDP/SCTP" {
+
+        AfterEach {
+            Get-FGTFirewallServiceCustom -name $pester_servicecustom1 | Remove-FGTFirewallServiceCustom -confirm:$false
+        }
+
+        Context "TCP" {
+
+            BeforeEach {
+                Add-FGTFirewallServiceCustom -Name $pester_servicecustom1 -tcp_port 8081
+            }
+
+            It "Set Service Custom $pester_servicecustom1 with tcp-port" {
+                Get-FGTFirewallServiceCustom -name $pester_servicecustom1 | Set-FGTFirewallServiceCustom -tcp_port 8080
+                $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
+                $sc.name | Should -Be $pester_servicecustom1
+                if ($DefaultFGTConnection.version -ge "7.6.0") {
+                    $sc.protocol | Should -Be "TCP/UDP/UDP-Lite/SCTP"
+                }
+                else {
+                    $sc.protocol | Should -Be "TCP/UDP/SCTP"
+                }
+                $sc."tcp-portrange" | Should -Be "8080"
+                $sc."udp-portrange" | Should -BeNullOrEmpty
+                $sc."sctp-portrange" | Should -BeNullOrEmpty
+                $sc.comment | Should -BeNullOrEmpty
+                $sc.'session-ttl' | Should -Be "0"
+                $sc.color | Should -Be "0"
+            }
+
+            It "Set Service Custom $pester_servicecustom1 with tcp-port range" {
+                Get-FGTFirewallServiceCustom -name $pester_servicecustom1 | Set-FGTFirewallServiceCustom -tcp_port "8080-8090"
+                $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
+                $sc.name | Should -Be $pester_servicecustom1
+                if ($DefaultFGTConnection.version -ge "7.6.0") {
+                    $sc.protocol | Should -Be "TCP/UDP/UDP-Lite/SCTP"
+                }
+                else {
+                    $sc.protocol | Should -Be "TCP/UDP/SCTP"
+                }
+                $sc."tcp-portrange" | Should -Be "8080-8090"
+                $sc."udp-portrange" | Should -BeNullOrEmpty
+                $sc."sctp-portrange" | Should -BeNullOrEmpty
+                $sc.comment | Should -BeNullOrEmpty
+                $sc.'session-ttl' | Should -Be "0"
+                $sc.color | Should -Be "0"
+            }
+
+            It "Set Service Custom $pester_servicecustom1 with multiple tcp-port" {
+                Get-FGTFirewallServiceCustom -name $pester_servicecustom1 | Set-FGTFirewallServiceCustom -tcp_port 8080, 8090
+                $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
+                $sc.name | Should -Be $pester_servicecustom1
+                if ($DefaultFGTConnection.version -ge "7.6.0") {
+                    $sc.protocol | Should -Be "TCP/UDP/UDP-Lite/SCTP"
+                }
+                else {
+                    $sc.protocol | Should -Be "TCP/UDP/SCTP"
+                }
+                $sc."tcp-portrange" | Should -Be "8080 8090"
+                $sc."udp-portrange" | Should -BeNullOrEmpty
+                $sc."sctp-portrange" | Should -BeNullOrEmpty
+                $sc.comment | Should -BeNullOrEmpty
+                $sc.'session-ttl' | Should -Be "0"
+                $sc.color | Should -Be "0"
+            }
+
+            It "Set Service Custom $pester_servicecustom1 with multiple tcp-port range" {
+                Get-FGTFirewallServiceCustom -name $pester_servicecustom1 | Set-FGTFirewallServiceCustom -tcp_port "8080-8090", 10000
+                $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
+                $sc.name | Should -Be $pester_servicecustom1
+                if ($DefaultFGTConnection.version -ge "7.6.0") {
+                    $sc.protocol | Should -Be "TCP/UDP/UDP-Lite/SCTP"
+                }
+                else {
+                    $sc.protocol | Should -Be "TCP/UDP/SCTP"
+                }
+                $sc."tcp-portrange" | Should -Be "8080-8090 10000"
+                $sc."udp-portrange" | Should -BeNullOrEmpty
+                $sc."sctp-portrange" | Should -BeNullOrEmpty
+                $sc.comment | Should -BeNullOrEmpty
+                $sc.'session-ttl' | Should -Be "0"
+                $sc.color | Should -Be "0"
+            }
+
+        }
+
+        Context "UDP" {
+
+            BeforeEach {
+                Add-FGTFirewallServiceCustom -Name $pester_servicecustom1 -udp_port 8081
+            }
+
+            It "Set Service Custom $pester_servicecustom1 with udp-port" {
+                Get-FGTFirewallServiceCustom -name $pester_servicecustom1 | Set-FGTFirewallServiceCustom -udp_port 8080
+                $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
+                $sc.name | Should -Be $pester_servicecustom1
+                if ($DefaultFGTConnection.version -ge "7.6.0") {
+                    $sc.protocol | Should -Be "TCP/UDP/UDP-Lite/SCTP"
+                }
+                else {
+                    $sc.protocol | Should -Be "TCP/UDP/SCTP"
+                }
+                $sc."tcp-portrange" | Should -BeNullOrEmpty
+                $sc."udp-portrange" | Should -Be "8080"
+                $sc."sctp-portrange" | Should -BeNullOrEmpty
+                $sc.comment | Should -BeNullOrEmpty
+                $sc.'session-ttl' | Should -Be "0"
+                $sc.color | Should -Be "0"
+            }
+
+            It "Set Service Custom $pester_servicecustom1 with udp-port range" {
+                Get-FGTFirewallServiceCustom -name $pester_servicecustom1 | Set-FGTFirewallServiceCustom -udp_port "8080-8090"
+                $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
+                $sc.name | Should -Be $pester_servicecustom1
+                if ($DefaultFGTConnection.version -ge "7.6.0") {
+                    $sc.protocol | Should -Be "TCP/UDP/UDP-Lite/SCTP"
+                }
+                else {
+                    $sc.protocol | Should -Be "TCP/UDP/SCTP"
+                }
+                $sc."tcp-portrange" | Should -BeNullOrEmpty
+                $sc."udp-portrange" | Should -Be "8080-8090"
+                $sc."sctp-portrange" | Should -BeNullOrEmpty
+                $sc.comment | Should -BeNullOrEmpty
+                $sc.'session-ttl' | Should -Be "0"
+                $sc.color | Should -Be "0"
+            }
+
+            It "Set Service Custom $pester_servicecustom1 with multiple udp-port" {
+                Get-FGTFirewallServiceCustom -name $pester_servicecustom1 | Set-FGTFirewallServiceCustom -udp_port 8080, 8090
+                $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
+                $sc.name | Should -Be $pester_servicecustom1
+                if ($DefaultFGTConnection.version -ge "7.6.0") {
+                    $sc.protocol | Should -Be "TCP/UDP/UDP-Lite/SCTP"
+                }
+                else {
+                    $sc.protocol | Should -Be "TCP/UDP/SCTP"
+                }
+                $sc."tcp-portrange" | Should -BeNullOrEmpty
+                $sc."udp-portrange" | Should -Be "8080 8090"
+                $sc."sctp-portrange" | Should -BeNullOrEmpty
+                $sc.comment | Should -BeNullOrEmpty
+                $sc.'session-ttl' | Should -Be "0"
+                $sc.color | Should -Be "0"
+            }
+
+            It "Set Service Custom $pester_servicecustom1 with multiple udp-port range" {
+                Get-FGTFirewallServiceCustom -name $pester_servicecustom1 | Set-FGTFirewallServiceCustom -udp_port "8080-8090", 10000
+                $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
+                $sc.name | Should -Be $pester_servicecustom1
+                if ($DefaultFGTConnection.version -ge "7.6.0") {
+                    $sc.protocol | Should -Be "TCP/UDP/UDP-Lite/SCTP"
+                }
+                else {
+                    $sc.protocol | Should -Be "TCP/UDP/SCTP"
+                }
+                $sc."tcp-portrange" | Should -BeNullOrEmpty
+                $sc."udp-portrange" | Should -Be "8080-8090 10000"
+                $sc."sctp-portrange" | Should -BeNullOrEmpty
+                $sc.comment | Should -BeNullOrEmpty
+                $sc.'session-ttl' | Should -Be "0"
+                $sc.color | Should -Be "0"
+            }
+
+        }
+
+        Context "SCTP" {
+
+            BeforeEach {
+                Add-FGTFirewallServiceCustom -Name $pester_servicecustom1 -sctp_port 8081
+            }
+
+            It "Set Service Custom $pester_servicecustom1 with sctp-port" {
+                Get-FGTFirewallServiceCustom -name $pester_servicecustom1 | Set-FGTFirewallServiceCustom -sctp_port 8080
+                $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
+                $sc.name | Should -Be $pester_servicecustom1
+                if ($DefaultFGTConnection.version -ge "7.6.0") {
+                    $sc.protocol | Should -Be "TCP/UDP/UDP-Lite/SCTP"
+                }
+                else {
+                    $sc.protocol | Should -Be "TCP/UDP/SCTP"
+                }
+                $sc."tcp-portrange" | Should -BeNullOrEmpty
+                $sc."udp-portrange" | Should -BeNullOrEmpty
+                $sc."sctp-portrange" | Should -Be "8080"
+                $sc.comment | Should -BeNullOrEmpty
+                $sc.'session-ttl' | Should -Be "0"
+                $sc.color | Should -Be "0"
+            }
+
+            It "Set Service Custom $pester_servicecustom1 with sctp-port range" {
+                Get-FGTFirewallServiceCustom -name $pester_servicecustom1 | Set-FGTFirewallServiceCustom -sctp_port "8080-8090"
+                $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
+                $sc.name | Should -Be $pester_servicecustom1
+                if ($DefaultFGTConnection.version -ge "7.6.0") {
+                    $sc.protocol | Should -Be "TCP/UDP/UDP-Lite/SCTP"
+                }
+                else {
+                    $sc.protocol | Should -Be "TCP/UDP/SCTP"
+                }
+                $sc."tcp-portrange" | Should -BeNullOrEmpty
+                $sc."udp-portrange" | Should -BeNullOrEmpty
+                $sc."sctp-portrange" | Should -Be "8080-8090"
+                $sc.comment | Should -BeNullOrEmpty
+                $sc.'session-ttl' | Should -Be "0"
+                $sc.color | Should -Be "0"
+            }
+
+            It "Set Service Custom $pester_servicecustom1 with multiple sctp-port" {
+                Get-FGTFirewallServiceCustom -name $pester_servicecustom1 | Set-FGTFirewallServiceCustom -sctp_port 8080, 8090
+                $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
+                $sc.name | Should -Be $pester_servicecustom1
+                if ($DefaultFGTConnection.version -ge "7.6.0") {
+                    $sc.protocol | Should -Be "TCP/UDP/UDP-Lite/SCTP"
+                }
+                else {
+                    $sc.protocol | Should -Be "TCP/UDP/SCTP"
+                }
+                $sc."tcp-portrange" | Should -BeNullOrEmpty
+                $sc."udp-portrange" | Should -BeNullOrEmpty
+                $sc."sctp-portrange" | Should -Be "8080 8090"
+                $sc.comment | Should -BeNullOrEmpty
+                $sc.'session-ttl' | Should -Be "0"
+                $sc.color | Should -Be "0"
+            }
+
+            It "Set Service Custom $pester_servicecustom1 with multiple sctp-port range" {
+                Get-FGTFirewallServiceCustom -name $pester_servicecustom1 | Set-FGTFirewallServiceCustom -sctp_port "8080-8090", 10000
+                $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
+                $sc.name | Should -Be $pester_servicecustom1
+                if ($DefaultFGTConnection.version -ge "7.6.0") {
+                    $sc.protocol | Should -Be "TCP/UDP/UDP-Lite/SCTP"
+                }
+                else {
+                    $sc.protocol | Should -Be "TCP/UDP/SCTP"
+                }
+                $sc."tcp-portrange" | Should -BeNullOrEmpty
+                $sc."udp-portrange" | Should -BeNullOrEmpty
+                $sc."sctp-portrange" | Should -Be "8080-8090 10000"
+                $sc.comment | Should -BeNullOrEmpty
+                $sc.'session-ttl' | Should -Be "0"
+                $sc.color | Should -Be "0"
+            }
+
+        }
+
+        Context "Multiple Protocol" {
+
+            BeforeEach {
+                Add-FGTFirewallServiceCustom -Name $pester_servicecustom1 -udp_port 8081
+            }
+
+            It "Set Service Custom $pester_servicecustom1 with tcp/udp/sctp port range" {
+                Get-FGTFirewallServiceCustom -name $pester_servicecustom1 | Set-FGTFirewallServiceCustom -tcp_port 8080 -udp_port 8081 -sctp_port 8082
+                $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
+                $sc.name | Should -Be $pester_servicecustom1
+                if ($DefaultFGTConnection.version -ge "7.6.0") {
+                    $sc.protocol | Should -Be "TCP/UDP/UDP-Lite/SCTP"
+                }
+                else {
+                    $sc.protocol | Should -Be "TCP/UDP/SCTP"
+                }
+                $sc."tcp-portrange" | Should -Be "8080"
+                $sc."udp-portrange" | Should -Be "8081"
+                $sc."sctp-portrange" | Should -Be "8082"
+                $sc.comment | Should -BeNullOrEmpty
+                $sc.'session-ttl' | Should -Be "0"
+                $sc.color | Should -Be "0"
+            }
+
+
+            It "Set Service Custom $pester_servicecustom1 with multiple tcp/udp/sctp port range" {
+                Get-FGTFirewallServiceCustom -name $pester_servicecustom1 | Set-FGTFirewallServiceCustom -tcp_port 8080, 9080 -udp_port 8081, 9081 -sctp_port 8082, 9082
+                $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
+                $sc.name | Should -Be $pester_servicecustom1
+                if ($DefaultFGTConnection.version -ge "7.6.0") {
+                    $sc.protocol | Should -Be "TCP/UDP/UDP-Lite/SCTP"
+                }
+                else {
+                    $sc.protocol | Should -Be "TCP/UDP/SCTP"
+                }
+                $sc."tcp-portrange" | Should -Be "8080 9080"
+                $sc."udp-portrange" | Should -Be "8081 9081"
+                $sc."sctp-portrange" | Should -Be "8082 9082"
+                $sc.comment | Should -BeNullOrEmpty
+                $sc.'session-ttl' | Should -Be "0"
+                $sc.color | Should -Be "0"
+            }
+        }
+    }
+
+    Context "Protocol: IP" {
+
+        AfterEach {
+            Get-FGTFirewallServiceCustom -name $pester_servicecustom1 | Remove-FGTFirewallServiceCustom -confirm:$false
+        }
+
+        BeforeEach {
+            Add-FGTFirewallServiceCustom -Name $pester_servicecustom1 -protocolNumber 43
+        }
+
+        It "Set Service Custom $pester_servicecustom1 with IP Protocol (44)" {
+            Get-FGTFirewallServiceCustom -name $pester_servicecustom1 | Set-FGTFirewallServiceCustom -protocolNumber 44
+            $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
+            $sc.name | Should -Be $pester_servicecustom1
+            $sc.protocol | Should -Be "IP"
+            $sc."tcp-portrange" | Should -BeNullOrEmpty
+            $sc."udp-portrange" | Should -BeNullOrEmpty
+            $sc."sctp-portrange" | Should -BeNullOrEmpty
+            $sc."protocol-number" | Should -Be "44"
+            $sc.comment | Should -BeNullOrEmpty
+            $sc.'session-ttl' | Should -Be "0"
+            $sc.color | Should -Be "0"
+        }
+    }
+
+    Context "Protocol: ICMP" -skip:($fgt_version -lt "6.4.0") {
+
+        AfterEach {
+            Get-FGTFirewallServiceCustom -name $pester_servicecustom1 | Remove-FGTFirewallServiceCustom -confirm:$false
+        }
+
+        BeforeEach {
+            Add-FGTFirewallServiceCustom -Name $pester_servicecustom1 -icmptype 1 -icmpcode 7
+        }
+
+        It "Set Service Custom $pester_servicecustom1 with ICMP Type (0) and code (8)" {
+            Get-FGTFirewallServiceCustom -name $pester_servicecustom1 | Set-FGTFirewallServiceCustom -icmptype 0 -icmpcode 8
+            $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
+            $sc.name | Should -Be $pester_servicecustom1
+            $sc.protocol | Should -Be "ICMP"
+            $sc."tcp-portrange" | Should -BeNullOrEmpty
+            $sc."udp-portrange" | Should -BeNullOrEmpty
+            $sc."sctp-portrange" | Should -BeNullOrEmpty
+            $sc."protocol-number" | Should -BeNullOrEmpty
+            $sc.icmptype | Should -Be "0"
+            $sc.icmpcode | Should -Be "8"
+            $sc.comment | Should -BeNullOrEmpty
+            $sc.'session-ttl' | Should -Be "0"
+            $sc.color | Should -Be "0"
+
+        }
 
     }
 }

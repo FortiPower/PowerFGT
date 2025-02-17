@@ -279,7 +279,6 @@ function Set-FGTFirewallServiceCustom {
                 }
             }
             "ip" {
-                $_servicecustom | Add-Member -Name "protocol" -MemberType NoteProperty -Value $protocol
 
                 $_servicecustom | Add-Member -Name "protocol-number" -MemberType NoteProperty -Value $protocolNumber
 
