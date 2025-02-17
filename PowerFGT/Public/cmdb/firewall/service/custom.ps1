@@ -100,62 +100,62 @@ function Add-FGTFirewallServiceCustom {
 
         $uri = "api/v2/cmdb/firewall.service/custom"
 
-        $_customservice = New-Object -TypeName PSObject
+        $_servicecustom = New-Object -TypeName PSObject
 
-        $_customservice | Add-Member -Name "name" -MemberType NoteProperty -Value $name
+        $_servicecustom | Add-Member -Name "name" -MemberType NoteProperty -Value $name
 
         switch ( $PSCmdlet.ParameterSetName ) {
             "tcp/udp/sctp" {
                 if ($connection.version -ge "7.6.0") {
-                    $_customservice | Add-Member -Name "protocol" -MemberType NoteProperty -Value "TCP/UDP/UDP-Lite/SCTP"
+                    $_servicecustom | Add-Member -Name "protocol" -MemberType NoteProperty -Value "TCP/UDP/UDP-Lite/SCTP"
                 }
                 else {
-                    $_customservice | Add-Member -Name "protocol" -MemberType NoteProperty -Value "TCP/UDP/SCTP"
+                    $_servicecustom | Add-Member -Name "protocol" -MemberType NoteProperty -Value "TCP/UDP/SCTP"
                 }
 
                 if ( $PsBoundParameters.ContainsKey('tcp_port') ) {
-                    $_customservice | add-member -name "tcp-portrange" -membertype NoteProperty -Value ($tcp_port -join " ")
+                    $_servicecustom | add-member -name "tcp-portrange" -membertype NoteProperty -Value ($tcp_port -join " ")
                 }
 
                 if ( $PsBoundParameters.ContainsKey('udp_port') ) {
-                    $_customservice | add-member -name "udp-portrange" -membertype NoteProperty -Value ($udp_port -join " ")
+                    $_servicecustom | add-member -name "udp-portrange" -membertype NoteProperty -Value ($udp_port -join " ")
                 }
 
                 if ( $PsBoundParameters.ContainsKey('sctp_port') ) {
-                    $_customservice | add-member -name "sctp-portrange" -membertype NoteProperty -Value ($sctp_port -join " ")
+                    $_servicecustom | add-member -name "sctp-portrange" -membertype NoteProperty -Value ($sctp_port -join " ")
                 }
             }
             "ip" {
-                $_customservice | Add-Member -Name "protocol" -MemberType NoteProperty -Value "IP"
+                $_servicecustom | Add-Member -Name "protocol" -MemberType NoteProperty -Value "IP"
 
-                $_customservice | Add-Member -Name "protocol-number" -MemberType NoteProperty -Value $protocolNumber
+                $_servicecustom | Add-Member -Name "protocol-number" -MemberType NoteProperty -Value $protocolNumber
 
             }
             "icmp" {
-                $_customservice | Add-Member -Name "protocol" -MemberType NoteProperty -Value "ICMP"
+                $_servicecustom | Add-Member -Name "protocol" -MemberType NoteProperty -Value "ICMP"
 
-                $_customservice | Add-Member -Name "icmpcode" -MemberType NoteProperty -Value $icmpCode
+                $_servicecustom | Add-Member -Name "icmpcode" -MemberType NoteProperty -Value $icmpCode
 
-                $_customservice | Add-Member -Name "icmptype" -MemberType NoteProperty -Value $icmpType
+                $_servicecustom | Add-Member -Name "icmptype" -MemberType NoteProperty -Value $icmpType
 
             }
         }
 
         if ( $PsBoundParameters.ContainsKey('comment') ) {
-            $_customservice | add-member -name "comment" -membertype NoteProperty -Value $comment
+            $_servicecustom | add-member -name "comment" -membertype NoteProperty -Value $comment
         }
 
         if ( $PsBoundParameters.ContainsKey('category') ) {
-            $_customservice | add-member -name "category" -membertype NoteProperty -Value $category
+            $_servicecustom | add-member -name "category" -membertype NoteProperty -Value $category
         }
 
         if ( $PsBoundParameters.ContainsKey('data') ) {
             $data.GetEnumerator() | ForEach-Object {
-                $_customservice | Add-member -name $_.key -membertype NoteProperty -Value $_.value
+                $_servicecustom | Add-member -name $_.key -membertype NoteProperty -Value $_.value
             }
         }
 
-        Invoke-FGTRestMethod -method "POST" -body $_customservice -uri $uri -connection $connection @invokeParams | Out-Null
+        Invoke-FGTRestMethod -method "POST" -body $_servicecustom -uri $uri -connection $connection @invokeParams | Out-Null
 
         Get-FGTFirewallServiceCustom -connection $connection @invokeParams -name $name
     }
