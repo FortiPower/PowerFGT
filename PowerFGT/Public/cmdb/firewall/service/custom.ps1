@@ -260,7 +260,14 @@ function Set-FGTFirewallServiceCustom {
             $servicecustom.name = $name
         }
 
-        if ( $PSCmdlet.ParameterSetName -ne "default" -and $servicecustom.protocol -ne $PSCmdlet.ParameterSetName ) {
+        #After 7.6.0, there is now UDP-Lite... force ParameterSetName
+        $ParameterSetName = $PSCmdlet.ParameterSetName
+        if ($connection.version -ge "7.6.0" -and $PSCmdlet.ParameterSetName -eq "TCP/UDP/SCTP" ) {
+            $ParameterSetName = "TCP/UDP/UDP-Lite/SCTP"
+        }
+
+        if ( $PSCmdlet.ParameterSetName -ne "default" -and $servicecustom.protocol -ne $ParameterSetName ) {
+
             throw "Service Custom type ($($servicecustom.protocol)) need to be on the same protocol ($($PSCmdlet.ParameterSetName))"
         }
 
