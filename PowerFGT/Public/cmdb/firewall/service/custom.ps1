@@ -207,7 +207,7 @@ function Set-FGTFirewallServiceCustom {
         $MyFGTServiceCustom = Get-FGTFirewallServiceCustom -name MyFGTServiceCustom
         PS C:\>$MyFGTServiceCustom | Set-FGTFirewallServiceCustom -comment "My New comment"
 
-        Change MyFGTServiceCustom commment "My New Comment"
+        Change MyFGTServiceCustom comment "My New Comment"
 
         .EXAMPLE
         $MyFGTServiceCustom = Get-FGTFirewallServiceCustom -name MyFGTServiceCustom
