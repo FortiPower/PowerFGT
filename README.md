@@ -40,7 +40,7 @@ With this module (version 0.9.0) you can manage:
 - [Router OSPF](#ospf) (Get/Set)
 - RoutePolicy (Get)
 - [SDN Connector](#sdn-connector) (Get)
-- Service (Get)
+- [Service Custom](#service-custom) (Add/Get/Set/Remove)
 - Service Group (Get)
 - [Static Route](#static-route) (Add/Get/Remove)
 - System Admin / Virtual Switch (Get)
@@ -1704,6 +1704,70 @@ or delete it `Remove-FGTSystemSDNConnector`.
     Confirm
     Are you sure you want to perform this action?
     Performing the operation "Remove SDN Connector" on target "MySDNConnector".
+    [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): y
+```
+
+### Service Custom
+
+You can create a new Service Custom `Add-FGTFirewallServiceCustom`,
+retrieve its information `Get-FGTFirewallServiceCustom`, modify its properties `Set-FGTFirewallServiceCustom`
+or delete it `Remove-FGTFirewallServiceCustom`.
+
+```powershell
+
+# Create a new Service Custom (TCP 8080)
+    Add-FGTFirewallServiceCustom -Name MyServiceCustomTCP8080 -tcp_port 8080
+
+    name                : MyServiceCustomTCP8080
+    q_origin_key        : MyServiceCustomTCP8080
+    proxy               : disable
+    category            :
+    protocol            : TCP/UDP/SCTP
+    helper              : auto
+    iprange             : 0.0.0.0
+    fqdn                :
+    tcp-portrange       : 8080
+    udp-portrange       :
+    sctp-portrange      :
+    [...]
+
+
+# Get information about ALL Service Custom (using Format Table)
+    Get-FGTFirewallServiceCustom | Format-Table
+
+    name                     q_origin_key             proxy   category                             protocol     helper iprange fqdn tcp-portrange
+    ----                     ------------             -----   --------                             --------     ------ ------- ---- -------------
+    DNS                      DNS                      disable Network Services                     TCP/UDP/SCTP auto   0.0.0.0      53
+    HTTP                     HTTP                     disable Web Access                           TCP/UDP/SCTP auto   0.0.0.0      80
+    HTTPS                    HTTPS                    disable Web Access                           TCP/UDP/SCTP auto   0.0.0.0      443
+    IMAP                     IMAP                     disable Email                                TCP/UDP/SCTP auto   0.0.0.0      143
+    IMAPS                    IMAPS                    disable Email                                TCP/UDP/SCTP auto   0.0.0.0      993
+    [...]
+
+# Modify a Service Custom (tcp_port, comment ...)
+     Get-FGTFirewallServiceCustom MyServiceCustomTCP8080 | Set-fGTFirewallServiceCustom -tcp_port 8080-8081 -comment "My new Comment"
+
+    name                : MyServiceCustomTCP8080
+    q_origin_key        : MyServiceCustomTCP8080
+    proxy               : disable
+    category            :
+    protocol            : TCP/UDP/SCTP
+    helper              : auto
+    iprange             : 0.0.0.0
+    fqdn                :
+    tcp-portrange       : 8080-8081
+    udp-portrange       :q
+    sctp-portrange      :
+    [...]
+    comment             : My new Comment
+    [...]
+
+# Remove a Service Custom
+    Get-FGTFirewallServiceCustom MyServiceCustomTCP8080 | Remove-FGTFirewallServiceCustom
+
+    Confirm
+    Are you sure you want to perform this action?
+    Performing the operation "Remove Firewall Service Custom" on target "MyServiceCustomTCP8080".
     [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): y
 ```
 
