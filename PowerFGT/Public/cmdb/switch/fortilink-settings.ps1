@@ -18,7 +18,7 @@ function Get-FGTSwitchFortilinkSettings {
         Get list of Switch Fortilink Settings object
 
         .EXAMPLE
-        Get-FGTWirelessVAPGroup -name MyFortilinkSettings
+        Get-FGTSwitchSettings -name MyFortilinkSettings
 
         Get list of Switch Fortilink Settings object named MyFortilinkSettings
 
