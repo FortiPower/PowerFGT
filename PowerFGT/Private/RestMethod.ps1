@@ -161,21 +161,23 @@ function Invoke-FGTRestMethod {
         }
 
         #filter
+        #use EscapeDataString for escape special character (% ? ...)
         switch ( $filter_type ) {
             "equal" {
-                $filter_value = "==" + ((($filter_value -replace ("%", "%25")) -replace ("/", "%2f")) -replace ("\?", "%3f"))
+                $escaped_values = $filter_value | ForEach-Object { "$filter_attribute==$([uri]::EscapeDataString($_))" }
+                $filter = $escaped_values -join ","
+
             }
             "contains" {
-                $filter_value = "=@" + ((($filter_value -replace ("%", "%25")) -replace ("/", "%2f")) -replace ("\?", "%3f"))
+                $escaped_values = $filter_value | ForEach-Object { "$filter_attribute=@$([uri]::EscapeDataString($_))" }
+                $filter = $escaped_values -join ","
+
             }
             #by default set to equal..
             default {
-                $filter_value = "==" + ((($filter_value -replace ("%", "%25")) -replace ("/", "%2f")) -replace ("\?", "%3f"))
+                $escaped_values = $filter_value | ForEach-Object { "$filter_attribute==$([uri]::EscapeDataString($_))" }
+                $filter = $escaped_values -join ","
             }
-        }
-
-        if ($filter_attribute) {
-            $filter = $filter_attribute + $filter_value
         }
 
         if ( $filter ) {
