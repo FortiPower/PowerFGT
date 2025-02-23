@@ -160,23 +160,25 @@ function Invoke-FGTRestMethod {
             $fullurl += "&vdom=$vdom"
         }
 
-        #filter
-        #use EscapeDataString for escape special character (% ? ...)
-        switch ( $filter_type ) {
-            "equal" {
-                $escaped_values = $filter_value | ForEach-Object { "$filter_attribute==$([uri]::EscapeDataString($_))" }
-                $filter = $escaped_values -join ","
+        #filter only when there is a filter_attribute and filter_value
+        if ($filter_attribute) {
+            #use EscapeDataString for escape special character (% ? ...)
+            switch ( $filter_type ) {
+                "equal" {
+                    $escaped_values = $filter_value | ForEach-Object { "$filter_attribute==$([uri]::EscapeDataString($_))" }
+                    $filter = $escaped_values -join ","
 
-            }
-            "contains" {
-                $escaped_values = $filter_value | ForEach-Object { "$filter_attribute=@$([uri]::EscapeDataString($_))" }
-                $filter = $escaped_values -join ","
+                }
+                "contains" {
+                    $escaped_values = $filter_value | ForEach-Object { "$filter_attribute=@$([uri]::EscapeDataString($_))" }
+                    $filter = $escaped_values -join ","
 
-            }
-            #by default set to equal..
-            default {
-                $escaped_values = $filter_value | ForEach-Object { "$filter_attribute==$([uri]::EscapeDataString($_))" }
-                $filter = $escaped_values -join ","
+                }
+                #by default set to equal..
+                default {
+                    $escaped_values = $filter_value | ForEach-Object { "$filter_attribute==$([uri]::EscapeDataString($_))" }
+                    $filter = $escaped_values -join ","
+                }
             }
         }
 
