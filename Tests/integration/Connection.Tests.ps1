@@ -371,6 +371,9 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Switch Managed Switch" {
             { Get-FGTSwitchManagedSwitch -connection $fgt } | Should -Not -Throw
         }
+        It "Use Multi connection for call Get Switch System" {
+            { Get-FGTSwitchSystem -connection $fgt } | Should -Not -Throw
+        }
         It "Use Multi connection for call Get Switch Profile" {
             { Get-FGTSwitchProfile -connection $fgt } | Should -Not -Throw
         }
