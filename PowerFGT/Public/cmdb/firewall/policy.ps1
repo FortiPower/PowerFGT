@@ -530,7 +530,7 @@ function Get-FGTFirewallPolicy {
         [Parameter (Mandatory = $false, ParameterSetName = "uuid")]
         [string]$uuid,
         [Parameter (Mandatory = $false, ParameterSetName = "policyid")]
-        [string]$policyid,
+        [string[]]$policyid,
         [Parameter (Mandatory = $false)]
         [Parameter (ParameterSetName = "filter")]
         [string]$filter_attribute,
