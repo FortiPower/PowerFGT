@@ -192,13 +192,9 @@ function Get-FGTLogTraffic {
                 $filter += "&extra=$e"
             }
 
-            #if there is other filter add to &filter
-            if ( $filter_value -and $filter_attribute ) {
-                $filter_value += "&filter=" + $filter
-            }
-            else {
-                $invokeParams.add( 'filter', $filter )
-            }
+            $filter = "&filter=" + $filter
+
+            $invokeParams.add( 'extra', $filter )
 
         }
 
