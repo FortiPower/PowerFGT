@@ -368,13 +368,13 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Switch Fortilink Settings" {
             { Get-FGTSwitchFortilinkSettings -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get Switch System" {
+        It "Use Multi connection for call Get Switch Group" {
             { Get-FGTSwitchGroup -connection $fgt } | Should -Not -Throw
         }
         It "Use Multi connection for call Get Switch LLDP Profile" {
             { Get-FGTSwitchLLDPProfile -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get Switch LLDP Settingse" {
+        It "Use Multi connection for call Get Switch LLDP Settings" {
             { Get-FGTSwitchLLDPSettings -connection $fgt } | Should -Not -Throw
         }
         It "Use Multi connection for call Get Switch Managed Switch" {
