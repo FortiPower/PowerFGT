@@ -236,7 +236,7 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get System Virtual WAN Link (SD-WAN)" {
             { Get-FGTSystemVirtualWANLink -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get System SD-WAN (> 6.4.0)" -skip:($fgt_version -lt "6.4.0") {
+        It "Use Multi connection for call Get System SD-WAN (>= 6.4.0)" -skip:($fgt_version -lt "6.4.0") {
             { Get-FGTSystemSDWAN -connection $fgt } | Should -Not -Throw
         }
         It "Use Multi connection for call Get System SD-WAN (< 6.4.0)" -skip:($fgt_version -ge "6.4.0") {
@@ -257,7 +257,7 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get User RADIUS" {
             { Get-FGTUserRADIUS -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get User SAML (> 6.2.0)" -skip:($fgt_version -lt "6.2.0") {
+        It "Use Multi connection for call Get User SAML (>= 6.2.0)" -skip:($fgt_version -lt "6.2.0") {
             { Get-FGTUserSAML -connection $fgt } | Should -Not -Throw
         }
         It "Use Multi connection for call Get User SAML (< 6.2.0)" -skip:($fgt_version -ge "6.2.0") {
@@ -269,7 +269,7 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get VPN IPsec Phase 2 Interface" {
             { Get-FGTVpnIpsecPhase2Interface -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get VPN SSL Client (> 7.0.0)" -skip:($fgt_version -lt "7.0.0") {
+        It "Use Multi connection for call Get VPN SSL Client (>= 7.0.0)" -skip:($fgt_version -lt "7.0.0") {
             { Get-FGTVpnSSLClient -connection $fgt } | Should -Not -Throw
         }
         It "Use Multi connection for call Get VPN SSL Client (< 7.0.0)" -skip:($fgt_version -ge "7.0.0") {
@@ -296,7 +296,7 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Monitor Firewall Session" {
             { Get-FGTMonitorFirewallSession -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get Monitor Router BGP Neighbors (> 7.0.0)" -skip:($fgt_version -lt "7.0.0") {
+        It "Use Multi connection for call Get Monitor Router BGP Neighbors (>= 7.0.0)" -skip:($fgt_version -lt "7.0.0") {
             { Get-FGTMonitorRouterBGPNeighbors -connection $fgt } | Should -Not -Throw
         }
         It "Use Multi connection for call Get Monitor Router BGP Neighbors (< 7.0.0)" -skip:($fgt_version -ge "7.0.0") {
@@ -305,7 +305,7 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Monitor Router IPv4" {
             { Get-FGTMonitorRouterIPv4 -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get Monitor Router OSPF Neighbors (> 7.0.0)" -skip:($fgt_version -lt "7.0.0") {
+        It "Use Multi connection for call Get Monitor Router OSPF Neighbors (>= 7.0.0)" -skip:($fgt_version -lt "7.0.0") {
             { Get-FGTMonitorRouterOSPFNeighbors -connection $fgt } | Should -Not -Throw
         }
         It "Use Multi connection for call Get Monitor Router OSPF Neighbors (< 7.0.0)" -skip:($fgt_version -ge "7.0.0") {
@@ -341,7 +341,7 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Monitor License Status" {
             { Get-FGTMonitorLicenseStatus -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get Monitor Network ARP (> 6.4.0)" -skip:($fgt_version -lt "6.4.0") {
+        It "Use Multi connection for call Get Monitor Network ARP (>= 6.4.0)" -skip:($fgt_version -lt "6.4.0") {
             { Get-FGTMonitorNetworkARP -connection $fgt } | Should -Not -Throw
         }
         It "Use Multi connection for call Get Monitor Network ARP (< 6.4.0)" -skip:($fgt_version -ge "6.4.0") {
@@ -365,7 +365,7 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Switch Global" {
             { Get-FGTSwitchGlobal -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get Switch Fortilink Settings (> 7.0.0)" -skip:($fgt_version -lt "7.0.0") {
+        It "Use Multi connection for call Get Switch Fortilink Settings (>= 7.0.0)" -skip:($fgt_version -lt "7.0.0") {
             { Get-FGTSwitchFortilinkSettings -connection $fgt } | Should -Not -Throw
         }
         It "Use Multi connection for call Get Switch Fortilink Settings (< 7.0.0)" -skip:($fgt_version -ge "7.0.0") {
@@ -377,7 +377,7 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Switch LLDP Profile" {
             { Get-FGTSwitchLLDPProfile -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get Switch LLDP Settingse" {
+        It "Use Multi connection for call Get Switch LLDP Settings" {
             { Get-FGTSwitchLLDPSettings -connection $fgt } | Should -Not -Throw
         }
         It "Use Multi connection for call Get Switch Managed Switch" {
@@ -386,7 +386,7 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Switch SNMP Community (>= 6.2.0)" -skip:($fgt_version -lt "6.2.0") {
             { Get-FGTSwitchSNMPCommunity -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get Switch SNMP Community(< 6.4.0)" -skip:($fgt_version -ge "6.4.0") {
+        It "Use Multi connection for call Get Switch SNMP Community (< 6.2.0)" -skip:($fgt_version -ge "6.2.0") {
             { Get-FGTSwitchSNMPCommunity -connection $fgt } | Should -Throw "Switch SNMP Community is not available before Forti OS 6.2"
         }
         It "Use Multi connection for call Get Switch STP Instance (>= 6.2.0)" -skip:($fgt_version -lt "6.2.0") {
@@ -416,7 +416,7 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Wireless Setting" {
             { Get-FGTWirelessSetting -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get Wireless SSID Policy (> 7.0.0)" -skip:($fgt_version -lt "7.0.0") {
+        It "Use Multi connection for call Get Wireless SSID Policy (>= 7.0.0)" -skip:($fgt_version -lt "7.0.0") {
             { Get-FGTWirelessSSIDPolicy -connection $fgt } | Should -Not -Throw
         }
         It "Use Multi connection for call Get Wireless SSID Policy (< 7.0.0)" -skip:($fgt_version -ge "7.0.0") {
@@ -428,7 +428,7 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Wireless VAP (Virtual AP Profile) Group" {
             { Get-FGTWirelessVAPGroup -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get Wireless WAG (Wireless Access Gateway) Profile (> 6.2.0)" -skip:($fgt_version -lt "6.2.0") {
+        It "Use Multi connection for call Get Wireless WAG (Wireless Access Gateway) Profile (>= 6.2.0)" -skip:($fgt_version -lt "6.2.0") {
             { Get-FGTWirelessWAGProfile -connection $fgt } | Should -Not -Throw
         }
         It "Use Multi connection for call Get Wireless WAG (Wireless Access Gateway) Profile (< 6.2.0)" -skip:($fgt_version -ge "6.2.0") {
