@@ -398,8 +398,11 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Switch Profile" {
             { Get-FGTSwitchProfile -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get Switch Vlan Policy" {
+        It "Use Multi connection for call Get Switch Vlan Policy (>= 6.4.0)" -skip:($fgt_version -lt "6.4.0") {
             { Get-FGTSwitchVlanPolicy -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get Switch Vlan Policy (< 6.4.0)" -skip:($fgt_version -ge "6.4.0") {
+            { Get-FGTSwitchVlanPolicy -connection $fgt } | Should -Throw "Switch Vlan Policy is not available before Forti OS 6.4"
         }
         It "Use Multi connection for call Get Wireless Global" {
             { Get-FGTWirelessGlobal -connection $fgt } | Should -Not -Throw

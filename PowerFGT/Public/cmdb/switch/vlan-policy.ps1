@@ -87,6 +87,11 @@ function Get-FGTSwitchVlanPolicy {
             default { }
         }
 
+        #before 6.4.x, it is not available
+        if ($connection.version -lt "6.4.0") {
+            Throw "Switch Vlan Policy is not available before Forti OS 6.4"
+        }
+
         #if filter value and filter_attribute, add filter (by default filter_type is equal)
         if ( $filter_value -and $filter_attribute ) {
             $invokeParams.add( 'filter_value', $filter_value )
