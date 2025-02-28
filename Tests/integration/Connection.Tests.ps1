@@ -383,8 +383,11 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Switch Managed Switch" {
             { Get-FGTSwitchManagedSwitch -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get Switch SNMP Community" {
+        It "Use Multi connection for call Get Switch SNMP Community (>= 6.2.0)" -skip:($fgt_version -lt "6.2.0") {
             { Get-FGTSwitchSNMPCommunity -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get Switch SNMP Community(< 6.4.0)" -skip:($fgt_version -ge "6.4.0") {
+            { Get-FGTSwitchSNMPCommunity -connection $fgt } | Should -Throw "Switch SNMP Community is not available before Forti OS 6.2"
         }
         It "Use Multi connection for call Get Switch STP Instance" {
             { Get-FGTSwitchSTPInstance -connection $fgt } | Should -Not -Throw
