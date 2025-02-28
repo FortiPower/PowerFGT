@@ -34,7 +34,7 @@ Get-FGTFirewallPolicy [-uuid <String>] [-filter_attribute <String>] [-filter_typ
 
 ### policyid
 ```
-Get-FGTFirewallPolicy [-policyid <String>] [-filter_attribute <String>] [-filter_type <String>]
+Get-FGTFirewallPolicy [-policyid <String[]>] [-filter_attribute <String>] [-filter_type <String>]
  [-filter_value <PSObject>] [-meta] [-skip] [-vdom <String[]>] [-connection <PSObject>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
@@ -142,7 +142,7 @@ Accept wildcard characters: False
 {{ Fill policyid Description }}
 
 ```yaml
-Type: String
+Type: String[]
 Parameter Sets: policyid
 Aliases:
 

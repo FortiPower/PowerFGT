@@ -15,7 +15,7 @@ Get Log Traffic
 ### default (Default)
 ```
 Get-FGTLogTraffic [-type] <String> [-subtype] <String> [-rows <Int32>] [-srcip <String>] [-srcintf <String>]
- [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32>]
+ [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32[]>]
  [-poluuid <String>] [-duration <Int32>] [-extra <String[]>] [-since <String>] [-wait <Int32>]
  [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip] [-vdom <String[]>]
  [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
@@ -24,7 +24,7 @@ Get-FGTLogTraffic [-type] <String> [-subtype] <String> [-rows <Int32>] [-srcip <
 ### srcip
 ```
 Get-FGTLogTraffic [-type] <String> [-subtype] <String> [-rows <Int32>] [-srcip <String>] [-srcintf <String>]
- [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32>]
+ [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32[]>]
  [-poluuid <String>] [-duration <Int32>] [-extra <String[]>] [-since <String>] [-wait <Int32>]
  [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip] [-vdom <String[]>]
  [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
@@ -33,7 +33,7 @@ Get-FGTLogTraffic [-type] <String> [-subtype] <String> [-rows <Int32>] [-srcip <
 ### srcintf
 ```
 Get-FGTLogTraffic [-type] <String> [-subtype] <String> [-rows <Int32>] [-srcip <String>] [-srcintf <String>]
- [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32>]
+ [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32[]>]
  [-poluuid <String>] [-duration <Int32>] [-extra <String[]>] [-since <String>] [-wait <Int32>]
  [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip] [-vdom <String[]>]
  [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
@@ -42,7 +42,7 @@ Get-FGTLogTraffic [-type] <String> [-subtype] <String> [-rows <Int32>] [-srcip <
 ### dstip
 ```
 Get-FGTLogTraffic [-type] <String> [-subtype] <String> [-rows <Int32>] [-srcip <String>] [-srcintf <String>]
- [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32>]
+ [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32[]>]
  [-poluuid <String>] [-duration <Int32>] [-extra <String[]>] [-since <String>] [-wait <Int32>]
  [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip] [-vdom <String[]>]
  [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
@@ -51,7 +51,7 @@ Get-FGTLogTraffic [-type] <String> [-subtype] <String> [-rows <Int32>] [-srcip <
 ### dstinf
 ```
 Get-FGTLogTraffic [-type] <String> [-subtype] <String> [-rows <Int32>] [-srcip <String>] [-srcintf <String>]
- [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32>]
+ [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32[]>]
  [-poluuid <String>] [-duration <Int32>] [-extra <String[]>] [-since <String>] [-wait <Int32>]
  [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip] [-vdom <String[]>]
  [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
@@ -60,7 +60,7 @@ Get-FGTLogTraffic [-type] <String> [-subtype] <String> [-rows <Int32>] [-srcip <
 ### dstport
 ```
 Get-FGTLogTraffic [-type] <String> [-subtype] <String> [-rows <Int32>] [-srcip <String>] [-srcintf <String>]
- [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32>]
+ [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32[]>]
  [-poluuid <String>] [-duration <Int32>] [-extra <String[]>] [-since <String>] [-wait <Int32>]
  [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip] [-vdom <String[]>]
  [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
@@ -69,7 +69,7 @@ Get-FGTLogTraffic [-type] <String> [-subtype] <String> [-rows <Int32>] [-srcip <
 ### action
 ```
 Get-FGTLogTraffic [-type] <String> [-subtype] <String> [-rows <Int32>] [-srcip <String>] [-srcintf <String>]
- [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32>]
+ [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32[]>]
  [-poluuid <String>] [-duration <Int32>] [-extra <String[]>] [-since <String>] [-wait <Int32>]
  [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip] [-vdom <String[]>]
  [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
@@ -78,7 +78,7 @@ Get-FGTLogTraffic [-type] <String> [-subtype] <String> [-rows <Int32>] [-srcip <
 ### policyid
 ```
 Get-FGTLogTraffic [-type] <String> [-subtype] <String> [-rows <Int32>] [-srcip <String>] [-srcintf <String>]
- [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32>]
+ [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32[]>]
  [-poluuid <String>] [-duration <Int32>] [-extra <String[]>] [-since <String>] [-wait <Int32>]
  [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip] [-vdom <String[]>]
  [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
@@ -87,7 +87,7 @@ Get-FGTLogTraffic [-type] <String> [-subtype] <String> [-rows <Int32>] [-srcip <
 ### poluuid
 ```
 Get-FGTLogTraffic [-type] <String> [-subtype] <String> [-rows <Int32>] [-srcip <String>] [-srcintf <String>]
- [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32>]
+ [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32[]>]
  [-poluuid <String>] [-duration <Int32>] [-extra <String[]>] [-since <String>] [-wait <Int32>]
  [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip] [-vdom <String[]>]
  [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
@@ -96,7 +96,7 @@ Get-FGTLogTraffic [-type] <String> [-subtype] <String> [-rows <Int32>] [-srcip <
 ### duration
 ```
 Get-FGTLogTraffic [-type] <String> [-subtype] <String> [-rows <Int32>] [-srcip <String>] [-srcintf <String>]
- [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32>]
+ [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32[]>]
  [-poluuid <String>] [-duration <Int32>] [-extra <String[]>] [-since <String>] [-wait <Int32>]
  [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip] [-vdom <String[]>]
  [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
@@ -105,7 +105,7 @@ Get-FGTLogTraffic [-type] <String> [-subtype] <String> [-rows <Int32>] [-srcip <
 ### filter
 ```
 Get-FGTLogTraffic [-type] <String> [-subtype] <String> [-rows <Int32>] [-srcip <String>] [-srcintf <String>]
- [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32>]
+ [-dstip <String>] [-dstintf <String>] [-dstport <Int32>] [-action <String>] [-policyid <Int32[]>]
  [-poluuid <String>] [-duration <Int32>] [-extra <String[]>] [-since <String>] [-wait <Int32>]
  [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-skip] [-vdom <String[]>]
  [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
@@ -299,13 +299,13 @@ Accept wildcard characters: False
 {{ Fill policyid Description }}
 
 ```yaml
-Type: Int32
+Type: Int32[]
 Parameter Sets: (All)
 Aliases:
 
 Required: False
 Position: Named
-Default value: 0
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
