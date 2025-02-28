@@ -229,7 +229,7 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get System Vdom" {
             { Get-FGTSystemVdom -connection $fgt } | Should -Not -Throw
         }
-        #Diasble because get 400 error with VM... (or when no System Virtual Switch) => All Release
+        #Disable because get 400 error with VM... (or when no System Virtual Switch) => All Release
         #It "Use Multi connection for call Get System Virtual Switch" {
         #    { Get-FGTSystemVirtualSwitch -connection $fgt } | Should -Not -Throw
         #}
