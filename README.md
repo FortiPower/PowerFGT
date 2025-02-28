@@ -1841,6 +1841,7 @@ It is possible to `monitor` FortiGate
 * `Get-FGTMonitorSystemDHCP` List all DHCP leases
 * `Get-FGTMonitorSystemFirmware` Retrieve a list of firmware images available to use for upgrade on this device
 * `Get-FGTMonitorSystemInterface` Retrieve statistics for all system interfaces
+* `Get-FGTMonitorSystemInterfaceTransceivers` Get a list of transceivers being used by the FortiGate
 * `Get-FGTMonitorSystemHAChecksum` List of checksums for members of HA cluster
 * `Get-FGTMonitorSystemHAPeer` Get configuration of peer(s) in HA cluster
 * `Get-FGTMonitorUserFortitoken` Retrieve a map of FortiTokens and their status
