@@ -393,7 +393,7 @@ Describe "Connect to a FortiGate (using multi connection)" {
             { Get-FGTSwitchSTPInstance -connection $fgt } | Should -Not -Throw
         }
         It "Use Multi connection for call Get Switch STP Instance (< 6.2.0)" -skip:($fgt_version -ge "6.2.0") {
-            { Get-FGTSwitchSTPInstance -connection $fgt } | Should -Throw "Switch SNMP Community is not available before Forti OS 6.2"
+            { Get-FGTSwitchSTPInstance -connection $fgt } | Should -Throw "Switch STP Instance is not available before Forti OS 6.2"
         }
         It "Use Multi connection for call Get Switch STP Settings" {
             { Get-FGTSwitchSTPSettings -connection $fgt } | Should -Not -Throw
