@@ -88,6 +88,11 @@ function Get-FGTSwitchSTPInstance {
             default { }
         }
 
+        #before 6.2.x, it is not available
+        if ($connection.version -lt "6.2.0") {
+            Throw "Switch STP Instance is not available before Forti OS 6.2"
+        }
+
         #if filter value and filter_attribute, add filter (by default filter_type is equal)
         if ( $filter_value -and $filter_attribute ) {
             $invokeParams.add( 'filter_value', $filter_value )
