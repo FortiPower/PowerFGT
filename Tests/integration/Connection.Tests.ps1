@@ -363,7 +363,7 @@ Describe "Connect to a FortiGate (using multi connection)" {
             { Get-FGTMonitorWebfilterCategories -connection $fgt } | Should -Not -Throw
         }
         It "Use Multi connection for call Get Switch Global" {
-            { Get-FGTSwitchFortilinkGlobal -connection $fgt } | Should -Not -Throw
+            { Get-FGTSwitchGlobal -connection $fgt } | Should -Not -Throw
         }
         It "Use Multi connection for call Get Switch Fortilink Settings" {
             { Get-FGTSwitchFortilinkSettings -connection $fgt } | Should -Not -Throw
