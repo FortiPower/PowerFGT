@@ -365,8 +365,11 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Switch Global" {
             { Get-FGTSwitchGlobal -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get Switch Fortilink Settings" {
+        It "Use Multi connection for call Get Switch Fortilink Settings (> 7.0.0)" -skip:($fgt_version -lt "7.0.0") {
             { Get-FGTSwitchFortilinkSettings -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get Switch Fortilink Settings (< 7.0.0)" -skip:($fgt_version -ge "7.0.0") {
+            { Get-FGTSwitchFortilinkSettings -connection $fgt } | Should -Throw "Switch Fortilink Settings is not available before Forti OS 7.0"
         }
         It "Use Multi connection for call Get Switch Group" {
             { Get-FGTSwitchGroup -connection $fgt } | Should -Not -Throw
@@ -374,7 +377,7 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Switch LLDP Profile" {
             { Get-FGTSwitchLLDPProfile -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get Switch LLDP Settings" {
+        It "Use Multi connection for call Get Switch LLDP Settingse" {
             { Get-FGTSwitchLLDPSettings -connection $fgt } | Should -Not -Throw
         }
         It "Use Multi connection for call Get Switch Managed Switch" {

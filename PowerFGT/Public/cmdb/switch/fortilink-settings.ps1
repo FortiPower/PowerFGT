@@ -88,6 +88,11 @@ function Get-FGTSwitchFortilinkSettings {
             default { }
         }
 
+        #before 7.0.x, it is not available
+        if ($connection.version -lt "7.0.0") {
+            Throw "Switch Fortilink Settings is not available before Forti OS 7.0"
+        }
+
         #if filter value and filter_attribute, add filter (by default filter_type is equal)
         if ( $filter_value -and $filter_attribute ) {
             $invokeParams.add( 'filter_value', $filter_value )
