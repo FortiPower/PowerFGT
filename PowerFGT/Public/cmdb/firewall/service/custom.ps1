@@ -22,7 +22,7 @@ function Add-FGTFirewallServiceCustom {
         .EXAMPLE
         Add-FGTFirewallServiceCustom -Name MyServiceCustomUDP5353 -udp_port 5353 -comment "Service Custom using UDP 5353"
 
-        Add service object MyServiceCustomUDP5353 using TCP Port 5353 and a comment
+        Add service object MyServiceCustomUDP5353 using UDP Port 5353 and a comment
 
         .EXAMPLE
         Add-FGTFirewallServiceCustom -Name MyServiceCustomTCPRange8000_9000 -tcp_port "8000-9000"
@@ -55,6 +55,11 @@ function Add-FGTFirewallServiceCustom {
 
         Add service object MyServiceCustomTCP8080 using TCP Port 8081 and the category "Web Access"
 
+        .EXAMPLE
+        $data = @{ "color" = 23 }
+        PS C:\>Add-FGTFirewallServiceCustom -Name MyServiceCustomTCP8082 -tcp_port 8082 -data $data
+
+        Add service object MyServiceCustomTCP8080 using TCP Port 8082 and color (23) via $data
    #>
 
     param (
@@ -211,9 +216,9 @@ function Set-FGTFirewallServiceCustom {
 
         .EXAMPLE
         $MyFGTServiceCustom = Get-FGTFirewallServiceCustom -name MyFGTServiceCustom
-        PS C:\>$MyFGTServiceCustom | Set-FGTFirewallServiceCustom -category "email"
+        PS C:\>$MyFGTServiceCustom | Set-FGTFirewallServiceCustom -category "Email"
 
-        Change MyFGTServiceCustom category "email"
+        Change MyFGTServiceCustom category "Email"
 
         .EXAMPLE
         $data = @{ "color" = 23 }
@@ -287,7 +292,6 @@ function Set-FGTFirewallServiceCustom {
         }
 
         if ( $PSCmdlet.ParameterSetName -ne "default" -and $servicecustom.protocol -ne $ParameterSetName ) {
-
             throw "Service Custom type ($($servicecustom.protocol)) need to be on the same protocol ($($PSCmdlet.ParameterSetName))"
         }
 
@@ -306,16 +310,12 @@ function Set-FGTFirewallServiceCustom {
                 }
             }
             "ip" {
-
                 $_servicecustom | Add-Member -Name "protocol-number" -MemberType NoteProperty -Value $protocolNumber
-
             }
             "icmp" {
-
                 $_servicecustom | Add-Member -Name "icmpcode" -MemberType NoteProperty -Value $icmpCode
 
                 $_servicecustom | Add-Member -Name "icmptype" -MemberType NoteProperty -Value $icmpType
-
             }
         }
 
