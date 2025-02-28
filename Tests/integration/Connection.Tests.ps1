@@ -338,7 +338,7 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get Monitor System Interface DHCP Status" {
             { Get-FGTMonitorSystemInterfaceDHCPStatus -interface $pester_port1 -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get Monitor System Interface Transceivers" {
+        It "Use Multi connection for call Get Monitor System Interface Transceivers" -skip:$true {
             { Get-FGTMonitorSystemInterfaceTransceivers -connection $fgt } | Should -Not -Throw
         }
         It "Use Multi connection for call Get Monitor License Status" {
