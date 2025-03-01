@@ -2225,6 +2225,7 @@ Add-FGTFirewallProxyAddress
 Add-FGTFirewallProxyAddressGroup
 Add-FGTFirewallProxyAddressGroupMember
 Add-FGTFirewallProxyPolicy
+Add-FGTFirewallServiceCustom
 Add-FGTFirewallVip
 Add-FGTFirewallVipGroup
 Add-FGTFirewallVipGroupMember
@@ -2251,6 +2252,7 @@ Confirm-FGTProxyAddress
 Confirm-FGTProxyAddressGroup
 Confirm-FGTRouterStatic
 Confirm-FGTSDNConnector
+Confirm-FGTServiceCustom
 Confirm-FGTUserGroup
 Confirm-FGTUserLDAP
 Confirm-FGTUserLocal
@@ -2305,6 +2307,7 @@ Get-FGTMonitorSystemHAChecksum
 Get-FGTMonitorSystemHAPeer
 Get-FGTMonitorSystemInterface
 Get-FGTMonitorSystemInterfaceDHCPStatus
+Get-FGTMonitorSystemInterfaceTransceivers
 Get-FGTMonitorUserFortitoken
 Get-FGTMonitorUtmApplicationCategories
 Get-FGTMonitorVpnIPsec
@@ -2314,6 +2317,18 @@ Get-FGTRouterBGP
 Get-FGTRouterOSPF
 Get-FGTRouterPolicy
 Get-FGTRouterStatic
+Get-FGTSwitchFortilinkSettings
+Get-FGTSwitchGlobal
+Get-FGTSwitchGroup
+Get-FGTSwitchLLDPProfile
+Get-FGTSwitchLLDPSettings
+Get-FGTSwitchManagedSwitch
+Get-FGTSwitchProfile
+Get-FGTSwitchSNMPCommunity
+Get-FGTSwitchSTPInstance
+Get-FGTSwitchSTPSettings
+Get-FGTSwitchSystem
+Get-FGTSwitchVlanPolicy
 Get-FGTSystemAdmin
 Get-FGTSystemDHCPServer
 Get-FGTSystemDns
@@ -2360,6 +2375,7 @@ Remove-FGTFirewallProxyAddress
 Remove-FGTFirewallProxyAddressGroup
 Remove-FGTFirewallProxyAddressGroupMember
 Remove-FGTFirewallProxyPolicy
+Remove-FGTFirewallServiceCustom
 Remove-FGTFirewallVip
 Remove-FGTFirewallVipGroup
 Remove-FGTFirewallVipGroupMember
@@ -2383,6 +2399,7 @@ Set-FGTFirewallAddress
 Set-FGTFirewallAddressGroup
 Set-FGTFirewallPolicy
 Set-FGTFirewallProxyAddressGroup
+Set-FGTFirewallServiceCustom
 Set-FGTFirewallVipGroup
 Set-FGTMonitorUserLocalChangePassword
 Set-FGTRouterBGP
