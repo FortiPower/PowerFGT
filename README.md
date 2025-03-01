@@ -43,7 +43,7 @@ With this module (version 0.9.0) you can manage:
 - [Service Custom](#service-custom) (Add/Get/Set/Remove)
 - Service Group (Get)
 - [Static Route](#static-route) (Add/Get/Remove)
-- System Admin / Virtual Switch (Get)
+- [Switch(-controller)](#switch) (Get)
 - [System Global](#settings) (Get/Set)
 - [System Settings](#settings) (Get/Set)
 - [Security Profiles](#security-profiles) (Get)
@@ -1887,6 +1887,24 @@ You need to have VPN IPsec Interface Phase 1 created before
     Performing the operation "Remove Vpn IPsec Phase 2 Interface" on target "ph2_PowerFGT_VPN".
     [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): Y
 ```
+
+### Switch
+
+It is possible to `Get` Switch (-Controller) Configuration
+
+* `Get-FGTSwitchFortilinkSettings` Get integrated FortiLink settings for FortiSwitch
+* `Get-FGTSwitchGlobal` Get FortiSwitch global settings
+* `Get-FGTSwitchGroup` Get FortiSwitch switch groups
+* `Get-FGTSwitchLLDPProfile` Get FortiSwitch LLDP profiles
+* `Get-FGTSwitchLLDPSettings` Get FortiSwitch LLDP Settings
+* `Get-FGTSwitchManagedSwitch` Get FortiSwitch devices that are managed by this FortiGate
+* `Get-FGTSwitchProfile` Get FortiSwitch switch profile
+* `Get-FGTSwitchSNMPCommunity` Get FortiSwitch SNMP v1/v2c communities globally
+* `Get-FGTSwitchSTPInstance` Get FortiSwitch multiple spanning tree protocol (MSTP) instances
+* `Get-FGTSwitchSTPSettings` Get FortiSwitch spanning tree protocol (STP)
+* `Get-FGTSwitchSystem` Get system-wide switch controller settings
+* `Get-FGTSwitchVlanPolicy` Get VLAN policy to be applied on the managed FortiSwitch ports through dynamic-port-policy
+
 ### Wireless
 
 It is possible to `Get` Wireless (-Controller) Configuration
