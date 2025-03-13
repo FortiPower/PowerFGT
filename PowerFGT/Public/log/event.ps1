@@ -92,8 +92,9 @@ function Get-FGTLogEvent {
             $invokeParams.add( 'vdom', $vdom )
         }
 
+        $filter = ""
+
         if ( $PsBoundParameters.ContainsKey('extra') -or $PsBoundParameters.ContainsKey('since')) {
-            $filter = ""
 
             #by default, there is last 1hour of log, need to specifiy _metadata.timestamp (Unix)
             if ($since) {
@@ -114,10 +115,12 @@ function Get-FGTLogEvent {
             }
 
             $filter = "&filter=" + $filter
-
-            $invokeParams.add( 'extra', $filter )
-
         }
+
+        #You need to add a subtype filter for get (Adding on URL the )
+        $filter += "&filter=subtype=*`"$subtype`""
+
+        $invokeParams.add( 'extra', $filter )
 
         #if filter value and filter_attribute, add filter (by default filter_type is equal)
         if ( $filter_value -and $filter_attribute ) {
