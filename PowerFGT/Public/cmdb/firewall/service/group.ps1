@@ -30,7 +30,7 @@ function Add-FGTFirewallServiceGroup {
 
         .EXAMPLE
         $data = @{ "color" = 23 }
-        PS C:\>Add-FGTFirewallServiceGroup -name MyServiceGroup -member MyService1 -comment "My Service Group".0 -data $data
+        PS C:\>Add-FGTFirewallServiceGroup -name MyServiceGroup -member MyService1 -comment "My Service Group" -data $data
 
         Add Service Group with member MyService1, a comment and color (23) via -data parameter
     #>
