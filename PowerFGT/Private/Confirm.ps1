@@ -445,6 +445,30 @@ Function Confirm-FGTServiceCustom {
     $true
 
 }
+
+Function Confirm-FGTServiceGroup {
+
+    Param (
+        [Parameter (Mandatory = $true)]
+        [object]$argument
+    )
+
+    #Check if it looks like a Service Group element
+
+    if ( -not ( $argument | get-member -name name -Membertype Properties)) {
+        throw "Element specified does not contain a name property."
+    }
+    if ( -not ( $argument | get-member -name member -Membertype Properties)) {
+        throw "Element specified does not contain a member property."
+    }
+    if ( -not ( $argument | get-member -name comment -Membertype Properties)) {
+        throw "Element specified does not contain a comment property."
+    }
+
+    $true
+
+}
+
 Function Confirm-FGTUserRADIUS {
 
     Param (
