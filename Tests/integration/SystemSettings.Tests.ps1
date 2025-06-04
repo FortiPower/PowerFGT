@@ -51,6 +51,10 @@ Describe "Set System Settings" {
 
     BeforeAll {
         $script:settings = Get-FGTSystemSettings
+        #for FortiOS 7.4.x, you need to enable global setting sslvpn Web Mode
+        if ($DefaultFGTConnection.version -ge "7.4.0") {
+            Set-FGTSystemGlobal -sslvpn_web_mode
+        }
     }
 
     #Coming with FortiOS 7.2.x and need for some feature (like waf, ztna.. ) and remove with 7.6.0...
@@ -240,10 +244,6 @@ Describe "Set System Settings" {
     }
 
     It "Change gui-sslvpn-personal-bookmarks to enable" {
-        #for FortiOS 7.4.x, you need to enable global setting sslvpn Web Mode
-        if ($DefaultFGTConnection.version -ge "7.4.0") {
-            Set-FGTSystemGlobal -sslvpn_web_mode
-        }
         Set-FGTSystemSettings -gui_sslvpn_personal_bookmarks
         $ss = Get-FGTSystemSettings
         $ss.'gui-sslvpn-personal-bookmarks' | Should -Be "enable"
@@ -253,10 +253,6 @@ Describe "Set System Settings" {
         Set-FGTSystemSettings -gui_sslvpn_personal_bookmarks:$false
         $ss = Get-FGTSystemSettings
         $ss.'gui-sslvpn-personal-bookmarks' | Should -Be "disable"
-        #Disable SSL VPN Web Mode
-        if ($DefaultFGTConnection.version -ge "7.4.0") {
-            Set-FGTSystemGlobal -sslvpn_web_mode:$false
-        }
     }
 
     It "Change gui-sslvpn-realms to enable" {
@@ -384,7 +380,12 @@ Describe "Set System Settings" {
         foreach ( $property in $settings.psobject.properties.name ) {
             $hashtable[$property] = $settings.$property
         }
-        set-FGTSystemSettings -data $hashtable
+        Set-FGTSystemSettings -data $hashtable
+
+        #Disable SSL VPN Web Mode
+        if ($DefaultFGTConnection.version -ge "7.4.0") {
+            Set-FGTSystemGlobal -sslvpn_web_mode:$false
+        }
     }
 }
 
