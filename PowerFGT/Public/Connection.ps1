@@ -206,8 +206,16 @@ function Connect-FGT {
                 throw "Unable to connect to FortiGate"
             }
 
+            #With from FortiOS 7.6(.3), the status is now return with json {....
+            if ( $iwrResponse.Content[0] -eq "{") {
+                $json = $iwrResponse.Content | ConvertFrom-Json
+                $status = $json.status
+            } else {
+                 $status = $iwrResponse.Content[0]
+            }
+
             #check if need token...
-            if ( $iwrResponse.Content[0] -eq "3") {
+            if ( $status -eq "3") {
                 if ( $PsBoundParameters.ContainsKey('token_code') -or $PsBoundParameters.ContainsKey('token_prompt') ) {
                     if ( $PsBoundParameters.ContainsKey('token_prompt')) {
                         $token_code = Read-Host "Token"
@@ -224,7 +232,7 @@ function Connect-FGT {
             }
 
             #first byte return is a status code
-            switch ($iwrResponse.Content[0]) {
+            switch ($status) {
                 '0' {
                     throw "Log in failure. Most likely an incorrect username/password combo"
                 }
