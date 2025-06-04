@@ -183,8 +183,10 @@ Describe "Set System Global" {
 
     #Coming with FortiOS 7.4.x and need for enable VPN SSL Web Mode (for personal bookmark.. )
     It "Change sslvpn-web-mode to enable" -skip:($fgt_version -lt "7.4.0") {
-        #Enable SSL VPN
-        Set-FGTSystemSettings -gui_sslvpn
+        #Enable SSL VPN (only for 7.4)
+        if ($DefaultFGTConnection.version -lt "7.6.0") {
+            Set-FGTSystemSettings -gui_sslvpn
+        }
         Set-FGTSystemGlobal -sslvpn_web_mode
         $ss = Get-FGTSystemGlobal
         $ss.'sslvpn-web-mode' | Should -Be "enable"
@@ -195,8 +197,10 @@ Describe "Set System Global" {
         Set-FGTSystemGlobal -sslvpn_web_mode:$false
         $sg = Get-FGTSystemGlobal
         $sg.'sslvpn-web-mode' | Should -Be "disable"
-        #Disable SSL VPN
-        Set-FGTSystemSettings -gui_sslvpn:$false
+        #Disable SSL VPN (only for 7.4)
+        if ($DefaultFGTConnection.version -lt "7.6.0") {
+            Set-FGTSystemSettings -gui_sslvpn:$false
+        }
     }
 
     <# Disable need some other change...
