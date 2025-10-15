@@ -70,6 +70,11 @@ function Add-FGTFirewallPolicy {
         Add a MyFGTPolicy with Security Profile (Antivirus, WebFilter, DNS Filter, Application, IPS)
 
         .EXAMPLE
+        Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -globallabel "My Sequence Label"
+
+        Add a MyFGTPolicy with Global Label "My Sequence Label"
+
+        .EXAMPLE
         $data = @{ "logtraffic-start" = "enable" }
         Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -data $data
 
@@ -124,6 +129,8 @@ function Add-FGTFirewallPolicy {
         [string]$ipssensor,
         [Parameter (Mandatory = $false)]
         [string]$applicationlist,
+        [Parameter (Mandatory = $false)]
+        [string]$globallabel,
         [Parameter (Mandatory = $false)]
         [switch]$skip,
         [Parameter (Mandatory = $false)]
@@ -296,6 +303,10 @@ function Add-FGTFirewallPolicy {
 
         if ( $PsBoundParameters.ContainsKey('applicationlist') ) {
             $policy | add-member -name "application-list" -membertype NoteProperty -Value $applicationlist
+        }
+
+        if ( $PsBoundParameters.ContainsKey('globallabel') ) {
+            $policy | add-member -name "global-label" -membertype NoteProperty -Value $globallabel
         }
 
         #When use Security Profile, you need to enable utm-status
