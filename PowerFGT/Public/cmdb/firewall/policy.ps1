@@ -790,6 +790,8 @@ function Set-FGTFirewallPolicy {
         [Parameter (Mandatory = $false)]
         [string]$applicationlist,
         [Parameter (Mandatory = $false)]
+        [string]$globallabel,
+        [Parameter (Mandatory = $false)]
         [hashtable]$data,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
@@ -947,6 +949,10 @@ function Set-FGTFirewallPolicy {
 
         if ( $PsBoundParameters.ContainsKey('applicationlist') ) {
             $_policy | add-member -name "application-list" -membertype NoteProperty -Value $applicationlist
+        }
+
+        if ( $PsBoundParameters.ContainsKey('globallabel') ) {
+            $_policy | add-member -name "global-label" -membertype NoteProperty -Value $globallabel
         }
 
         #When use Security Profile, you need to enable utm-status
