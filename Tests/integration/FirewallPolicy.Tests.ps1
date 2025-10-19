@@ -725,6 +725,26 @@ Describe "Add Firewall Policy" {
         $policy.'application-list' | Should -Be "default"
     }
 
+    It "Add Policy $pester_policy1 (with Global Label: MyLabel) " {
+        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -globallabel MyLabel
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.srcintf.name | Should -Be "port1"
+        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcaddr.name | Should -Be "all"
+        $policy.dstaddr.name | Should -Be "all"
+        $policy.action | Should -Be "accept"
+        $policy.status | Should -Be "enable"
+        $policy.service.name | Should -Be "all"
+        $policy.schedule | Should -Be "always"
+        $policy.nat | Should -Be "disable"
+        $policy.logtraffic | Should -Be "utm"
+        $policy.comments | Should -BeNullOrEmpty
+        $policy.'global-label' | Should -Be "MyLabel"
+    }
+
     It "Add Policy $pester_policy1 (with inspection-mode: flow)" -skip:($fgt_version -lt "6.2.0") {
         $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -inspectionmode flow
         @($p).count | Should -Be "1"
@@ -1664,6 +1684,24 @@ Describe "Configure Firewall Policy" {
         $policy.uuid | Should -Not -BeNullOrEmpty
         $policy.'utm-status' | Should -Be "enable"
         $policy.'application-list' | Should -BeNullOrEmpty
+    }
+
+    It "Set Policy $pester_policy1 (with Global Label: MyLabel)" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -globallabel MyLabel
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.'global-label' | Should -Be "MyLabel"
+    }
+
+    It "Set Policy $pester_policy1 (with Global Label: null)" {
+        $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -globallabel ""
+        @($p).count | Should -Be "1"
+        $policy = Get-FGTFirewallPolicy -name $pester_policy1
+        $policy.name | Should -Be $pester_policy1
+        $policy.uuid | Should -Not -BeNullOrEmpty
+        $policy.'global-label' | Should -Be ""
     }
 
     It "Set Policy $pester_policy1 (with inspection-mode: proxy)" -skip:($fgt_version -lt "6.2.0") {
