@@ -660,7 +660,7 @@ function Move-FGTFirewallPolicy {
         }
 
         $uri = "api/v2/cmdb/firewall/policy"
-        $extra = "action=move"
+        $extra = "&action=move"
 
         switch ( $PSCmdlet.ParameterSetName ) {
             "after" {
