@@ -202,7 +202,7 @@ function Copy-FGTUserGroup {
         }
 
         $uri = "api/v2/cmdb/user/group"
-        $extra = "action=clone&nkey=$($name)"
+        $extra = "&action=clone&nkey=$($name)"
 
         Invoke-FGTRestMethod -method "POST" -uri $uri -uri_escape $usergroup.name -extra $extra -connection $connection @invokeParams | Out-Null
 
