@@ -170,7 +170,7 @@ function Copy-FGTFirewallProxyAddress {
         }
 
         $uri = "api/v2/cmdb/firewall/proxy-address"
-        $extra = "action=clone&nkey=$($name)"
+        $extra = "&action=clone&nkey=$($name)"
         Invoke-FGTRestMethod -method "POST" -uri $uri -uri_escape $address.name -extra $extra -connection $connection @invokeParams | out-Null
 
         Get-FGTFirewallproxyAddress -connection $connection @invokeParams -name $name

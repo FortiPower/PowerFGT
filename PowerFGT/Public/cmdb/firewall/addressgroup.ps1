@@ -229,7 +229,7 @@ function Copy-FGTFirewallAddressGroup {
         }
 
         $uri = "api/v2/cmdb/firewall/addrgrp"
-        $extra = "action=clone&nkey=$($name)"
+        $extra = "&action=clone&nkey=$($name)"
 
         Invoke-FGTRestMethod -method "POST" -uri $uri -uri_escape $addrgrp.name -extra $extra -connection $connection @invokeParams | Out-Null
 
