@@ -218,7 +218,7 @@ function Copy-FGTFirewallVipGroup {
         }
 
         $uri = "api/v2/cmdb/firewall/vipgrp"
-        $extra = "action=clone&nkey=$($name)"
+        $extra = "&action=clone&nkey=$($name)"
         Invoke-FGTRestMethod -method "POST" -uri $uri -uri_escape $vipgrp.name -extra $extra -connection $connection @invokeParams | Out-Null
 
         Get-FGTFirewallVipGroup -connection $connection @invokeParams -name $name
