@@ -210,8 +210,9 @@ function Connect-FGT {
             if ( $iwrResponse.Content[0] -eq "{") {
                 $json = $iwrResponse.Content | ConvertFrom-Json
                 $status = $json.status
-            } else {
-                 $status = $iwrResponse.Content[0]
+            }
+            else {
+                $status = $iwrResponse.Content[0]
             }
 
             #check if need token...
