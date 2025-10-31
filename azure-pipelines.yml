@@ -23,24 +23,31 @@ stages:
             FortiOS60:
               name: "FortiOS 6.0"
               IPADDRESS: $(IPADDRESS_60)
+              OLDAUTH: true
             FortiOS62:
               name: "FortiOS 6.2"
               IPADDRESS: $(IPADDRESS_62)
+              OLDAUTH: true
             FortiOS64:
               name: "FortiOS 6.4"
               IPADDRESS: $(IPADDRESS_64)
+              OLDAUTH: false
             FortiOS70:
               name: "FortiOS 7.0"
               IPADDRESS: $(IPADDRESS_70)
+              OLDAUTH: false
             FortiOS72:
               name: "FortiOS 7.2"
               IPADDRESS: $(IPADDRESS_72)
+              OLDAUTH: false
             FortiOS74:
               name: "FortiOS 7.4"
               IPADDRESS: $(IPADDRESS_74)
+              OLDAUTH: false
             FortiOS76:
               name: "FortiOS 7.6"
               IPADDRESS: $(IPADDRESS_76)
+              OLDAUTH: false
         steps:
           - task: PowerShell@2
             displayName: "Test PowerShell Core $(name)"
@@ -62,6 +69,7 @@ stages:
               LOGIN: $(LOGIN)
               IPADDRESS: $(IPADDRESS)
               PASSWORD: $(PASSWORD)
+              OLDAUTH: $(OLDAUTH)
           - task: PublishTestResults@2
             inputs:
               testResultsFormat: "NUnit"
@@ -118,6 +126,7 @@ stages:
               LOGIN: $(LOGIN)
               IPADDRESS: $(IPADDRESS)
               PASSWORD: $(PASSWORD)
+              OLDAUTH: $(OLDAUTH)
           - task: PowerShell@2
             displayName: "Test PowerShell 5 $(name)"
             inputs:

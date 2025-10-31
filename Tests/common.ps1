@@ -100,6 +100,12 @@ else {
 $invokeParams.add('SkipCertificateCheck', $SkipCertificateCheck)
 $invokeParams.add('httpOnly', $httpOnly)
 $invokeParams.add('port', $port)
+if ($oldauth -eq "true") {
+    $oldauth = $true
+}
+else {
+    $oldauth = $false
+}
 $invokeParams.add('oldauth', $oldauth)
 
 #Make a connection for check info and store version (used for some test...)
