@@ -127,6 +127,8 @@ function Connect-FGT {
         [Parameter(Mandatory = $false)]
         [string]$license,
         [Parameter(Mandatory = $false)]
+        [switch]$oldauth = $false,
+        [Parameter(Mandatory = $false)]
         [string[]]$vdom,
         [Parameter(Mandatory = $false)]
         [boolean]$DefaultConnection = $true
@@ -185,6 +187,79 @@ function Connect-FGT {
         $headers = @{ "content-type" = "application/json" }
         if ($ApiToken) {
             $headers += @{ "Authorization" = "Bearer $ApiToken" }
+        }
+        elseif ( $oldauth -ne $true ) {
+            #If there is a password (and a user), create a credentials
+            if ($Password) {
+                $Credentials = New-Object System.Management.Automation.PSCredential($Username, $Password)
+            }
+            #Not Credentials (and no password)
+            if ($null -eq $Credentials) {
+                $Credentials = Get-Credential -Message 'Please enter administrative credentials for your FortiGate'
+            }
+            # new api auth method (Seen FortiOS 6.4+)
+            $postParams = @{
+                username  = $Credentials.username;
+                password  = $Credentials.GetNetworkCredential().Password;
+                secretkey = $Credentials.GetNetworkCredential().Password;
+            }
+
+            $uri = $url + "api/v2/authentication"
+            Write-Verbose $uri
+
+            try {
+                $irmResponse = Invoke-RestMethod $uri -Method POST -Body ($postParams | ConvertTo-Json) -SessionVariable FGT @invokeParams
+            }
+            catch {
+                Show-FGTException $_
+                throw "Unable to connect to FortiGate"
+            }
+
+            Write-verbose $irmResponse
+            #Following FortiOS version it is status_code or status...
+            if ($irmResponse.status_code) {
+                $status = $irmResponse.status_code
+            }
+            else {
+                $status = $irmResponse.status
+            }
+
+            switch ($status) {
+                '-1' {
+                    throw "Log in failure. Most likely an incorrect username/password combo"
+                }
+                '-4' {
+                    #with FortiOS 7.6.3+, no longer warning when locked account...
+                    throw "Admin is now locked out (Please retry in 60 seconds)"
+                }
+                '5' {
+                    #no thing, it is good ! continue
+                }
+                '6' {
+                    #no thing, it is good ! continue (with FortiOS 7.6.3+)
+                }
+                default {
+                    throw "Authentication failure. Status code: $status $($irmResponse.status_message)"
+                }
+            }
+
+            #Search crsf cookie and to X-CSRFTOKEN
+            $cookies = $FGT.Cookies.GetCookies($uri)
+            foreach ($cookie in $cookies) {
+                if ($cookie.name -like "ccsrftoken*") {
+                    $cookie_csrf = $cookie.value
+                }
+            }
+
+            # throw if don't found csrf cookie...
+            if ($null -eq $cookie_csrf) {
+                throw "Unable to found CSRF Cookie"
+            }
+
+            #Remove extra "quote"
+            $cookie_csrf = $cookie_csrf -replace '["]', ''
+            #Add csrf cookie to header (X-CSRFTOKEN)
+            $headers += @{"X-CSRFTOKEN" = $cookie_csrf }
         }
         else {
             #If there is a password (and a user), create a credentials
