@@ -246,7 +246,8 @@ function Connect-FGT {
             #Search crsf cookie and to X-CSRFTOKEN
             $cookies = $FGT.Cookies.GetCookies($uri)
             foreach ($cookie in $cookies) {
-                if ($cookie.name -like "ccsrftoken*") {
+                if ($cookie.name -like "ccsrf*" ) {
+                    #before 7.6 it was ccsrftoken_port_xxxx, from 7.6.3+ it is ccsrf_token_port_xxxx
                     $cookie_csrf = $cookie.value
                 }
             }
