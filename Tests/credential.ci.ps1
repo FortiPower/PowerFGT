@@ -9,6 +9,7 @@
 $script:ipaddress = $env:IPADDRESS
 $script:login = $env:LOGIN
 $script:password = $env:PASSWORD
+$script:oldauth = $env:OLDAUTH
 $script:httpOnly = $false
 $script:SkipCertificateCheck = $true
 $script:ci = $true
