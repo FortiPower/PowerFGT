@@ -427,6 +427,7 @@ function Connect-FGT {
         $connection.invokeParams = $invokeParams
         $connection.vdom = $vdom
         $connection.serial = $version.serial
+        $connection.oldauth = $oldauth
         if ($version.results.current.major) {
             $connection.version = [version]"$($version.results.current.major).$($version.results.current.minor).$($version.results.current.patch)"
         }
@@ -523,10 +524,17 @@ function Disconnect-FGT {
 
     Process {
 
-        $url = "logout"
+        $method = "DELETE"
+        $url = "api/v2/authentication"
+
+        #old auth use logout url
+        if ($connection.oldauth) {
+            $url = "logout"
+            $method = "POST"
+        }
 
         if ($PSCmdlet.ShouldProcess($connection.server, 'Proceed with removal of FortiGate connection ?')) {
-            $null = invoke-FGTRestMethod -method "POST" -uri $url -connection $connection
+            $null = invoke-FGTRestMethod -method $method -uri $url -connection $connection
             if (Test-Path variable:global:DefaultFGTConnection) {
                 Remove-Variable -name DefaultFGTConnection -scope global
             }
