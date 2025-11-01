@@ -7,7 +7,7 @@
 
 Describe  "Connect to a FortiGate (using HTTP)" {
     It "Connect to a FortiGate (using HTTP) and check global variable" -Skip:( -not $httpOnly ) {
-        Connect-FGT $ipaddress -Username $login -password $mysecpassword -httpOnly -port $port
+        Connect-FGT $ipaddress -Username $login -password $mysecpassword -httpOnly -port $port -oldauth:$oldauth
         $DefaultFGTConnection | Should -Not -BeNullOrEmpty
         $DefaultFGTConnection.server | Should -Be $ipaddress
         $DefaultFGTConnection.invokeParams | Should -Not -BeNullOrEmpty
@@ -23,11 +23,11 @@ Describe  "Connect to a FortiGate (using HTTP)" {
         $DefaultFGTConnection | Should -Be $null
     }
     It "Connect to a FortiGate (using HTTP) with wrong password" -Skip:( -not $httpOnly ) {
-        { Connect-FGT $ipaddress -Username $login -password $mywrongpassword -httpOnly -port $port } | Should -throw "Log in failure. Most likely an incorrect username/password combo"
+        { Connect-FGT $ipaddress -Username $login -password $mywrongpassword -httpOnly -port $port -oldauth $oldauth } | Should -throw "Log in failure. Most likely an incorrect username/password combo"
     }
     #TODO: Connect using MFA (token) and/or need to change password (admin expiration)
     It "Connect to a Fortigate (using HTTP) with apiToken" -Skip:( -not ($apitoken -ne $null -and $httpOnly -eq $true -and $fgt_version -ge "7.0.0")) {
-        Connect-FGT -Server $ipaddress -ApiToken $apitoken -port $port -httpOnly
+        Connect-FGT -Server $ipaddress -ApiToken $apitoken -port $port -httpOnly -oldauth:$oldauth
         $DefaultFGTConnection | Should -Not -BeNullOrEmpty
         $DefaultFGTConnection.server | Should -Be $ipaddress
         $DefaultFGTConnection.invokeParams | Should -Not -BeNullOrEmpty
@@ -42,7 +42,7 @@ Describe  "Connect to a FortiGate (using HTTP)" {
 
 Describe "Connect to a fortigate (using HTTPS)" {
     It "Connect to a FortiGate (using HTTPS and -SkipCertificateCheck) and check global variable" -Skip:($httpOnly) {
-        Connect-FGT $ipaddress -Username $login -password $mysecpassword -SkipCertificateCheck -port $port
+        Connect-FGT $ipaddress -Username $login -password $mysecpassword -SkipCertificateCheck -port $port -oldauth:$oldauth
         $DefaultFGTConnection | Should -Not -BeNullOrEmpty
         $DefaultFGTConnection.server | Should -Be $ipaddress
         $DefaultFGTConnection.invokeParams | Should -Not -BeNullOrEmpty
@@ -60,11 +60,11 @@ Describe "Connect to a fortigate (using HTTPS)" {
     #This test only work with PowerShell 6 / Core (-SkipCertificateCheck don't change global variable but only Invoke-WebRequest/RestMethod)
     #This test will be fail, if there is valid certificate...
     It "Connect to a FortiGate (using HTTPS) and check global variable" -Skip:("Desktop" -eq $PSEdition -Or $httpOnly) {
-        { Connect-FGT $ipaddress -Username $login -password $mysecpassword } | Should -throw "Unable to connect (certificate)"
+        { Connect-FGT $ipaddress -Username $login -password $mysecpassword -oldauth:$oldauth } | Should -throw "Unable to connect (certificate)"
     }
 
     It "Connect to a FortiGate (using HTTPS) with wrong password" -Skip:($httpOnly) {
-        { Connect-FGT $ipaddress -Username $login -password $mywrongpassword -port $port -SkipCertificateCheck:$SkipCertificateCheck } | Should -throw "Log in failure. Most likely an incorrect username/password combo"
+        { Connect-FGT $ipaddress -Username $login -password $mywrongpassword -port $port -SkipCertificateCheck:$SkipCertificateCheck -oldauth:$oldauth } | Should -throw "Log in failure. Most likely an incorrect username/password combo"
     }
 
     It "Connect to a Fortigate (using HTTPS) with apiToken" -Skip:($apitoken -eq $null -Or $httpOnly) {
