@@ -101,10 +101,10 @@ $invokeParams.add('SkipCertificateCheck', $SkipCertificateCheck)
 $invokeParams.add('httpOnly', $httpOnly)
 $invokeParams.add('port', $port)
 if ($oldauth -eq "true") {
-    $oldauth = $true
+    $script:oldauth = $true
 }
 else {
-    $oldauth = $false
+    $script:oldauth = $false
 }
 $invokeParams.add('oldauth', $oldauth)
 
