@@ -211,8 +211,14 @@ function Connect-FGT {
                 $irmResponse = Invoke-RestMethod $uri -Method POST -Body ($postParams | ConvertTo-Json) -SessionVariable FGT @invokeParams
             }
             catch {
-                Show-FGTException $_
-                throw "Unable to connect to FortiGate"
+                if ($_.Exception.Response.StatusCode.Value__ -eq "401" ) {
+                    throw "Not supported API Authentication method on this FortiGate (try use -oldauth parameter)"
+                }
+                else {
+                    Show-FGTException $_
+                    throw "Unable to connect to FortiGate"
+                }
+
             }
 
             Write-verbose $irmResponse
