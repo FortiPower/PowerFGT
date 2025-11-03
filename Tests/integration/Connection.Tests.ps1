@@ -79,6 +79,10 @@ Describe "Connect to a fortigate (using HTTPS)" {
         $DefaultFGTConnection.version | Should -Not -BeNullOrEmpty
         $DefaultFGTConnection.serial | Should -Not -BeNullOrEmpty
     }
+
+    It "Connect to a FortiGate (using HTTPS) to old (before FortiOS 6.4 without -oldauth)" -Skip:($httpOnly -and $fgt_version -ge "6.4.0" ) {
+        { Connect-FGT $ipaddress -Username $login -password $mysecpassword -SkipCertificateCheck -port $port } | Should -throw "Log in failure. Most likely an incorrect username/password combo"
+    }
 }
 
 Describe "Connect to a FortiGate (with post-login-banner enable)" {
