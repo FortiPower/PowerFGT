@@ -686,7 +686,7 @@ function Move-FGTFirewallPolicy {
             $null = Invoke-FGTRestMethod -method "PUT" -uri $uri -uri_escape $policy.policyid -extra $extra -connection $connection @invokeParams
         }
 
-        Get-FGTFirewallPolicy -policyid $policy.policyid -connection $connection @invokeParams
+        Get-FGTFirewallPolicy -connection $connection @invokeParams -policyid $policy.policyid
     }
 
     End {
