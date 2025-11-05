@@ -473,7 +473,7 @@ function Add-FGTFirewallPolicyMember {
             $_policy | add-member -name "dstintf" -membertype NoteProperty -Value $members
         }
 
-        if ($PSCmdlet.ShouldProcess($policy.name, 'Add Firewall Policy Group Member')) {
+        if ($PSCmdlet.ShouldProcess("$($policy.name) ($($policy.policyid))", 'Add Firewall Policy Group Member')) {
             Invoke-FGTRestMethod -method "PUT" -body $_policy -uri $uri -uri_escape $policy.policyid -connection $connection @invokeParams | Out-Null
 
             Get-FGTFirewallPolicy -connection $connection @invokeParams -name $policy.name
@@ -682,7 +682,7 @@ function Move-FGTFirewallPolicy {
             }
             default { }
         }
-        if ($PSCmdlet.ShouldProcess($policy.name, 'Move Firewall Policy')) {
+        if ($PSCmdlet.ShouldProcess("$($policy.name) ($($policy.policyid))", 'Move Firewall Policy')) {
             $null = Invoke-FGTRestMethod -method "PUT" -uri $uri -uri_escape $policy.policyid -extra $extra -connection $connection @invokeParams
         }
 
@@ -966,7 +966,7 @@ function Set-FGTFirewallPolicy {
             $_policy | add-member -name "utm-status" -membertype NoteProperty -Value "enable"
         }
 
-        if ($PSCmdlet.ShouldProcess($address.name, 'Configure Firewall Policy')) {
+        if ($PSCmdlet.ShouldProcess("$($policy.name) ($($policy.policyid))", 'Configure Firewall Policy')) {
             Invoke-FGTRestMethod -method "PUT" -body $_policy -uri $uri -uri_escape $policy.policyid -connection $connection @invokeParams | out-Null
 
             Get-FGTFirewallPolicy -connection $connection @invokeParams -policyid $policy.policyid
@@ -1023,7 +1023,7 @@ function Remove-FGTFirewallPolicy {
 
         $uri = "api/v2/cmdb/firewall/policy"
 
-        if ($PSCmdlet.ShouldProcess($policy.name, 'Remove Firewall Policy')) {
+        if ($PSCmdlet.ShouldProcess("$($policy.name) ($($policy.policyid))", 'Remove Firewall Policy')) {
             $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -uri_escape $policy.policyid -connection $connection @invokeParams
         }
     }
@@ -1213,7 +1213,7 @@ function Remove-FGTFirewallPolicyMember {
         }
 
 
-        if ($PSCmdlet.ShouldProcess($policy.name, 'Remove Firewall Policy Group Member')) {
+        if ($PSCmdlet.ShouldProcess("$($policy.name) ($($policy.policyid))", 'Remove Firewall Policy Group Member')) {
             Invoke-FGTRestMethod -method "PUT" -body $_policy -uri $uri -uri_escape $policy.policyid -connection $connection @invokeParams | Out-Null
 
             Get-FGTFirewallPolicy -connection $connection @invokeParams -policyid $policy.policyid
