@@ -476,7 +476,7 @@ function Add-FGTFirewallPolicyMember {
         if ($PSCmdlet.ShouldProcess("$($policy.name) ($($policy.policyid))", 'Add Firewall Policy Group Member')) {
             Invoke-FGTRestMethod -method "PUT" -body $_policy -uri $uri -uri_escape $policy.policyid -connection $connection @invokeParams | Out-Null
 
-            Get-FGTFirewallPolicy -connection $connection @invokeParams -name $policy.name
+            Get-FGTFirewallPolicy -connection $connection @invokeParams -policyid $policy.policyid
         }
     }
 
