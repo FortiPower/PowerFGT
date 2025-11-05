@@ -15,6 +15,7 @@ $script:httpOnly = $true
 $script:SkipCertificateCheck = $true
 $script:ci = $false
 $script:oldauth = $false
+#$script:vdom = "MyVDOM"
 
 #default settings use for test, can be override if needed...
 $script:pester_address1 = "pester_address1"
