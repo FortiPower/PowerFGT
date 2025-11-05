@@ -109,6 +109,9 @@ else {
     $script:oldauth = $false
 }
 $invokeParams.add('oldauth', $oldauth)
+if ($vdom) {
+    $invokeParams.add('vdom', $vdom)
+}
 
 #Make a connection for check info and store version (used for some test...)
 $fgt = Connect-FGT @invokeParams
