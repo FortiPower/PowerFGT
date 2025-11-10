@@ -253,3 +253,58 @@ function Get-FGTSystemAdmin {
     End {
     }
 }
+
+function Remove-FGTSystemAdmin {
+
+    <#
+        .SYNOPSIS
+        Remove a Admin
+
+        .DESCRIPTION
+        Remove a (System) Administrator
+
+        .EXAMPLE
+        $MyFGTAdmin = Get-FGTSystemAdmin -name MyAdmin
+        PS > $MyFGTAdmin | Remove-FGTSystemAdmin
+
+        Remove admin object $MyFGTAdmin
+
+        .EXAMPLE
+        $MyFGTAdmin = Get-FGTSystemAdmin -name MyFGTAdmin
+        PS > $MyFGTAdmin | Remove-FGTSystemAdmin -confirm:$false
+
+        Remove admin object $MyAdmin with no confirmation
+
+    #>
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'high')]
+    Param(
+        [Parameter (Mandatory = $true, ValueFromPipeline = $true, Position = 1)]
+        [ValidateScript( { Confirm-FGTSystemAdmin $_ })]
+        [psobject]$admin,
+        [Parameter(Mandatory = $false)]
+        [String[]]$vdom,
+        [Parameter(Mandatory = $false)]
+        [psobject]$connection = $DefaultFGTConnection
+    )
+
+    Begin {
+    }
+
+    Process {
+
+        $invokeParams = @{ }
+        if ( $PsBoundParameters.ContainsKey('vdom') ) {
+            $invokeParams.add( 'vdom', $vdom )
+        }
+
+        $uri = "api/v2/cmdb/system/admin"
+
+        if ($PSCmdlet.ShouldProcess($admin.name, 'Remove System admin')) {
+            $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -uri_escape $admin.name -connection $connection @invokeParams
+        }
+    }
+
+    End {
+    }
+}
