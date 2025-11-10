@@ -469,6 +469,32 @@ Function Confirm-FGTServiceGroup {
 
 }
 
+Function Confirm-FGTSystemAdmin {
+
+    Param (
+        [Parameter (Mandatory = $true)]
+        [object]$argument
+    )
+
+    #Check if it looks like a System Admin element
+
+    if ( -not ( $argument | get-member -name name -Membertype Properties)) {
+        throw "Element specified does not contain a name property."
+    }
+    if ( -not ( $argument | get-member -name accprofile -Membertype Properties)) {
+        throw "Element specified does not contain an accprofile property."
+    }
+    if ( -not ( $argument | get-member -name comments -Membertype Properties)) {
+        throw "Element specified does not contain a comments property."
+    }
+    if ( -not ( $argument | get-member -name trusthost1 -Membertype Properties)) {
+        throw "Element specified does not contain a trusthost1 property."
+    }
+
+    $true
+
+}
+
 Function Confirm-FGTUserRADIUS {
 
     Param (
