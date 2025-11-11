@@ -733,6 +733,12 @@ function Set-FGTFirewallPolicy {
         Change MyFGTPolicy to set Security Profile to default (AV, WebFitler, DNS Filter, App Ctrl and IPS)
 
         .EXAMPLE
+        $MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
+        PS C:\>$MyFGTPolicy | Set-FGTFirewallPolicy -globallabel "My Sequence Label"
+
+        Change MyFGTPolicy to set Global Label "My Sequence Label"
+
+        .EXAMPLE
          $data = @{"logtraffic-start"  = "enable" }
         PS C:\>$MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
         PS C:\>$MyFGTPolicy | Set-FGTFirewallPolicy -data $color
