@@ -30,7 +30,7 @@ function Add-FGTFirewallAddressGroup {
 
         .EXAMPLE
         $data = @{ "color" = 23 }
-        PS C:\>Add-FGTFirewallAddressGroup -name MyAddressGroup -member MyAddress1 -comment "My Address Group".0 -data $data
+        PS C:\>Add-FGTFirewallAddressGroup -name MyAddressGroup -member MyAddress1 -comment "My Address Group" -data $data
 
         Add Address Group with member MyAddress1, a comment and color (23) via -data parameter
     #>
