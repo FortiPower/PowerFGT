@@ -454,7 +454,7 @@ function Set-FGTFirewallAddress {
         .EXAMPLE
         $data = @{ "color" = 23 }
         PS C:\>$MyFGTAddress = Get-FGTFirewallAddress -name MyFGTAddress
-        PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -data $color
+        PS C:\>$MyFGTAddress | Set-FGTFirewallAddress -data $data
 
         Change MyFGTAddress to set a color (23) using -data
 
