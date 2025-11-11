@@ -16,7 +16,7 @@ Connect to a FortiGate
 ```
 Connect-FGT [-Server] <String> [-Username <String>] [-Password <SecureString>] [-ApiToken <String>]
  [-New_Password <SecureString>] [-Credentials <PSCredential>] [-httpOnly] [-SkipCertificateCheck]
- [-port <Int32>] [-Timeout <Int32>] [-token_code <String>] [-token_prompt] [-license <String>]
+ [-port <Int32>] [-Timeout <Int32>] [-token_code <String>] [-token_prompt] [-license <String>] [-oldauth]
  [-vdom <String[]>] [-DefaultConnection <Boolean>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
@@ -24,7 +24,7 @@ Connect-FGT [-Server] <String> [-Username <String>] [-Password <SecureString>] [
 ```
 Connect-FGT [-Server] <String> [-Username <String>] [-Password <SecureString>] [-ApiToken <String>]
  [-New_Password <SecureString>] [-Credentials <PSCredential>] [-httpOnly] [-SkipCertificateCheck]
- [-port <Int32>] [-Timeout <Int32>] [-token_code <String>] [-token_prompt] [-license <String>]
+ [-port <Int32>] [-Timeout <Int32>] [-token_code <String>] [-token_prompt] [-license <String>] [-oldauth]
  [-vdom <String[]>] [-DefaultConnection <Boolean>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
@@ -334,6 +334,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -oldauth
+{{ Fill oldauth Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
