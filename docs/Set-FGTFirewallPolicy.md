@@ -17,9 +17,9 @@ Set-FGTFirewallPolicy [-policy] <PSObject> [-name <String>] [-srcintf <String[]>
  [-srcaddr <String[]>] [-dstaddr <String[]>] [-action <String>] [-status] [-schedule <String>]
  [-service <String[]>] [-nat] [-comments <String>] [-logtraffic <String>] [-ippool <String[]>]
  [-inspectionmode <String>] [-sslsshprofile <String>] [-avprofile <String>] [-webfilterprofile <String>]
- [-dnsfilterprofile <String>] [-ipssensor <String>] [-applicationlist <String>] [-data <Hashtable>]
- [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm]
- [<CommonParameters>]
+ [-dnsfilterprofile <String>] [-ipssensor <String>] [-applicationlist <String>] [-globallabel <String>]
+ [-data <Hashtable>] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -68,6 +68,14 @@ PS C:\>$MyFGTPolicy | Set-FGTFirewallPolicy -avprofile default -webfilterprofile
 Change MyFGTPolicy to set Security Profile to default (AV, WebFitler, DNS Filter, App Ctrl and IPS)
 
 ### EXAMPLE 6
+```
+$MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
+PS C:\>$MyFGTPolicy | Set-FGTFirewallPolicy -globallabel "My Sequence Label"
+```
+
+Change MyFGTPolicy to set Global Label "My Sequence Label"
+
+### EXAMPLE 7
 ```
 $data = @{"logtraffic-start"  = "enable" }
 PS C:\>$MyFGTPolicy = Get-FGTFirewallPolicy -name MyFGTPolicy
@@ -380,6 +388,21 @@ Accept wildcard characters: False
 
 ### -applicationlist
 {{ Fill applicationlist Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -globallabel
+{{ Fill globallabel Description }}
 
 ```yaml
 Type: String

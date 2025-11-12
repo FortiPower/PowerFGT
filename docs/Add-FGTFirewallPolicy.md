@@ -18,8 +18,8 @@ Add-FGTFirewallPolicy [[-name] <String>] [[-policyid] <Int32>] [-srcintf] <Strin
  [[-service] <String[]>] [-nat] [[-comments] <String>] [[-logtraffic] <String>] [[-ippool] <String[]>]
  [[-inspectionmode] <String>] [[-sslsshprofile] <String>] [[-avprofile] <String>]
  [[-webfilterprofile] <String>] [[-dnsfilterprofile] <String>] [[-ipssensor] <String>]
- [[-applicationlist] <String>] [-skip] [[-data] <Hashtable>] [[-vdom] <String[]>] [[-connection] <PSObject>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [[-applicationlist] <String>] [[-globallabel] <String>] [-skip] [[-data] <Hashtable>] [[-vdom] <String[]>]
+ [[-connection] <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -105,6 +105,13 @@ Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr a
 Add a MyFGTPolicy with Security Profile (Antivirus, WebFilter, DNS Filter, Application, IPS)
 
 ### EXAMPLE 12
+```
+Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -globallabel "My Sequence Label"
+```
+
+Add a MyFGTPolicy with Global Label "My Sequence Label"
+
+### EXAMPLE 13
 ```
 $data = @{ "logtraffic-start" = "enable" }
 Add-FGTFirewallPolicy -name MyFGTPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -data $data
@@ -429,6 +436,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -globallabel
+{{ Fill globallabel Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 20
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -skip
 Ignores the specified number of objects and then gets the remaining objects.
 Enter the number of objects to skip.
@@ -454,7 +476,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 20
+Position: 21
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -469,7 +491,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 21
+Position: 22
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -484,7 +506,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 22
+Position: 23
 Default value: $DefaultFGTConnection
 Accept pipeline input: False
 Accept wildcard characters: False
