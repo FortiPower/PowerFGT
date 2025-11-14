@@ -294,6 +294,12 @@ function Set-FGTSystemAdmin {
         Change MyFGTAdmin Trust host 3 to 198.51.100.0/24
 
         .EXAMPLE
+        $MyFGTAdmin = Get-FGTSystemAdmin -name MyFGTAdmin
+        PS > $MyFGTAdmin | Set-FGTSystemAdmin -trusthost4 0.0.0.0/0
+
+        Change MyFGTAdmin Trust host 3 to 0.0.0.0/0 (allow from anywhere)
+
+        .EXAMPLE
         $data = @{ "two-factor" = "email" ; "email-to" = "admin@fgt.power" }
         PS > $MyFGTAdmin = Get-FGTSystemAdmin -name MyFGTAdmin
         PS > $MyFGTAdmin | Set-FGTSystemAdmin -data $data
