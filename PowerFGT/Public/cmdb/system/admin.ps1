@@ -15,22 +15,29 @@ function Add-FGTSystemAdmin {
 
         .EXAMPLE
         $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
-        PS > Add-FGTSystemAdmin -name MyAdmin -accprofile super_admin -password $mypassword
+        PS > Add-FGTSystemAdmin -name MyFGTAdmin -accprofile super_admin -password $mypassword
 
-        Add a System Admin named myAdmin with acces Profile super_admin and password
-
-        .EXAMPLE
-        $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
-        PS > Add-FGTSystemAdmin -name MyAdmin -accprofile super_admin -password $mypassword -comments "Added By PowerFGT"
-
-        Add a System Admin named myAdmin with a comments
+        Add a System Admin named MyFGTAdmin with access Profile super_admin and password
 
         .EXAMPLE
         $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
-        PS > Add-FGTSystemAdmin -name MyAdmin -accprofile super_admin -password $mypassword -comments "Add By PowerFGT" -trusthost1 192.0.2.1/32 -trusthost2 198.51.100.0/24
+        PS > Add-FGTSystemAdmin -name MyFGTAdmin -accprofile super_admin -password $mypassword -comments "Added By PowerFGT"
 
-        Add a System Admin named myAdmin with trusthost1 (only host 192.0.2.1) and trusthost2 (network 198.51.100.0/24).
+        Add a System Admin named MyFGTAdmin with a comments
+
+        .EXAMPLE
+        $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
+        PS > Add-FGTSystemAdmin -name MyFGTAdmin -accprofile super_admin -password $mypassword -trusthost1 192.0.2.1/32 -trusthost2 198.51.100.0/24
+
+        Add a System Admin named MyFGTAdmin with trusthost1 (only host 192.0.2.1) and trusthost2 (network 198.51.100.0/24).
         You can add up to 10 trusthost (trusthost1 to trusthost10)
+
+        .EXAMPLE
+        $mypassword = ConvertTo-SecureString mypassword -AsPlainText -Force
+        PS > $data = @{ "guest-auth" = "enable" }
+        PS > Add-FGTSystemAdmin -name MyFGTAdmin -accprofile super_admin -password $mypassword -data $data
+
+        Add a System Admin named MyFGTAdmin with -data to enable guest-auth
     #>
 
     Param(
@@ -279,7 +286,7 @@ function Set-FGTSystemAdmin {
         $MyFGTAdmin = Get-FGTSystemAdmin -name MyFGTAdmin
         PS > $MyFGTAdmin | Set-FGTSystemAdmin -comments "Changed by PowerFGT"
 
-        Change MyFGTAdmin comments to Changed by PowerFGT
+        Change MyFGTAdmin comments to "Changed by PowerFGT"
 
         .EXAMPLE
         $MyFGTAdmin = Get-FGTSystemAdmin -name MyFGTAdmin
@@ -297,7 +304,7 @@ function Set-FGTSystemAdmin {
         $MyFGTAdmin = Get-FGTSystemAdmin -name MyFGTAdmin
         PS > $MyFGTAdmin | Set-FGTSystemAdmin -trusthost4 0.0.0.0/0
 
-        Change MyFGTAdmin Trust host 3 to 0.0.0.0/0 (allow from anywhere)
+        Change MyFGTAdmin Trust host 4 to 0.0.0.0/0 (allow from anywhere)
 
         .EXAMPLE
         $data = @{ "two-factor" = "email" ; "email-to" = "admin@fgt.power" }
@@ -305,8 +312,6 @@ function Set-FGTSystemAdmin {
         PS > $MyFGTAdmin | Set-FGTSystemAdmin -data $data
 
         Change MyFGTAdmin to set two-factor to email and email-to using -data
-
-
     #>
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'medium', DefaultParameterSetName = 'default')]
@@ -446,13 +451,13 @@ function Remove-FGTSystemAdmin {
         $MyFGTAdmin = Get-FGTSystemAdmin -name MyAdmin
         PS > $MyFGTAdmin | Remove-FGTSystemAdmin
 
-        Remove admin object $MyFGTAdmin
+        Remove admin $MyFGTAdmin
 
         .EXAMPLE
         $MyFGTAdmin = Get-FGTSystemAdmin -name MyFGTAdmin
         PS > $MyFGTAdmin | Remove-FGTSystemAdmin -confirm:$false
 
-        Remove admin object $MyAdmin with no confirmation
+        Remove admin $MyFGTAdmin with no confirmation
 
     #>
 
@@ -479,7 +484,7 @@ function Remove-FGTSystemAdmin {
 
         $uri = "api/v2/cmdb/system/admin"
 
-        if ($PSCmdlet.ShouldProcess($admin.name, 'Remove System admin')) {
+        if ($PSCmdlet.ShouldProcess($admin.name, 'Remove System Admin')) {
             $null = Invoke-FGTRestMethod -method "DELETE" -uri $uri -uri_escape $admin.name -connection $connection @invokeParams
         }
     }
