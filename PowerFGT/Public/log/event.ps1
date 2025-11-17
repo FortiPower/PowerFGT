@@ -23,9 +23,9 @@ function Get-FGTLogEvent {
         Get Log Event from memory on subtype vpn with 10 000 rows
 
         .EXAMPLE
-        Get-FGTLogEvent -type disk -subtype user -rows 10000 -srcip 192.0.2.1
+        Get-FGTLogEvent -type disk -subtype user -rows 10000
 
-        Get Log Event from disk on subtype user with 10 000 rows with Source IP 192.0.0.1
+        Get Log Event from disk on subtype user with 10 000 rows
 
         .EXAMPLE
         Get-FGTLogEvent -type fortianalyzer -subtype system -rows 10000 -since 7d
