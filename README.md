@@ -32,7 +32,7 @@ With this module (version 0.9.1) you can manage:
 - HA (Get)
 - [Interface](#interface) (Add/Get/Set/Remove Vlan, aggregate, loopback and Add/Remove Member)
 - IP Pool (Get)
-- [Log Traffic](#log-traffic) (Get)
+- [Log Traffic/Event](#log) (Get)
 - [Monitor](#monitor) (Get)
 - [Policy](#policy) (Add/Get/Remove)
 - [Proxy Address/Address Group/ Policy](#proxy) (Add/Get/Set/Remove)
@@ -1946,7 +1946,9 @@ It is possible to `monitor` FortiGate
 
 to get API uri, you can use `Invoke-FGTRestMethod api/v2/monitor/?action=schema` for get list of uri for monitor
 
-### Log Traffic
+### Log
+
+#### Traffic
 
 It is possible to get `log traffic` of FortiGate.
 
@@ -2009,6 +2011,63 @@ you can also get some extra info using -extra parameter :
 You can also select the 'timeline' using -since parameter 1h(our), 1d(ay), 7d(ays), 30(days), only for Fortiguard type
 
 You can use also `Get-FGTLogSetting` for get setting for Log (Syslogd, FortiAnalyzer...)
+
+#### Traffic
+
+It is possible to get `log traffic` of FortiGate.
+
+You can get the following type log
+* disk
+* fortianalyzer
+* forticloud
+* memory
+
+and subtype
+* vpn;
+* user
+* router
+* wireless
+* wad
+* endpoint
+* ha
+* compliance-check
+* security-rating
+* fortiextender
+* connector
+* system
+
+by default, it is only first 20 rows availables (use -rows parameter )’
+
+for Example
+
+```powershell
+    #Get Log Event from fortivloud on subtype system and select column
+
+    Get-FGTLogEvent -type forticloud -subtype system | select date, type, subtype, system, logdesc, msg | ft
+
+    date       type  subtype system logdesc                                    msg
+    ----       ----  ------- ------ -------                                    ---
+    2025-11-17 event system         Admin login successful                     Administrator admin logged in successfully from https(192.0.2.120)
+    2025-11-17 event system         System performance statistics              Performance statistics: average CPU: 0, memory:  56, concurrent sessions:  215, setup-rate: 1
+    2025-11-17 event system         System performance statistics              Performance statistics: average CPU: 0, memory:  56, concurrent sessions:  341, setup-rate: 1
+    2025-11-17 event system         Attribute configured                       Edit system.global 
+    2025-11-17 event system         Device in the Security Fabric was updated. A device in the Security Fabric was updated.
+    2025-11-17 event system         Admin login successful                     Administrator admin logged in successfully from https(192.0.2.125)
+    2025-11-17 event system         System performance statistics              Performance statistics: average CPU: 0, memory:  55, concurrent sessions:  357, setup-rate: 4
+    2025-11-17 event system         System performance statistics              Performance statistics: average CPU: 0, memory:  55, concurrent sessions:  325, setup-rate: 0
+    2025-11-17 event system         System performance statistics              Performance statistics: average CPU: 0, memory:  55, concurrent sessions:  229, setup-rate: 0
+    2025-11-17 event system         DHCP statistics                            DHCP statistics
+    2025-11-17 event system         DHCP statistics                            DHCP statistics
+    2025-11-17 event system         DHCP Ack log                               DHCP server sends a DHCPACK
+    2025-11-17 event system         System performance statistics              Performance statistics: average CPU: 0, memory:  55, concurrent sessions:  191, setup-rate: 0
+    2025-11-17 event system         System performance statistics              Performance statistics: average CPU: 0, memory:  55, concurrent sessions:  274, setup-rate: 0
+    2025-11-17 event system         System performance statistics              Performance statistics: average CPU: 0, memory:  55, concurrent sessions:  197, setup-rate: 0
+    2025-11-17 event system         System performance statistics              Performance statistics: average CPU: 0, memory:  55, concurrent sessions:  378, setup-rate: 92
+    2025-11-17 event system         DHCP Ack log                               DHCP server sends a DHCPACK
+    2025-11-17 event system         System performance statistics              Performance statistics: average CPU: 0, memory:  55, concurrent sessions:  268, setup-rate: 9
+    2025-11-17 event system         System performance statistics              Performance statistics: average CPU: 0, memory:  55, concurrent sessions:  247, setup-rate: 
+```
+
 ### Invoke API
 for example to get Fortigate System Global Info
 
