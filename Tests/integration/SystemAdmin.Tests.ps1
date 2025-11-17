@@ -285,7 +285,6 @@ Describe "Add System Admin" {
         $admin.accprofile | Should -Be "super_admin"
         $admin."two-factor" | Should -Be "email"
         $admin."email-to" | Should -Be "admin@fgt.power"
-
     }
 
 }
@@ -495,19 +494,16 @@ Describe "Set System Admin" {
 
 Describe "Remove System Admin" {
 
-    Context "vmware" {
-
-        BeforeEach {
-            Add-FGTSystemAdmin -name $pester_admin1 -password $pester_adminpassword -accprofile super_admin
-        }
-
-        It "Remove System Admin by pipeline" {
-            Get-FGTSystemAdmin -name $pester_admin1 | Remove-FGTSystemAdmin -confirm:$false
-            $admin = Get-FGTSystemAdmin -name $pester_admin1
-            $admin | Should -Be $NULL
-        }
-
+    BeforeEach {
+        Add-FGTSystemAdmin -name $pester_admin1 -password $pester_adminpassword -accprofile super_admin
     }
+
+    It "Remove System Admin by pipeline" {
+        Get-FGTSystemAdmin -name $pester_admin1 | Remove-FGTSystemAdmin -confirm:$false
+        $admin = Get-FGTSystemAdmin -name $pester_admin1
+        $admin | Should -Be $NULL
+    }
+
 }
 
 AfterAll {
