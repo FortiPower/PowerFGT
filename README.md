@@ -2000,6 +2000,7 @@ for Example
     2022-03-06 22:52:27 1646635948083211212 -0800 0001000014 traffic local   notice  root 127.0.0.1
     2022-03-06 22:52:27 1646635948163208549 -0800 0000000022 traffic forward notice  root 10.88.110.122
     [...]
+```
 
 you can also get some extra info using -extra parameter :
 * reverse_lookup to get name of IP (found by the fortigate)
@@ -2008,7 +2009,6 @@ you can also get some extra info using -extra parameter :
 You can also select the 'timeline' using -since parameter 1h(our), 1d(ay), 7d(ays), 30(days), only for Fortiguard type
 
 You can use also `Get-FGTLogSetting` for get setting for Log (Syslogd, FortiAnalyzer...)
-```
 ### Invoke API
 for example to get Fortigate System Global Info
 
