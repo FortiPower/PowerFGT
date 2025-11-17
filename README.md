@@ -44,6 +44,7 @@ With this module (version 0.9.1) you can manage:
 - Service Group (Get)
 - [Static Route](#static-route) (Add/Get/Remove)
 - [Switch(-controller)](#switch) (Get)
+- [System Admin](#system-admin) (Add/Get/Set/Remove)
 - [System Global](#settings) (Get/Set)
 - [System Settings](#settings) (Get/Set)
 - [Security Profiles](#security-profiles) (Get)
@@ -1295,6 +1296,60 @@ You can change System Settings and System Global (settings) using `Set-FGTSystem
     location-id                        : 192.0.2.1
     [...]
 
+```
+
+### System Admin
+
+You can manage (System) Admin (Local) on FortiGate.
+
+You can create a new (System) Admin `Add-FGTSystemAdmin`, retrieve its information `Get-FGTSystemAdmin`,
+modify its properties `Set-FGTSystemAdmin` or delete it `Remove-FGTSystemAdmin`.
+
+```powershell
+
+# Create an Admin Local (using SecureString password) MyFGTAdmin with access profile super_admin
+
+    $mypassword = ConvertTo-SecureString myadminpassword -AsPlainText -Force
+    Add-FGTSystemAdmin -Name MyFGTAdmin -password $mypassword -accprofile super_admin
+
+    name                                 : MyFGTAdmin
+    q_origin_key                         : MyFGTAdmin
+    wildcard                             : disable
+    remote-auth                          : disable
+    remote-group                         :
+    password                             : ENC XXXX
+    old-password                         : ENC XXXX
+    peer-auth                            : disable
+    peer-group                           :
+    trusthost1                           : 0.0.0.0 0.0.0.0
+    trusthost2                           : 0.0.0.0 0.0.0.0
+    [...]
+
+# Get information about ALL System Admin (using Format Table)
+    Get-FGTSystemAdmin | Format-Table
+
+    name       q_origin_key wildcard remote-auth remote-group password old-password peer-auth peer-group trusthost1
+    ----       ------------ -------- ----------- ------------ -------- ------------ --------- ---------- ----------
+    MyFGTAdmin MyFGTAdmin   disable  disable                  ENC XXXX ENC XXXX     disable              0.0.0.0 0.0.0.0
+    admin      admin        disable  disable                  ENC XXXX ENC XXXX     disable              0.0.0.0 0.0.0.0
+
+# Modify an System Admin (trusthost1...)
+    Get-FGTSystemAdmin MyFGTAdmin| Set-FGTSystemAdmin -trusthost1 192.0.2.1/32
+
+    name                                 : MyFGTAdmin
+    q_origin_key                         : MyFGTAdmin
+    wildcard                             : disable
+    [...]
+    trusthost1                           : 192.0.2.1 255.255.255.255
+    [...]
+
+# Remove an System Admin
+    Get-FGTSystemAdmin MyFGTAdmin| Remove-FGTSystemAdmin
+
+    Confirm
+    Are you sure you want to perform this action?
+    Performing the operation "Remove System Admin" on target "MyFGTAdmin".
+    [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): Y
 ```
 
 ### User
