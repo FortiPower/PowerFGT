@@ -2303,6 +2303,7 @@ Add-FGTFirewallVip
 Add-FGTFirewallVipGroup
 Add-FGTFirewallVipGroupMember
 Add-FGTRouterStatic
+Add-FGTSystemAdmin
 Add-FGTSystemInterface
 Add-FGTSystemInterfaceMember
 Add-FGTSystemSDNConnector
@@ -2326,6 +2327,7 @@ Confirm-FGTProxyAddressGroup
 Confirm-FGTRouterStatic
 Confirm-FGTSDNConnector
 Confirm-FGTServiceCustom
+Confirm-FGTServiceGroup
 Confirm-FGTUserGroup
 Confirm-FGTUserLDAP
 Confirm-FGTUserLocal
@@ -2453,6 +2455,7 @@ Remove-FGTFirewallVip
 Remove-FGTFirewallVipGroup
 Remove-FGTFirewallVipGroupMember
 Remove-FGTRouterStatic
+Remove-FGTSystemAdmin
 Remove-FGTSystemInterface
 Remove-FGTSystemInterfaceMember
 Remove-FGTSystemSDNConnector
@@ -2477,6 +2480,7 @@ Set-FGTFirewallVipGroup
 Set-FGTMonitorUserLocalChangePassword
 Set-FGTRouterBGP
 Set-FGTRouterOSPF
+Set-FGTSystemAdmin
 Set-FGTSystemGlobal
 Set-FGTSystemInterface
 Set-FGTSystemSDNConnector
