@@ -9,6 +9,6 @@ jobs:
       - uses: actions/checkout@v6
       - uses: martincostello/lint-actions-powershell@v1
         with:
-          settings-path: .vscode/PSScriptAnalyzerSettings.psd1
+#          settings-path: .vscode/PSScriptAnalyzerSettings.psd1
           treat-warnings-as-errors: true
           repo-path: PowerFGT
