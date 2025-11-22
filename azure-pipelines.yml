@@ -15,7 +15,7 @@ trigger:
 stages:
   - stage: Ubuntu
     jobs:
-      - job: Ubuntu
+      - job: Tests
         pool:
           vmImage: "ubuntu-latest"
         strategy:
@@ -83,7 +83,7 @@ stages:
   - stage: Windows
     dependsOn: Ubuntu
     jobs:
-      - job: Windows
+      - job: Tests
         pool:
           vmImage: "windows-latest"
         strategy:
@@ -171,7 +171,7 @@ stages:
 # - stage: macOS
 #   dependsOn: Windows
 #   jobs:
-#   - job:
+#   - job: Tests
 #     pool:
 #       vmImage: 'macos-latest'
 #     strategy:
