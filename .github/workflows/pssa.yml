@@ -11,3 +11,4 @@ jobs:
         with:
           settings-path: .vscode/PSScriptAnalyzerSettings.psd1
           treat-warnings-as-errors: true
+          repo-path: PowerFGT
