@@ -10,12 +10,12 @@ trigger:
       - master
   paths:
     exclude:
-      - docs/
+      - docs
 
 stages:
   - stage: Ubuntu
     jobs:
-      - job:
+      - job: Tests
         pool:
           vmImage: "ubuntu-latest"
         strategy:
@@ -48,6 +48,10 @@ stages:
               name: "FortiOS 7.6"
               IPADDRESS: $(IPADDRESS_76)
               OLDAUTH: false
+            FortiOS80:
+              name: "FortiOS 8.0"
+              IPADDRESS: $(IPADDRESS_80)
+              OLDAUTH: false
         steps:
           - task: PowerShell@2
             displayName: "Test PowerShell Core $(name)"
@@ -79,7 +83,7 @@ stages:
   - stage: Windows
     dependsOn: Ubuntu
     jobs:
-      - job:
+      - job: Tests
         pool:
           vmImage: "windows-latest"
         strategy:
@@ -111,6 +115,10 @@ stages:
             FortiOS76:
               name: "FortiOS 7.6"
               IPADDRESS: $(IPADDRESS_76)
+              OLDAUTH: false
+            FortiOS80:
+              name: "FortiOS 8.0"
+              IPADDRESS: $(IPADDRESS_80)
               OLDAUTH: false
         steps:
           - task: PowerShell@2
@@ -163,7 +171,7 @@ stages:
 # - stage: macOS
 #   dependsOn: Windows
 #   jobs:
-#   - job:
+#   - job: Tests
 #     pool:
 #       vmImage: 'macos-latest'
 #     strategy:
@@ -189,6 +197,10 @@ stages:
 #         FortiOS76:
 #            name: "FortiOS 7.6"
 #            IPADDRESS: $(IPADDRESS_76)
+#         FortiOS80:
+#            name: "FortiOS 8.0"
+#            IPADDRESS: $(IPADDRESS_80)
+#            OLDAUTH: false
 #     steps:
 #     - task: PowerShell@2
 #       displayName: "Test PowerShell Core $(name)"
