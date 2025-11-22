@@ -10,7 +10,7 @@ trigger:
       - master
   paths:
     exclude:
-      - docs/
+      - docs
 
 stages:
   - stage: Ubuntu
