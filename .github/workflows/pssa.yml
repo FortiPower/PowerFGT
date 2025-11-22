@@ -6,12 +6,9 @@ jobs:
     name: Run PSSA
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - name: lint
-        uses: docker://devblackops/github-action-psscriptanalyzer:2.4.0
+      - uses: actions/checkout@v6
+      - uses: martincostello/lint-actions-powershell@v1
         with:
-          settingsPath: .vscode/PSScriptAnalyzerSettings.psd1
-          sendComment: false
-          failOnInfos: true
-          failOnErrors: true
-          failOnWarnings: true
+#          settings-path: .vscode/PSScriptAnalyzerSettings.psd1
+          treat-warnings-as-errors: true
+          repo-path: PowerFGT
