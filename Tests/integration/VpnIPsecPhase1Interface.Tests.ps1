@@ -14,8 +14,8 @@ BeforeAll {
 Describe "Get VPN Ipsec Phase 1 Interface" {
 
     BeforeAll {
-        Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -type static -interface port2 -proposal aes256-sha256 -psksecret MySecret -remotegw 192.0.2.1
-        Add-FGTVpnIpsecPhase1Interface -name $pester_vpn2 -type dynamic -interface port2 -proposal aes256-sha256 -psksecret MySecret
+        Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -type static -interface $pester_port1 -proposal aes256-sha256 -psksecret MySecret -remotegw 192.0.2.1
+        Add-FGTVpnIpsecPhase1Interface -name $pester_vpn2 -type dynamic -interface $pester_port1 -proposal aes256-sha256 -psksecret MySecret
     }
 
     It "Get VPN Ipsec Phase 1 interface does not throw an error" {
