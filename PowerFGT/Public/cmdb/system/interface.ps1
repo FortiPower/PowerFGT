@@ -130,7 +130,14 @@ function Add-FGTSystemInterface {
 
         $_interface | add-member -name "role" -membertype NoteProperty -Value $role
         $_interface | add-member -name "mode" -membertype NoteProperty -Value $mode
-        $_interface | add-member -name "vdom" -membertype NoteProperty -Value $vdom_interface
+
+        if($connection.vdom -and -not $PsBoundParameters.ContainsKey('vdom_interface')) {
+            #If connection has vdom and no vdom specified, use connection vdom for vdom_interface
+            $_interface | add-member -name "vdom" -membertype NoteProperty -Value $connection.vdom
+        }
+        else {
+            $_interface | add-member -name "vdom" -membertype NoteProperty -Value $vdom_interface
+        }
 
         if ( $PsBoundParameters.ContainsKey('alias') ) {
             $_interface | add-member -name "alias" -membertype NoteProperty -Value $alias
