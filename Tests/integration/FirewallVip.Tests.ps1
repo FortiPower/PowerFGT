@@ -126,7 +126,7 @@ Describe "Add Firewall VIP" {
     }
 
     It "Add Virtual IP $pester_vip1 (type static-nat with interface)" {
-        Add-FGTFirewallVip -Name $pester_vip1 -type static-nat -extip 192.2.0.1 -mappedip 198.51.100.1 -interface port1
+        Add-FGTFirewallVip -Name $pester_vip1 -type static-nat -extip 192.2.0.1 -mappedip 198.51.100.1 -interface $pester_port1
         $vip = Get-FGTFirewallVip -name $pester_vip1
         $vip.name | Should -Be $pester_vip1
         $vip.uuid | Should -Not -BeNullOrEmpty
@@ -134,7 +134,7 @@ Describe "Add Firewall VIP" {
         $vip.type | Should -Be "static-nat"
         $vip.extip | Should -Be "192.2.0.1"
         $vip.mappedip.range | Should -Be "198.51.100.1"
-        $vip.extintf | Should -Be "port1"
+        $vip.extintf | Should -Be $pester_port1
         $vip.portforward | Should -Be "disable"
         $vip.protocol | Should -Be "tcp"
         $vip.extport | Should -Be "0-65535"
