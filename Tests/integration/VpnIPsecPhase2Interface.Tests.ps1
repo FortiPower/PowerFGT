@@ -14,9 +14,9 @@ BeforeAll {
 Describe "Get VPN Ipsec Phase 2 Interface" {
 
     BeforeAll {
-        Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -type static -interface port2 -proposal aes256-sha256 -psksecret MySecret -remotegw 192.0.2.1
+        Add-FGTVpnIpsecPhase1Interface -name $pester_vpn1 -type static -interface $pester_port1 -proposal aes256-sha256 -psksecret MySecret -remotegw 192.0.2.1
         Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
-        Add-FGTVpnIpsecPhase1Interface -name $pester_vpn2 -type dynamic -interface port2 -proposal aes256-sha256 -psksecret MySecret
+        Add-FGTVpnIpsecPhase1Interface -name $pester_vpn2 -type dynamic -interface $pester_port1 -proposal aes256-sha256 -psksecret MySecret
         Get-FGTVpnIpsecPhase2Interface -name $pester_vpn2 | Add-FGTVpnIpsecPhase2Interface -name $pester_vpn2_ph2
     }
 
