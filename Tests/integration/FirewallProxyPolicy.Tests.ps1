@@ -14,10 +14,10 @@ BeforeAll {
 Describe "Get Firewall Proxy Policy" {
 
     BeforeAll {
-        $policy = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all
+        $policy = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all
         $script:uuid = $policy.uuid
         $script:policyid = $policy.policyid
-        Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf port2 -dstintf port1 -srcaddr all -dstaddr all
+        Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf $pester_port2 -dstintf $pester_port1 -srcaddr all -dstaddr all
     }
 
     It "Get Policy Does not throw an error" {
@@ -96,13 +96,13 @@ Describe "Add Firewall Proxy Policy" {
     Context "Transparent-web" {
 
         It "Add Proxy Policy (port1/port2 : All/All)" {
-            $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all
+            $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all
             $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
             $policy.uuid | Should -Not -BeNullOrEmpty
             $policy.policyid | Should -Be $return.policyid
             $policy.proxy | Should -Be "transparent-web"
-            $policy.srcintf.name | Should -Be "port1"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcintf.name | Should -Be $pester_port1
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "accept"
@@ -115,15 +115,15 @@ Describe "Add Firewall Proxy Policy" {
 
         Context "Multi Source / destination Interface" {
 
-            It "Add Proxy Policy (src intf: port1, port3 and dst intf: port2)" {
-                $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf port1, port3 -dstintf port2 -srcaddr all -dstaddr all
+            It "Add Proxy Policy (src intf: $pester_port1, $pester_port3 and dst intf: $pester_port2)" {
+                $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf $pester_port1, $pester_port3 -dstintf $pester_port2 -srcaddr all -dstaddr all
                 $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
                 $policy.uuid | Should -Not -BeNullOrEmpty
                 $policy.policyid | Should -Be $return.policyid
                 $policy.proxy | Should -Be "transparent-web"
                 ($policy.srcintf.name).count | Should -be "2"
-                $policy.srcintf.name | Should -BeIn "port1", "port3"
-                $policy.dstintf.name | Should -Be "port2"
+                $policy.srcintf.name | Should -BeIn $pester_port1, $pester_port3
+                $policy.dstintf.name | Should -Be $pester_port2
                 $policy.srcaddr.name | Should -Be "all"
                 $policy.dstaddr.name | Should -Be "all"
                 $policy.action | Should -Be "accept"
@@ -134,15 +134,15 @@ Describe "Add Firewall Proxy Policy" {
                 $policy.comments | Should -BeNullOrEmpty
             }
 
-            It "Add Proxy Policy (src intf: port1 and dst intf: port2, port4)" {
-                $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf port1 -dstintf port2, port4 -srcaddr all -dstaddr all
+            It "Add Proxy Policy (src intf: $pester_port1 and dst intf: $pester_port2, $pester_port4)" {
+                $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf $pester_port1 -dstintf $pester_port2, $pester_port4 -srcaddr all -dstaddr all
                 $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
                 $policy.uuid | Should -Not -BeNullOrEmpty
                 $policy.policyid | Should -Be $return.policyid
                 $policy.proxy | Should -Be "transparent-web"
-                $policy.srcintf.name | Should -Be "port1"
+                $policy.srcintf.name | Should -Be $pester_port1
                 ($policy.dstintf.name).count | Should -be "2"
-                $policy.dstintf.name | Should -BeIn "port2", "port4"
+                $policy.dstintf.name | Should -BeIn $pester_port2, $pester_port4
                 $policy.srcaddr.name | Should -Be "all"
                 $policy.dstaddr.name | Should -Be "all"
                 $policy.action | Should -Be "accept"
@@ -153,16 +153,16 @@ Describe "Add Firewall Proxy Policy" {
                 $policy.comments | Should -BeNullOrEmpty
             }
 
-            It "Add Proxy Policy (src intf: port1, port3 and dst intf: port2, port4)" {
-                $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf port1, port3 -dstintf port2, port4 -srcaddr all -dstaddr all
+            It "Add Proxy Policy (src intf: $pester_port1, $pester_port3 and dst intf: $pester_port2, $pester_port4)" {
+                $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf $pester_port1, $pester_port3 -dstintf $pester_port2, $pester_port4 -srcaddr all -dstaddr all
                 $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
                 $policy.uuid | Should -Not -BeNullOrEmpty
                 $policy.policyid | Should -Be $return.policyid
                 $policy.proxy | Should -Be "transparent-web"
                 ($policy.srcintf.name).count | Should -be "2"
-                $policy.srcintf.name | Should -BeIn "port1", "port3"
+                $policy.srcintf.name | Should -BeIn $pester_port1, $pester_port3
                 ($policy.dstintf.name).count | Should -be "2"
-                $policy.dstintf.name | Should -BeIn "port2", "port4"
+                $policy.dstintf.name | Should -BeIn $pester_port2, $pester_port4
                 $policy.srcaddr.name | Should -Be "all"
                 $policy.dstaddr.name | Should -Be "all"
                 $policy.action | Should -Be "accept"
@@ -185,13 +185,13 @@ Describe "Add Firewall Proxy Policy" {
             }
 
             It "Add Proxy Policy (src addr: $pester_address1 and dst addr: all)" {
-                $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf port1 -dstintf port2 -srcaddr $pester_address1 -dstaddr all
+                $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr $pester_address1 -dstaddr all
                 $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
                 $policy.uuid | Should -Not -BeNullOrEmpty
                 $policy.policyid | Should -Be $return.policyid
                 $policy.proxy | Should -Be "transparent-web"
-                $policy.srcintf.name | Should -BeIn "port1"
-                $policy.dstintf.name | Should -Be "port2"
+                $policy.srcintf.name | Should -BeIn $pester_port1
+                $policy.dstintf.name | Should -Be $pester_port2
                 $policy.srcaddr.name | Should -Be $pester_address1
                 $policy.dstaddr.name | Should -Be "all"
                 $policy.action | Should -Be "accept"
@@ -203,13 +203,13 @@ Describe "Add Firewall Proxy Policy" {
             }
 
             It "Add Proxy Policy (src addr: $pester_address1, $pester_address3 and dst addr: all)" {
-                $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf port1 -dstintf port2 -srcaddr $pester_address1, $pester_address3 -dstaddr all
+                $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr $pester_address1, $pester_address3 -dstaddr all
                 $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
                 $policy.uuid | Should -Not -BeNullOrEmpty
                 $policy.policyid | Should -Be $return.policyid
                 $policy.proxy | Should -Be "transparent-web"
-                $policy.srcintf.name | Should -BeIn "port1"
-                $policy.dstintf.name | Should -Be "port2"
+                $policy.srcintf.name | Should -BeIn $pester_port1
+                $policy.dstintf.name | Should -Be $pester_port2
                 ($policy.srcaddr.name).count | Should -Be "2"
                 $policy.srcaddr.name | Should -BeIn $pester_address1, $pester_address3
                 $policy.dstaddr.name | Should -Be "all"
@@ -222,13 +222,13 @@ Describe "Add Firewall Proxy Policy" {
             }
 
             It "Add Proxy Policy (src addr: all and dst addr: $pester_address2)" {
-                $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf port1 -dstintf port2 -srcaddr all -dstaddr $pester_address2
+                $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr $pester_address2
                 $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
                 $policy.uuid | Should -Not -BeNullOrEmpty
                 $policy.policyid | Should -Be $return.policyid
                 $policy.proxy | Should -Be "transparent-web"
-                $policy.srcintf.name | Should -BeIn "port1"
-                $policy.dstintf.name | Should -Be "port2"
+                $policy.srcintf.name | Should -BeIn $pester_port1
+                $policy.dstintf.name | Should -Be $pester_port2
                 $policy.srcaddr.name | Should -Be "all"
                 $policy.dstaddr.name | Should -Be $pester_address2
                 $policy.action | Should -Be "accept"
@@ -240,13 +240,13 @@ Describe "Add Firewall Proxy Policy" {
             }
 
             It "Add Proxy Policy (src addr: all and dst addr: $pester_address2, $pester_address4)" {
-                $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf port1 -dstintf port2 -srcaddr all -dstaddr $pester_address2, $pester_address4
+                $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr $pester_address2, $pester_address4
                 $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
                 $policy.uuid | Should -Not -BeNullOrEmpty
                 $policy.policyid | Should -Be $return.policyid
                 $policy.proxy | Should -Be "transparent-web"
-                $policy.srcintf.name | Should -BeIn "port1"
-                $policy.dstintf.name | Should -Be "port2"
+                $policy.srcintf.name | Should -BeIn $pester_port1
+                $policy.dstintf.name | Should -Be $pester_port2
                 $policy.srcaddr.name | Should -Be "all"
                 ($policy.dstaddr.name).count | Should -Be "2"
                 $policy.dstaddr.name | Should -BeIn $pester_address2, $pester_address4
@@ -259,13 +259,13 @@ Describe "Add Firewall Proxy Policy" {
             }
 
             It "Add Proxy Policy (src addr: $pester_address1, $pester_address3 and dst addr: $pester_address2, $pester_address4)" {
-                $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf port1 -dstintf port2 -srcaddr $pester_address1, $pester_address3 -dstaddr $pester_address2, $pester_address4
+                $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr $pester_address1, $pester_address3 -dstaddr $pester_address2, $pester_address4
                 $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
                 $policy.uuid | Should -Not -BeNullOrEmpty
                 $policy.policyid | Should -Be $return.policyid
                 $policy.proxy | Should -Be "transparent-web"
-                $policy.srcintf.name | Should -BeIn "port1"
-                $policy.dstintf.name | Should -Be "port2"
+                $policy.srcintf.name | Should -BeIn $pester_port1
+                $policy.dstintf.name | Should -Be $pester_port2
                 ($policy.srcaddr.name).count | Should -Be "2"
                 $policy.srcaddr.name | Should -BeIn $pester_address1, $pester_address3
                 ($policy.dstaddr.name).count | Should -Be "2"
@@ -288,13 +288,13 @@ Describe "Add Firewall Proxy Policy" {
         }
 
         It "Add Proxy Policy (with action deny)" {
-            $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -action deny
+            $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -action deny
             $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
             $policy.uuid | Should -Not -BeNullOrEmpty
             $policy.policyid | Should -Be $return.policyid
             $policy.proxy | Should -Be "transparent-web"
-            $policy.srcintf.name | Should -Be "port1"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcintf.name | Should -Be $pester_port1
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "deny"
@@ -306,12 +306,12 @@ Describe "Add Firewall Proxy Policy" {
         }
 
         It "Add Proxy Policy (with action deny with log)" {
-            $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -action deny -log all
+            $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -action deny -log all
             $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
             $policy.uuid | Should -Not -BeNullOrEmpty
             $policy.policyid | Should -Be $return.policyid
-            $policy.srcintf.name | Should -Be "port1"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcintf.name | Should -Be $pester_port1
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "deny"
@@ -323,13 +323,13 @@ Describe "Add Firewall Proxy Policy" {
         }
 
         It "Add Proxy Policy (status disable)" {
-            $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -status:$false
+            $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -status:$false
             $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
             $policy.uuid | Should -Not -BeNullOrEmpty
             $policy.policyid | Should -Be $return.policyid
             $policy.proxy | Should -Be "transparent-web"
-            $policy.srcintf.name | Should -Be "port1"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcintf.name | Should -Be $pester_port1
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "accept"
@@ -342,13 +342,13 @@ Describe "Add Firewall Proxy Policy" {
 
         #Disabled: Only service webproxy actually and no yet cmdlet for Add/Remove Proxy Service
         It "Add Proxy Policy (with 1 service : HTTP)" -skip:$true {
-            Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -service HTTP
+            Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -service HTTP
             $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
             $policy.uuid | Should -Not -BeNullOrEmpty
             $policy.policyid | Should -Be $return.policyid
             $policy.proxy | Should -Be "transparent-web"
-            $policy.srcintf.name | Should -Be "port1"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcintf.name | Should -Be $pester_port1
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "accept"
@@ -361,13 +361,13 @@ Describe "Add Firewall Proxy Policy" {
 
         #Disabled: Only service webproxy actually and no yet cmdlet for Add/Remove Proxy Service
         It "Add Proxy Policy (with 2 services : HTTP, HTTPS)" -skip:$true {
-            $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -service HTTP, HTTPS
+            $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -service HTTP, HTTPS
             $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
             $policy.uuid | Should -Not -BeNullOrEmpty
             $policy.policyid | Should -Be $return.policyid
             $policy.proxy | Should -Be "transparent-web"
-            $policy.srcintf.name | Should -Be "port1"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcintf.name | Should -Be $pester_port1
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "accept"
@@ -379,13 +379,13 @@ Describe "Add Firewall Proxy Policy" {
         }
 
         It "Add Proxy Policy (with logtraffic all)" {
-            $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -logtraffic all
+            $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -logtraffic all
             $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
             $policy.uuid | Should -Not -BeNullOrEmpty
             $policy.policyid | Should -Be $return.policyid
             $policy.proxy | Should -Be "transparent-web"
-            $policy.srcintf.name | Should -Be "port1"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcintf.name | Should -Be $pester_port1
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "accept"
@@ -397,13 +397,13 @@ Describe "Add Firewall Proxy Policy" {
         }
 
         It "Add Proxy Policy (with logtraffic disable)" {
-            $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -logtraffic disable
+            $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -logtraffic disable
             $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
             $policy.uuid | Should -Not -BeNullOrEmpty
             $policy.policyid | Should -Be $return.policyid
             $policy.proxy | Should -Be "transparent-web"
-            $policy.srcintf.name | Should -Be "port1"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcintf.name | Should -Be $pester_port1
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "accept"
@@ -416,12 +416,12 @@ Describe "Add Firewall Proxy Policy" {
 
         #Add Schedule ? need API
         It "Add Proxy Policy (with schedule none)" {
-            $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -schedule none
+            $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -schedule none
             $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
             $policy.uuid | Should -Not -BeNullOrEmpty
             $policy.policyid | Should -Be $return.policyid
-            $policy.srcintf.name | Should -Be "port1"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcintf.name | Should -Be $pester_port1
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "accept"
@@ -433,13 +433,13 @@ Describe "Add Firewall Proxy Policy" {
         }
 
         It "Add Proxy Policy (with comments)" {
-            $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -comments "Add via PowerFGT"
+            $return = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -comments "Add via PowerFGT"
             $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
             $policy.uuid | Should -Not -BeNullOrEmpty
             $policy.policyid | Should -Be $return.policyid
             $policy.proxy | Should -Be "transparent-web"
-            $policy.srcintf.name | Should -Be "port1"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcintf.name | Should -Be $pester_port1
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "accept"
@@ -451,13 +451,13 @@ Describe "Add Firewall Proxy Policy" {
         }
 
         It "Add Proxy Policy (with policyid)" {
-            Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -policyid 23
+            Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -policyid 23
             $policy = Get-FGTFirewallProxyPolicy -policyid 23
             $policy.uuid | Should -Not -BeNullOrEmpty
             $policy.policyid | Should -Be "23"
             $policy.proxy | Should -Be "transparent-web"
-            $policy.srcintf.name | Should -Be "port1"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcintf.name | Should -Be $pester_port1
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "accept"
@@ -481,13 +481,13 @@ Describe "Add Firewall Proxy Policy" {
             Invoke-FGTRestMethod api/v2/cmdb/web-proxy/explicit -method PUT -body @{ 'status' = 'enable' }
         }
 
-        It "Add Proxy Policy (port1/port2 : All/All)" {
-            $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port2 -srcaddr all -dstaddr all
+        It "Add Proxy Policy ($pester_port1 / $pester_port2 : All/All)" {
+            $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf $pester_port2 -srcaddr all -dstaddr all
             $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
             $policy.uuid | Should -Not -BeNullOrEmpty
             $policy.policyid | Should -Be $return.policyid
             $policy.proxy | Should -Be "explicit-web"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "accept"
@@ -500,14 +500,14 @@ Describe "Add Firewall Proxy Policy" {
 
         Context "Source / Multi destination Interface" {
 
-            It "Add Proxy Policy (src intf: port1 and dst intf: port2, port4)" {
-                $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port2, port4 -srcaddr all -dstaddr all
+            It "Add Proxy Policy (src intf: $pester_port1 and dst intf: $pester_port2, $pester_port4)" {
+                $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf $pester_port2, $pester_port4 -srcaddr all -dstaddr all
                 $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
                 $policy.uuid | Should -Not -BeNullOrEmpty
                 $policy.policyid | Should -Be $return.policyid
                 $policy.proxy | Should -Be "explicit-web"
                 ($policy.dstintf.name).count | Should -be "2"
-                $policy.dstintf.name | Should -BeIn "port2", "port4"
+                $policy.dstintf.name | Should -BeIn $pester_port2, $pester_port4
                 $policy.srcaddr.name | Should -Be "all"
                 $policy.dstaddr.name | Should -Be "all"
                 $policy.action | Should -Be "accept"
@@ -530,12 +530,12 @@ Describe "Add Firewall Proxy Policy" {
             }
 
             It "Add Proxy Policy (src addr: $pester_address1 and dst addr: all)" {
-                $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port2 -srcaddr $pester_address1 -dstaddr all
+                $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf $pester_port2 -srcaddr $pester_address1 -dstaddr all
                 $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
                 $policy.uuid | Should -Not -BeNullOrEmpty
                 $policy.policyid | Should -Be $return.policyid
                 $policy.proxy | Should -Be "explicit-web"
-                $policy.dstintf.name | Should -Be "port2"
+                $policy.dstintf.name | Should -Be $pester_port2
                 $policy.srcaddr.name | Should -Be $pester_address1
                 $policy.dstaddr.name | Should -Be "all"
                 $policy.action | Should -Be "accept"
@@ -547,12 +547,12 @@ Describe "Add Firewall Proxy Policy" {
             }
 
             It "Add Proxy Policy (src addr: $pester_address1, $pester_address3 and dst addr: all)" {
-                $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port2 -srcaddr $pester_address1, $pester_address3 -dstaddr all
+                $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf $pester_port2 -srcaddr $pester_address1, $pester_address3 -dstaddr all
                 $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
                 $policy.uuid | Should -Not -BeNullOrEmpty
                 $policy.policyid | Should -Be $return.policyid
                 $policy.proxy | Should -Be "explicit-web"
-                $policy.dstintf.name | Should -Be "port2"
+                $policy.dstintf.name | Should -Be $pester_port2
                 ($policy.srcaddr.name).count | Should -Be "2"
                 $policy.srcaddr.name | Should -BeIn $pester_address1, $pester_address3
                 $policy.dstaddr.name | Should -Be "all"
@@ -565,12 +565,12 @@ Describe "Add Firewall Proxy Policy" {
             }
 
             It "Add Proxy Policy (src addr: all and dst addr: $pester_address2)" {
-                $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port2 -srcaddr all -dstaddr $pester_address2
+                $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf $pester_port2 -srcaddr all -dstaddr $pester_address2
                 $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
                 $policy.uuid | Should -Not -BeNullOrEmpty
                 $policy.policyid | Should -Be $return.policyid
                 $policy.proxy | Should -Be "explicit-web"
-                $policy.dstintf.name | Should -Be "port2"
+                $policy.dstintf.name | Should -Be $pester_port2
                 $policy.srcaddr.name | Should -Be "all"
                 $policy.dstaddr.name | Should -Be $pester_address2
                 $policy.action | Should -Be "accept"
@@ -582,12 +582,12 @@ Describe "Add Firewall Proxy Policy" {
             }
 
             It "Add Proxy Policy (src addr: all and dst addr: $pester_address2, $pester_address4)" {
-                $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port2 -srcaddr all -dstaddr $pester_address2, $pester_address4
+                $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf $pester_port2 -srcaddr all -dstaddr $pester_address2, $pester_address4
                 $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
                 $policy.uuid | Should -Not -BeNullOrEmpty
                 $policy.policyid | Should -Be $return.policyid
                 $policy.proxy | Should -Be "explicit-web"
-                $policy.dstintf.name | Should -Be "port2"
+                $policy.dstintf.name | Should -Be $pester_port2
                 $policy.srcaddr.name | Should -Be "all"
                 ($policy.dstaddr.name).count | Should -Be "2"
                 $policy.dstaddr.name | Should -BeIn $pester_address2, $pester_address4
@@ -600,12 +600,12 @@ Describe "Add Firewall Proxy Policy" {
             }
 
             It "Add Proxy Policy (src addr: $pester_address1, $pester_address3 and dst addr: $pester_address2, $pester_address4)" {
-                $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port2 -srcaddr $pester_address1, $pester_address3 -dstaddr $pester_address2, $pester_address4
+                $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf $pester_port2 -srcaddr $pester_address1, $pester_address3 -dstaddr $pester_address2, $pester_address4
                 $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
                 $policy.uuid | Should -Not -BeNullOrEmpty
                 $policy.policyid | Should -Be $return.policyid
                 $policy.proxy | Should -Be "explicit-web"
-                $policy.dstintf.name | Should -Be "port2"
+                $policy.dstintf.name | Should -Be $pester_port2
                 ($policy.srcaddr.name).count | Should -Be "2"
                 $policy.srcaddr.name | Should -BeIn $pester_address1, $pester_address3
                 ($policy.dstaddr.name).count | Should -Be "2"
@@ -628,12 +628,12 @@ Describe "Add Firewall Proxy Policy" {
         }
 
         It "Add Proxy Policy (with action deny)" {
-            $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port2 -srcaddr all -dstaddr all -action deny
+            $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf $pester_port2 -srcaddr all -dstaddr all -action deny
             $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
             $policy.uuid | Should -Not -BeNullOrEmpty
             $policy.policyid | Should -Be $return.policyid
             $policy.proxy | Should -Be "explicit-web"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "deny"
@@ -645,12 +645,12 @@ Describe "Add Firewall Proxy Policy" {
         }
 
         It "Add Proxy Policy (with action deny with log)" {
-            $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port2 -srcaddr all -dstaddr all -action deny -log all
+            $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf $pester_port2 -srcaddr all -dstaddr all -action deny -log all
             $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
             $policy.uuid | Should -Not -BeNullOrEmpty
             $policy.policyid | Should -Be $return.policyid
             $policy.proxy | Should -Be "explicit-web"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "deny"
@@ -662,12 +662,12 @@ Describe "Add Firewall Proxy Policy" {
         }
 
         It "Add Proxy Policy (status disable)" {
-            $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port2 -srcaddr all -dstaddr all -status:$false
+            $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf $pester_port2 -srcaddr all -dstaddr all -status:$false
             $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
             $policy.uuid | Should -Not -BeNullOrEmpty
             $policy.policyid | Should -Be $return.policyid
             $policy.proxy | Should -Be "explicit-web"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "accept"
@@ -680,12 +680,12 @@ Describe "Add Firewall Proxy Policy" {
 
         #Disabled: Only service webproxy actually and no yet cmdlet for Add/Remove Proxy Service
         It "Add Proxy Policy (with 1 service : HTTP)" -skip:$true {
-            Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port2 -srcaddr all -dstaddr all -service HTTP
+            Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf $pester_port2 -srcaddr all -dstaddr all -service HTTP
             $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
             $policy.uuid | Should -Not -BeNullOrEmpty
             $policy.policyid | Should -Be $return.policyid
             $policy.proxy | Should -Be "explicit-web"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "accept"
@@ -698,12 +698,12 @@ Describe "Add Firewall Proxy Policy" {
 
         #Disabled: Only service webproxy actually and no yet cmdlet for Add/Remove Proxy Service
         It "Add Proxy Policy (with 2 services : HTTP, HTTPS)" -skip:$true {
-            $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port2 -srcaddr all -dstaddr all -service HTTP, HTTPS
+            $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf $pester_port2 -srcaddr all -dstaddr all -service HTTP, HTTPS
             $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
             $policy.uuid | Should -Not -BeNullOrEmpty
             $policy.policyid | Should -Be $return.policyid
             $policy.proxy | Should -Be "explicit-web"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "accept"
@@ -715,12 +715,12 @@ Describe "Add Firewall Proxy Policy" {
         }
 
         It "Add Proxy Policy (with logtraffic all)" {
-            $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port2 -srcaddr all -dstaddr all -logtraffic all
+            $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf $pester_port2 -srcaddr all -dstaddr all -logtraffic all
             $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
             $policy.uuid | Should -Not -BeNullOrEmpty
             $policy.policyid | Should -Be $return.policyid
             $policy.proxy | Should -Be "explicit-web"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "accept"
@@ -732,12 +732,12 @@ Describe "Add Firewall Proxy Policy" {
         }
 
         It "Add Proxy Policy (with logtraffic disable)" {
-            $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port2 -srcaddr all -dstaddr all -logtraffic disable
+            $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf $pester_port2 -srcaddr all -dstaddr all -logtraffic disable
             $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
             $policy.uuid | Should -Not -BeNullOrEmpty
             $policy.policyid | Should -Be $return.policyid
             $policy.proxy | Should -Be "explicit-web"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "accept"
@@ -750,12 +750,12 @@ Describe "Add Firewall Proxy Policy" {
 
         #Add Schedule ? need API
         It "Add Proxy Policy (with schedule none)" {
-            $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port2 -srcaddr all -dstaddr all -schedule none
+            $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf $pester_port2 -srcaddr all -dstaddr all -schedule none
             $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
             $policy.uuid | Should -Not -BeNullOrEmpty
             $policy.policyid | Should -Be $return.policyid
             $policy.proxy | Should -Be "explicit-web"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "accept"
@@ -767,12 +767,12 @@ Describe "Add Firewall Proxy Policy" {
         }
 
         It "Add Proxy Policy (with comments)" {
-            $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port2 -srcaddr all -dstaddr all -comments "Add via PowerFGT"
+            $return = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf $pester_port2 -srcaddr all -dstaddr all -comments "Add via PowerFGT"
             $policy = Get-FGTFirewallProxyPolicy -policyid $return.policyid
             $policy.uuid | Should -Not -BeNullOrEmpty
             $policy.policyid | Should -Be $return.policyid
             $policy.proxy | Should -Be "explicit-web"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "accept"
@@ -784,12 +784,12 @@ Describe "Add Firewall Proxy Policy" {
         }
 
         It "Add Proxy Policy (with policyid)" {
-            Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port2 -srcaddr all -dstaddr all -policyid 23
+            Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf $pester_port2 -srcaddr all -dstaddr all -policyid 23
             $policy = Get-FGTFirewallProxyPolicy -policyid 23
             $policy.uuid | Should -Not -BeNullOrEmpty
             $policy.policyid | Should -Be "23"
             $policy.proxy | Should -Be "explicit-web"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "accept"
@@ -818,7 +818,7 @@ Describe "Remove Firewall Proxy Policy" {
     Context "Transparent-web" {
 
         BeforeEach {
-            $policy = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all
+            $policy = Add-FGTFirewallProxyPolicy -proxy transparent-web -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all
             $script:policyid = $policy.policyid
         }
 
@@ -843,7 +843,7 @@ Describe "Remove Firewall Proxy Policy" {
         }
 
         BeforeEach {
-            $policy = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf port2 -srcaddr all -dstaddr all
+            $policy = Add-FGTFirewallProxyPolicy -proxy explicit-web -dstintf $pester_port2 -srcaddr all -dstaddr all
             $script:policyid = $policy.policyid
         }
 
