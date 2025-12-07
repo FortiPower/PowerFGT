@@ -14,10 +14,10 @@ BeforeAll {
 Describe "Get Firewall Policy" {
 
     BeforeAll {
-        $policy = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all
+        $policy = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all
         $script:uuid = $policy.uuid
         $script:policyid = $policy.policyid
-        Add-FGTFirewallPolicy -name $pester_policy2 -srcintf port2 -dstintf port1 -srcaddr all -dstaddr all
+        Add-FGTFirewallPolicy -name $pester_policy2 -srcintf $pester_port2 -dstintf $pester_port1 -srcaddr all -dstaddr all
     }
 
     It "Get Policy Does not throw an error" {
@@ -95,21 +95,21 @@ Describe "Get Firewall Policy" {
 Describe "Add Firewall Policy" {
 
     BeforeAll {
-        Add-FGTFirewallPolicy -name $pester_policy2 -srcintf port2 -dstintf port3 -srcaddr all -dstaddr all
+        Add-FGTFirewallPolicy -name $pester_policy2 -srcintf $pester_port2 -dstintf $pester_port3 -srcaddr all -dstaddr all
     }
 
     AfterEach {
         Get-FGTFirewallPolicy -name $pester_policy1 | Remove-FGTFirewallPolicy -confirm:$false
     }
 
-    It "Add Policy $pester_policy1 (port1/port2 : All/All)" {
-        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all
+    It "Add Policy $pester_policy1 ($pester_port1 / $pester_port2 : All/All)" {
+        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
         $policy.name | Should -Be $pester_policy1
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.srcintf.name | Should -Be "port1"
-        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcintf.name | Should -Be $pester_port1
+        $policy.dstintf.name | Should -Be $pester_port2
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "accept"
@@ -123,15 +123,15 @@ Describe "Add Firewall Policy" {
 
     Context "Multi Source / destination Interface" {
 
-        It "Add Policy $pester_policy1 (src intf: port1, port3 and dst intf: port2)" {
-            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1, port3 -dstintf port2 -srcaddr all -dstaddr all
+        It "Add Policy $pester_policy1 (src intf: $pester_port1, $pester_port3 and dst intf: $pester_port2)" {
+            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1, $pester_port3 -dstintf $pester_port2 -srcaddr all -dstaddr all
             @($p).count | Should -Be "1"
             $policy = Get-FGTFirewallPolicy -name $pester_policy1
             $policy.name | Should -Be $pester_policy1
             $policy.uuid | Should -Not -BeNullOrEmpty
             ($policy.srcintf.name).count | Should -be "2"
-            $policy.srcintf.name | Should -BeIn "port1", "port3"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcintf.name | Should -BeIn $pester_port1, $pester_port3
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "accept"
@@ -143,15 +143,15 @@ Describe "Add Firewall Policy" {
             $policy.comments | Should -BeNullOrEmpty
         }
 
-        It "Add Policy $pester_policy1 (src intf: port1 and dst intf: port2, port4)" {
-            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2, port4 -srcaddr all -dstaddr all
+        It "Add Policy $pester_policy1 (src intf: $pester_port1 and dst intf: $pester_port2, $pester_port4)" {
+            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2, $pester_port4 -srcaddr all -dstaddr all
             @($p).count | Should -Be "1"
             $policy = Get-FGTFirewallPolicy -name $pester_policy1
             $policy.name | Should -Be $pester_policy1
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.srcintf.name | Should -Be "port1"
+            $policy.srcintf.name | Should -Be $pester_port1
             ($policy.dstintf.name).count | Should -be "2"
-            $policy.dstintf.name | Should -BeIn "port2", "port4"
+            $policy.dstintf.name | Should -BeIn $pester_port2, $pester_port4
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "accept"
@@ -163,16 +163,16 @@ Describe "Add Firewall Policy" {
             $policy.comments | Should -BeNullOrEmpty
         }
 
-        It "Add Policy $pester_policy1 (src intf: port1, port3 and dst intf: port2, port4)" {
-            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1, port3 -dstintf port2, port4 -srcaddr all -dstaddr all
+        It "Add Policy $pester_policy1 (src intf: $pester_port1, $pester_port3 and dst intf: $pester_port2, $pester_port4)" {
+            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1, $pester_port3 -dstintf $pester_port2, $pester_port4 -srcaddr all -dstaddr all
             @($p).count | Should -Be "1"
             $policy = Get-FGTFirewallPolicy -name $pester_policy1
             $policy.name | Should -Be $pester_policy1
             $policy.uuid | Should -Not -BeNullOrEmpty
             ($policy.srcintf.name).count | Should -be "2"
-            $policy.srcintf.name | Should -BeIn "port1", "port3"
+            $policy.srcintf.name | Should -BeIn $pester_port1, $pester_port3
             ($policy.dstintf.name).count | Should -be "2"
-            $policy.dstintf.name | Should -BeIn "port2", "port4"
+            $policy.dstintf.name | Should -BeIn $pester_port2, $pester_port4
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "accept"
@@ -196,13 +196,13 @@ Describe "Add Firewall Policy" {
         }
 
         It "Add Policy $pester_policy1 (src addr: $pester_address1 and dst addr: all)" {
-            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr $pester_address1 -dstaddr all
+            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr $pester_address1 -dstaddr all
             @($p).count | Should -Be "1"
             $policy = Get-FGTFirewallPolicy -name $pester_policy1
             $policy.name | Should -Be $pester_policy1
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.srcintf.name | Should -BeIn "port1"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcintf.name | Should -BeIn $pester_port1
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be $pester_address1
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "accept"
@@ -215,13 +215,13 @@ Describe "Add Firewall Policy" {
         }
 
         It "Add Policy $pester_policy1 (src addr: $pester_address1, $pester_address3 and dst addr: all)" {
-            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr $pester_address1, $pester_address3 -dstaddr all
+            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr $pester_address1, $pester_address3 -dstaddr all
             @($p).count | Should -Be "1"
             $policy = Get-FGTFirewallPolicy -name $pester_policy1
             $policy.name | Should -Be $pester_policy1
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.srcintf.name | Should -BeIn "port1"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcintf.name | Should -BeIn $pester_port1
+            $policy.dstintf.name | Should -Be $pester_port2
             ($policy.srcaddr.name).count | Should -Be "2"
             $policy.srcaddr.name | Should -BeIn $pester_address1, $pester_address3
             $policy.dstaddr.name | Should -Be "all"
@@ -235,13 +235,13 @@ Describe "Add Firewall Policy" {
         }
 
         It "Add Policy $pester_policy1 (src addr: all and dst addr: $pester_address2)" {
-            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr $pester_address2
+            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr $pester_address2
             @($p).count | Should -Be "1"
             $policy = Get-FGTFirewallPolicy -name $pester_policy1
             $policy.name | Should -Be $pester_policy1
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.srcintf.name | Should -BeIn "port1"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcintf.name | Should -BeIn $pester_port1
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be $pester_address2
             $policy.action | Should -Be "accept"
@@ -254,13 +254,13 @@ Describe "Add Firewall Policy" {
         }
 
         It "Add Policy $pester_policy1 (src addr: all and dst addr: $pester_address2, $pester_address4)" {
-            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr $pester_address2, $pester_address4
+            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr $pester_address2, $pester_address4
             @($p).count | Should -Be "1"
             $policy = Get-FGTFirewallPolicy -name $pester_policy1
             $policy.name | Should -Be $pester_policy1
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.srcintf.name | Should -BeIn "port1"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcintf.name | Should -BeIn $pester_port1
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "all"
             ($policy.dstaddr.name).count | Should -Be "2"
             $policy.dstaddr.name | Should -BeIn $pester_address2, $pester_address4
@@ -274,13 +274,13 @@ Describe "Add Firewall Policy" {
         }
 
         It "Add Policy $pester_policy1 (src addr: $pester_address1, $pester_address3 and dst addr: $pester_address2, $pester_address4)" {
-            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr $pester_address1, $pester_address3 -dstaddr $pester_address2, $pester_address4
+            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr $pester_address1, $pester_address3 -dstaddr $pester_address2, $pester_address4
             @($p).count | Should -Be "1"
             $policy = Get-FGTFirewallPolicy -name $pester_policy1
             $policy.name | Should -Be $pester_policy1
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.srcintf.name | Should -BeIn "port1"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcintf.name | Should -BeIn $pester_port1
+            $policy.dstintf.name | Should -Be $pester_port2
             ($policy.srcaddr.name).count | Should -Be "2"
             $policy.srcaddr.name | Should -BeIn $pester_address1, $pester_address3
             ($policy.dstaddr.name).count | Should -Be "2"
@@ -304,13 +304,13 @@ Describe "Add Firewall Policy" {
     }
 
     It "Add Policy $pester_policy1 (with nat)" {
-        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -nat
+        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -nat
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
         $policy.name | Should -Be $pester_policy1
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.srcintf.name | Should -Be "port1"
-        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcintf.name | Should -Be $pester_port1
+        $policy.dstintf.name | Should -Be $pester_port2
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "accept"
@@ -323,13 +323,13 @@ Describe "Add Firewall Policy" {
     }
 
     It "Add Policy $pester_policy1 (with action deny)" {
-        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -action deny
+        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -action deny
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
         $policy.name | Should -Be $pester_policy1
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.srcintf.name | Should -Be "port1"
-        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcintf.name | Should -Be $pester_port1
+        $policy.dstintf.name | Should -Be $pester_port2
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "deny"
@@ -342,13 +342,13 @@ Describe "Add Firewall Policy" {
     }
 
     It "Add Policy $pester_policy1 (with action deny with log)" {
-        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -action deny -log all
+        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -action deny -log all
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
         $policy.name | Should -Be $pester_policy1
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.srcintf.name | Should -Be "port1"
-        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcintf.name | Should -Be $pester_port1
+        $policy.dstintf.name | Should -Be $pester_port2
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "deny"
@@ -361,13 +361,13 @@ Describe "Add Firewall Policy" {
     }
 
     It "Add Policy $pester_policy1 (status disable)" {
-        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -status:$false
+        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -status:$false
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
         $policy.name | Should -Be $pester_policy1
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.srcintf.name | Should -Be "port1"
-        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcintf.name | Should -Be $pester_port1
+        $policy.dstintf.name | Should -Be $pester_port2
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "accept"
@@ -380,13 +380,13 @@ Describe "Add Firewall Policy" {
     }
 
     It "Add Policy $pester_policy1 (with 1 service : HTTP)" {
-        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -service HTTP
+        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -service HTTP
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
         $policy.name | Should -Be $pester_policy1
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.srcintf.name | Should -Be "port1"
-        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcintf.name | Should -Be $pester_port1
+        $policy.dstintf.name | Should -Be $pester_port2
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "accept"
@@ -399,13 +399,13 @@ Describe "Add Firewall Policy" {
     }
 
     It "Add Policy $pester_policy1 (with 2 services : HTTP, HTTPS)" {
-        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -service HTTP, HTTPS
+        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -service HTTP, HTTPS
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
         $policy.name | Should -Be $pester_policy1
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.srcintf.name | Should -Be "port1"
-        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcintf.name | Should -Be $pester_port1
+        $policy.dstintf.name | Should -Be $pester_port2
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "accept"
@@ -418,13 +418,13 @@ Describe "Add Firewall Policy" {
     }
 
     It "Add Policy $pester_policy1 (with logtraffic all)" {
-        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -logtraffic all
+        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -logtraffic all
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
         $policy.name | Should -Be $pester_policy1
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.srcintf.name | Should -Be "port1"
-        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcintf.name | Should -Be $pester_port1
+        $policy.dstintf.name | Should -Be $pester_port2
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "accept"
@@ -437,13 +437,13 @@ Describe "Add Firewall Policy" {
     }
 
     It "Add Policy $pester_policy1 (with logtraffic disable)" {
-        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -logtraffic disable
+        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -logtraffic disable
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
         $policy.name | Should -Be $pester_policy1
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.srcintf.name | Should -Be "port1"
-        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcintf.name | Should -Be $pester_port1
+        $policy.dstintf.name | Should -Be $pester_port2
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "accept"
@@ -457,13 +457,13 @@ Describe "Add Firewall Policy" {
 
     #Add Schedule ? need API
     It "Add Policy $pester_policy1 (with schedule none)" {
-        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -schedule none
+        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -schedule none
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
         $policy.name | Should -Be $pester_policy1
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.srcintf.name | Should -Be "port1"
-        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcintf.name | Should -Be $pester_port1
+        $policy.dstintf.name | Should -Be $pester_port2
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "accept"
@@ -476,13 +476,13 @@ Describe "Add Firewall Policy" {
     }
 
     It "Add Policy $pester_policy1 (with comments)" {
-        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -comments "Add via PowerFGT"
+        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -comments "Add via PowerFGT"
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
         $policy.name | Should -Be $pester_policy1
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.srcintf.name | Should -Be "port1"
-        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcintf.name | Should -Be $pester_port1
+        $policy.dstintf.name | Should -Be $pester_port2
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "accept"
@@ -495,14 +495,14 @@ Describe "Add Firewall Policy" {
     }
 
     It "Add Policy $pester_policy1 (with policyid)" {
-        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -policyid 23
+        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -policyid 23
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
         $policy.name | Should -Be $pester_policy1
         $policy.uuid | Should -Not -BeNullOrEmpty
         $policy.policyid | Should -Be "23"
-        $policy.srcintf.name | Should -Be "port1"
-        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcintf.name | Should -Be $pester_port1
+        $policy.dstintf.name | Should -Be $pester_port2
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "accept"
@@ -516,13 +516,13 @@ Describe "Add Firewall Policy" {
 
     #Disable missing API for create IP Pool
     It "Add Policy $pester_policy1 (with IP Pool)" -skip:$true {
-        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -nat -ippool "MyIPPool"
+        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -nat -ippool "MyIPPool"
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
         $policy.name | Should -Be $pester_policy1
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.srcintf.name | Should -Be "port1"
-        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcintf.name | Should -Be $pester_port1
+        $policy.dstintf.name | Should -Be $pester_port2
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "accept"
@@ -538,13 +538,13 @@ Describe "Add Firewall Policy" {
 
     It "Add Policy $pester_policy1 (with data (1 field))" {
         $data = @{ "logtraffic-start" = "enable" }
-        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -data $data
+        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -data $data
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
         $policy.name | Should -Be $pester_policy1
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.srcintf.name | Should -Be "port1"
-        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcintf.name | Should -Be $pester_port1
+        $policy.dstintf.name | Should -Be $pester_port2
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "accept"
@@ -559,13 +559,13 @@ Describe "Add Firewall Policy" {
 
     It "Add Policy $pester_policy1 (with data (2 fields))" {
         $data = @{ "logtraffic-start" = "enable" ; "comments" = "Add via PowerFGT and -data" }
-        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -data $data
+        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -data $data
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
         $policy.name | Should -Be $pester_policy1
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.srcintf.name | Should -Be "port1"
-        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcintf.name | Should -Be $pester_port1
+        $policy.dstintf.name | Should -Be $pester_port2
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "accept"
@@ -579,13 +579,13 @@ Describe "Add Firewall Policy" {
     }
 
     It "Add Policy $pester_policy1 (with SSL/SSH Profile: certificate-inspection)" {
-        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -sslsshprofile certificate-inspection
+        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -sslsshprofile certificate-inspection
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
         $policy.name | Should -Be $pester_policy1
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.srcintf.name | Should -Be "port1"
-        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcintf.name | Should -Be $pester_port1
+        $policy.dstintf.name | Should -Be $pester_port2
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "accept"
@@ -600,13 +600,13 @@ Describe "Add Firewall Policy" {
     }
 
     It "Add Policy $pester_policy1 (with SSL/SSH Profile: deep-inspection)" {
-        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -sslsshprofile deep-inspection
+        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -sslsshprofile deep-inspection
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
         $policy.name | Should -Be $pester_policy1
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.srcintf.name | Should -Be "port1"
-        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcintf.name | Should -Be $pester_port1
+        $policy.dstintf.name | Should -Be $pester_port2
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "accept"
@@ -621,13 +621,13 @@ Describe "Add Firewall Policy" {
     }
 
     It "Add Policy $pester_policy1 (with AV Profile: default)" {
-        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -avprofile default
+        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -avprofile default
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
         $policy.name | Should -Be $pester_policy1
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.srcintf.name | Should -Be "port1"
-        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcintf.name | Should -Be $pester_port1
+        $policy.dstintf.name | Should -Be $pester_port2
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "accept"
@@ -642,13 +642,13 @@ Describe "Add Firewall Policy" {
     }
 
     It "Add Policy $pester_policy1 (with Web Filter Profile: default)" {
-        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -webfilterprofile default
+        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -webfilterprofile default
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
         $policy.name | Should -Be $pester_policy1
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.srcintf.name | Should -Be "port1"
-        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcintf.name | Should -Be $pester_port1
+        $policy.dstintf.name | Should -Be $pester_port2
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "accept"
@@ -663,13 +663,13 @@ Describe "Add Firewall Policy" {
     }
 
     It "Add Policy $pester_policy1 (with DNS Filter Profile: default)" {
-        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -dnsfilterprofile default
+        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -dnsfilterprofile default
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
         $policy.name | Should -Be $pester_policy1
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.srcintf.name | Should -Be "port1"
-        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcintf.name | Should -Be $pester_port1
+        $policy.dstintf.name | Should -Be $pester_port2
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "accept"
@@ -684,13 +684,13 @@ Describe "Add Firewall Policy" {
     }
 
     It "Add Policy $pester_policy1 (with IP Sensor: default)" {
-        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -ipssensor default
+        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -ipssensor default
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
         $policy.name | Should -Be $pester_policy1
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.srcintf.name | Should -Be "port1"
-        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcintf.name | Should -Be $pester_port1
+        $policy.dstintf.name | Should -Be $pester_port2
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "accept"
@@ -705,13 +705,13 @@ Describe "Add Firewall Policy" {
     }
 
     It "Add Policy $pester_policy1 (with Application List: default)" {
-        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -applicationlist default
+        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -applicationlist default
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
         $policy.name | Should -Be $pester_policy1
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.srcintf.name | Should -Be "port1"
-        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcintf.name | Should -Be $pester_port1
+        $policy.dstintf.name | Should -Be $pester_port2
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "accept"
@@ -726,13 +726,13 @@ Describe "Add Firewall Policy" {
     }
 
     It "Add Policy $pester_policy1 (with Global Label: MyLabel) " {
-        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -globallabel MyLabel
+        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -globallabel MyLabel
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
         $policy.name | Should -Be $pester_policy1
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.srcintf.name | Should -Be "port1"
-        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcintf.name | Should -Be $pester_port1
+        $policy.dstintf.name | Should -Be $pester_port2
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "accept"
@@ -746,13 +746,13 @@ Describe "Add Firewall Policy" {
     }
 
     It "Add Policy $pester_policy1 (with inspection-mode: flow)" -skip:($fgt_version -lt "6.2.0") {
-        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -inspectionmode flow
+        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -inspectionmode flow
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
         $policy.name | Should -Be $pester_policy1
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.srcintf.name | Should -Be "port1"
-        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcintf.name | Should -Be $pester_port1
+        $policy.dstintf.name | Should -Be $pester_port2
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "accept"
@@ -766,13 +766,13 @@ Describe "Add Firewall Policy" {
     }
 
     It "Add Policy $pester_policy1 (with inspection-mode: proxy)" -skip:($fgt_version -lt "6.2.0") {
-        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -inspectionmode proxy
+        $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -inspectionmode proxy
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
         $policy.name | Should -Be $pester_policy1
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.srcintf.name | Should -Be "port1"
-        $policy.dstintf.name | Should -Be "port2"
+        $policy.srcintf.name | Should -Be $pester_port1
+        $policy.dstintf.name | Should -Be $pester_port2
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "accept"
@@ -787,14 +787,14 @@ Describe "Add Firewall Policy" {
 
     It "Try to Add Policy $pester_policy1 (but there is already a object with same name)" {
         #Add first policy
-        Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all
+        Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all
         #Add Second policy with same name
-        { Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all } | Should -Throw "Already a Policy using the same name"
+        { Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all } | Should -Throw "Already a Policy using the same name"
     }
 
     It "Try to Add Policy without name (unnamed policy)" {
         #TODO: Add check where unnamed policy is allowed (need cmdlet for modified System Settings)
-        { Add-FGTFirewallPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all } | Should -Throw "You need to specifiy a name"
+        { Add-FGTFirewallPolicy -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all } | Should -Throw "You need to specifiy a name"
     }
 
     Context "Unnamed Policy" {
@@ -809,13 +809,13 @@ Describe "Add Firewall Policy" {
         }
 
         It "Add unnamed Policy" {
-            $p = Add-FGTFirewallPolicy -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -policyid 23
+            $p = Add-FGTFirewallPolicy -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -policyid 23
             @($p).count | Should -Be "1"
             $policy = Get-FGTFirewallPolicy -policyid 23
             $policy.name | Should -Be ""
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.srcintf.name | Should -Be "port1"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcintf.name | Should -Be $pester_port1
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "accept"
@@ -857,14 +857,14 @@ Describe "Add Firewall Policy Member" {
     Context "Add Member(s) to Source Address" {
 
         It "Add 1 member to Policy Src Address $pester_address1 (with All before)" {
-            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all
+            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all
             @($p).count | Should -Be "1"
             Get-FGTFirewallPolicy -Name $pester_policy1 | Add-FGTFirewallPolicyMember -srcaddr $pester_address1
             $policy = Get-FGTFirewallPolicy -name $pester_policy1
             $policy.name | Should -Be $pester_policy1
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.srcintf.name | Should -BeIn "port1"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcintf.name | Should -BeIn $pester_port1
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be $pester_address1
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "accept"
@@ -877,14 +877,14 @@ Describe "Add Firewall Policy Member" {
         }
 
         It "Add 2 members to Policy Src Address $pester_address1, $pester_address3 (with All before)" {
-            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all
+            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all
             @($p).count | Should -Be "1"
             Get-FGTFirewallPolicy -Name $pester_policy1 | Add-FGTFirewallPolicyMember -srcaddr $pester_address1, $pester_address3
             $policy = Get-FGTFirewallPolicy -name $pester_policy1
             $policy.name | Should -Be $pester_policy1
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.srcintf.name | Should -BeIn "port1"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcintf.name | Should -BeIn $pester_port1
+            $policy.dstintf.name | Should -Be $pester_port2
             ($policy.srcaddr.name).count | Should -Be "2"
             $policy.srcaddr.name | Should -Be $pester_address1, $pester_address3
             $policy.dstaddr.name | Should -Be "all"
@@ -898,14 +898,14 @@ Describe "Add Firewall Policy Member" {
         }
 
         It "Add 1 member to Policy Src Address $pester_address3 (with $pester_address1 before)" {
-            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr $pester_address1 -dstaddr all
+            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr $pester_address1 -dstaddr all
             @($p).count | Should -Be "1"
             Get-FGTFirewallPolicy -Name $pester_policy1 | Add-FGTFirewallPolicyMember -srcaddr $pester_address3
             $policy = Get-FGTFirewallPolicy -name $pester_policy1
             $policy.name | Should -Be $pester_policy1
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.srcintf.name | Should -BeIn "port1"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcintf.name | Should -BeIn $pester_port1
+            $policy.dstintf.name | Should -Be $pester_port2
             ($policy.srcaddr.name).count | Should -Be "2"
             $policy.srcaddr.name | Should -Be $pester_address1, $pester_address3
             $policy.dstaddr.name | Should -Be "all"
@@ -923,14 +923,14 @@ Describe "Add Firewall Policy Member" {
     Context "Add Member(s) to Destination Address" {
 
         It "Add 1 member to Policy Dst Address $pester_address2 (with All before)" {
-            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all
+            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all
             @($p).count | Should -Be "1"
             Get-FGTFirewallPolicy -Name $pester_policy1 | Add-FGTFirewallPolicyMember -dstaddr $pester_address2
             $policy = Get-FGTFirewallPolicy -name $pester_policy1
             $policy.name | Should -Be $pester_policy1
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.srcintf.name | Should -BeIn "port1"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcintf.name | Should -BeIn $pester_port1
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be "$pester_address2"
             $policy.action | Should -Be "accept"
@@ -943,14 +943,14 @@ Describe "Add Firewall Policy Member" {
         }
 
         It "Add 2 members to Policy Dst Address $pester_address2, $pester_address4 (with All before)" {
-            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all
+            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all
             @($p).count | Should -Be "1"
             Get-FGTFirewallPolicy -Name $pester_policy1 | Add-FGTFirewallPolicyMember -dstaddr $pester_address2, $pester_address4
             $policy = Get-FGTFirewallPolicy -name $pester_policy1
             $policy.name | Should -Be $pester_policy1
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.srcintf.name | Should -BeIn "port1"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcintf.name | Should -BeIn $pester_port1
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "all"
             ($policy.dstaddr.name).count | Should -Be "2"
             $policy.dstaddr.name | Should -BeIn $pester_address2, $pester_address4
@@ -964,14 +964,14 @@ Describe "Add Firewall Policy Member" {
         }
 
         It "Add 1 member to Policy Dst Address $pester_address4 (with $pester_address2 before)" {
-            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr $pester_address2
+            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr $pester_address2
             @($p).count | Should -Be "1"
             Get-FGTFirewallPolicy -Name $pester_policy1 | Add-FGTFirewallPolicyMember -dstaddr $pester_address4
             $policy = Get-FGTFirewallPolicy -name $pester_policy1
             $policy.name | Should -Be $pester_policy1
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.srcintf.name | Should -BeIn "port1"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcintf.name | Should -BeIn $pester_port1
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "all"
             ($policy.dstaddr.name).count | Should -Be "2"
             $policy.dstaddr.name | Should -BeIn $pester_address2, $pester_address4
@@ -988,14 +988,14 @@ Describe "Add Firewall Policy Member" {
     Context "Add Member(s) to Source and Destination Address" {
 
         It "Add 1 member to Policy src Address $pester_address1 dst Address $pester_address2 (with All before)" {
-            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all
+            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all
             @($p).count | Should -Be "1"
             Get-FGTFirewallPolicy -Name $pester_policy1 | Add-FGTFirewallPolicyMember -srcaddr $pester_address1 -dstaddr $pester_address2
             $policy = Get-FGTFirewallPolicy -name $pester_policy1
             $policy.name | Should -Be $pester_policy1
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.srcintf.name | Should -BeIn "port1"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcintf.name | Should -BeIn $pester_port1
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "$pester_address1"
             $policy.dstaddr.name | Should -Be "$pester_address2"
             $policy.action | Should -Be "accept"
@@ -1008,14 +1008,14 @@ Describe "Add Firewall Policy Member" {
         }
 
         It "Add 2 members to Policy Src Address $pester_address1, $pester_address3 and Dst Address $pester_address2, $pester_address4 (with All before)" {
-            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all
+            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all
             @($p).count | Should -Be "1"
             Get-FGTFirewallPolicy -Name $pester_policy1 | Add-FGTFirewallPolicyMember -srcaddr $pester_address1, $pester_address3 -dstaddr $pester_address2, $pester_address4
             $policy = Get-FGTFirewallPolicy -name $pester_policy1
             $policy.name | Should -Be $pester_policy1
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.srcintf.name | Should -BeIn "port1"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcintf.name | Should -BeIn $pester_port1
+            $policy.dstintf.name | Should -Be $pester_port2
             ($policy.srcaddr.name).count | Should -Be "2"
             $policy.srcaddr.name | Should -BeIn $pester_address1, $pester_address3
             ($policy.dstaddr.name).count | Should -Be "2"
@@ -1030,14 +1030,14 @@ Describe "Add Firewall Policy Member" {
         }
 
         It "Add 1 members to Policy Src Address $pester_address3 and Dst Address $pester_address4 (with $pester_address1/$pester_address2 before)" {
-            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr $pester_address1 -dstaddr $pester_address2
+            $p = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr $pester_address1 -dstaddr $pester_address2
             @($p).count | Should -Be "1"
             Get-FGTFirewallPolicy -Name $pester_policy1 | Add-FGTFirewallPolicyMember -srcaddr $pester_address3 -dstaddr $pester_address4
             $policy = Get-FGTFirewallPolicy -name $pester_policy1
             $policy.name | Should -Be $pester_policy1
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.srcintf.name | Should -BeIn "port1"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcintf.name | Should -BeIn $pester_port1
+            $policy.dstintf.name | Should -Be $pester_port2
             ($policy.srcaddr.name).count | Should -Be "2"
             $policy.srcaddr.name | Should -BeIn $pester_address1, $pester_address3
             ($policy.dstaddr.name).count | Should -Be "2"
@@ -1198,11 +1198,11 @@ Describe "Add Firewall Policy Member" {
 Describe "Move Firewall Policy" {
 
     BeforeEach {
-        $p1 = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -service SSH
+        $p1 = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -service SSH
         $script:policyid1 = [int]$p1.policyid
-        $p2 = Add-FGTFirewallPolicy -name $pester_policy2 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -service HTTP
+        $p2 = Add-FGTFirewallPolicy -name $pester_policy2 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -service HTTP
         $script:policyid2 = [int]$p2.policyid
-        $p3 = Add-FGTFirewallPolicy -name $pester_policy3 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all -service HTTPS
+        $p3 = Add-FGTFirewallPolicy -name $pester_policy3 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all -service HTTPS
         $script:policyid3 = [int]$p3.policyid
     }
 
@@ -1254,42 +1254,42 @@ Describe "Move Firewall Policy" {
 Describe "Configure Firewall Policy" {
 
     BeforeAll {
-        $policy = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all
+        $policy = Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all
         $script:uuid = $policy.uuid
     }
 
     Context "Multi Source / Destination Interface" {
 
-        It "Set Policy $pester_policy1 (src intf: port1, port3)" {
-            $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -srcintf port1, port3
+        It "Set Policy $pester_policy1 (src intf: $pester_port1, $pester_port3)" {
+            $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -srcintf $pester_port1, $pester_port3
             @($p).count | Should -Be "1"
             $policy = Get-FGTFirewallPolicy -name $pester_policy1
             $policy.name | Should -Be $pester_policy1
             $policy.uuid | Should -Not -BeNullOrEmpty
             ($policy.srcintf.name).count | Should -be "2"
-            $policy.srcintf.name | Should -BeIn "port1", "port3"
+            $policy.srcintf.name | Should -BeIn $pester_port1, $pester_port3
         }
 
-        It "Set Policy $pester_policy1 (dst intf: port2, port4)" {
-            $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -dstintf port2, port4
+        It "Set Policy $pester_policy1 (dst intf: $pester_port2, $pester_port4)" {
+            $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -dstintf $pester_port2, $pester_port4
             @($p).count | Should -Be "1"
             $policy = Get-FGTFirewallPolicy -name $pester_policy1
             $policy.name | Should -Be $pester_policy1
             $policy.uuid | Should -Not -BeNullOrEmpty
             ($policy.dstintf.name).count | Should -be "2"
-            $policy.dstintf.name | Should -BeIn "port2", "port4"
+            $policy.dstintf.name | Should -BeIn $pester_port2, $pester_port4
         }
 
-        It "Set Policy $pester_policy1 (src intf: port3 and dst intf: port4)" {
-            $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -srcintf port3 -dstintf port4
+        It "Set Policy $pester_policy1 (src intf: $pester_port3 and dst intf: $pester_port4)" {
+            $p = Get-FGTFirewallPolicy -name $pester_policy1 | Set-FGTFirewallPolicy -srcintf $pester_port3 -dstintf $pester_port4
             @($p).count | Should -Be "1"
             $policy = Get-FGTFirewallPolicy -name $pester_policy1
             $policy.name | Should -Be $pester_policy1
             $policy.uuid | Should -Not -BeNullOrEmpty
             ($policy.srcintf.name).count | Should -be "1"
-            $policy.srcintf.name | Should -BeIn "port3"
+            $policy.srcintf.name | Should -BeIn $pester_port3
             ($policy.dstintf.name).count | Should -be "1"
-            $policy.dstintf.name | Should -BeIn "port4"
+            $policy.dstintf.name | Should -BeIn $pester_port4
         }
 
     }
@@ -1737,7 +1737,7 @@ Describe "Configure Firewall Policy" {
 Describe "Remove Firewall Policy" {
 
     BeforeEach {
-        Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr all
+        Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr all
     }
 
     It "Remove Policy $pester_policy1 by pipeline" {
@@ -1764,7 +1764,7 @@ Describe "Remove Firewall Policy Member" {
 
     Context "Remove Member(s) to Source Address" {
         BeforeEach {
-            Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr $pester_address1, $pester_address2, $pester_address3 -dstaddr all
+            Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr $pester_address1, $pester_address2, $pester_address3 -dstaddr all
         }
 
         It "Remove 1 member to Policy Src Address $pester_address1 (with 3 members before)" {
@@ -1772,8 +1772,8 @@ Describe "Remove Firewall Policy Member" {
             $policy = Get-FGTFirewallPolicy -name $pester_policy1
             $policy.name | Should -Be $pester_policy1
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.srcintf.name | Should -BeIn "port1"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcintf.name | Should -BeIn $pester_port1
+            $policy.dstintf.name | Should -Be $pester_port2
             ($policy.srcaddr.name).count | Should -Be "2"
             $policy.srcaddr.name | Should -Be $pester_address2, $pester_address3
             $policy.dstaddr.name | Should -Be "all"
@@ -1791,8 +1791,8 @@ Describe "Remove Firewall Policy Member" {
             $policy = Get-FGTFirewallPolicy -name $pester_policy1
             $policy.name | Should -Be $pester_policy1
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.srcintf.name | Should -BeIn "port1"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcintf.name | Should -BeIn $pester_port1
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be $pester_address3
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "accept"
@@ -1865,7 +1865,7 @@ Describe "Remove Firewall Policy Member" {
 
     Context "Remove Member(s) to Destination Address" {
         BeforeEach {
-            Add-FGTFirewallPolicy -name $pester_policy1 -srcintf port1 -dstintf port2 -srcaddr all -dstaddr $pester_address1, $pester_address2, $pester_address3
+            Add-FGTFirewallPolicy -name $pester_policy1 -srcintf $pester_port1 -dstintf $pester_port2 -srcaddr all -dstaddr $pester_address1, $pester_address2, $pester_address3
         }
 
         It "Remove 1 member to Policy Dst Address $pester_address1 (with 3 members before)" {
@@ -1873,8 +1873,8 @@ Describe "Remove Firewall Policy Member" {
             $policy = Get-FGTFirewallPolicy -name $pester_policy1
             $policy.name | Should -Be $pester_policy1
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.srcintf.name | Should -BeIn "port1"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcintf.name | Should -BeIn $pester_port1
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "all"
             ($policy.dstaddr.name).count | Should -Be "2"
             $policy.dstaddr.name | Should -Be $pester_address2, $pester_address3
@@ -1892,8 +1892,8 @@ Describe "Remove Firewall Policy Member" {
             $policy = Get-FGTFirewallPolicy -name $pester_policy1
             $policy.name | Should -Be $pester_policy1
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.srcintf.name | Should -BeIn "port1"
-            $policy.dstintf.name | Should -Be "port2"
+            $policy.srcintf.name | Should -BeIn $pester_port1
+            $policy.dstintf.name | Should -Be $pester_port2
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be $pester_address3
             $policy.action | Should -Be "accept"
