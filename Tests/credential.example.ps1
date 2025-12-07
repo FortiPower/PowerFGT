@@ -15,6 +15,12 @@ $script:httpOnly = $true
 $script:SkipCertificateCheck = $true
 $script:ci = $false
 $script:oldauth = $false
+
+#when using vdom, you need to set also (pester) port (1 to 4) on vdom and also set default security profile (AV/WF/IPS...)
+#Get-FGTSystemInterface $pester_port1 | Set-FGTSystemInterface -vdom_interface "MyVDOM"
+#Get-FGTSystemInterface $pester_port2 | Set-FGTSystemInterface -vdom_interface "MyVDOM"
+#Get-FGTSystemInterface $pester_port3 | Set-FGTSystemInterface -vdom_interface "MyVDOM"
+#Get-FGTSystemInterface $pester_port4 | Set-FGTSystemInterface -vdom_interface "MyVDOM"
 #$script:vdom = "MyVDOM"
 
 #default settings use for test, can be override if needed...
