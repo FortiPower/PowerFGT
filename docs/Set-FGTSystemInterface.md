@@ -15,8 +15,8 @@ Modify an interface
 ```
 Set-FGTSystemInterface [-interface] <PSObject> [-alias <String>] [-role <String>] [-allowaccess <String[]>]
  [-mode <String>] [-ip <String>] [-netmask <String>] [-status <String>] [-device_identification <String>]
- [-data <Hashtable>] [-vdom <String[]>] [-dhcprelayip <String[]>] [-connection <PSObject>]
- [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-vdom_interface <String>] [-data <Hashtable>] [-vdom <String[]>] [-dhcprelayip <String[]>]
+ [-connection <PSObject>] [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -177,6 +177,21 @@ Accept wildcard characters: False
 
 ### -device_identification
 {{ Fill device_identification Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -vdom_interface
+{{ Fill vdom_interface Description }}
 
 ```yaml
 Type: String
