@@ -426,6 +426,8 @@ function Set-FGTSystemInterface {
         [Parameter (Mandatory = $false)]
         [string]$device_identification,
         [Parameter (Mandatory = $false)]
+        [string]$vdom_interface,
+        [Parameter (Mandatory = $false)]
         [hashtable]$data,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
@@ -497,6 +499,10 @@ function Set-FGTSystemInterface {
                 $_interface | add-member -name "dhcp-relay-ip" -membertype NoteProperty -Value $dhcprelayipoption
                 $_interface | add-member -name "dhcp-relay-service" -membertype NoteProperty -Value "enable"
             }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('vdom_interface') ) {
+            $_interface | add-member -name "vdom" -membertype NoteProperty -Value $vdom_interface
         }
 
         if ( $PsBoundParameters.ContainsKey('data') ) {
