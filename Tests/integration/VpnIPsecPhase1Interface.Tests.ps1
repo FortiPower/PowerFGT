@@ -1024,6 +1024,22 @@ Describe "Configure VPN Ipsec Phase 1 Interface" -ForEach $type {
             $vpn.keepalive | Should -Be 30
         }
 
+        It "Set VPN Ipsec Phase 1 Interface with new interface port ($pester_port2)" {
+            Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Set-FGTVpnIpsecPhase1Interface -interface $pester_port2
+            $vpn = Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1
+            $vpn.name | Should -Be $pester_vpn1
+            $vpn.'ike-version' | Should -Be $_.param.ikeversion
+            $vpn.type | Should -Be $_.param.type
+            $vpn.psksecret | Should -Not -BeNullOrEmpty
+            if ($_.param.type -eq "static") {
+                $vpn.'remote-gw' | Should -Be "192.0.2.1"
+            }
+            else {
+                $vpn.'remote-gw' | Should -Be "0.0.0.0"
+            }
+            $vpn.interface | Should -Be $pester_port2
+        }
+
         It "Set VPN Ipsec Phase 1 Interface with change ike-version (1 -> 2 or 2 -> 1)" {
             if ($_.param.ikeversion -eq "1") {
                 $ikeversion = 2
