@@ -28,6 +28,11 @@ function Get-FGTFirewallAccessProxy {
         Get Access Proxy contains with *FGT*
 
         .EXAMPLE
+        Get-FGTFirewallAccessProxy -schema
+
+        Get (API) schema of Access Proxy object
+
+        .EXAMPLE
         Get-FGTFirewallAccessProxy -meta
 
         Get list of all Access Proxy object with metadata (q_...) like usage (q_ref)
@@ -58,6 +63,8 @@ function Get-FGTFirewallAccessProxy {
         [Parameter (Mandatory = $false)]
         [Parameter (ParameterSetName = "filter")]
         [psobject]$filter_value,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [switch]$meta,
         [Parameter(Mandatory = $false)]
@@ -82,6 +89,10 @@ function Get-FGTFirewallAccessProxy {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
         #Filtering
         switch ( $PSCmdlet.ParameterSetName ) {
