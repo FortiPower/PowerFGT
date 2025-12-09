@@ -378,6 +378,8 @@ function Set-FGTVpnIpsecPhase1Interface {
         [ValidateSet('static', 'dynamic', IgnoreCase = $false)]
         [string]$type,
         [Parameter (Mandatory = $false)]
+        [string]$interface,
+        [Parameter (Mandatory = $false)]
         [ValidateSet('1', '2')]
         [string]$ikeversion,
         [Parameter (Mandatory = $false)]
@@ -436,6 +438,7 @@ function Set-FGTVpnIpsecPhase1Interface {
 
         $_interface = new-Object -TypeName PSObject
 
+        #Can't change interface if used...
         if ( $PsBoundParameters.ContainsKey('interface') ) {
             $_interface | add-member -name "interface" -membertype NoteProperty -Value $interface
         }
