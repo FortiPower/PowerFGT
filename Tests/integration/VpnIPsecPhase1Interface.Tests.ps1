@@ -732,7 +732,8 @@ Describe "Configure VPN Ipsec Phase 1 Interface" -ForEach $type {
             if ($_.param.type -eq "dynamic" -and $_.param.ikeversion -eq "2") {
                 #FortiOS 7.6 need to force transport to udp for support auto discovery with IKEv2 Dynamic
                 $data = @{ "transport" = "udp" }
-            } else {
+            }
+            else {
                 $data = @{ }
             }
             Get-FGTVpnIpsecPhase1Interface -name $pester_vpn1 | Set-FGTVpnIpsecPhase1Interface -autodiscoverysender -data $data
