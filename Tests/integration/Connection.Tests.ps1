@@ -155,8 +155,11 @@ Describe "Connect to a FortiGate (using multi connection)" {
         It "Use Multi connection for call Get IPS Sensor" {
             { Get-FGTIpsSensor -connection $fgt } | Should -Not -Throw
         }
-        It "Use Multi connection for call Get Firewall Access Proxy (ZTNA)" {
+        It "Use Multi connection for call Get Firewall Access Proxy (ZTNA) (>= 7.0.0)" -skip:($fgt_version -lt "7.0.0") {
             { Get-FGTFirewallAccessProxy -connection $fgt } | Should -Not -Throw
+        }
+        It "Use Multi connection for call Get Firewall Access Proxy (ZTNA) (< 7.0.0)" -skip:($fgt_version -ge "7.0.0") {
+            { Get-FGTFirewallAccessProxy -connection $fgt } | Should -Throw "You can't get Access Proxy with FortiOS < 7.0.0"
         }
         It "Use Multi connection for call Get Firewall Address" {
             { Get-FGTFirewallAddress -connection $fgt } | Should -Not -Throw
