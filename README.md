@@ -63,6 +63,7 @@ With this module (version 0.9.1) you can manage:
 - Web Filter (Get Profile)
 - [Wireless](#wireless) (Get)
 - [Zone](#zone) (Add/Get/Set/Remove and Add/Remove Member)
+- [ZTNA](#ztna) (Get Access Proxy)
 
 There is some extra feature
 - [Invoke API](#invoke-api)
@@ -1973,6 +1974,11 @@ It is possible to `Get` Wireless (-Controller) Configuration
 * `Get-FGTWirelessWTPGroup` List Wireless WTP Group
 * `Get-FGTWirelessWTPProfile` List Wireless WTP Profile
 
+### ZTNA
+
+It is possible to `Get` ZTNA (Access Proxy) Configuration
+* `Get-FGTFirewallAccessProxy` Get Firewall Access Proxy
+
 ### Monitor
 
 It is possible to `monitor` FortiGate
@@ -2409,6 +2415,7 @@ Disconnect-FGT
 Get-FGTAntivirusProfile
 Get-FGTApplicationList
 Get-FGTDnsfilterProfile
+Get-FGTFirewallAccessProxy
 Get-FGTFirewallAddress
 Get-FGTFirewallAddressGroup
 Get-FGTFirewallInternetServiceName
