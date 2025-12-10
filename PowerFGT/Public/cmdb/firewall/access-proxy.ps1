@@ -110,6 +110,11 @@ function Get-FGTFirewallAccessProxy {
             $invokeParams.add( 'filter_type', $filter_type )
         }
 
+        #before 7.0.x, it is not (ZTNA) Access Proxy
+        if ($connection.version -lt "7.0.0") {
+            Throw "You can't get Access Proxy with FortiOS < 7.0.0"
+        }
+
         $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/firewall/access-proxy' -method 'GET' -connection $connection @invokeParams
         $response.results
 
