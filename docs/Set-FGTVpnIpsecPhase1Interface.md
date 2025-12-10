@@ -13,11 +13,12 @@ Configure a Vpn IPsec Phase 1 Interface
 ## SYNTAX
 
 ```
-Set-FGTVpnIpsecPhase1Interface [-vpn] <PSObject> [-type <String>] [-ikeversion <String>] [-proposal <String[]>]
- [-dhgrp <Int32[]>] [-psksecret <String>] [-remotegw <String>] [-peertype <String>] [-netdevice] [-addroute]
- [-autodiscoverysender] [-autodiscoveryreceiver] [-exchangeinterfaceip] [-networkid <Int32>] [-dpd <String>]
- [-dpdretrycount <Int32>] [-dpdretryinterval <Int32>] [-idletimeout] [-data <Hashtable>] [-vdom <String[]>]
- [-connection <PSObject>] [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Set-FGTVpnIpsecPhase1Interface [-vpn] <PSObject> [-type <String>] [-interface <String>] [-ikeversion <String>]
+ [-proposal <String[]>] [-dhgrp <Int32[]>] [-psksecret <String>] [-remotegw <String>] [-peertype <String>]
+ [-netdevice] [-addroute] [-autodiscoverysender] [-autodiscoveryreceiver] [-exchangeinterfaceip]
+ [-networkid <Int32>] [-dpd <String>] [-dpdretrycount <Int32>] [-dpdretryinterval <Int32>] [-idletimeout]
+ [-data <Hashtable>] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -67,6 +68,21 @@ Accept wildcard characters: False
 
 ### -type
 {{ Fill type Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -interface
+{{ Fill interface Description }}
 
 ```yaml
 Type: String
