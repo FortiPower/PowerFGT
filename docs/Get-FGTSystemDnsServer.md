@@ -64,8 +64,10 @@ Get-FGTSystemDnsServer -skip
 
 Display DNS Server configured on the FortiGate (but only relevant attributes)
 
-EXAMPLE
+### EXAMPLE 6
+```
 Get-FGTSystemDnsServer -vdom vdomX
+```
 
 Display DNS Server configured on the FortiGate on vdomX
 

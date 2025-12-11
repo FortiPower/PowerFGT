@@ -64,7 +64,7 @@ Connect to a FortiGate using HTTPS (with port 4443) with IP 192.0.2.1 using (Get
 ### EXAMPLE 5
 ```
 $cred = get-credential
-Connect-FGT -Server 192.0.2.1 -credential $cred
+PS > Connect-FGT -Server 192.0.2.1 -credential $cred
 ```
 
 Connect to a FortiGate with IP 192.0.2.1 and passing (Get-)credential
@@ -72,7 +72,7 @@ Connect to a FortiGate with IP 192.0.2.1 and passing (Get-)credential
 ### EXAMPLE 6
 ```
 $mysecpassword = ConvertTo-SecureString mypassword -AsPlainText -Force
-Connect-FGT -Server 192.0.2.1 -Username manager -Password $mysecpassword
+PS > Connect-FGT -Server 192.0.2.1 -Username manager -Password $mysecpassword
 ```
 
 Connect to a FortiGate with IP 192.0.2.1 using Username and Password
@@ -80,8 +80,9 @@ Connect to a FortiGate with IP 192.0.2.1 using Username and Password
 ### EXAMPLE 7
 ```
 $fw1 = Connect-FGT -Server 192.0.2.1
-Connect to a FortiGate with IP 192.0.2.1 and store connection info to $fw1 variable
 ```
+
+Connect to a FortiGate with IP 192.0.2.1 and store connection info to $fw1 variable
 
 ### EXAMPLE 8
 ```
@@ -103,7 +104,7 @@ The Default value "0" will cause the connection to never timeout.
 ### EXAMPLE 10
 ```
 $apiToken = Get-Content fortigate_api_token.txt
-Connect-FGT -Server -192.0.2.1 -ApiToken $apiToken
+PS > Connect-FGT -Server -192.0.2.1 -ApiToken $apiToken
 ```
 
 Connect to a FortiGate with IP 192.0.2.1 and passing api token
@@ -111,7 +112,7 @@ Connect to a FortiGate with IP 192.0.2.1 and passing api token
 ### EXAMPLE 11
 ```
 $mynewpassword = ConvertTo-SecureString mypassword -AsPlainText -Force
-Connect-FGT -Server 192.0.2.1 -new_password $mysecpassword
+PS > Connect-FGT -Server 192.0.2.1 -new_password $mysecpassword
 ```
 
 Connect to a FortiGate with IP 192.0.2.1 and change the password
