@@ -36,6 +36,14 @@ Describe "Get Firewall Policy" {
         $policy.count | Should -Not -Be $NULL
     }
 
+    It "Get Policy Schema" {
+        $schema = Get-FGTFirewallPolicy -schema
+        $schema | Should -Not -BeNullOrEmpty
+        $schema.path | Should -Be "firewall"
+        $schema.name | Should -Be "policy"
+        $schema.mkey | Should -Be "policyid"
+    }
+
     It "Get Policy ($pester_policy1)" {
         $policy = Get-FGTFirewallPolicy -name $pester_policy1
         $policy.name | Should -Be $pester_policy1

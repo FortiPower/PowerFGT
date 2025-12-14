@@ -38,6 +38,11 @@ function Get-FGTFirewallIPPool {
 
         Get list of all (NAT) ip pool object (but only relevant attributes)
 
+        .EXAMPLE
+        Get-FGTFirewallIPPool -schema
+
+        Get schema of IP Pool object
+
        .EXAMPLE
         Get-FGTFirewallIPPool -vdom vdomX
 
@@ -64,6 +69,8 @@ function Get-FGTFirewallIPPool {
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
+        [switch]$schema,
+        [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
@@ -80,6 +87,9 @@ function Get-FGTFirewallIPPool {
         }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
+        }
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'schema', $schema )
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )

@@ -37,6 +37,11 @@ function Get-FGTFirewallSSLSSHProfile {
 
         Get list of all SSL SSH Profile object (but only relevant attributes)
 
+        .EXAMPLE
+        Get-FGTFirewallSslSshProfile -schema
+
+        Get schema of SSL SSH Profile object
+
        .EXAMPLE
         Get-FGTFirewallSSLSSHProfile -vdom vdomX
 
@@ -63,6 +68,8 @@ function Get-FGTFirewallSSLSSHProfile {
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
+        [switch]$schema,
+        [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
@@ -79,6 +86,9 @@ function Get-FGTFirewallSSLSSHProfile {
         }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
+        }
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'schema', $schema )
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )

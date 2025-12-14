@@ -4,10 +4,11 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 #Requires -Modules @{ ModuleName="Pester"; ModuleVersion="5.1.0" }
+Param()
+Import-Module ../../PowerFGT/PowerFGT.psd1
 
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingConvertToSecureStringWithPlainText", "")]
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignments", "")]
-Param()
 # default settings for test...
 $script:pester_address1 = "pester_address %/*?1"
 $script:pester_address2 = "pester_address2"

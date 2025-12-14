@@ -524,6 +524,11 @@ function Get-FGTFirewallPolicy {
         Get list of all policies (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTFirewallPolicy -schema
+
+        Get schema of policy object
+
+        .EXAMPLE
         Get-FGTFirewallPolicy -meta
 
         Get list of all policies with metadata (q_...) like usage (q_ref)
@@ -559,6 +564,8 @@ function Get-FGTFirewallPolicy {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false)]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]

@@ -190,6 +190,11 @@ function Get-FGTFirewallVip {
         Get list of all nat vip object (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTFirewallVip -schema
+
+        Get schema of nat vip object
+
+        .EXAMPLE
         Get-FGTFirewallVip -meta
 
         Get list of all nat vip object with metadata (q_...) like usage (q_ref)
@@ -222,6 +227,8 @@ function Get-FGTFirewallVip {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false)]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]

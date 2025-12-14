@@ -279,6 +279,11 @@ function Get-FGTFirewallAddressGroup {
         Display all addresses group (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTFirewallAddressGroup -schema
+
+        Get schema of address group object
+
+        .EXAMPLE
         Get-FGTFirewallAddressGroup -vdom vdomX
 
         Display all addresses group on vdomX
@@ -307,6 +312,8 @@ function Get-FGTFirewallAddressGroup {
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
+        [switch]$schema,
+        [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
@@ -323,6 +330,9 @@ function Get-FGTFirewallAddressGroup {
         }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
+        }
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'schema', $schema )
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
