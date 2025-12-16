@@ -33,6 +33,11 @@ function Get-FGTSwitchLLDPProfile {
         Get list of Switch LLDP Profile object (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTSwitchLLDPProfile -schema
+
+        Get schema of Switch LLDP Profile object
+
+        .EXAMPLE
         Get-FGTSwitchLLDPProfile -vdom vdomX
 
         Get list of Switch LLDP Profile object on vdomX
@@ -57,6 +62,8 @@ function Get-FGTSwitchLLDPProfile {
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
+        [switch]$schema,
+        [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
@@ -76,6 +83,9 @@ function Get-FGTSwitchLLDPProfile {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', '&action=schema' )
         }
 
         #Filtering

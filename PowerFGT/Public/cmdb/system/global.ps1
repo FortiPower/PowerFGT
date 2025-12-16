@@ -37,6 +37,11 @@ function Get-FGTSystemGlobal {
         Get-FGTSystemGlobal -vdom vdomX
 
         Get list of all System Global Settings on vdomX
+
+        .EXAMPLE
+        Get-FGTSystemGlobal -schema
+
+        Get schema of System Global object
     #>
 
     [CmdletBinding(DefaultParameterSetName = "default")]
@@ -56,6 +61,8 @@ function Get-FGTSystemGlobal {
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
+        [switch]$schema,
+        [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
@@ -72,6 +79,9 @@ function Get-FGTSystemGlobal {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', '&action=schema' )
         }
 
         #Filtering

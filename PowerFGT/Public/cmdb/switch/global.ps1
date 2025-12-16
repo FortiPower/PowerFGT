@@ -28,6 +28,11 @@ function Get-FGTSwitchGlobal {
         Get list of Switch Global object (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTSwitchGlobal -schema
+
+        Get schema of Switch Global object
+
+        .EXAMPLE
         Get-FGTSwitchGlobal -vdom vdomX
 
         Get list of Switch Global object on vdomX
@@ -50,6 +55,8 @@ function Get-FGTSwitchGlobal {
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
+        [switch]$schema,
+        [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
@@ -69,6 +76,9 @@ function Get-FGTSwitchGlobal {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', '&action=schema' )
         }
 
         #Filtering

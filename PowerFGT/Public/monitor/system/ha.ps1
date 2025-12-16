@@ -23,8 +23,6 @@ function Get-FGTMonitorSystemHAPeer {
         [Parameter (Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
-        [switch]$schema,
-        [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
     )
 
@@ -36,9 +34,6 @@ function Get-FGTMonitorSystemHAPeer {
         $invokeParams = @{ }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
-        }
-        if ( $PsBoundParameters.ContainsKey('schema') ) {
-            $invokeParams.add( 'schema', $schema )
         }
 
         #before 6.2.x, it is not available if HA is not configured
@@ -79,8 +74,6 @@ function Get-FGTMonitorSystemHAChecksum {
         [Parameter (Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
-        [switch]$schema,
-        [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
     )
 
@@ -92,9 +85,6 @@ function Get-FGTMonitorSystemHAChecksum {
         $invokeParams = @{ }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
-        }
-        if ( $PsBoundParameters.ContainsKey('schema') ) {
-            $invokeParams.add( 'schema', $schema )
         }
 
         #before 6.2.x, it is not available if HA is not configured

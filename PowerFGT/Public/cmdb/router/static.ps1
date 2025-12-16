@@ -60,6 +60,11 @@ function Get-FGTRouterStatic {
         Get list of all static route object (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTRouterStatic -schema
+
+        Get schema of static route object
+
+        .EXAMPLE
         Get-FGTRouterStatic -vdom vdomX
 
         Get list of all static route object on vdomX
@@ -90,6 +95,8 @@ function Get-FGTRouterStatic {
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
+        [switch]$schema,
+        [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
@@ -109,6 +116,9 @@ function Get-FGTRouterStatic {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', '&action=schema' )
         }
 
         switch ( $PSCmdlet.ParameterSetName ) {

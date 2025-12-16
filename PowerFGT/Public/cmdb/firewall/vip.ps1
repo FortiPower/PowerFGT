@@ -250,6 +250,9 @@ function Get-FGTFirewallVip {
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
         }
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', '&action=schema' )
+        }
 
         #Filtering
         switch ( $PSCmdlet.ParameterSetName ) {

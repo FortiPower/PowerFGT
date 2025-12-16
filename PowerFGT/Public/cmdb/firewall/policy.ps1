@@ -581,6 +581,9 @@ function Get-FGTFirewallPolicy {
         if ( $PsBoundParameters.ContainsKey('meta') ) {
             $invokeParams.add( 'meta', $meta )
         }
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', '&action=schema' )
+        }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
         }

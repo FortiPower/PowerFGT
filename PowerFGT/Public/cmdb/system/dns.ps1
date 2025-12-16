@@ -38,6 +38,11 @@ function Get-FGTSystemDns {
         Get-FGTSystemDns -vdom vdomX
 
         Display DNS configured on the FortiGate on vdomX
+
+        .EXAMPLE
+        Get-FGTSystemDns -schema
+
+        Get schema of DNS object
     #>
 
     [CmdletBinding(DefaultParameterSetName = "default")]
@@ -56,6 +61,8 @@ function Get-FGTSystemDns {
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
+        [switch]$schema,
+        [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
@@ -72,6 +79,9 @@ function Get-FGTSystemDns {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', '&action=schema' )
         }
 
         #Filtering

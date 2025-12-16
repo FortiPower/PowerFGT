@@ -28,8 +28,6 @@ function Get-FGTMonitorVpnIPsec {
         [Parameter (Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
-        [switch]$schema,
-        [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
@@ -43,9 +41,6 @@ function Get-FGTMonitorVpnIPsec {
         $invokeParams = @{ }
         if ( $PsBoundParameters.ContainsKey('skip') ) {
             $invokeParams.add( 'skip', $skip )
-        }
-        if ( $PsBoundParameters.ContainsKey('schema') ) {
-            $invokeParams.add( 'schema', $schema )
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )

@@ -33,6 +33,11 @@ function Get-FGTSwitchGroup {
         Get list of Switch Group object (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTSwitchGroup -schema
+
+        Get schema of Switch Group object
+
+        .EXAMPLE
         Get-FGTSwitchGroup -vdom vdomX
 
         Get list of Switch Group object on vdomX
@@ -57,6 +62,8 @@ function Get-FGTSwitchGroup {
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
+        [switch]$schema,
+        [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
@@ -76,6 +83,9 @@ function Get-FGTSwitchGroup {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', '&action=schema' )
         }
 
         #Filtering

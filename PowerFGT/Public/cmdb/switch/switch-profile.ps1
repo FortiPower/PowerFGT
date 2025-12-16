@@ -33,6 +33,11 @@ function Get-FGTSwitchProfile {
         Get list of Switch Profile object (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTSwitchProfile -schema
+
+        Get schema of Switch Profile object
+
+        .EXAMPLE
         Get-FGTSwitchProfile -vdom vdomX
 
         Get list of Switch Profile object on vdomX
@@ -57,6 +62,8 @@ function Get-FGTSwitchProfile {
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
+        [switch]$schema,
+        [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
@@ -76,6 +83,9 @@ function Get-FGTSwitchProfile {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', '&action=schema' )
         }
 
         #Filtering

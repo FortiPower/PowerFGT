@@ -88,7 +88,7 @@ function Get-FGTFirewallSSLSSHProfile {
             $invokeParams.add( 'skip', $skip )
         }
         if ( $PsBoundParameters.ContainsKey('schema') ) {
-            $invokeParams.add( 'schema', $schema )
+            $invokeParams.add( 'extra', '&action=schema' )
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )

@@ -33,6 +33,11 @@ function Get-FGTSwitchSTPInstance {
         Get list of STP Instance object (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTSwitchSTPInstance -schema
+
+        Get schema of STP Instance object
+
+        .EXAMPLE
         Get-FGTSwitchSTPInstance -vdom vdomX
 
         Get list of STP Instance object on vdomX
@@ -58,6 +63,8 @@ function Get-FGTSwitchSTPInstance {
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
+        [switch]$schema,
+        [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
@@ -77,6 +84,9 @@ function Get-FGTSwitchSTPInstance {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', '&action=schema' )
         }
 
         #Filtering

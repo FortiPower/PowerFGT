@@ -24,6 +24,13 @@ Describe "Get System Global" {
         @($ss).count | Should -Not -Be $NULL
     }
 
+    It "Get System Global Schema" {
+        $schema = Get-FGTSystemGlobal -schema
+        $schema | Should -Not -BeNullOrEmpty
+        $schema.path | Should -Be "system"
+        $schema.name | Should -Be "global"
+    }
+
     Context "Search" {
 
         It "Search a System Setting by name (language)" {

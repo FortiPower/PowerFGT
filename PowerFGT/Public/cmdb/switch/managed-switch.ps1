@@ -33,6 +33,11 @@ function Get-FGTSwitchManagedSwitch {
         Get list of Managed Switches object (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTSwitchManagedSwitch -schema
+
+        Get schema of Managed Switches object
+
+        .EXAMPLE
         Get-FGTSwitchManagedSwitch -vdom vdomX
 
         Get list of Managed Switches object on vdomX
@@ -59,6 +64,8 @@ function Get-FGTSwitchManagedSwitch {
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
+        [switch]$schema,
+        [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
@@ -78,6 +85,9 @@ function Get-FGTSwitchManagedSwitch {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', '&action=schema' )
         }
 
         #Filtering

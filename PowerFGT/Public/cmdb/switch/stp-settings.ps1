@@ -28,6 +28,11 @@ function Get-FGTSwitchSTPSettings {
         Get list of Switch STP Settings object (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTSwitchSTPSettings -schema
+
+        Get schema of Switch STP Settings object
+
+        .EXAMPLE
         Get-FGTSwitchSTPSettings -vdom vdomX
 
         Get list of Switch STP Settings object on vdomX
@@ -51,6 +56,8 @@ function Get-FGTSwitchSTPSettings {
         [Parameter(Mandatory = $false)]
         [switch]$skip,
         [Parameter(Mandatory = $false)]
+        [switch]$schema,
+        [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
         [psobject]$connection = $DefaultFGTConnection
@@ -70,6 +77,9 @@ function Get-FGTSwitchSTPSettings {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', '&action=schema' )
         }
 
         #Filtering
