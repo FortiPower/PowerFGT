@@ -33,6 +33,15 @@ Describe "Get System Interface" {
         $interface.count | Should -Not -Be $NULL
     }
 
+    It "Get interface -Schema" {
+        $schema = Get-FGTSystemInterface -schema
+        $schema | Should -Not -BeNullOrEmpty
+        $schema.name | Should -Be "interface"
+        $schema.category | Should -Not -BeNullOrEmpty
+        $schema.children | Should -Not -BeNullOrEmpty
+        $schema.mkey | Should -Be "name"
+    }
+
     It "Get interface ($pester_int1)" {
         $interface = Get-FGTSystemInterface -name $pester_int1
         $interface.name | Should -Be $pester_int1

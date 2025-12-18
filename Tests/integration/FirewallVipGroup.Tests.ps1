@@ -39,6 +39,15 @@ Describe "Get Firewall Vip Group" {
         $vipgroup.count | Should -Not -Be $NULL
     }
 
+    It "Get Vip Group -Schema" {
+        $schema = Get-FGTFirewallVipGroup -schema
+        $schema | Should -Not -BeNullOrEmpty
+        $schema.name | Should -Be "vipgrp"
+        $schema.category | Should -Not -BeNullOrEmpty
+        $schema.children | Should -Not -BeNullOrEmpty
+        $schema.mkey | Should -Be "name"
+    }
+
     It "Get Vip Group ($pester_vipgroup1)" {
         $vipgroup = Get-FGTFirewallVipGroup -name $pester_vipgroup1
         $vipgroup.name | Should -Be $pester_vipgroup1

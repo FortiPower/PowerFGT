@@ -38,6 +38,11 @@ function Get-FGTWebfilterProfile {
         Get list of all settings of Webfilter Profile (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTWebfilterProfile -schema
+
+        Get schema of Webfilter Profile
+
+        .EXAMPLE
         Get-FGTWebfilterProfile -vdom vdomX
 
         Get list of all settings of Webfilter Profile on vdomX
@@ -62,6 +67,8 @@ function Get-FGTWebfilterProfile {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -93,6 +100,10 @@ function Get-FGTWebfilterProfile {
                 $filter_attribute = "name"
             }
             default { }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #if filter value and filter_attribute, add filter (by default filter_type is equal)

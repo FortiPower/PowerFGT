@@ -34,6 +34,11 @@ function Get-FGTSystemVirtualWANLink {
         Get Virtual Wan Link Settings (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTSystemVirtualWANLink -schema
+
+        Get schema of System Virtual Wan Link
+
+        .EXAMPLE
         Get-FGTSystemVirtualWANLink -vdom vdomX
 
         Get Virtual Wan Link Settings on vdomX
@@ -53,6 +58,8 @@ function Get-FGTSystemVirtualWANLink {
         [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -72,6 +79,10 @@ function Get-FGTSystemVirtualWANLink {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering

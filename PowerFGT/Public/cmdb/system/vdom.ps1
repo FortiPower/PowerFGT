@@ -34,6 +34,11 @@ function Get-FGTSystemVdom {
         Get list of all vdom (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTSystemVdom -schema
+
+        Get schema of System Vdom
+
+        .EXAMPLE
         Get-FGTSystemVdom -vdom vdomX
 
         Get list of all vdom on vdomX
@@ -56,6 +61,8 @@ function Get-FGTSystemVdom {
         [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -73,6 +80,10 @@ function Get-FGTSystemVdom {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering

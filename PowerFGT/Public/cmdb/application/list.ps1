@@ -38,6 +38,11 @@ function Get-FGTApplicationList {
         Get list of all settings of Application List (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTApplicationList -schema
+
+        Get schema of Application List
+
+        .EXAMPLE
         Get-FGTApplicationList -vdom vdomX
 
         Get list of all settings of Application List on vdomX
@@ -62,6 +67,8 @@ function Get-FGTApplicationList {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -84,6 +91,10 @@ function Get-FGTApplicationList {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering

@@ -257,6 +257,11 @@ function Get-FGTFirewallServiceGroup {
         Get list of all services group object (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTFirewallServiceGroup -schema
+
+        Get schema of Service Group
+
+        .EXAMPLE
         Get-FGTFirewallServiceGroup -vdom vdomX
 
         Get list of all services group object on vdomX
@@ -281,6 +286,8 @@ function Get-FGTFirewallServiceGroup {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -301,6 +308,10 @@ function Get-FGTFirewallServiceGroup {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering

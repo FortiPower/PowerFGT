@@ -39,6 +39,11 @@ function Get-FGTSystemZone {
         Get list of all zone object (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTSystemZone -schema
+
+        Get schema of System Zone
+
+        .EXAMPLE
         Get-FGTSystemZone -vdom vdomX
 
         Get list of all zone object on vdomX
@@ -63,6 +68,8 @@ function Get-FGTSystemZone {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -83,6 +90,10 @@ function Get-FGTSystemZone {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering

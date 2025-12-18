@@ -47,6 +47,11 @@ function Get-FGTLogSetting {
 
         Get list of all settings object (but only relevant attributes)
 
+        .EXAMPLE
+        Get-FGTLogSetting -schema
+
+        Get schema of Log Settings
+
        .EXAMPLE
         Get-FGTLogSetting -vdom vdomX
 
@@ -75,6 +80,8 @@ function Get-FGTLogSetting {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -95,6 +102,10 @@ function Get-FGTLogSetting {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #if filter value and filter_attribute, add filter (by default filter_type is equal)

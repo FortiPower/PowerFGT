@@ -34,6 +34,11 @@ function Get-FGTSystemSDWAN {
         Get SD-WAN Settings (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTSystemSDWAN -schema
+
+        Get schema of System SDWAN
+
+        .EXAMPLE
         Get-FGTSystemSDWAN -vdom vdomX
 
         Get SD-WAN Settings on vdomX
@@ -53,6 +58,8 @@ function Get-FGTSystemSDWAN {
         [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -72,6 +79,10 @@ function Get-FGTSystemSDWAN {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering

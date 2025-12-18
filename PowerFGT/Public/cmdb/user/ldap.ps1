@@ -195,6 +195,11 @@ function Get-FGTUserLDAP {
         Display all LDAP servers (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTUserLDAP -schema
+
+        Get schema of User LDAP
+
+        .EXAMPLE
         Get-FGTUserLDAP -vdom vdomX
 
         Display all LDAP servers on vdomX
@@ -219,6 +224,8 @@ function Get-FGTUserLDAP {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -239,6 +246,10 @@ function Get-FGTUserLDAP {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering

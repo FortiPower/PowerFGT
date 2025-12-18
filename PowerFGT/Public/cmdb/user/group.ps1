@@ -248,6 +248,11 @@ function Get-FGTUserGroup {
         Display all local group (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTUserGroup -schema
+
+        Get schema of User Group
+
+        .EXAMPLE
         Get-FGTUserGroup -vdom vdomX
 
         Display all local group on vdomX
@@ -275,6 +280,8 @@ function Get-FGTUserGroup {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -295,6 +302,10 @@ function Get-FGTUserGroup {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering

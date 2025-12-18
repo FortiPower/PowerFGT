@@ -33,6 +33,15 @@ Describe "Get User Tacacs" {
         @($usertacacs).count | Should -Not -Be $NULL
     }
 
+    It "Get User Tacacs -Schema" {
+        $schema = Get-FGTuserTACACS -schema
+        $schema | Should -Not -BeNullOrEmpty
+        $schema.name | Should -Be "tacacs+"
+        $schema.category | Should -Not -BeNullOrEmpty
+        $schema.children | Should -Not -BeNullOrEmpty
+        $schema.mkey | Should -Be "name"
+    }
+
     It "Get User Tacacs with -name $pester_usertacacs -meta" {
         $usertacacs = Get-FGTuserTACACS -name $pester_usertacacs -meta
         $usertacacs.q_ref | Should -Not -BeNullOrEmpty

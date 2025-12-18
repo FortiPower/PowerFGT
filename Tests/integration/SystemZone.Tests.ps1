@@ -34,6 +34,15 @@ Describe "Get zone" {
         @($zone).count | Should -Not -Be $NULL
     }
 
+    It "Get Zone -Schema" {
+        $schema = Get-FGTSystemZone -schema
+        $schema | Should -Not -BeNullOrEmpty
+        $schema.name | Should -Be "zone"
+        $schema.category | Should -Not -BeNullOrEmpty
+        $schema.children | Should -Not -BeNullOrEmpty
+        $schema.mkey | Should -Be "name"
+    }
+
     It "Get zone ($pester_zone1)" {
         $zone = Get-FGTSystemZone -name $pester_zone1
         $zone.name | Should -Be $pester_zone1

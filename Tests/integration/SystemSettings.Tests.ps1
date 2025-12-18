@@ -24,6 +24,14 @@ Describe "Get System Settings" {
         @($ss).count | Should -Not -Be $NULL
     }
 
+    It "Get Settings -Schema" {
+        $schema = Get-FGTSystemSettings -schema
+        $schema | Should -Not -BeNullOrEmpty
+        $schema.name | Should -Be "settings"
+        $schema.category | Should -Not -BeNullOrEmpty
+        $schema.children | Should -Not -BeNullOrEmpty
+    }
+
     Context "Search" {
 
         It "Search a setting by name (gui-allow-unnamed-policy)" {

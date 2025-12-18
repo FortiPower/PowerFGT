@@ -39,6 +39,11 @@ function Get-FGTUserSAML {
         Display all SAML users (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTUserSAML -schema
+
+        Get schema of User SAML
+
+        .EXAMPLE
         Get-FGTUserSAML -vdom vdomX
 
         Display all SAML users on vdomX
@@ -66,6 +71,8 @@ function Get-FGTUserSAML {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -86,6 +93,10 @@ function Get-FGTUserSAML {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering

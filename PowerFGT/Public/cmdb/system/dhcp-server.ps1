@@ -43,7 +43,12 @@ function Get-FGTSystemDHCPServer {
 
         Display DHCP Server configured on the FortiGate (but only relevant attributes)
 
-        EXAMPLE
+        .EXAMPLE
+        Get-FGTSystemDHCPServer -schema
+
+        Get schema of System DHCP Server
+
+        .EXAMPLE
         Get-FGTSystemDHCPServer -vdom vdomX
 
         Display DHCP Server configured on the FortiGate on vdomX
@@ -67,6 +72,8 @@ function Get-FGTSystemDHCPServer {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -87,6 +94,10 @@ function Get-FGTSystemDHCPServer {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering

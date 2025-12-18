@@ -232,6 +232,11 @@ function Get-FGTFirewallProxyPolicy {
         Get list of all Proxy policies (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTFirewallProxyPolicy -schema
+
+        Get schema of Proxy Policy
+
+        .EXAMPLE
         Get-FGTFirewallPolicy -vdom vdomX
 
         Get list of all Proxy policies on vdomX
@@ -256,6 +261,8 @@ function Get-FGTFirewallProxyPolicy {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -279,6 +286,10 @@ function Get-FGTFirewallProxyPolicy {
         }
 
         $uri = "api/v2/cmdb/firewall/proxy-policy"
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
+        }
 
         #Filtering
         switch ( $PSCmdlet.ParameterSetName ) {

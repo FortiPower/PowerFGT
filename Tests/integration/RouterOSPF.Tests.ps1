@@ -31,6 +31,14 @@ Describe "Get Router OSPF" {
         @($ro).count | Should -Not -Be $NULL
     }
 
+    It "Get Router OSPF -Schema" {
+        $schema = Get-FGTRouterOSPF -schema
+        $schema | Should -Not -BeNullOrEmpty
+        $schema.name | Should -Be "ospf"
+        $schema.category | Should -Not -BeNullOrEmpty
+        $schema.children | Should -Not -BeNullOrEmpty
+    }
+
 }
 
 Describe "Set Router OSPF" {

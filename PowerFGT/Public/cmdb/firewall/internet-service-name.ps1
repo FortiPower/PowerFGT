@@ -42,6 +42,11 @@ function Get-FGTFirewallInternetServiceName {
 
         Get list of all Internet Service Name object (but only relevant attributes)
 
+        .EXAMPLE
+        Get-FGTFirewallInternetServiceName -schema
+
+        Get schema of internet service name
+
        .EXAMPLE
         Get-FGTFirewallInternetServiceName -vdom vdomX
 
@@ -69,6 +74,8 @@ function Get-FGTFirewallInternetServiceName {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -89,6 +96,10 @@ function Get-FGTFirewallInternetServiceName {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #no the same URI before FortiOS 6.4.x

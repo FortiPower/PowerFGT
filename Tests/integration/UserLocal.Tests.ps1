@@ -34,6 +34,15 @@ Describe "Get User Local" {
         $userlocal.count | Should -Not -Be $NULL
     }
 
+    It "Get User Local -Schema" {
+        $schema = Get-FGTUserLocal -schema
+        $schema | Should -Not -BeNullOrEmpty
+        $schema.name | Should -Be "local"
+        $schema.category | Should -Not -BeNullOrEmpty
+        $schema.children | Should -Not -BeNullOrEmpty
+        $schema.mkey | Should -Be "name"
+    }
+
     It "Get User Local ($pester_userlocal)" {
         $userlocal = Get-FGTUserLocal -name $pester_userlocal
         $userlocal.name | Should -Be $pester_userlocal

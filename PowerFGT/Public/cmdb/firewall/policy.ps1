@@ -529,6 +529,11 @@ function Get-FGTFirewallPolicy {
         Get list of all policies with metadata (q_...) like usage (q_ref)
 
         .EXAMPLE
+        Get-FGTFirewallPolicy -schema
+
+        Get schema of policy
+
+        .EXAMPLE
         Get-FGTFirewallPolicy -vdom vdomX
 
         Get list of all policies on vdomX
@@ -559,6 +564,8 @@ function Get-FGTFirewallPolicy {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -579,6 +586,10 @@ function Get-FGTFirewallPolicy {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering

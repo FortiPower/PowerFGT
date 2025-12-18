@@ -30,7 +30,7 @@ function Get-FGTFirewallAccessProxy {
         .EXAMPLE
         Get-FGTFirewallAccessProxy -schema
 
-        Get (API) schema of Access Proxy object
+        Get (API) schema of Access Proxy
 
         .EXAMPLE
         Get-FGTFirewallAccessProxy -meta
@@ -94,6 +94,7 @@ function Get-FGTFirewallAccessProxy {
         if ( $PsBoundParameters.ContainsKey('schema') ) {
             $invokeParams.add( 'extra', "&action=schema" )
         }
+
         #Filtering
         switch ( $PSCmdlet.ParameterSetName ) {
             "name" {

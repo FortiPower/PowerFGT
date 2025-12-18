@@ -33,6 +33,11 @@ function Get-FGTSwitchFortilinkSettings {
         Get list of Switch Fortilink Settings object (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTSwitchSettings -schema
+
+        Get schema of Switch Settings
+
+        .EXAMPLE
         Get-FGTSwitchSettings -vdom vdomX
 
         Get list of Switch Fortilink Settings object on vdomX
@@ -57,6 +62,8 @@ function Get-FGTSwitchFortilinkSettings {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -77,6 +84,10 @@ function Get-FGTSwitchFortilinkSettings {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering

@@ -35,6 +35,15 @@ Describe "Get Static Route" {
         $route.count | Should -Not -Be $NULL
     }
 
+    It "Get Static Route -Schema" {
+        $schema = Get-FGTRouterStatic -schema
+        $schema | Should -Not -BeNullOrEmpty
+        $schema.name | Should -Be "static"
+        $schema.category | Should -Not -BeNullOrEmpty
+        $schema.children | Should -Not -BeNullOrEmpty
+        $schema.mkey | Should -Be "seq-num"
+    }
+
     It "Get Static Route with gateway 192.2.0.254 and confirm (via Confirm-FGTRouterStatic)" {
         $route = Get-FGTRouterStatic -gateway 192.2.0.254
         Confirm-FGTRouterStatic ($route) | Should -Be $true

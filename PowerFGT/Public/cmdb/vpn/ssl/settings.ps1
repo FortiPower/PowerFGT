@@ -28,6 +28,11 @@ function Get-FGTVpnSSLSettings {
         Get list of all settings of VPN SSL (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTVpnSSLSettings -schema
+
+        Get schema of VPN SSL Settings
+
+        .EXAMPLE
         Get-FGTVpnSSLSettings -vdom vdomX
 
         Get list of all settings of VPN SSL on vdomX
@@ -49,6 +54,8 @@ function Get-FGTVpnSSLSettings {
         [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -69,6 +76,11 @@ function Get-FGTVpnSSLSettings {
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
         }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
+        }
+
 
         #if filter value and filter_attribute, add filter (by default filter_type is equal)
         if ( $filter_value -and $filter_attribute ) {

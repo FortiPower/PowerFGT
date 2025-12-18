@@ -226,6 +226,11 @@ function Get-FGTUserLocal {
         Display all local users (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTUserLocal -schema
+
+        Get schema of User Local
+
+        .EXAMPLE
         Get-FGTUserLocal -vdom vdomX
 
         Display all local users on vdomX
@@ -253,6 +258,8 @@ function Get-FGTUserLocal {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -273,6 +280,10 @@ function Get-FGTUserLocal {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering

@@ -191,6 +191,11 @@ function Get-FGTSystemAdmin {
         Display all system administrators (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTSystemAdmin -schema
+
+        Get schema of System Admin
+
+        .EXAMPLE
         Get-FGTSystemAdmin -vdom vdomX
 
         Display all system administrators on vdomX
@@ -215,6 +220,8 @@ function Get-FGTSystemAdmin {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -235,6 +242,10 @@ function Get-FGTSystemAdmin {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering

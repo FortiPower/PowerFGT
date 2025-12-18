@@ -38,6 +38,11 @@ function Get-FGTDnsfilterProfile {
         Get list of all settings of Dnsfilter Profile (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTDnsfilterProfile -schema
+
+        Get schema of DNSfilter Profile
+
+        .EXAMPLE
         Get-FGTDnsfilterProfile -vdom vdomX
 
         Get list of all settings of Dnsfilter Profile on vdomX
@@ -62,6 +67,8 @@ function Get-FGTDnsfilterProfile {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -84,6 +91,10 @@ function Get-FGTDnsfilterProfile {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering
