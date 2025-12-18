@@ -166,6 +166,11 @@ function Get-FGTSystemSDNConnector {
         Get list of all SDN Connector (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTSystemSDNConnector -schema
+
+        Get schema of System SDN Connector
+
+        .EXAMPLE
         Get-FGTSystemSDNConnector -vdom vdomX
 
         Get list of all SDN Connector on vdomX
@@ -190,6 +195,8 @@ function Get-FGTSystemSDNConnector {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -210,6 +217,10 @@ function Get-FGTSystemSDNConnector {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering

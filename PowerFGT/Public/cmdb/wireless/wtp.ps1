@@ -43,6 +43,11 @@ function Get-FGTWirelessWTP {
         Get list of Wireless WTP (Wireless Termination Points) object (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTWirelessWTP -schema
+
+        Get schema of Wireless WTP
+
+        .EXAMPLE
         Get-FGTWirelessWTP -vdom vdomX
 
         Get list of Wireless WTP (Wireless Termination Points) object on vdomX
@@ -70,6 +75,8 @@ function Get-FGTWirelessWTP {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -90,6 +97,10 @@ function Get-FGTWirelessWTP {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering

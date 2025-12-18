@@ -33,6 +33,15 @@ Describe "Get User RADIUS" {
         @($userradius).count | Should -Not -Be $NULL
     }
 
+    It "Get User RADIUS -Schema" {
+        $schema = Get-FGTUserRADIUS -schema
+        $schema | Should -Not -BeNullOrEmpty
+        $schema.name | Should -Be "radius"
+        $schema.category | Should -Not -BeNullOrEmpty
+        $schema.children | Should -Not -BeNullOrEmpty
+        $schema.mkey | Should -Be "name"
+    }
+
     It "Get User RADIUS with -name $pester_userradius -meta" {
         $userradius = Get-FGTUserRADIUS -name $pester_userradius -meta
         $userradius.q_ref | Should -Not -BeNullOrEmpty

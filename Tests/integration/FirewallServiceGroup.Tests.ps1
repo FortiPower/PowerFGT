@@ -35,6 +35,15 @@ Describe "Get Firewall Service Group" {
         $servicegroup.count | Should -Not -Be $NULL
     }
 
+    It "Get Service Group -Schema" {
+        $schema = Get-FGTFirewallServiceGroup -schema
+        $schema | Should -Not -BeNullOrEmpty
+        $schema.name | Should -Be "group"
+        $schema.category | Should -Not -BeNullOrEmpty
+        $schema.children | Should -Not -BeNullOrEmpty
+        $schema.mkey | Should -Be "name"
+    }
+
     It "Get Service Group ($pester_servicegroup1)" {
         $servicegroup = Get-FGTFirewallServiceGroup -name $pester_servicegroup1
         $servicegroup.name | Should -Be $pester_servicegroup1

@@ -34,6 +34,11 @@ function Get-FGTSystemSettings {
         Get value of ike-port and ike-policy-route settings
 
         .EXAMPLE
+        Get-FGTSystemSettings -schema
+
+        Get schema of System Settings
+
+        .EXAMPLE
         Get-FGTSystemSettings -vdom vdomX
 
         Get list of all System Settings on vdomX
@@ -56,6 +61,8 @@ function Get-FGTSystemSettings {
         [psobject]$filter_value,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -73,6 +80,10 @@ function Get-FGTSystemSettings {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering

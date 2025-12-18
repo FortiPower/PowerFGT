@@ -33,6 +33,11 @@ function Get-FGTSwitchManagedSwitch {
         Get list of Managed Switches object (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTSwitchManagedSwitch -schema
+
+        Get schema of Switch Managed Switch
+
+        .EXAMPLE
         Get-FGTSwitchManagedSwitch -vdom vdomX
 
         Get list of Managed Switches object on vdomX
@@ -58,6 +63,8 @@ function Get-FGTSwitchManagedSwitch {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -87,6 +94,10 @@ function Get-FGTSwitchManagedSwitch {
                 $filter_attribute = "switch-id"
             }
             default { }
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #if filter value and filter_attribute, add filter (by default filter_type is equal)

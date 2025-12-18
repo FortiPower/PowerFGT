@@ -36,6 +36,15 @@ Describe "Get VPN Ipsec Phase 2 Interface" {
         @($interface).count | Should -Not -Be $NULL
     }
 
+    It "Get VPN Ipsec Phase 2 Interface -Schema" {
+        $schema = Get-FGTVpnIpsecPhase2Interface -schema
+        $schema | Should -Not -BeNullOrEmpty
+        $schema.name | Should -Be "phase2-interface"
+        $schema.category | Should -Not -BeNullOrEmpty
+        $schema.children | Should -Not -BeNullOrEmpty
+        $schema.mkey | Should -Be "name"
+    }
+
     It "Get VPN Ipsec Phase 2 interface ($pester_vpn1_ph2)" {
         $interface = Get-FGTVpnIpsecPhase2Interface -name $pester_vpn1_ph2
         $interface.name | Should -Be $pester_vpn1_ph2

@@ -33,6 +33,15 @@ Describe "Get SDN Connector" -skip:($fgt_version -lt "6.2.0") {
         @($sdnconnector).count | Should -Not -Be $NULL
     }
 
+    It "Get SDN Connector -Schema" {
+        $schema = Get-FGTSystemSDNConnector -schema
+        $schema | Should -Not -BeNullOrEmpty
+        $schema.name | Should -Be "sdn-connector"
+        $schema.category | Should -Not -BeNullOrEmpty
+        $schema.children | Should -Not -BeNullOrEmpty
+        $schema.mkey | Should -Be "name"
+    }
+
     It "Get SDN Connector ($pester_sdnconnector1)" {
         $sdnconnector = Get-FGTSystemSDNConnector -name $pester_sdnconnector1
         $sdnconnector.name | Should -Be $pester_sdnconnector1

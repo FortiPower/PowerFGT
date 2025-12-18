@@ -33,6 +33,11 @@ function Get-FGTSwitchVlanPolicy {
         Get list of Switch Vlan Policy object (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTSwitchVlanPolicy -schema
+
+        Get schema of Switch Vlan Policy
+
+        .EXAMPLE
         Get-FGTSwitchVlanPolicy -vdom vdomX
 
         Get list of Switch Vlan Policy object on vdomX
@@ -56,6 +61,8 @@ function Get-FGTSwitchVlanPolicy {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -76,6 +83,10 @@ function Get-FGTSwitchVlanPolicy {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering

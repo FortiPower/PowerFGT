@@ -37,6 +37,15 @@ Describe "Get Firewall Proxy Address" {
         $address.count | Should -Not -Be $NULL
     }
 
+    It "Get Address -Schema" {
+        $schema = Get-FGTFirewallProxyAddress -schema
+        $schema | Should -Not -BeNullOrEmpty
+        $schema.name | Should -Be "proxy-address"
+        $schema.category | Should -Not -BeNullOrEmpty
+        $schema.children | Should -Not -BeNullOrEmpty
+        $schema.mkey | Should -Be "name"
+    }
+
     It "Get Address ($pester_proxyaddress1)" {
         $address = Get-FGTFirewallProxyAddress -name $pester_proxyaddress1
         $address.name | Should -Be $pester_proxyaddress1

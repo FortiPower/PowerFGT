@@ -263,6 +263,11 @@ function Get-FGTVpnIpsecPhase1Interface {
         Get list of all settings of VPN IPsec Phase 1 interface (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTVpnIPsecPhase1Interface -schema
+
+        Get schema of VPN IPsec Phase 1 interface
+
+        .EXAMPLE
         Get-FGTVpnIPsecPhase1Interface -vdom vdomX
 
         Get list of all settings of VPN IPsec Phase 1 interface on vdomX
@@ -289,6 +294,8 @@ function Get-FGTVpnIpsecPhase1Interface {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -311,6 +318,10 @@ function Get-FGTVpnIpsecPhase1Interface {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering

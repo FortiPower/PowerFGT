@@ -40,6 +40,15 @@ Describe "Get Firewall Proxy Address Group" {
         $addressgroup.count | Should -Not -Be $NULL
     }
 
+    It "Get Proxy Address Group -Schema" {
+        $schema = Get-FGTFirewallProxyAddressGroup -schema
+        $schema | Should -Not -BeNullOrEmpty
+        $schema.name | Should -Be "proxy-addrgrp"
+        $schema.category | Should -Not -BeNullOrEmpty
+        $schema.children | Should -Not -BeNullOrEmpty
+        $schema.mkey | Should -Be "name"
+    }
+
     It "Get Proxy Address Group ($pester_proxyaddressgroup1)" {
         $addressgroup = Get-FGTFirewallProxyAddressGroup -name $pester_proxyaddressgroup1
         $addressgroup.name | Should -Be $pester_proxyaddressgroup1

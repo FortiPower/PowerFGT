@@ -271,6 +271,11 @@ function Get-FGTFirewallProxyAddressGroup {
         Display all addresses group (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTFirewallProxyAddressGroup -schema
+
+        Get schema of Proxy Address Group
+
+        .EXAMPLE
         Get-FGTFirewallProxyAddressGroup -vdom vdomX
 
         Display all addresses group on vdomX
@@ -295,6 +300,8 @@ function Get-FGTFirewallProxyAddressGroup {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -315,6 +322,10 @@ function Get-FGTFirewallProxyAddressGroup {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering

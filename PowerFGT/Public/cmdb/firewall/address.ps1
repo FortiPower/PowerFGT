@@ -302,6 +302,11 @@ function Get-FGTFirewallAddress {
         Get list of all address object (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTFirewallAddress -schema
+
+        Get schema of address
+
+        .EXAMPLE
         Get-FGTFirewallAddress -vdom vdomX
 
         Get list of all address on VdomX
@@ -330,6 +335,8 @@ function Get-FGTFirewallAddress {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -352,6 +359,11 @@ function Get-FGTFirewallAddress {
             $invokeParams.add( 'vdom', $vdom )
         }
 
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
+        }
+
+        #Filtering
         switch ( $PSCmdlet.ParameterSetName ) {
             "name" {
                 $filter_value = $name

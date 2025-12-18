@@ -39,6 +39,15 @@ Describe "Get Firewall Address Group" {
         $addressgroup.count | Should -Not -Be $NULL
     }
 
+    It "Get Address Group -Schema" {
+        $schema = Get-FGTFirewallAddressGroup -schema
+        $schema | Should -Not -BeNullOrEmpty
+        $schema.name | Should -Be "addrgrp"
+        $schema.category | Should -Not -BeNullOrEmpty
+        $schema.children | Should -Not -BeNullOrEmpty
+        $schema.mkey | Should -Be "name"
+    }
+
     It "Get Address Group ($pester_addressgroup1)" {
         $addressgroup = Get-FGTFirewallAddressGroup -name $pester_addressgroup1
         $addressgroup.name | Should -Be $pester_addressgroup1

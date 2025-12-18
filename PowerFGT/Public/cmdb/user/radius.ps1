@@ -226,6 +226,11 @@ function Get-FGTUserRADIUS {
         Display all RADIUS servers (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTUserRADIUS -schema
+
+        Get schema of User RADIUS
+
+        .EXAMPLE
         Get-FGTUserRADIUS -vdom vdomX
 
         Display all RADIUS servers on vdomX
@@ -250,6 +255,8 @@ function Get-FGTUserRADIUS {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -270,6 +277,10 @@ function Get-FGTUserRADIUS {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering

@@ -31,6 +31,14 @@ Describe "Get Router BGP" {
         @($rb).count | Should -Not -Be $NULL
     }
 
+    It "Get Router BGP -Schema" {
+        $schema = Get-FGTRouterBGP -schema
+        $schema | Should -Not -BeNullOrEmpty
+        $schema.name | Should -Be "bgp"
+        $schema.category | Should -Not -BeNullOrEmpty
+        $schema.children | Should -Not -BeNullOrEmpty
+    }
+
 }
 
 Describe "Set Router BGP" {

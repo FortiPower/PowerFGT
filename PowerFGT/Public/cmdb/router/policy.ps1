@@ -40,6 +40,11 @@ function Get-FGTRouterPolicy {
         Get list of all route policy object (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTRouterPolicy -schema
+
+        Get schema of Router Policy
+
+        .EXAMPLE
         Get-FGTRouterPolicy -vdom vdomX
 
         Get list of all route policy object on vdomX
@@ -61,6 +66,8 @@ function Get-FGTRouterPolicy {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -81,6 +88,10 @@ function Get-FGTRouterPolicy {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering

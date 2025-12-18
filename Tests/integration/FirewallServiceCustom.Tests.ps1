@@ -33,6 +33,15 @@ Describe "Get Firewall Service Custom" {
         $sc.count | Should -Not -Be $NULL
     }
 
+    It "Get Service Custom -Schema" {
+        $schema = Get-FGTFirewallServiceCustom -schema
+        $schema | Should -Not -BeNullOrEmpty
+        $schema.name | Should -Be "custom"
+        $schema.category | Should -Not -BeNullOrEmpty
+        $schema.children | Should -Not -BeNullOrEmpty
+        $schema.mkey | Should -Be "name"
+    }
+
     It "Get Service Custom ($pester_servicecustom1)" {
         $sc = Get-FGTFirewallServiceCustom -name $pester_servicecustom1
         $sc.name | Should -Be $pester_servicecustom1

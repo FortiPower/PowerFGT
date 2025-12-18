@@ -40,6 +40,15 @@ Describe "Get Firewall Address" {
         $address.count | Should -Not -Be $NULL
     }
 
+    It "Get Address -Schema" {
+        $schema = Get-FGTFirewallAddress -schema
+        $schema | Should -Not -BeNullOrEmpty
+        $schema.name | Should -Be "address"
+        $schema.category | Should -Not -BeNullOrEmpty
+        $schema.children | Should -Not -BeNullOrEmpty
+        $schema.mkey | Should -Be "name"
+    }
+
     It "Get Address ($pester_address1)" {
         $address = Get-FGTFirewallAddress -name $pester_address1
         $address.name | Should -Be $pester_address1

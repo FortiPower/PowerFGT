@@ -38,6 +38,11 @@ function Get-FGTIpsSensor {
         Get list of all settings of IPS Sensor (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTIpsSensor -schema
+
+        Get schema of IPS Sensor
+
+        .EXAMPLE
         Get-FGTIpsSensor -vdom vdomX
 
         Get list of all settings of IPS Sensor on vdomX
@@ -62,6 +67,8 @@ function Get-FGTIpsSensor {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -84,6 +91,10 @@ function Get-FGTIpsSensor {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering

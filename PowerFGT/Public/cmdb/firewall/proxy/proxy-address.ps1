@@ -220,6 +220,11 @@ function Get-FGTFirewallProxyAddress {
         Get list of all proxy-address object with metadata (q_...) like usage (q_ref)
 
         .EXAMPLE
+        Get-FGTFirewallProxyAddress -schema
+
+        Get schema of Proxy-address
+
+        .EXAMPLE
         Get-FGTFirewallProxyAddress -vdom vdomX
 
         Get list of all proxy-address on VdomX
@@ -245,6 +250,8 @@ function Get-FGTFirewallProxyAddress {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -268,6 +275,10 @@ function Get-FGTFirewallProxyAddress {
         }
 
         $uri = "api/v2/cmdb/firewall/proxy-address"
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
+        }
 
         switch ( $PSCmdlet.ParameterSetName ) {
             "name" {

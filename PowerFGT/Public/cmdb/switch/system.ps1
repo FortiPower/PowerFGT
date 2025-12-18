@@ -28,6 +28,11 @@ function Get-FGTSwitchSystem {
         Get list of Switch System object (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTSwitchSystem -schema
+
+        Get schema of Switch System
+
+        .EXAMPLE
         Get-FGTSwitchSystem -vdom vdomX
 
         Get list of Switch System object on vdomX
@@ -49,6 +54,8 @@ function Get-FGTSwitchSystem {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -69,6 +76,10 @@ function Get-FGTSwitchSystem {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering

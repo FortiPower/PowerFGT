@@ -35,6 +35,15 @@ Describe "Get Firewall VIP" {
         $vip.count | Should -Not -Be $NULL
     }
 
+    It "Get Virtual IP -Schema" {
+        $schema = Get-FGTFirewallVip -schema
+        $schema | Should -Not -BeNullOrEmpty
+        $schema.name | Should -Be "vip"
+        $schema.category | Should -Not -BeNullOrEmpty
+        $schema.children | Should -Not -BeNullOrEmpty
+        $schema.mkey | Should -Be "name"
+    }
+
     It "Get Virtual IP ($pester_vip1)" {
         $vip = Get-FGTFirewallVip -name $pester_vip1
         $vip.name | Should -Be $pester_vip1

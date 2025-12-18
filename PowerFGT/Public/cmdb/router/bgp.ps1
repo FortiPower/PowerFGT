@@ -29,6 +29,11 @@ function Get-FGTRouterBGP {
         Get list of all router BGP object (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTRouterBGP -schema
+
+        Get schema of Router BGP
+
+        .EXAMPLE
         Get-FGTRouterBGP -vdom vdomX
 
         Get list of all router BGP object on vdomX
@@ -39,6 +44,8 @@ function Get-FGTRouterBGP {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -59,6 +66,10 @@ function Get-FGTRouterBGP {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         $response = Invoke-FGTRestMethod -uri 'api/v2/cmdb/router/bgp' -method 'GET' -connection $connection @invokeParams

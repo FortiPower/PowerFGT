@@ -33,6 +33,15 @@ Describe "Get User LDAP" {
         @($userldap).count | Should -Not -Be $NULL
     }
 
+    It "Get User LDAP -Schema" {
+        $schema = Get-FGTUserLDAP -schema
+        $schema | Should -Not -BeNullOrEmpty
+        $schema.name | Should -Be "ldap"
+        $schema.category | Should -Not -BeNullOrEmpty
+        $schema.children | Should -Not -BeNullOrEmpty
+        $schema.mkey | Should -Be "name"
+    }
+
     It "Get User LDAP with -name $pester_userldap -meta" {
         $userldap = Get-FGTUserLDAP -name $pester_userldap -meta
         $userldap.q_ref | Should -Not -BeNullOrEmpty

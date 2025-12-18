@@ -38,6 +38,11 @@ function Get-FGTVpnSSLPortal {
         Get list of all settings of VPN SSL Portal (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTVpnSSLPortal -schema
+
+        Get schema of VPN SSL Portal
+
+        .EXAMPLE
         Get-FGTVpnSSLPortal -vdom vdomX
 
         Get list of all settings of VPN SSL Portal on vdomX
@@ -62,6 +67,8 @@ function Get-FGTVpnSSLPortal {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -84,6 +91,10 @@ function Get-FGTVpnSSLPortal {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering

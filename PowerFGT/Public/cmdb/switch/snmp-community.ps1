@@ -33,6 +33,11 @@ function Get-FGTSwitchSNMPCommunity {
         Get list of SNMP Community object (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTSwitchSNMPCommunity -schema
+
+        Get schema of Switch SNMP Community
+
+        .EXAMPLE
         Get-FGTSwitchSNMPCommunity -vdom vdomX
 
         Get list of SNMP Community object on vdomX
@@ -58,6 +63,8 @@ function Get-FGTSwitchSNMPCommunity {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -78,6 +85,10 @@ function Get-FGTSwitchSNMPCommunity {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering

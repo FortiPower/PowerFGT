@@ -379,6 +379,11 @@ function Get-FGTFirewallServiceCustom {
         Get list of all services object (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTFirewallServiceCustom -schema
+
+        Get schema of Service Custom
+
+        .EXAMPLE
         Get-FGTFirewallServiceCustom -vdom vdomX
 
         Get list of all services object on vdomX
@@ -404,6 +409,8 @@ function Get-FGTFirewallServiceCustom {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -424,6 +431,10 @@ function Get-FGTFirewallServiceCustom {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering

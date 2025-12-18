@@ -33,6 +33,15 @@ Describe "Get System Admin" {
         @($admin).count | Should -Not -Be $NULL
     }
 
+    It "Get System Admin -Schema" {
+        $schema = Get-FGTSystemAdmin -schema
+        $schema | Should -Not -BeNullOrEmpty
+        $schema.name | Should -Be "admin"
+        $schema.category | Should -Not -BeNullOrEmpty
+        $schema.children | Should -Not -BeNullOrEmpty
+        $schema.mkey | Should -Be "name"
+    }
+
     It "Get System Admin ($pester_admin1)" {
         $admin = Get-FGTSystemAdmin -name $pester_admin1
         $admin.name | Should -Be $pester_admin1

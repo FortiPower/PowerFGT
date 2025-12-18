@@ -268,6 +268,11 @@ function Get-FGTFirewallVipGroup {
         Display all VIP groups (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTFirewallVipGroup -schema
+
+        Get schema of VIP group
+
+        .EXAMPLE
         Get-FGTFirewallVipGroup -vdom vdomX
 
         Display all VIP groups on vdomX
@@ -295,6 +300,8 @@ function Get-FGTFirewallVipGroup {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -315,6 +322,10 @@ function Get-FGTFirewallVipGroup {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering

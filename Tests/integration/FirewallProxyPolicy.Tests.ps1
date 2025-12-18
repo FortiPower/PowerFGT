@@ -36,6 +36,15 @@ Describe "Get Firewall Proxy Policy" {
         $policy.count | Should -Not -Be $NULL
     }
 
+    It "Get Policy -Schema" {
+        $schema = Get-FGTFirewallProxyPolicy -schema
+        $schema | Should -Not -BeNullOrEmpty
+        $schema.name | Should -Be "proxy-policy"
+        $schema.category | Should -Not -BeNullOrEmpty
+        $schema.children | Should -Not -BeNullOrEmpty
+        $schema.mkey | Should -Be "policyid"
+    }
+
     It "Get Policy ($script:uuid)" {
         $policy = Get-FGTFirewallProxyPolicy -uuid $script:uuid
         $policy.uuid | Should -Be $script:uuid

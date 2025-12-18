@@ -38,6 +38,15 @@ Describe "Get User Group" {
         $usergroup.count | Should -Not -Be $NULL
     }
 
+    It "Get User Group -Schema" {
+        $schema = Get-FGTUserGroup -schema
+        $schema | Should -Not -BeNullOrEmpty
+        $schema.name | Should -Be "group"
+        $schema.category | Should -Not -BeNullOrEmpty
+        $schema.children | Should -Not -BeNullOrEmpty
+        $schema.mkey | Should -Be "name"
+    }
+
     It "Get User Group ($pester_usergroup1)" {
         $usergroup = Get-FGTUserGroup -name $pester_usergroup1
         $usergroup.name | Should -Be $pester_usergroup1

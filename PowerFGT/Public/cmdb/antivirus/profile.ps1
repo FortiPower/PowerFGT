@@ -38,6 +38,11 @@ function Get-FGTAntivirusProfile {
         Get list of all settings of Antivirus Profile (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTAntivirusProfile -schema
+
+        Get schema of Antivirus Profile
+
+        .EXAMPLE
         Get-FGTAntivirusProfile -vdom vdomX
 
         Get list of all settings of Antivirus Profile on vdomX
@@ -62,6 +67,8 @@ function Get-FGTAntivirusProfile {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -84,6 +91,10 @@ function Get-FGTAntivirusProfile {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering

@@ -34,6 +34,11 @@ function Get-FGTSystemVirtualSwitch {
         Get Virtual Switch Settings (but only relevant attributes)
 
         .EXAMPLE
+        Get-FGTSystemVirtualSwitch -schema
+
+        Get schema of System Virtual Switch
+
+        .EXAMPLE
         Get-FGTSystemVirtualSwitch -vdom vdomX
 
         Get Virtual Switch Settings on vdomX
@@ -59,6 +64,8 @@ function Get-FGTSystemVirtualSwitch {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -79,6 +86,10 @@ function Get-FGTSystemVirtualSwitch {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering
