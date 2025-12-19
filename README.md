@@ -2174,6 +2174,7 @@ for example to get Fortigate System Global Info
 [...]
 ```
 to get API uri, you can use `api/v2/cmdb/?action=schema` uri for get `schema`  
+and for each Get (cmdb) cmdlet, you can use -schema parameter for get API Call schema (parameter, default value...)  
 You can look also `FortiOS - REST API Reference` available on [Fortinet Developer Network (FNDN)](https://fndn.fortinet.net/)
 
 ### VDOM
