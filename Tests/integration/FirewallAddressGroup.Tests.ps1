@@ -114,6 +114,18 @@ Describe "Add Firewall Address Group" {
         Get-FGTFirewallAddressGroup -name $pester_addressgroup1 | Remove-FGTFirewallAddressGroup -confirm:$false
     }
 
+    It "Add Address Group $pester_addressgroup1 (with 0 member)" -skip:($fgt_version -lt "7.2.0") {
+        Add-FGTFirewallAddressGroup -Name $pester_addressgroup1
+        $addressgroup = Get-FGTFirewallAddressGroup -name $pester_addressgroup1
+        $addressgroup.name | Should -Be $pester_addressgroup1
+        $addressgroup.uuid | Should -Not -BeNullOrEmpty
+        ($addressgroup.member).count | Should -Be "0"
+        $addressgroup.comment | Should -BeNullOrEmpty
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be $true
+        }
+    }
+
     It "Add Address Group $pester_addressgroup1 (with 1 member)" {
         Add-FGTFirewallAddressGroup -Name $pester_addressgroup1 -member $pester_address1
         $addressgroup = Get-FGTFirewallAddressGroup -name $pester_addressgroup1
@@ -496,10 +508,16 @@ Describe "Remove Firewall Address Group Member" {
         }
     }
 
-    It "Try Remove 3 members to Address Group $pester_addressgroup1 (with 3 members before)" {
-        {
-            Get-FGTFirewallAddressGroup -Name $pester_addressgroup1 | Remove-FGTFirewallAddressGroupMember -member $pester_address1, $pester_address2, $pester_address3
-        } | Should -Throw "You can't remove all members. Use Remove-FGTFirewallAddressGroup to remove Address Group"
+    It "Remove 3 members to Address Group $pester_addressgroup1 (with 3 members before)" -skip:($fgt_version -lt "7.2.0") {
+        Get-FGTFirewallAddressGroup -Name $pester_addressgroup1 | Remove-FGTFirewallAddressGroupMember -member $pester_address1, $pester_address2, $pester_address3
+        $addressgroup = Get-FGTFirewallAddressGroup -name $pester_addressgroup1
+        $addressgroup.name | Should -Be $pester_addressgroup1
+        $addressgroup.uuid | Should -Not -BeNullOrEmpty
+        ($addressgroup.member).count | Should -Be "0"
+        $addressgroup.comment | Should -BeNullOrEmpty
+        if ($DefaultFGTConnection.version -lt "6.4.0") {
+            $addressgroup.visibility | Should -Be $true
+        }
     }
 
     AfterAll {
