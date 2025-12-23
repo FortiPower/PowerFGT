@@ -74,7 +74,7 @@ There is some extra feature
 More functionality will be added later.
 
 Connection can use HTTPS (default) or HTTP  
-Tested with FortiGate (using 5.6.x, 6.x and 7.x firmware but it will be also work with 5.4.x)  
+Tested with FortiGate (using 5.6.x, 6.x, 7.x and 8.x (beta) firmware but it will be also work with 5.4.x)  
 Add (Experimental) support of [VDOM](#vdom) is available using -vdom parameter for each cmdlet  
 
 # Usage
