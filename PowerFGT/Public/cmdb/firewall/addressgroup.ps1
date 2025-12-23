@@ -38,7 +38,7 @@ function Add-FGTFirewallAddressGroup {
     Param(
         [Parameter (Mandatory = $true)]
         [string]$name,
-        [Parameter (Mandatory = $true)]
+        [Parameter (Mandatory = $false)]
         [string[]]$member,
         [Parameter (Mandatory = $false)]
         [ValidateLength(0, 255)]
@@ -73,14 +73,16 @@ function Add-FGTFirewallAddressGroup {
 
         $addrgrp | add-member -name "name" -membertype NoteProperty -Value $name
 
-        #Add member to Member Array
-        $members = @( )
-        foreach ( $m in $member ) {
-            $member_name = @{ }
-            $member_name.add( 'name', $m)
-            $members += $member_name
+        if ( $PsBoundParameters.ContainsKey('member') ) {
+            #Add member to Member Array
+            $members = @( )
+            foreach ( $m in $member ) {
+                $member_name = @{ }
+                $member_name.add( 'name', $m)
+                $members += $member_name
+            }
+            $addrgrp | add-member -name "member" -membertype NoteProperty -Value $members
         }
-        $addrgrp | add-member -name "member" -membertype NoteProperty -Value $members
 
         if ( $PsBoundParameters.ContainsKey('comment') ) {
             $addrgrp | add-member -name "comment" -membertype NoteProperty -Value $comment
@@ -604,11 +606,6 @@ function Remove-FGTFirewallAddressGroupMember {
             foreach ($remove_member in $member) {
                 #May be a better (and faster) solution...
                 $members = $members | Where-Object { $_.name -ne $remove_member }
-            }
-
-            #check if there is always a member... (it is not possible don't have member on Address Group)
-            if ( $members.count -eq 0 ) {
-                Throw "You can't remove all members. Use Remove-FGTFirewallAddressGroup to remove Address Group"
             }
 
             #if there is only One member force to be an array
