@@ -42,7 +42,7 @@ With this module (version 0.9.1) you can manage:
 - RoutePolicy (Get)
 - [SDN Connector](#sdn-connector) (Get)
 - [Service Custom](#service-custom) (Add/Get/Set/Remove)
-- Service Group (Get)
+- [Service Group](#service-group) (Add/Get/Copy/Set/Remove and Add/Remove Member)
 - [Static Route](#static-route) (Add/Get/Remove)
 - [Switch(-controller)](#switch) (Get)
 - [System Admin](#system-admin) (Add/Get/Set/Remove)
@@ -1827,6 +1827,101 @@ or delete it `Remove-FGTFirewallServiceCustom`.
     Are you sure you want to perform this action?
     Performing the operation "Remove Firewall Service Custom" on target "MyServiceCustomTCP8080".
     [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): y
+```
+
+### Service Group
+
+You can create a new Service Group `Add-FGTFirewallServiceGroup`, retrieve its information `Get-FGTFirewallServiceGroup`,
+modify its properties `Set-FGTFirewallServiceGroup`, copy/clone its properties `Copy-FGTFirewallServiceGroup`,
+Add member to Address Group `Add-FGTFirewallServiceGroup` and remove member `Remove-FGTFirewallServiceGroup`,
+or delete it `Remove-FGTFirewallServiceGroup`.  
+
+
+```powershell
+
+# Get information about ALL Service Group (using Format Table)
+    Get-FGTFirewallServiceGroup | Format-Table
+
+    name            q_origin_key    uuid                                 uuid-idx proxy   member
+    ----            ------------    ----                                 -------- -----   ------
+    Email Access    Email Access    93335026-dfc4-51ef-c42b-629ab4282816    15893 disable {@{name=DNS; 
+    Exchange Server Exchange Server 9333715a-dfc4-51ef-6183-f0a310646069    15896 disable {@{name=DCE-RPC
+    Web Access      Web Access      933360b6-dfc4-51ef-0736-afa8ac22a85d    15894 disable {@{name=DNS
+    Windows AD      Windows AD      93336746-dfc4-51ef-2780-4461a70290e0    15895 disable {@{name=DCE-RPC
+
+
+# Add a Service Group with HTTP and HTTPS
+    Add-FGTFirewallServiceGroup -name "My Service Group" -member HTTP, HTTPS
+
+    name          : My Service Group
+    q_origin_key  : My Service Group
+    uuid          : b618b7a8-e03a-51f0-d9ee-34d958d1c624
+    uuid-idx      : 42622
+    proxy         : disable
+    member        : {@{name=HTTP; q_origin_key=HTTP}, @{name=HTTPS; q_origin_key=HTTPS}}
+    comment       :
+    color         : 0
+    fabric-object : disable
+
+# Add DNS member to existing User Group
+    Get-FGTFirewallServiceGroup -name "My Service Group" | Add-FGTFirewallServiceGroupMember -member DNS
+
+    name          : My Service Group
+    q_origin_key  : My Service Group
+    uuid          : b618b7a8-e03a-51f0-d9ee-34d958d1c624
+    uuid-idx      : 42622
+    proxy         : disable
+    member        : {@{name=HTTP; q_origin_key=HTTP}, @{name=HTTPS; q_origin_key=HTTPS}, @{name=DNS; q_origin_key=DNS}}
+    comment       :
+    color         : 0
+    fabric-object : disable
+
+# Remove HTTP member to existing User Group
+    Get-FGTFirewallServiceGroup -name "My Service Group" | Remove-FGTFirewallServiceGroupMember -member HTTP
+
+    name          : My Service Group
+    q_origin_key  : My Service Group
+    uuid          : b618b7a8-e03a-51f0-d9ee-34d958d1c624
+    uuid-idx      : 42622
+    proxy         : disable
+    member        : {@{name=HTTPS; q_origin_key=HTTPS}, @{name=DNS; q_origin_key=DNS}}
+    comment       :
+    color         : 0
+    fabric-object : disable
+
+# Modify a Service Group (set member...)
+    Get-FGTFirewallServiceGroup -name "My Service Group" | Set-FGTFirewallServiceGroup -member DNS
+
+    name          : My Service Group
+    q_origin_key  : My Service Group
+    uuid          : b618b7a8-e03a-51f0-d9ee-34d958d1c624
+    uuid-idx      : 42622
+    proxy         : disable
+    member        : {@{name=DNS; q_origin_key=DNS}}
+    comment       :
+    color         : 0
+    fabric-object : disable
+
+# Copy/Clone a Service Group
+    Get-FGTFirewallServiceGroup -name "My Service Group" | Copy-FGTFirewallServiceGroup -name "My Service User Group"
+
+    name          : My Service User Group
+    q_origin_key  : My Service User Group
+    uuid          : 654866b0-e03b-51f0-37cd-775ca4fbef17
+    uuid-idx      : 43059
+    proxy         : disable
+    member        : {@{name=DNS; q_origin_key=DNS}}
+    comment       :
+    color         : 0
+    fabric-object : disable
+
+# Remove a Service Group
+    Get-FGTFirewallServiceGroup -name "My Service Group" | Remove-FGTFirewallServiceGroup
+
+    Confirm
+    Are you sure you want to perform this action?
+    Performing the operation "Remove Firewall Service Group" on target "My Service Group".
+    [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): Y
 ```
 
 ### VPN IPsec
