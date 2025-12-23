@@ -1765,7 +1765,9 @@ or delete it `Remove-FGTSystemSDNConnector`.
     [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): y
 ```
 
-### Service Custom
+### Service
+
+#### Service Custom
 
 You can create a new Service Custom `Add-FGTFirewallServiceCustom`,
 retrieve its information `Get-FGTFirewallServiceCustom`, modify its properties `Set-FGTFirewallServiceCustom`
@@ -1829,7 +1831,7 @@ or delete it `Remove-FGTFirewallServiceCustom`.
     [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): y
 ```
 
-### Service Group
+#### Service Group
 
 You can create a new Service Group `Add-FGTFirewallServiceGroup`, retrieve its information `Get-FGTFirewallServiceGroup`,
 modify its properties `Set-FGTFirewallServiceGroup`, copy/clone its properties `Copy-FGTFirewallServiceGroup`,
