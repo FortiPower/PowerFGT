@@ -619,8 +619,8 @@ function Remove-FGTFirewallAddressGroupMember {
                 $members = $members | Where-Object { $_.name -ne $remove_member }
             }
 
-            #if there is only One member force to be an array
-            if ( $members.count -eq 1 ) {
+            #if there is only One (or 0) member force to be an array
+            if ( $members.count -le 1 ) {
                 $members = @($members)
             }
 
