@@ -2376,6 +2376,8 @@ Add-FGTFirewallProxyAddressGroup
 Add-FGTFirewallProxyAddressGroupMember
 Add-FGTFirewallProxyPolicy
 Add-FGTFirewallServiceCustom
+Add-FGTFirewallServiceGroup
+Add-FGTFirewallServiceGroupMember
 Add-FGTFirewallVip
 Add-FGTFirewallVipGroup
 Add-FGTFirewallVipGroupMember
@@ -2406,6 +2408,7 @@ Confirm-FGTRouterStatic
 Confirm-FGTSDNConnector
 Confirm-FGTServiceCustom
 Confirm-FGTServiceGroup
+Confirm-FGTSystemAdmin
 Confirm-FGTUserGroup
 Confirm-FGTUserLDAP
 Confirm-FGTUserLocal
@@ -2421,6 +2424,7 @@ Copy-FGTFirewallAddress
 Copy-FGTFirewallAddressGroup
 Copy-FGTFirewallProxyAddress
 Copy-FGTFirewallProxyAddressGroup
+Copy-FGTFirewallServiceGroup
 Copy-FGTFirewallVipGroup
 Copy-FGTUserGroup
 Deploy-FGTVm
@@ -2444,6 +2448,7 @@ Get-FGTFirewallSSLSSHProfile
 Get-FGTFirewallVip
 Get-FGTFirewallVipGroup
 Get-FGTIpsSensor
+Get-FGTLogEvent
 Get-FGTLogSetting
 Get-FGTLogTraffic
 Get-FGTMonitorFirewallAddressDynamic
@@ -2534,6 +2539,8 @@ Remove-FGTFirewallProxyAddressGroup
 Remove-FGTFirewallProxyAddressGroupMember
 Remove-FGTFirewallProxyPolicy
 Remove-FGTFirewallServiceCustom
+Remove-FGTFirewallServiceGroup
+Remove-FGTFirewallServiceGroupMember
 Remove-FGTFirewallVip
 Remove-FGTFirewallVipGroup
 Remove-FGTFirewallVipGroupMember
@@ -2560,6 +2567,7 @@ Set-FGTFirewallLocalInPolicy
 Set-FGTFirewallPolicy
 Set-FGTFirewallProxyAddressGroup
 Set-FGTFirewallServiceCustom
+Set-FGTFirewallServiceGroup
 Set-FGTFirewallVipGroup
 Set-FGTMonitorUserLocalChangePassword
 Set-FGTRouterBGP
