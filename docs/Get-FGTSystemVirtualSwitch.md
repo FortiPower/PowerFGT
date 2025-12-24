@@ -33,6 +33,13 @@ Get-FGTSystemVirtualSwitch [-filter_attribute <String>] [-filter_type <String>] 
  [<CommonParameters>]
 ```
 
+### schema
+```
+Get-FGTSystemVirtualSwitch [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>]
+ [-meta] [-skip] [-schema] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Get list of Virtual Switch Settings (Physical-switch, vlan, port, span...)
 
@@ -67,6 +74,13 @@ Get-FGTSystemVirtualSwitch -skip
 Get Virtual Switch Settings (but only relevant attributes)
 
 ### EXAMPLE 5
+```
+Get-FGTSystemVirtualSwitch -schema
+```
+
+Get schema of System Virtual Switch
+
+### EXAMPLE 6
 ```
 Get-FGTSystemVirtualSwitch -vdom vdomX
 ```
@@ -157,6 +171,21 @@ Enter the number of objects to skip.
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -schema
+{{ Fill schema Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: schema
 Aliases:
 
 Required: False

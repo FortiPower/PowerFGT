@@ -33,6 +33,13 @@ Get-FGTVpnIpsecPhase2Interface [-filter_attribute <String>] [-filter_type <Strin
  [<CommonParameters>]
 ```
 
+### schema
+```
+Get-FGTVpnIpsecPhase2Interface [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>]
+ [-meta] [-skip] [-schema] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Get list of all VPN IPsec phase 2 (Local / Remote Network PFS, Cipher, Hash...)
 
@@ -74,6 +81,13 @@ Get-FGTVpnIPsecPhase2Interface -skip
 Get list of all settings of VPN IPsec Phase 2 interface (but only relevant attributes)
 
 ### EXAMPLE 6
+```
+Get-FGTVpnIPsecPhase2Interface -schema
+```
+
+Get schema of VPN IPsec Phase 2 interface
+
+### EXAMPLE 7
 ```
 Get-FGTVpnIPsecPhase2Interface -vdom vdomX
 ```
@@ -164,6 +178,21 @@ Enter the number of objects to skip.
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -schema
+{{ Fill schema Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: schema
 Aliases:
 
 Required: False

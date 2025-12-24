@@ -33,6 +33,13 @@ Get-FGTFirewallServiceCustom [-filter_attribute <String>] [-filter_type <String>
  [<CommonParameters>]
 ```
 
+### schema
+```
+Get-FGTFirewallServiceCustom [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>]
+ [-meta] [-skip] [-schema] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Get list of all "services" (SMTP, HTTP, HTTPS, DNS...)
 
@@ -74,6 +81,13 @@ Get-FGTFirewallServiceCustom -skip
 Get list of all services object (but only relevant attributes)
 
 ### EXAMPLE 6
+```
+Get-FGTFirewallServiceCustom -schema
+```
+
+Get schema of Service Custom
+
+### EXAMPLE 7
 ```
 Get-FGTFirewallServiceCustom -vdom vdomX
 ```
@@ -164,6 +178,21 @@ Enter the number of objects to skip.
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -schema
+{{ Fill schema Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: schema
 Aliases:
 
 Required: False

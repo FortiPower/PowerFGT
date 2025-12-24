@@ -33,6 +33,13 @@ Get-FGTSwitchFortilinkSettings [-filter_attribute <String>] [-filter_type <Strin
  [<CommonParameters>]
 ```
 
+### schema
+```
+Get-FGTSwitchFortilinkSettings [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>]
+ [-meta] [-skip] [-schema] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Get list of Switch Fortilink Settings (Name, fortilink, ...)
 
@@ -67,6 +74,13 @@ Get-FGTSwitchSettings -skip
 Get list of Switch Fortilink Settings object (but only relevant attributes)
 
 ### EXAMPLE 5
+```
+Get-FGTSwitchSettings -schema
+```
+
+Get schema of Switch Settings
+
+### EXAMPLE 6
 ```
 Get-FGTSwitchSettings -vdom vdomX
 ```
@@ -157,6 +171,21 @@ Enter the number of objects to skip.
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -schema
+{{ Fill schema Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: schema
 Aliases:
 
 Required: False

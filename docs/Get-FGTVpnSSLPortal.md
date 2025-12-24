@@ -31,6 +31,13 @@ Get-FGTVpnSSLPortal [-filter_attribute <String>] [-filter_type <String>] [-filte
  [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
+### schema
+```
+Get-FGTVpnSSLPortal [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-meta]
+ [-skip] [-schema] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Get list of all VPN SSL Portal (name, interface, server ...)
 
@@ -72,6 +79,13 @@ Get-FGTVpnSSLPortal -skip
 Get list of all settings of VPN SSL Portal (but only relevant attributes)
 
 ### EXAMPLE 6
+```
+Get-FGTVpnSSLPortal -schema
+```
+
+Get schema of VPN SSL Portal
+
+### EXAMPLE 7
 ```
 Get-FGTVpnSSLPortal -vdom vdomX
 ```
@@ -162,6 +176,21 @@ Enter the number of objects to skip.
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -schema
+{{ Fill schema Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: schema
 Aliases:
 
 Required: False

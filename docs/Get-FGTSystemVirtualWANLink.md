@@ -24,6 +24,13 @@ Get-FGTSystemVirtualWANLink [-filter_attribute <String>] [-filter_type <String>]
  [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
+### schema
+```
+Get-FGTSystemVirtualWANLink [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>]
+ [-skip] [-schema] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Get Virtual Wan Link Settings (status, load balance mode, members, health-check...
 )
@@ -59,6 +66,13 @@ Get-FGTSystemVirtualWANLink -skip
 Get Virtual Wan Link Settings (but only relevant attributes)
 
 ### EXAMPLE 5
+```
+Get-FGTSystemVirtualWANLink -schema
+```
+
+Get schema of System Virtual Wan Link
+
+### EXAMPLE 6
 ```
 Get-FGTSystemVirtualWANLink -vdom vdomX
 ```
@@ -119,6 +133,21 @@ Enter the number of objects to skip.
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -schema
+{{ Fill schema Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: schema
 Aliases:
 
 Required: False

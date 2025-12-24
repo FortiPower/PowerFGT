@@ -71,7 +71,7 @@ Get Access Proxy contains with *FGT*
 Get-FGTFirewallAccessProxy -schema
 ```
 
-Get (API) schema of Access Proxy object
+Get (API) schema of Access Proxy
 
 ### EXAMPLE 5
 ```

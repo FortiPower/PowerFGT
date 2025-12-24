@@ -24,6 +24,13 @@ Get-FGTSwitchGlobal [-filter_attribute <String>] [-filter_type <String>] [-filte
  [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
+### schema
+```
+Get-FGTSwitchGlobal [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-meta]
+ [-skip] [-schema] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Get list of Switch Global Settings (Discovery, Vlan ...)
 
@@ -51,6 +58,13 @@ Get-FGTSwitchGlobal -skip
 Get list of Switch Global object (but only relevant attributes)
 
 ### EXAMPLE 4
+```
+Get-FGTSwitchGlobal -schema
+```
+
+Get schema of Switch Global
+
+### EXAMPLE 5
 ```
 Get-FGTSwitchGlobal -vdom vdomX
 ```
@@ -126,6 +140,21 @@ Enter the number of objects to skip.
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -schema
+{{ Fill schema Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: schema
 Aliases:
 
 Required: False

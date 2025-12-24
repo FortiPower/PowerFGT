@@ -12,8 +12,15 @@ Get list of all OSPF
 
 ## SYNTAX
 
+### default (Default)
 ```
-Get-FGTRouterOSPF [-meta] [-skip] [[-vdom] <String[]>] [[-connection] <PSObject>]
+Get-FGTRouterOSPF [-meta] [-skip] [-vdom <String[]>] [-connection <PSObject>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+### schema
+```
+Get-FGTRouterOSPF [-meta] [-skip] [-schema] [-vdom <String[]>] [-connection <PSObject>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
@@ -44,6 +51,13 @@ Get-FGTRouterOSPF -skip
 Get list of all router OSPF object (but only relevant attributes)
 
 ### EXAMPLE 4
+```
+Get-FGTRouterOSPF -schema
+```
+
+Get schema of Router OSPF
+
+### EXAMPLE 5
 ```
 Get-FGTRouterOSPF -vdom vdomX
 ```
@@ -83,6 +97,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -schema
+{{ Fill schema Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: schema
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -vdom
 {{ Fill vdom Description }}
 
@@ -92,7 +121,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 1
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -107,7 +136,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 2
+Position: Named
 Default value: $DefaultFGTConnection
 Accept pipeline input: False
 Accept wildcard characters: False

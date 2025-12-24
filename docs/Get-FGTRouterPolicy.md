@@ -24,6 +24,13 @@ Get-FGTRouterPolicy [-filter_attribute <String>] [-filter_type <String>] [-filte
  [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
+### schema
+```
+Get-FGTRouterPolicy [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-meta]
+ [-skip] [-schema] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Get list of all "route policy" (Source, Destination, Protocol, Action...)
 
@@ -65,6 +72,13 @@ Get-FGTRouterPolicy -skip
 Get list of all route policy object (but only relevant attributes)
 
 ### EXAMPLE 6
+```
+Get-FGTRouterPolicy -schema
+```
+
+Get schema of Router Policy
+
+### EXAMPLE 7
 ```
 Get-FGTRouterPolicy -vdom vdomX
 ```
@@ -140,6 +154,21 @@ Enter the number of objects to skip.
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -schema
+{{ Fill schema Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: schema
 Aliases:
 
 Required: False

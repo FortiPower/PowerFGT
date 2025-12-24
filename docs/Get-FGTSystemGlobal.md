@@ -26,6 +26,13 @@ Get-FGTSystemGlobal [-name <String[]>] [-filter_attribute <String>] [-filter_typ
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
+### schema
+```
+Get-FGTSystemGlobal [-name <String[]>] [-filter_attribute <String>] [-filter_type <String>]
+ [-filter_value <PSObject>] [-skip] [-schema] [-vdom <String[]>] [-connection <PSObject>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Get list of System Global Settings (hostname, alias....)
 
@@ -60,6 +67,13 @@ Get-FGTSystemGlobal -skip
 Get list of all System Global Settings (but only relevant attributes)
 
 ### EXAMPLE 5
+```
+Get-FGTSystemGlobal -schema
+```
+
+Get schema of System Global
+
+### EXAMPLE 6
 ```
 Get-FGTSystemGlobal -vdom vdomX
 ```
@@ -135,6 +149,21 @@ Enter the number of objects to skip.
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -schema
+{{ Fill schema Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: schema
 Aliases:
 
 Required: False

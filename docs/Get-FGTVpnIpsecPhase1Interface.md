@@ -33,6 +33,13 @@ Get-FGTVpnIpsecPhase1Interface [-plaintext_password] [-filter_attribute <String>
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
+### schema
+```
+Get-FGTVpnIpsecPhase1Interface [-plaintext_password] [-filter_attribute <String>] [-filter_type <String>]
+ [-filter_value <PSObject>] [-meta] [-skip] [-schema] [-vdom <String[]>] [-connection <PSObject>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Get list of all VPN IPsec phase 1 (name, IP Address, description, pre shared key ...)
 
@@ -81,6 +88,13 @@ Get-FGTVpnIPsecPhase1Interface -skip
 Get list of all settings of VPN IPsec Phase 1 interface (but only relevant attributes)
 
 ### EXAMPLE 7
+```
+Get-FGTVpnIPsecPhase1Interface -schema
+```
+
+Get schema of VPN IPsec Phase 1 interface
+
+### EXAMPLE 8
 ```
 Get-FGTVpnIPsecPhase1Interface -vdom vdomX
 ```
@@ -186,6 +200,21 @@ Enter the number of objects to skip.
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -schema
+{{ Fill schema Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: schema
 Aliases:
 
 Required: False

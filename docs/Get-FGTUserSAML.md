@@ -38,6 +38,13 @@ Get-FGTUserSAML [-filter_attribute <String>] [-filter_type <String>] [-filter_va
  [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
+### schema
+```
+Get-FGTUserSAML [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-meta] [-skip]
+ [-schema] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Get list of all "SAML users" (name, type, status...
 )
@@ -80,6 +87,13 @@ Get-FGTUserSAML -skip
 Display all SAML users (but only relevant attributes)
 
 ### EXAMPLE 6
+```
+Get-FGTUserSAML -schema
+```
+
+Get schema of User SAML
+
+### EXAMPLE 7
 ```
 Get-FGTUserSAML -vdom vdomX
 ```
@@ -185,6 +199,21 @@ Enter the number of objects to skip.
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -schema
+{{ Fill schema Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: schema
 Aliases:
 
 Required: False

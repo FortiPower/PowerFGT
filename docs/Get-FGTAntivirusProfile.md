@@ -31,6 +31,13 @@ Get-FGTAntivirusProfile [-filter_attribute <String>] [-filter_type <String>] [-f
  [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
+### schema
+```
+Get-FGTAntivirusProfile [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-meta]
+ [-skip] [-schema] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Get list of all Antivirus Profile (name, feature-set, protocol (http, ftp, imap...) ...)
 
@@ -72,6 +79,13 @@ Get-FGTAntivirusProfile -skip
 Get list of all settings of Antivirus Profile (but only relevant attributes)
 
 ### EXAMPLE 6
+```
+Get-FGTAntivirusProfile -schema
+```
+
+Get schema of Antivirus Profile
+
+### EXAMPLE 7
 ```
 Get-FGTAntivirusProfile -vdom vdomX
 ```
@@ -162,6 +176,21 @@ Enter the number of objects to skip.
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -schema
+{{ Fill schema Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: schema
 Aliases:
 
 Required: False

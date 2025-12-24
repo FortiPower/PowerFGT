@@ -37,6 +37,12 @@ Get-FGTFirewallProxyAddress [-filter_attribute <String>] [-filter_type <String>]
  [<CommonParameters>]
 ```
 
+### schema
+```
+Get-FGTFirewallProxyAddress [-meta] [-skip] [-schema] [-vdom <String[]>] [-connection <PSObject>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Get list of all "proxy-address" (host-regex, url ...)
 
@@ -85,6 +91,13 @@ Get-FGTFirewallProxyAddress -meta
 Get list of all proxy-address object with metadata (q_...) like usage (q_ref)
 
 ### EXAMPLE 7
+```
+Get-FGTFirewallProxyAddress -schema
+```
+
+Get schema of Proxy-address
+
+### EXAMPLE 8
 ```
 Get-FGTFirewallProxyAddress -vdom vdomX
 ```
@@ -190,6 +203,21 @@ Enter the number of objects to skip.
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -schema
+{{ Fill schema Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: schema
 Aliases:
 
 Required: False

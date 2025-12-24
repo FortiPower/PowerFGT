@@ -45,6 +45,13 @@ Get-FGTFirewallPolicy [-filter_attribute <String>] [-filter_type <String>] [-fil
  [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
+### schema
+```
+Get-FGTFirewallPolicy [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-meta]
+ [-skip] [-schema] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Get list of all policies (name, interface source/destination, address (network) source/destination, service, action...)
 
@@ -100,6 +107,13 @@ Get-FGTFirewallPolicy -meta
 Get list of all policies with metadata (q_...) like usage (q_ref)
 
 ### EXAMPLE 8
+```
+Get-FGTFirewallPolicy -schema
+```
+
+Get schema of policy
+
+### EXAMPLE 9
 ```
 Get-FGTFirewallPolicy -vdom vdomX
 ```
@@ -220,6 +234,21 @@ Enter the number of objects to skip.
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -schema
+{{ Fill schema Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: schema
 Aliases:
 
 Required: False

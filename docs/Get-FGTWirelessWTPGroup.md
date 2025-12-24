@@ -31,6 +31,13 @@ Get-FGTWirelessWTPGroup [-filter_attribute <String>] [-filter_type <String>] [-f
  [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
+### schema
+```
+Get-FGTWirelessWTPGroup [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-meta]
+ [-skip] [-schema] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Get list of Wireless WTP (Wireless Termination Points) Group Settings (Name, platform-type, WTPS ...)
 
@@ -65,6 +72,13 @@ Get-FGTWirelessWTPGroup -skip
 Get list of Wireless WTPGroup (Wireless Termination Points)  roup object (but only relevant attributes)
 
 ### EXAMPLE 5
+```
+Get-FGTWirelessWTPGroup -schema
+```
+
+Get schema of Wireless WTP Group
+
+### EXAMPLE 6
 ```
 Get-FGTWirelessWTPGroup -vdom vdomX
 ```
@@ -155,6 +169,21 @@ Enter the number of objects to skip.
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -schema
+{{ Fill schema Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: schema
 Aliases:
 
 Required: False

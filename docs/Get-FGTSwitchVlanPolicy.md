@@ -31,6 +31,13 @@ Get-FGTSwitchVlanPolicy [-filter_attribute <String>] [-filter_type <String>] [-f
  [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
+### schema
+```
+Get-FGTSwitchVlanPolicy [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-meta]
+ [-skip] [-schema] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Get list of Switch Vlan Policy (Name, Vlan, ...)
 
@@ -65,6 +72,13 @@ Get-FGTSwitchVlanPolicy -skip
 Get list of Switch Vlan Policy object (but only relevant attributes)
 
 ### EXAMPLE 5
+```
+Get-FGTSwitchVlanPolicy -schema
+```
+
+Get schema of Switch Vlan Policy
+
+### EXAMPLE 6
 ```
 Get-FGTSwitchVlanPolicy -vdom vdomX
 ```
@@ -155,6 +169,21 @@ Enter the number of objects to skip.
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -schema
+{{ Fill schema Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: schema
 Aliases:
 
 Required: False

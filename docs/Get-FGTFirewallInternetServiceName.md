@@ -40,6 +40,13 @@ Get-FGTFirewallInternetServiceName [-filter_attribute <String>] [-filter_type <S
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
+### schema
+```
+Get-FGTFirewallInternetServiceName [-filter_attribute <String>] [-filter_type <String>]
+ [-filter_value <PSObject>] [-meta] [-skip] [-schema] [-vdom <String[]>] [-connection <PSObject>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Get list of all Internet Service Name
 
@@ -88,6 +95,13 @@ Get-FGTFirewallInternetServiceName -skip
 Get list of all Internet Service Name object (but only relevant attributes)
 
 ### EXAMPLE 7
+```
+Get-FGTFirewallInternetServiceName -schema
+```
+
+Get schema of internet service name
+
+### EXAMPLE 8
 ```
 Get-FGTFirewallInternetServiceName -vdom vdomX
 ```
@@ -193,6 +207,21 @@ Enter the number of objects to skip.
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -schema
+{{ Fill schema Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: schema
 Aliases:
 
 Required: False

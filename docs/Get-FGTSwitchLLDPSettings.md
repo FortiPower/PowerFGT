@@ -26,6 +26,13 @@ Get-FGTSwitchLLDPSettings [-filter_attribute <String>] [-filter_type <String>] [
  [<CommonParameters>]
 ```
 
+### schema
+```
+Get-FGTSwitchLLDPSettings [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>]
+ [-meta] [-skip] [-schema] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Get list of Switch LLDP Settings (tx, mangement interface, device ...)
 
@@ -53,6 +60,13 @@ Get-FGTSwitchLLDPSettings -skip
 Get list of Switch LLDP Settings object (but only relevant attributes)
 
 ### EXAMPLE 4
+```
+Get-FGTSwitchLLDPSettings -schema
+```
+
+Get schema of Switch LLDP Settings
+
+### EXAMPLE 5
 ```
 Get-FGTSwitchLLDPSettings -vdom vdomX
 ```
@@ -128,6 +142,21 @@ Enter the number of objects to skip.
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -schema
+{{ Fill schema Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: schema
 Aliases:
 
 Required: False

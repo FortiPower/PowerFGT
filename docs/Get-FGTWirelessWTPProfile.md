@@ -33,6 +33,13 @@ Get-FGTWirelessWTPProfile [-filter_attribute <String>] [-filter_type <String>] [
  [<CommonParameters>]
 ```
 
+### schema
+```
+Get-FGTWirelessWTPProfile [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>]
+ [-meta] [-skip] [-schema] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Get list of Wireless WTP (Wireless Termination Points) Profile Settings (Name, platform, radio ...)
 
@@ -67,6 +74,13 @@ Get-FGTWirelessWTPProfile -skip
 Get list of Wireless WTP (Wireless Termination Points)  roup object (but only relevant attributes)
 
 ### EXAMPLE 5
+```
+Get-FGTWirelessWTPProfile -schema
+```
+
+Get schema of Wireless WTP Profile
+
+### EXAMPLE 6
 ```
 Get-FGTWirelessWTPProfile -vdom vdomX
 ```
@@ -157,6 +171,21 @@ Enter the number of objects to skip.
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -schema
+{{ Fill schema Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: schema
 Aliases:
 
 Required: False

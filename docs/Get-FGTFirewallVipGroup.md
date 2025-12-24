@@ -38,6 +38,13 @@ Get-FGTFirewallVipGroup [-filter_attribute <String>] [-filter_type <String>] [-f
  [-skip] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
+### schema
+```
+Get-FGTFirewallVipGroup [-filter_attribute <String>] [-filter_type <String>] [-filter_value <PSObject>] [-meta]
+ [-skip] [-schema] [-vdom <String[]>] [-connection <PSObject>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Show VIP group(s) configured (Name, Member...)
 
@@ -86,6 +93,13 @@ Get-FGTFirewallVipGroup -skip
 Display all VIP groups (but only relevant attributes)
 
 ### EXAMPLE 7
+```
+Get-FGTFirewallVipGroup -schema
+```
+
+Get schema of VIP group
+
+### EXAMPLE 8
 ```
 Get-FGTFirewallVipGroup -vdom vdomX
 ```
@@ -191,6 +205,21 @@ Enter the number of objects to skip.
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -schema
+{{ Fill schema Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: schema
 Aliases:
 
 Required: False
