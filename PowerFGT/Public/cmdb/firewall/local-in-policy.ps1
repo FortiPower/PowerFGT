@@ -338,6 +338,11 @@ function Get-FGTFirewallLocalInPolicy {
         Get list of all policies with metadata (q_...) like usage (q_ref)
 
         .EXAMPLE
+        Get-FGTFirewallLocalInPolicy -schema
+
+        Get schema of Local In Policy
+
+        .EXAMPLE
         Get-FGTFirewallLocalInPolicy -vdom vdomX
 
         Get list of all policies on vdomX
@@ -365,6 +370,8 @@ function Get-FGTFirewallLocalInPolicy {
         [switch]$meta,
         [Parameter(Mandatory = $false)]
         [switch]$skip,
+        [Parameter(Mandatory = $false, ParameterSetName = "schema")]
+        [switch]$schema,
         [Parameter(Mandatory = $false)]
         [String[]]$vdom,
         [Parameter(Mandatory = $false)]
@@ -385,6 +392,10 @@ function Get-FGTFirewallLocalInPolicy {
         }
         if ( $PsBoundParameters.ContainsKey('vdom') ) {
             $invokeParams.add( 'vdom', $vdom )
+        }
+
+        if ( $PsBoundParameters.ContainsKey('schema') ) {
+            $invokeParams.add( 'extra', "&action=schema" )
         }
 
         #Filtering
