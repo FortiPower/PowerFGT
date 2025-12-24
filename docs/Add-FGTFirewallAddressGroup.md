@@ -13,7 +13,7 @@ Add a FortiGate Address Group
 ## SYNTAX
 
 ```
-Add-FGTFirewallAddressGroup [-name] <String> [-member] <String[]> [[-comment] <String>]
+Add-FGTFirewallAddressGroup [-name] <String> [[-member] <String[]>] [[-comment] <String>]
  [[-visibility] <Boolean>] [[-data] <Hashtable>] [[-vdom] <String[]>] [[-connection] <PSObject>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
@@ -77,7 +77,7 @@ Type: String[]
 Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
 Position: 2
 Default value: None
 Accept pipeline input: False
