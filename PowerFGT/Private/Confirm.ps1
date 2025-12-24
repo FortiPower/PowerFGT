@@ -192,6 +192,41 @@ Function Confirm-FGTFirewallPolicy {
 
 }
 
+Function Confirm-FGTFirewallLocalInPolicy {
+
+    Param (
+        [Parameter (Mandatory = $true)]
+        [object]$argument
+    )
+
+    #Check if it looks like an Firewall Local InPolicy element
+
+    if ( -not ( $argument | get-member -name policyid -Membertype Properties)) {
+        throw "Element specified does not contain a policyid property."
+    }
+    if ( -not ( $argument | get-member -name uuid -Membertype Properties)) {
+        throw "Element specified does not contain an uuid property."
+    }
+    if ( -not ( $argument | get-member -name intf -Membertype Properties)) {
+        throw "Element specified does not contain a intf property."
+    }
+    if ( -not ( $argument | get-member -name srcaddr -Membertype Properties)) {
+        throw "Element specified does not contain a srcaddr property."
+    }
+    if ( -not ( $argument | get-member -name dstaddr -Membertype Properties)) {
+        throw "Element specified does not contain a dstaddr property."
+    }
+    if ( -not ( $argument | get-member -name action -Membertype Properties)) {
+        throw "Element specified does not contain an action property."
+    }
+    if ( -not ( $argument | get-member -name status -Membertype Properties)) {
+        throw "Element specified does not contain a status property."
+    }
+
+    $true
+
+}
+
 Function Confirm-FGTFirewallProxyPolicy {
 
     Param (
