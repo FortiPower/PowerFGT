@@ -93,9 +93,16 @@ function Add-FGTFirewallLocalInPolicy {
         $uri = "api/v2/cmdb/firewall/local-in-policy"
 
         # Interface
-        $intf_array = @()
-        foreach ($i in $intf) {
-            $intf_array += @{ 'name' = $i }
+        #After 7.4.0, you can have multiple interface
+        if ($connection.version -ge "7.4.0") {
+            $intf_array = @()
+            foreach ($i in $intf) {
+                $intf_array += @{ 'name' = $i }
+            }
+        }
+        else {
+            #Add Warning ?
+            $intf_array = $intf
         }
 
         # Source address

@@ -107,7 +107,12 @@ Describe "Add Firewall Local In Policy" {
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallLocalInPolicy -policyid $p.policyid
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.intf.name | Should -Be $pester_port1
+        if ($DefaultFGTConnection.version -ge "7.4.0") {
+            $policy.intf.name | Should -Be $pester_port1
+        }
+        else {
+            $policy.intf | Should -Be $pester_port1
+        }
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "accept"
@@ -117,7 +122,7 @@ Describe "Add Firewall Local In Policy" {
         $policy.comments | Should -BeNullOrEmpty
     }
 
-    Context "Multi Interface" {
+    Context "Multi Interface" -skip:($fgt_version -lt "7.4.0") {
 
         It "Add Policy $pester_policy1 (intf: $pester_port1, $pester_port3)" {
             $p = Add-FGTFirewallLocalInPolicy -policyid 23 -intf $pester_port1, $pester_port3 -srcaddr all -dstaddr all
@@ -151,7 +156,12 @@ Describe "Add Firewall Local In Policy" {
             @($p).count | Should -Be "1"
             $policy = Get-FGTFirewallLocalInPolicy -policyid $p.policyid
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.intf.name | Should -BeIn $pester_port1
+            if ($DefaultFGTConnection.version -ge "7.4.0") {
+                $policy.intf.name | Should -Be $pester_port1
+            }
+            else {
+                $policy.intf | Should -Be $pester_port1
+            }
             $policy.srcaddr.name | Should -Be $pester_address1
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "accept"
@@ -166,7 +176,12 @@ Describe "Add Firewall Local In Policy" {
             @($p).count | Should -Be "1"
             $policy = Get-FGTFirewallLocalInPolicy -policyid $p.policyid
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.intf.name | Should -BeIn $pester_port1
+            if ($DefaultFGTConnection.version -ge "7.4.0") {
+                $policy.intf.name | Should -Be $pester_port1
+            }
+            else {
+                $policy.intf | Should -Be $pester_port1
+            }
             ($policy.srcaddr.name).count | Should -Be "2"
             $policy.srcaddr.name | Should -BeIn $pester_address1, $pester_address3
             $policy.dstaddr.name | Should -Be "all"
@@ -182,7 +197,12 @@ Describe "Add Firewall Local In Policy" {
             @($p).count | Should -Be "1"
             $policy = Get-FGTFirewallLocalInPolicy -policyid $p.policyid
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.intf.name | Should -BeIn $pester_port1
+            if ($DefaultFGTConnection.version -ge "7.4.0") {
+                $policy.intf.name | Should -Be $pester_port1
+            }
+            else {
+                $policy.intf | Should -Be $pester_port1
+            }
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be $pester_address2
             $policy.action | Should -Be "accept"
@@ -197,7 +217,12 @@ Describe "Add Firewall Local In Policy" {
             @($p).count | Should -Be "1"
             $policy = Get-FGTFirewallLocalInPolicy -policyid $p.policyid
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.intf.name | Should -BeIn $pester_port1
+            if ($DefaultFGTConnection.version -ge "7.4.0") {
+                $policy.intf.name | Should -Be $pester_port1
+            }
+            else {
+                $policy.intf | Should -Be $pester_port1
+            }
             $policy.srcaddr.name | Should -Be "all"
             ($policy.dstaddr.name).count | Should -Be "2"
             $policy.dstaddr.name | Should -BeIn $pester_address2, $pester_address4
@@ -213,7 +238,12 @@ Describe "Add Firewall Local In Policy" {
             @($p).count | Should -Be "1"
             $policy = Get-FGTFirewallLocalInPolicy -policyid $p.policyid
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.intf.name | Should -BeIn $pester_port1
+            if ($DefaultFGTConnection.version -ge "7.4.0") {
+                $policy.intf.name | Should -Be $pester_port1
+            }
+            else {
+                $policy.intf | Should -Be $pester_port1
+            }
             ($policy.srcaddr.name).count | Should -Be "2"
             $policy.srcaddr.name | Should -BeIn $pester_address1, $pester_address3
             ($policy.dstaddr.name).count | Should -Be "2"
@@ -239,7 +269,12 @@ Describe "Add Firewall Local In Policy" {
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallLocalInPolicy -policyid $p.policyid
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.intf.name | Should -Be $pester_port1
+        if ($DefaultFGTConnection.version -ge "7.4.0") {
+            $policy.intf.name | Should -Be $pester_port1
+        }
+        else {
+            $policy.intf | Should -Be $pester_port1
+        }
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "deny"
@@ -254,7 +289,12 @@ Describe "Add Firewall Local In Policy" {
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallLocalInPolicy -policyid $p.policyid
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.intf.name | Should -Be $pester_port1
+        if ($DefaultFGTConnection.version -ge "7.4.0") {
+            $policy.intf.name | Should -Be $pester_port1
+        }
+        else {
+            $policy.intf | Should -Be $pester_port1
+        }
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "accept"
@@ -269,7 +309,12 @@ Describe "Add Firewall Local In Policy" {
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallLocalInPolicy -policyid $p.policyid
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.intf.name | Should -Be $pester_port1
+        if ($DefaultFGTConnection.version -ge "7.4.0") {
+            $policy.intf.name | Should -Be $pester_port1
+        }
+        else {
+            $policy.intf | Should -Be $pester_port1
+        }
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "accept"
@@ -284,7 +329,12 @@ Describe "Add Firewall Local In Policy" {
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallLocalInPolicy -policyid $p.policyid
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.intf.name | Should -Be $pester_port1
+        if ($DefaultFGTConnection.version -ge "7.4.0") {
+            $policy.intf.name | Should -Be $pester_port1
+        }
+        else {
+            $policy.intf | Should -Be $pester_port1
+        }
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "accept"
@@ -300,7 +350,12 @@ Describe "Add Firewall Local In Policy" {
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallLocalInPolicy -policyid $p.policyid
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.intf.name | Should -Be $pester_port1
+        if ($DefaultFGTConnection.version -ge "7.4.0") {
+            $policy.intf.name | Should -Be $pester_port1
+        }
+        else {
+            $policy.intf | Should -Be $pester_port1
+        }
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "accept"
@@ -315,7 +370,12 @@ Describe "Add Firewall Local In Policy" {
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallLocalInPolicy -policyid $p.policyid
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.intf.name | Should -Be $pester_port1
+        if ($DefaultFGTConnection.version -ge "7.4.0") {
+            $policy.intf.name | Should -Be $pester_port1
+        }
+        else {
+            $policy.intf | Should -Be $pester_port1
+        }
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "accept"
@@ -331,7 +391,12 @@ Describe "Add Firewall Local In Policy" {
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallLocalInPolicy -policyid $p.policyid
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.intf.name | Should -Be $pester_port1
+        if ($DefaultFGTConnection.version -ge "7.4.0") {
+            $policy.intf.name | Should -Be $pester_port1
+        }
+        else {
+            $policy.intf | Should -Be $pester_port1
+        }
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "accept"
@@ -348,7 +413,12 @@ Describe "Add Firewall Local In Policy" {
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallLocalInPolicy -policyid $p.policyid
         $policy.uuid | Should -Not -BeNullOrEmpty
-        $policy.intf.name | Should -Be $pester_port1
+        if ($DefaultFGTConnection.version -ge "7.4.0") {
+            $policy.intf.name | Should -Be $pester_port1
+        }
+        else {
+            $policy.intf | Should -Be $pester_port1
+        }
         $policy.srcaddr.name | Should -Be "all"
         $policy.dstaddr.name | Should -Be "all"
         $policy.action | Should -Be "accept"
@@ -386,7 +456,12 @@ Describe "Add Firewall Local In Policy Member" {
             Get-FGTFirewallLocalInPolicy -policyid 23 | Add-FGTFirewallLocalInPolicyMember -srcaddr $pester_address1
             $policy = Get-FGTFirewallLocalInPolicy -policyid 23
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.intf.name | Should -BeIn $pester_port1
+            if ($DefaultFGTConnection.version -ge "7.4.0") {
+                $policy.intf.name | Should -Be $pester_port1
+            }
+            else {
+                $policy.intf | Should -Be $pester_port1
+            }
             $policy.srcaddr.name | Should -Be $pester_address1
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "accept"
@@ -402,7 +477,12 @@ Describe "Add Firewall Local In Policy Member" {
             Get-FGTFirewallLocalInPolicy -policyid 23 | Add-FGTFirewallLocalInPolicyMember -srcaddr $pester_address1, $pester_address3
             $policy = Get-FGTFirewallLocalInPolicy -policyid 23
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.intf.name | Should -BeIn $pester_port1
+            if ($DefaultFGTConnection.version -ge "7.4.0") {
+                $policy.intf.name | Should -Be $pester_port1
+            }
+            else {
+                $policy.intf | Should -Be $pester_port1
+            }
             ($policy.srcaddr.name).count | Should -Be "2"
             $policy.srcaddr.name | Should -Be $pester_address1, $pester_address3
             $policy.dstaddr.name | Should -Be "all"
@@ -419,7 +499,12 @@ Describe "Add Firewall Local In Policy Member" {
             Get-FGTFirewallLocalInPolicy -policyid 23 | Add-FGTFirewallLocalInPolicyMember -srcaddr $pester_address3
             $policy = Get-FGTFirewallLocalInPolicy -policyid 23
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.intf.name | Should -BeIn $pester_port1
+            if ($DefaultFGTConnection.version -ge "7.4.0") {
+                $policy.intf.name | Should -Be $pester_port1
+            }
+            else {
+                $policy.intf | Should -Be $pester_port1
+            }
             ($policy.srcaddr.name).count | Should -Be "2"
             $policy.srcaddr.name | Should -Be $pester_address1, $pester_address3
             $policy.dstaddr.name | Should -Be "all"
@@ -440,7 +525,12 @@ Describe "Add Firewall Local In Policy Member" {
             Get-FGTFirewallLocalInPolicy -policyid 23 | Add-FGTFirewallLocalInPolicyMember -dstaddr $pester_address2
             $policy = Get-FGTFirewallLocalInPolicy -policyid 23
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.intf.name | Should -BeIn $pester_port1
+            if ($DefaultFGTConnection.version -ge "7.4.0") {
+                $policy.intf.name | Should -Be $pester_port1
+            }
+            else {
+                $policy.intf | Should -Be $pester_port1
+            }
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be "$pester_address2"
             $policy.action | Should -Be "accept"
@@ -456,7 +546,12 @@ Describe "Add Firewall Local In Policy Member" {
             Get-FGTFirewallLocalInPolicy -policyid 23 | Add-FGTFirewallLocalInPolicyMember -dstaddr $pester_address2, $pester_address4
             $policy = Get-FGTFirewallLocalInPolicy -policyid 23
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.intf.name | Should -BeIn $pester_port1
+            if ($DefaultFGTConnection.version -ge "7.4.0") {
+                $policy.intf.name | Should -Be $pester_port1
+            }
+            else {
+                $policy.intf | Should -Be $pester_port1
+            }
             $policy.srcaddr.name | Should -Be "all"
             ($policy.dstaddr.name).count | Should -Be "2"
             $policy.dstaddr.name | Should -BeIn $pester_address2, $pester_address4
@@ -473,7 +568,12 @@ Describe "Add Firewall Local In Policy Member" {
             Get-FGTFirewallLocalInPolicy -policyid 23 | Add-FGTFirewallLocalInPolicyMember -dstaddr $pester_address4
             $policy = Get-FGTFirewallLocalInPolicy -policyid 23
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.intf.name | Should -BeIn $pester_port1
+            if ($DefaultFGTConnection.version -ge "7.4.0") {
+                $policy.intf.name | Should -Be $pester_port1
+            }
+            else {
+                $policy.intf | Should -Be $pester_port1
+            }
             $policy.srcaddr.name | Should -Be "all"
             ($policy.dstaddr.name).count | Should -Be "2"
             $policy.dstaddr.name | Should -BeIn $pester_address2, $pester_address4
@@ -493,7 +593,12 @@ Describe "Add Firewall Local In Policy Member" {
             Get-FGTFirewallLocalInPolicy -policyid 23 | Add-FGTFirewallLocalInPolicyMember -srcaddr $pester_address1 -dstaddr $pester_address2
             $policy = Get-FGTFirewallLocalInPolicy -policyid 23
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.intf.name | Should -BeIn $pester_port1
+            if ($DefaultFGTConnection.version -ge "7.4.0") {
+                $policy.intf.name | Should -Be $pester_port1
+            }
+            else {
+                $policy.intf | Should -Be $pester_port1
+            }
             $policy.srcaddr.name | Should -Be "$pester_address1"
             $policy.dstaddr.name | Should -Be "$pester_address2"
             $policy.action | Should -Be "accept"
@@ -509,7 +614,12 @@ Describe "Add Firewall Local In Policy Member" {
             Get-FGTFirewallLocalInPolicy -policyid 23 | Add-FGTFirewallLocalInPolicyMember -srcaddr $pester_address1, $pester_address3 -dstaddr $pester_address2, $pester_address4
             $policy = Get-FGTFirewallLocalInPolicy -policyid 23
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.intf.name | Should -BeIn $pester_port1
+            if ($DefaultFGTConnection.version -ge "7.4.0") {
+                $policy.intf.name | Should -Be $pester_port1
+            }
+            else {
+                $policy.intf | Should -Be $pester_port1
+            }
             ($policy.srcaddr.name).count | Should -Be "2"
             $policy.srcaddr.name | Should -BeIn $pester_address1, $pester_address3
             ($policy.dstaddr.name).count | Should -Be "2"
@@ -527,7 +637,12 @@ Describe "Add Firewall Local In Policy Member" {
             Get-FGTFirewallLocalInPolicy -policyid 23 | Add-FGTFirewallLocalInPolicyMember -srcaddr $pester_address3 -dstaddr $pester_address4
             $policy = Get-FGTFirewallLocalInPolicy -policyid 23
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.intf.name | Should -BeIn $pester_port1
+            if ($DefaultFGTConnection.version -ge "7.4.0") {
+                $policy.intf.name | Should -Be $pester_port1
+            }
+            else {
+                $policy.intf | Should -Be $pester_port1
+            }
             ($policy.srcaddr.name).count | Should -Be "2"
             $policy.srcaddr.name | Should -BeIn $pester_address1, $pester_address3
             ($policy.dstaddr.name).count | Should -Be "2"
@@ -540,7 +655,7 @@ Describe "Add Firewall Local In Policy Member" {
         }
     }
 
-    Context "Add Member(s) to Interface" {
+    Context "Add Member(s) to Interface" -skip:($fgt_version -lt "7.4.0") {
 
         It "Add 1 member to Policy Src Interface $pester_port1 (with any before)" {
             $p = Add-FGTFirewallLocalInPolicy -policyid 23 -intf any -srcaddr all -dstaddr all
@@ -661,7 +776,7 @@ Describe "Configure Firewall Local In Policy" {
         $script:uuid = $policy.uuid
     }
 
-    Context "Multi Interface" {
+    Context "Multi Interface" -skip:($fgt_version -lt "7.4.0") {
 
         It "Set Policy $pester_policy1 (intf: $pester_port1, $pester_port3)" {
             $p = Get-FGTFirewallLocalInPolicy -policyid 23 | Set-FGTFirewallLocalInPolicy -intf $pester_port1, $pester_port3
@@ -888,7 +1003,12 @@ Describe "Remove Firewall Local In Policy Member" {
             Get-FGTFirewallLocalInPolicy -policyid 23 | Remove-FGTFirewallLocalInPolicyMember -srcaddr $pester_address1
             $policy = Get-FGTFirewallLocalInPolicy -policyid 23
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.intf.name | Should -BeIn $pester_port1
+            if ($DefaultFGTConnection.version -ge "7.4.0") {
+                $policy.intf.name | Should -Be $pester_port1
+            }
+            else {
+                $policy.intf | Should -Be $pester_port1
+            }
             ($policy.srcaddr.name).count | Should -Be "2"
             $policy.srcaddr.name | Should -Be $pester_address2, $pester_address3
             $policy.dstaddr.name | Should -Be "all"
@@ -903,7 +1023,12 @@ Describe "Remove Firewall Local In Policy Member" {
             Get-FGTFirewallLocalInPolicy -policyid 23 | Remove-FGTFirewallLocalInPolicyMember -srcaddr $pester_address1, $pester_address2
             $policy = Get-FGTFirewallLocalInPolicy -policyid 23
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.intf.name | Should -BeIn $pester_port1
+            if ($DefaultFGTConnection.version -ge "7.4.0") {
+                $policy.intf.name | Should -Be $pester_port1
+            }
+            else {
+                $policy.intf | Should -Be $pester_port1
+            }
             $policy.srcaddr.name | Should -Be $pester_address3
             $policy.dstaddr.name | Should -Be "all"
             $policy.action | Should -Be "accept"
@@ -921,7 +1046,7 @@ Describe "Remove Firewall Local In Policy Member" {
 
     }
 
-    Context "Remove Member(s) to Interface" {
+    Context "Remove Member(s) to Interface" -skip:($fgt_version -lt "7.4.0") {
         BeforeEach {
             Add-FGTFirewallLocalInPolicy -policyid 23 -intf $pester_port1, $pester_port2, $pester_port3 -srcaddr all -dstaddr all
         }
@@ -973,7 +1098,12 @@ Describe "Remove Firewall Local In Policy Member" {
             Get-FGTFirewallLocalInPolicy -policyid 23 | Remove-FGTFirewallLocalInPolicyMember -dstaddr $pester_address1
             $policy = Get-FGTFirewallLocalInPolicy -policyid 23
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.intf.name | Should -BeIn $pester_port1
+            if ($DefaultFGTConnection.version -ge "7.4.0") {
+                $policy.intf.name | Should -Be $pester_port1
+            }
+            else {
+                $policy.intf | Should -Be $pester_port1
+            }
             $policy.srcaddr.name | Should -Be "all"
             ($policy.dstaddr.name).count | Should -Be "2"
             $policy.dstaddr.name | Should -Be $pester_address2, $pester_address3
@@ -988,7 +1118,12 @@ Describe "Remove Firewall Local In Policy Member" {
             Get-FGTFirewallLocalInPolicy -policyid 23 | Remove-FGTFirewallLocalInPolicyMember -dstaddr $pester_address1, $pester_address2
             $policy = Get-FGTFirewallLocalInPolicy -policyid 23
             $policy.uuid | Should -Not -BeNullOrEmpty
-            $policy.intf.name | Should -BeIn $pester_port1
+            if ($DefaultFGTConnection.version -ge "7.4.0") {
+                $policy.intf.name | Should -Be $pester_port1
+            }
+            else {
+                $policy.intf | Should -Be $pester_port1
+            }
             $policy.srcaddr.name | Should -Be "all"
             $policy.dstaddr.name | Should -Be $pester_address3
             $policy.action | Should -Be "accept"
