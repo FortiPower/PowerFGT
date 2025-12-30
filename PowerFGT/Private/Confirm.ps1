@@ -204,9 +204,10 @@ Function Confirm-FGTFirewallLocalInPolicy {
     if ( -not ( $argument | get-member -name policyid -Membertype Properties)) {
         throw "Element specified does not contain a policyid property."
     }
-    if ( -not ( $argument | get-member -name uuid -Membertype Properties)) {
-        throw "Element specified does not contain an uuid property."
-    }
+    #No uuid before 6.4.x
+    #if ( -not ( $argument | get-member -name uuid -Membertype Properties)) {
+    #    throw "Element specified does not contain an uuid property."
+    #}
     if ( -not ( $argument | get-member -name intf -Membertype Properties)) {
         throw "Element specified does not contain a intf property."
     }
