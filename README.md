@@ -36,6 +36,7 @@ With this module (version 0.9.1) you can manage:
 - [Monitor](#monitor) (Get)
 - [Policy](#policy) (Add/Get/Remove)
 - [Proxy Address/Address Group/ Policy](#proxy) (Add/Get/Set/Remove)
+- [Local In Policy](#local-in-poloicy) (Add/Get/Copy/Set/Remove and Add/Remove Member)
 - [Router BGP](#bgp) (Get/Set)
 - [Router OSPF](#ospf) (Get/Set)
 - RoutePolicy (Get)
@@ -2221,6 +2222,14 @@ There is also cmdlet for Proxy
 For Proxy Policy, it is possible to specific explict proxy or transparent
 For FortiGate 6.0.x, you need to enable proxy mode before (and enable feature)
 
+### Local In Policy
+
+There is also cmdlet for Local in Policy
+
+You can create a new Local In Policy `Add-FGTFirewallLocalInPolicy`, retrieve its information `Get-FGTFirewallLocalInPolicy`
+Add member to source or destinationn address `Add-FGTFirewallLocalInPolicyMember` and remove member `Add-FGTFirewallLocalInPolicyMember`,
+set it `Set-FGTFirewallLocalInPolicy` or delete it `Remove-FGTFirewalLocalInPolicy`.
+
 ### Connecting with API Token
 
 If you have a REST API administrator account setup, you can connect with the API
@@ -2358,6 +2367,8 @@ Currently, [@alagoutte](#author) started this project and will keep maintaining 
 Add-FGTFirewallAddress
 Add-FGTFirewallAddressGroup
 Add-FGTFirewallAddressGroupMember
+Add-FGTFirewallLocalInPolicy
+Add-FGTFirewallLocalInPolicyMember
 Add-FGTFirewallPolicy
 Add-FGTFirewallPolicyMember
 Add-FGTFirewallProxyAddress
@@ -2385,6 +2396,7 @@ Add-FGTVpnIpsecPhase1Interface
 Add-FGTVpnIpsecPhase2Interface
 Confirm-FGTAddress
 Confirm-FGTAddressGroup
+Confirm-FGTFirewallLocalInPolicy
 Confirm-FGTFirewallPolicy
 Confirm-FGTFirewallProxyPolicy
 Confirm-FGTInterface
@@ -2421,6 +2433,7 @@ Get-FGTFirewallAddress
 Get-FGTFirewallAddressGroup
 Get-FGTFirewallInternetServiceName
 Get-FGTFirewallIPPool
+Get-FGTFirewallLocalInPolicy
 Get-FGTFirewallPolicy
 Get-FGTFirewallProxyAddress
 Get-FGTFirewallProxyAddressGroup
@@ -2507,10 +2520,13 @@ Get-FGTWirelessWTP
 Get-FGTWirelessWTPGroup
 Get-FGTWirelessWTPProfile
 Invoke-FGTRestMethod
+Move-FGTFirewallLocalInPolicy
 Move-FGTFirewallPolicy
 Remove-FGTFirewallAddress
 Remove-FGTFirewallAddressGroup
 Remove-FGTFirewallAddressGroupMember
+Remove-FGTFirewallLocalInPolicy
+Remove-FGTFirewallLocalInPolicyMember
 Remove-FGTFirewallPolicy
 Remove-FGTFirewallPolicyMember
 Remove-FGTFirewallProxyAddress
@@ -2540,6 +2556,7 @@ Set-FGTCipherSSL
 Set-FGTConnection
 Set-FGTFirewallAddress
 Set-FGTFirewallAddressGroup
+Set-FGTFirewallLocalInPolicy
 Set-FGTFirewallPolicy
 Set-FGTFirewallProxyAddressGroup
 Set-FGTFirewallServiceCustom
