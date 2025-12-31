@@ -412,7 +412,7 @@ Describe "Add Firewall Local In Policy" {
         $policy.comments | Should -Be "Add via PowerFGT"
     }
 
-    It "Add Policy $pester_policy1 (with data (1 field))" {
+    It "Add Policy $pester_policy1 (with data (1 field))" -skip:($fgt_version -lt "7.0.0") {
         $data = @{ "service-negate" = "enable" }
         $p = Add-FGTFirewallLocalInPolicy -policyid 23 -intf $pester_port1 -srcaddr all -dstaddr all -data $data
         @($p).count | Should -Be "1"
@@ -436,7 +436,7 @@ Describe "Add Firewall Local In Policy" {
         $policy.'service-negate' | Should -Be "enable"
     }
 
-    It "Add Policy $pester_policy1 (with data (2 fields))" {
+    It "Add Policy $pester_policy1 (with data (2 fields))"  -skip:($fgt_version -lt "7.0.0") {
         $data = @{ "service-negate" = "enable" ; "comments" = "Add via PowerFGT and -data" }
         $p = Add-FGTFirewallLocalInPolicy -policyid 23 -intf $pester_port1 -srcaddr all -dstaddr all -data $data
         @($p).count | Should -Be "1"
@@ -1031,7 +1031,7 @@ Describe "Configure Firewall Local In Policy" {
         $policy.comments | Should -BeNullOrEmpty
     }
 
-    It "Set Policy $pester_policy1 (with data (1 field))" {
+    It "Set Policy $pester_policy1 (with data (1 field))" -skip:($fgt_version -lt "7.0.0") {
         $data = @{ "service-negate" = "enable" }
         $p = Get-FGTFirewallLocalInPolicy -policyid 23 | Set-FGTFirewallLocalInPolicy -data $data
         @($p).count | Should -Be "1"
@@ -1042,7 +1042,7 @@ Describe "Configure Firewall Local In Policy" {
         $policy.'service-negate' | Should -Be "enable"
     }
 
-    It "Set Policy $pester_policy1 (with data (2 fields))" {
+    It "Set Policy $pester_policy1 (with data (2 fields))" -skip:($fgt_version -lt "7.0.0") {
         $data = @{ "service-negate" = "disable" ; "comments" = "Modify via PowerFGT and -data" }
         $p = Get-FGTFirewallLocalInPolicy -policyid 23 | Set-FGTFirewallLocalInPolicy -data $data
         @($p).count | Should -Be "1"
