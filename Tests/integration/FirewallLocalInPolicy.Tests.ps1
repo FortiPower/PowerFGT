@@ -461,7 +461,7 @@ Describe "Add Firewall Local In Policy" {
     }
 
     AfterAll {
-        Get-FGTFirewallPolicy -policyid 44 | Remove-FGTFirewallPolicy -confirm:$false
+        Get-FGTFirewallLocalInPolicy -policyid 44 | Remove-FGTFirewallLocalInPolicy -confirm:$false
     }
 }
 
