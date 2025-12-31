@@ -9,31 +9,31 @@
 @{
 
     # Script module or binary module file associated with this manifest.
-    RootModule        = 'PowerFGT.psm1'
+    RootModule           = 'PowerFGT.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.10.0'
+    ModuleVersion        = '0.10.0'
 
     # Supported PSEditions
-    # CompatiblePSEditions = @()
+    CompatiblePSEditions = @('Desktop', 'Core')
 
     # ID used to uniquely identify this module
-    GUID              = '608e2723-7ce4-4f86-a3c8-ac1acb4f1f66'
+    GUID                 = '608e2723-7ce4-4f86-a3c8-ac1acb4f1f66'
 
     # Author of this module
-    Author            = 'Alexis La Goutte'
+    Author               = 'Alexis La Goutte'
 
     # Company or vendor of this module
     #CompanyName = 'Unknown'
 
     # Copyright statement for this module
-    Copyright         = '(c) Alexis La Goutte. All rights reserved.'
+    Copyright            = '(c) Alexis La Goutte. All rights reserved.'
 
     # Description of the functionality provided by this module
-    Description       = 'PowerShell module to query the Fortigate API'
+    Description          = 'PowerShell module to query the Fortigate API'
 
     # Minimum version of the PowerShell engine required by this module
-    PowerShellVersion = '3.0'
+    PowerShellVersion    = '3.0'
 
     # Name of the PowerShell host required by this module
     # PowerShellHostName = ''
@@ -69,16 +69,16 @@
     # NestedModules = @()
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-    FunctionsToExport = '*'
+    FunctionsToExport    = '*'
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
-    CmdletsToExport   = @()
+    CmdletsToExport      = @()
 
     # Variables to export from this module
-    VariablesToExport = '*'
+    VariablesToExport    = '*'
 
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-    AliasesToExport   = @()
+    AliasesToExport      = @()
 
     # DSC resources to export from this module
     # DscResourcesToExport = @()
@@ -90,24 +90,24 @@
     # FileList = @()
 
     # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
-    PrivateData       = @{
+    PrivateData          = @{
 
         PSData = @{
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags       = @('Fortinet', 'FortiGate', 'API', 'PSEdition_Core', 'PSEdition_Desktop')
+            Tags         = @('Fortinet', 'FortiGate', 'API')
 
             # A URL to the license for this module.
-            LicenseUri = 'https://github.com/FortiPower/PowerFGT/blob/master/LICENSE'
+            LicenseUri   = 'https://github.com/FortiPower/PowerFGT/blob/master/LICENSE'
 
             # A URL to the main website for this project.
-            ProjectUri = 'https://fortipower.github.io/PowerFGT'
+            ProjectUri   = 'https://fortipower.github.io/PowerFGT'
 
             # A URL to an icon representing this module.
             # IconUri = ''
 
             # ReleaseNotes of this module
-            # ReleaseNotes = ''
+            ReleaseNotes = 'See https://github.com/FortiPower/PowerFGT/releases for full changelog'
 
         } # End of PSData hashtable
 
