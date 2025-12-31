@@ -773,7 +773,7 @@ Describe "Add Firewall Local In Policy Member" {
     }
 
 }
-<#
+
 Describe "Move Firewall Local In Policy" {
 
     BeforeEach {
@@ -802,7 +802,7 @@ Describe "Move Firewall Local In Policy" {
         }
 
         It "Move Policy HTTPS before SSH (using id)" {
-            Get-FGTFirewallLocalInPolicy --policyid 85 | Move-FGTFirewallLocalInPolicy -before -id $policyid1
+            Get-FGTFirewallLocalInPolicy -policyid 85 | Move-FGTFirewallLocalInPolicy -before -id $policyid1
             $policy = Get-FGTFirewallLocalInPolicy
             $policy[0].policyid | Should -Be 85
             $policy[1].policyid | Should -Be 23
@@ -822,7 +822,7 @@ Describe "Move Firewall Local In Policy" {
         }
     }
 }
-#>
+
 
 Describe "Configure Firewall Local In Policy" {
 
