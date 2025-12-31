@@ -413,7 +413,7 @@ Describe "Add Firewall Local In Policy" {
     }
 
     It "Add Policy $pester_policy1 (with data (1 field))" {
-        $data = @{ "virtual-patch" = "enable" }
+        $data = @{ "service-negate" = "enable" }
         $p = Add-FGTFirewallLocalInPolicy -policyid 23 -intf $pester_port1 -srcaddr all -dstaddr all -data $data
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallLocalInPolicy -policyid $p.policyid
@@ -433,11 +433,11 @@ Describe "Add Firewall Local In Policy" {
         $policy.service.name | Should -Be "All"
         $policy.schedule | Should -Be "always"
         $policy.comments | Should -BeNullOrEmpty
-        $policy.'virtual-patch' | Should -Be "enable"
+        $policy.'service-negate' | Should -Be "enable"
     }
 
     It "Add Policy $pester_policy1 (with data (2 fields))" {
-        $data = @{ "virtual-patch" = "enable" ; "comments" = "Add via PowerFGT and -data" }
+        $data = @{ "service-negate" = "enable" ; "comments" = "Add via PowerFGT and -data" }
         $p = Add-FGTFirewallLocalInPolicy -policyid 23 -intf $pester_port1 -srcaddr all -dstaddr all -data $data
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallLocalInPolicy -policyid $p.policyid
@@ -457,7 +457,7 @@ Describe "Add Firewall Local In Policy" {
         $policy.service.name | Should -Be "All"
         $policy.schedule | Should -Be "always"
         $policy.comments | Should -Be "Add via PowerFGT and -data"
-        $policy.'virtual-patch' | Should -Be "enable"
+        $policy.'service-negate' | Should -Be "enable"
     }
 
     AfterAll {
@@ -1032,18 +1032,18 @@ Describe "Configure Firewall Local In Policy" {
     }
 
     It "Set Policy $pester_policy1 (with data (1 field))" {
-        $data = @{ "virtual-patch" = "enable" }
+        $data = @{ "service-negate" = "enable" }
         $p = Get-FGTFirewallLocalInPolicy -policyid 23 | Set-FGTFirewallLocalInPolicy -data $data
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallLocalInPolicy -policyid 23
         if ($DefaultFGTConnection.version -ge "6.4.0") {
             $policy.uuid | Should -Not -BeNullOrEmpty
         }
-        $policy.'virtual-patch' | Should -Be "enable"
+        $policy.'service-negate' | Should -Be "enable"
     }
 
     It "Set Policy $pester_policy1 (with data (2 fields))" {
-        $data = @{ "virtual-patch" = "disable" ; "comments" = "Modify via PowerFGT and -data" }
+        $data = @{ "service-negate" = "disable" ; "comments" = "Modify via PowerFGT and -data" }
         $p = Get-FGTFirewallLocalInPolicy -policyid 23 | Set-FGTFirewallLocalInPolicy -data $data
         @($p).count | Should -Be "1"
         $policy = Get-FGTFirewallLocalInPolicy -policyid 23
@@ -1051,7 +1051,7 @@ Describe "Configure Firewall Local In Policy" {
             $policy.uuid | Should -Not -BeNullOrEmpty
         }
         $policy.comments | Should -Be "Modify via PowerFGT and -data"
-        $policy.'virtual-patch' | Should -Be "disable"
+        $policy.'service-negate' | Should -Be "disable"
     }
 
     AfterAll {
